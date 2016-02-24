@@ -24,7 +24,7 @@ var GamePlayScene = function(game, stage)
   {
     clicker = new Clicker({source:stage.dispCanv.canvas});
 
-    self.constructGame(GameTemplate);
+    constructGame(GameTemplate);
 
     var card;
     cards = [];
@@ -47,6 +47,14 @@ var GamePlayScene = function(game, stage)
   self.tick = function()
   {
     clicker.flush();
+
+    var token;
+    for(var i = 0; i < tokens.length; i++)
+    {
+      token = tokens[i];
+      token.x = lerp(token.x,token.target_x,0.1);
+      token.y = lerp(token.y,token.target_y,0.1);
+    }
   };
 
   self.draw = function()
@@ -88,12 +96,37 @@ var GamePlayScene = function(game, stage)
 
   };
 
-  self.playCard = function()
+  var playCard = function(index)
   {
+    var event = events[players[player_turn-1].hand[index]-1];
+    var edge = edges[event.edge_id-1];
+    var eligibletoks = [];
+    for(var i = 0; i < tokens.length; i++)
+    {
+      if(tokens[i].node_id == edge.from_id) eligibletoks.push(i);
+    }
+    for(var i = 0; i < edge.amt && eligibletoks.length > 0; i++)
+    {
+      var ei = Math.floor(Math.random()*eligibletoks.length);
+      var t = eligibletoks[ei];
+      tokens[t].node_id = edge.to_id;
+      tokens[t].transitions++;
 
+      tokens[t].target_x = nodes[tokens[t].node_id-1].x+Math.random()*(nodes[tokens[t].node_id-1].w-tokens[t].w);
+      tokens[t].target_y = nodes[tokens[t].node_id-1].y+Math.random()*(nodes[tokens[t].node_id-1].h-tokens[t].h);
+
+      eligibletoks.splice(ei,1);
+    }
+
+    players[player_turn-1].hand.splice(index,1);
+    players[player_turn-1].hand.push(deck[0]);
+    deck.splice(0,1);
+
+    player_turn = (player_turn%players.length)+1;
+    if(player_turn == 1) turn++;
   }
 
-  self.constructGame = function(game_data)
+  var constructGame = function(game_data)
   {
     var player;
     var node;
@@ -192,6 +225,9 @@ var GamePlayScene = function(game, stage)
       token.x = nodes[token.node_id-1].x+Math.random()*(nodes[token.node_id-1].w-token.w);
       token.y = nodes[token.node_id-1].y+Math.random()*(nodes[token.node_id-1].h-token.h);
 
+      token.target_x = token.x;
+      token.target_y = token.y;
+
       tokens.push(token);
     }
 
@@ -274,6 +310,9 @@ var GamePlayScene = function(game, stage)
     self.w;
     self.h;
 
+    self.target_x;
+    self.target_y;
+
     self.id = 0;
     self.player_id = 0;
     self.node_id = 0;
@@ -306,6 +345,7 @@ var GamePlayScene = function(game, stage)
 
     self.click = function(evt)
     {
+      playCard(self.index);
     }
   }
 
