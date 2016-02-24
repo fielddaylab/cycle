@@ -97,6 +97,31 @@ var GamePlayScene = function(game, stage)
 
   };
 
+  var shuffleDeck = function()
+  {
+    var tmp;
+    var swap;
+    for(var i = 0; i < deck.length-1; i++)
+    {
+      swap = i+Math.floor((Math.random()*(events.length-i)));
+      tmp = deck[i];
+      deck[i] = deck[swap];
+      deck[swap] = tmp;
+    }
+  }
+
+  var drawCard = function()
+  {
+    var card = deck[0];
+    deck.splice(0,1);
+    return card;
+  }
+
+  var discardCard = function(c)
+  {
+    discard.push(c);
+  }
+
   var playCard = function(index)
   {
     var event = events[players[player_turn-1].hand[index]-1];
@@ -117,9 +142,15 @@ var GamePlayScene = function(game, stage)
       eligibletoks.splice(ei,1);
     }
 
+    discardCard(players[player_turn-1].hand[index]);
     players[player_turn-1].hand.splice(index,1);
-    players[player_turn-1].hand.push(deck[0]);
-    deck.splice(0,1);
+    players[player_turn-1].hand.push(drawCard());
+    if(deck.length == 0)
+    {
+      deck = discard;
+      discard = [];
+      shuffleDeck();
+    }
 
     player_turn = (player_turn%players.length)+1;
     if(player_turn == 1) turn++;
@@ -229,24 +260,16 @@ var GamePlayScene = function(game, stage)
 
     deck = [];
     discard = [];
-    var tmp;
-    var swap;
+    //populate deck
     for(var i = 0; i < game_data.deck; i++)
       deck.push((i%events.length)+1);
-    //shuffle
-    for(var i = 0; i < deck.length-1; i++)
-    {
-      swap = i+Math.floor((Math.random()*(events.length-i)));
-      tmp = deck[i];
-      deck[i] = deck[swap];
-      deck[swap] = tmp;
-    }
+    shuffleDeck();
     //deal
     for(var i = 0; i < players.length; i++)
     {
       players[i].hand = [];
       for(var j = 0; j < game_data.hand; j++)
-        { players[i].hand.push(deck[0]); deck.splice(0,1); }
+        players[i].hand.push(drawCard());
     }
 
     turn = 0;
@@ -261,8 +284,6 @@ var GamePlayScene = function(game, stage)
     self.y = 0;
     self.w = 0;
     self.h = 0;
-    self.mid_x = 0;
-    self.mid_y = 0;
 
     self.wx = 0;
     self.wy = 0;
