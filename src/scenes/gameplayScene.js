@@ -3,6 +3,7 @@ var GamePlayScene = function(game, stage)
   var self = this;
 
   var dc = stage.drawCanv;
+  var clicker;
 
   var nodes;
   var edges;
@@ -12,20 +13,48 @@ var GamePlayScene = function(game, stage)
   var tokens;
 
   var deck;
+  var discard;
   var turn;
   var player_turn;
 
+  //ui only
+  var cards;
+
   self.ready = function()
   {
+    clicker = new Clicker({source:stage.dispCanv.canvas});
+
     self.constructGame(GameTemplate);
+
+    var card;
+    cards = [];
+    var size = ((dc.width-10)/players[0].hand.length)-10;
+    for(var i = 0; i < players[0].hand.length; i++)
+    {
+      card = new Card();
+      card.index = i;
+
+      card.x = 10+i*(size+10);
+      card.y = dc.height-10-size;
+      card.w = size;
+      card.h = size;
+
+      cards.push(card);
+      clicker.register(card);
+    }
   };
 
   self.tick = function()
   {
+    clicker.flush();
   };
 
   self.draw = function()
   {
+    dc.context.fillStyle = "#000000";
+    dc.context.strokeStyle = "#000000";
+
+    //edges
     dc.context.strokeStyle = "#000000";
     for(var i = 0; i < edges.length; i++)
     {
@@ -34,17 +63,35 @@ var GamePlayScene = function(game, stage)
       dc.context.lineTo(edges[i].end_x,edges[i].end_y);
       dc.context.stroke();
     }
-
+    //nodes
     for(var i = 0; i < nodes.length; i++)
-    {
       dc.context.drawImage(nodes[i].img,nodes[i].x,nodes[i].y,nodes[i].w,nodes[i].h);
+    //tokens
+    for(var i = 0; i < tokens.length; i++)
+      dc.context.drawImage(players[tokens[i].player_id-1].token_img,tokens[i].x,tokens[i].y,tokens[i].w,tokens[i].h);
+    //hand
+    var player = players[player_turn-1];
+    for(var i = 0; i < player.hand.length; i++)
+    {
+      var event = events[player.hand[i]-1];
+      dc.context.strokeRect(cards[i].x,cards[i].y,cards[i].w,cards[i].h);
+      dc.context.fillText(event.title,cards[i].x+10,cards[i].y+20);
     }
+
+    //info
+    dc.context.fillText("Turn: "+turn,10,30);
+    dc.context.fillText("Player: "+player_turn,10,50);
   };
 
   self.cleanup = function()
   {
 
   };
+
+  self.playCard = function()
+  {
+
+  }
 
   self.constructGame = function(game_data)
   {
@@ -61,6 +108,11 @@ var GamePlayScene = function(game, stage)
       player = new Player();
       player.id = i+1;
       player.title = game_data.players[i].title;
+
+      if(i == 0) player.token_img = red_circle_icon;
+      if(i == 1) player.token_img = blue_circle_icon;
+
+      players.push(player);
     }
 
     nodes = [];
@@ -135,13 +187,19 @@ var GamePlayScene = function(game, stage)
       token.node_id = Math.floor(Math.random()*nodes.length)+1;
       token.transitions = 0;
 
+      token.w = dc.width*0.01;
+      token.h = dc.height*0.01;
+      token.x = nodes[token.node_id-1].x+Math.random()*(nodes[token.node_id-1].w-token.w);
+      token.y = nodes[token.node_id-1].y+Math.random()*(nodes[token.node_id-1].h-token.h);
+
       tokens.push(token);
     }
 
     deck = [];
+    discard = [];
     var tmp;
     var swap;
-    for(var i = 0; i < 100; i++)
+    for(var i = 0; i < game_data.deck; i++)
       deck.push((i%events.length)+1);
     //shuffle
     for(var i = 0; i < deck.length-1; i++)
@@ -150,6 +208,13 @@ var GamePlayScene = function(game, stage)
       tmp = deck[i];
       deck[i] = deck[swap];
       deck[swap] = tmp;
+    }
+    //deal
+    for(var i = 0; i < players.length; i++)
+    {
+      players[i].hand = [];
+      for(var j = 0; j < game_data.hand; j++)
+        { players[i].hand.push(deck[0]); deck.splice(0,1); }
     }
 
     turn = 0;
@@ -219,8 +284,29 @@ var GamePlayScene = function(game, stage)
   {
     var self = this;
 
+    self.token_img;
+
     self.id = 0;
     self.title = "Player";
+
+    self.hand = [];
+  }
+
+  //no data- just used for interface
+  var Card = function()
+  {
+    var self = this;
+
+    self.index = 0; //index into current player's hand
+
+    self.x;
+    self.y;
+    self.w;
+    self.h;
+
+    self.click = function(evt)
+    {
+    }
   }
 
   var circle_icon = GenIcon();
@@ -229,23 +315,40 @@ var GamePlayScene = function(game, stage)
   circle_icon.context.arc(circle_icon.width/2,circle_icon.height/2,circle_icon.width/2,0,2*Math.PI);
   circle_icon.context.fill();
 
+  var red_circle_icon = GenIcon();
+  red_circle_icon.context.fillStyle = "#FF0000";
+  red_circle_icon.context.beginPath();
+  red_circle_icon.context.arc(red_circle_icon.width/2,red_circle_icon.height/2,red_circle_icon.width/2,0,2*Math.PI);
+  red_circle_icon.context.fill();
+
+  var blue_circle_icon = GenIcon();
+  blue_circle_icon.context.fillStyle = "#0000FF";
+  blue_circle_icon.context.beginPath();
+  blue_circle_icon.context.arc(blue_circle_icon.width/2,blue_circle_icon.height/2,blue_circle_icon.width/2,0,2*Math.PI);
+  blue_circle_icon.context.fill();
+
   //TEMPLATE
 
   var GameTemplate =
   {
+    deck:100,
+    hand:5,
     players:
       [
         {
           title:"PlayerA",
+          token_img:"red_circle",
         },
         {
           title:"PlayerB",
+          token_img:"blue_circle",
         },
       ],
     nodes:
       [
         {
           title:"A",
+          img:"circle",
           x:0.2,
           y:0.2,
           w:0.1,
@@ -253,6 +356,7 @@ var GamePlayScene = function(game, stage)
         },
         {
           title:"B",
+          img:"circle",
           x:0.4,
           y:0.1,
           w:0.1,
@@ -260,6 +364,7 @@ var GamePlayScene = function(game, stage)
         },
         {
           title:"C",
+          img:"circle",
           x:0.6,
           y:0.8,
           w:0.1,
@@ -267,6 +372,7 @@ var GamePlayScene = function(game, stage)
         },
         {
           title:"D",
+          img:"circle",
           x:0.7,
           y:0.4,
           w:0.1,
