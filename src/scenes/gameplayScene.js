@@ -2,6 +2,8 @@ var GamePlayScene = function(game, stage)
 {
   var self = this;
 
+  var dc = stage.drawCanv;
+
   var nodes;
   var edges;
   var events;
@@ -20,17 +22,28 @@ var GamePlayScene = function(game, stage)
 
   self.tick = function()
   {
-    
   };
 
   self.draw = function()
   {
-    
+    dc.context.strokeStyle = "#000000";
+    for(var i = 0; i < edges.length; i++)
+    {
+      dc.context.beginPath();
+      dc.context.moveTo(edges[i].start_x,edges[i].start_y);
+      dc.context.lineTo(edges[i].end_x,edges[i].end_y);
+      dc.context.stroke();
+    }
+
+    for(var i = 0; i < nodes.length; i++)
+    {
+      dc.context.drawImage(nodes[i].img,nodes[i].x,nodes[i].y,nodes[i].w,nodes[i].h);
+    }
   };
 
   self.cleanup = function()
   {
-    
+
   };
 
   self.constructGame = function(game_data)
@@ -57,12 +70,23 @@ var GamePlayScene = function(game, stage)
       node.id = i+1;
       node.title = game_data.nodes[i].title;
 
+      node.w = dc.width*game_data.nodes[i].w;
+      node.h = dc.height*game_data.nodes[i].h;
+      node.mid_x = dc.width*game_data.nodes[i].x;
+      node.mid_y = dc.height*game_data.nodes[i].y;
+      node.x = node.mid_x-node.w/2;
+      node.y = node.mid_y-node.h/2;
+
+      node.img = circle_icon;
+
       //inject id into edge data
       for(var j = 0; j < game_data.edges.length; j++)
       {
         if(game_data.edges[j].from == node.title) game_data.edges[j].from_id = node.id;
         if(game_data.edges[j].to   == node.title) game_data.edges[j].to_id   = node.id;
       }
+
+      nodes.push(node);
     }
 
     edges = [];
@@ -75,11 +99,20 @@ var GamePlayScene = function(game, stage)
       edge.to_id   = game_data.edges[i].to_id;
       edge.amt     = game_data.edges[i].amt;
 
+      edge.start_x = nodes[edge.from_id-1].mid_x;
+      edge.start_y = nodes[edge.from_id-1].mid_y;
+      edge.end_x = nodes[edge.to_id-1].mid_x;
+      edge.end_y = nodes[edge.to_id-1].mid_y;
+      edge.mid_x = (edge.start_x+edge.end_x)/2;
+      edge.mid_y = (edge.start_y+edge.end_y)/2;
+
       //inject id into event data
       for(var j = 0; j < game_data.events.length; j++)
       {
         if(game_data.events[j].edge == edge.title) game_data.events[j].edge_id = edge.id;
       }
+
+      edges.push(edge);
     }
 
     events = [];
@@ -89,6 +122,8 @@ var GamePlayScene = function(game, stage)
       event.id = i+1;
       event.title = game_data.events[i].title;
       event.edge_id = game_data.events[i].edge_id;
+
+      events.push(event);
     }
 
     tokens = [];
@@ -99,6 +134,7 @@ var GamePlayScene = function(game, stage)
       token.player_id = (i%players.length)+1;
       token.node_id = Math.floor(Math.random()*nodes.length)+1;
       token.transitions = 0;
+
       tokens.push(token);
     }
 
@@ -124,6 +160,15 @@ var GamePlayScene = function(game, stage)
   {
     var self = this;
 
+    self.x;
+    self.y;
+    self.w;
+    self.h;
+    self.mid_x;
+    self.mid_y;
+
+    self.img;
+
     self.id = 0;
     self.title = "Node";
   }
@@ -131,6 +176,13 @@ var GamePlayScene = function(game, stage)
   var Edge = function()
   {
     var self = this;
+
+    self.start_x;
+    self.start_y;
+    self.mid_x;
+    self.mid_y;
+    self.end_x;
+    self.end_y;
 
     self.id = 0;
     self.title = "Edge";
@@ -152,6 +204,11 @@ var GamePlayScene = function(game, stage)
   {
     var self = this;
 
+    self.x;
+    self.y;
+    self.w;
+    self.h;
+
     self.id = 0;
     self.player_id = 0;
     self.node_id = 0;
@@ -165,6 +222,12 @@ var GamePlayScene = function(game, stage)
     self.id = 0;
     self.title = "Player";
   }
+
+  var circle_icon = GenIcon();
+  circle_icon.context.fillStyle = "#555555";
+  circle_icon.context.beginPath();
+  circle_icon.context.arc(circle_icon.width/2,circle_icon.height/2,circle_icon.width/2,0,2*Math.PI);
+  circle_icon.context.fill();
 
   //TEMPLATE
 
@@ -183,15 +246,31 @@ var GamePlayScene = function(game, stage)
       [
         {
           title:"A",
+          x:0.2,
+          y:0.2,
+          w:0.1,
+          h:0.1,
         },
         {
           title:"B",
+          x:0.4,
+          y:0.1,
+          w:0.1,
+          h:0.1,
         },
         {
           title:"C",
+          x:0.6,
+          y:0.8,
+          w:0.1,
+          h:0.1,
         },
         {
           title:"D",
+          x:0.7,
+          y:0.4,
+          w:0.1,
+          h:0.1,
         },
       ],
     edges:
