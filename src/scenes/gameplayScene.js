@@ -24,7 +24,7 @@ var GamePlayScene = function(game, stage)
   {
     clicker = new Clicker({source:stage.dispCanv.canvas});
 
-    constructGame(GameTemplate);
+    constructGame(CarbonCycleGameTemplate);
 
     var card;
     cards = [];
@@ -74,7 +74,10 @@ var GamePlayScene = function(game, stage)
     }
     //nodes
     for(var i = 0; i < nodes.length; i++)
+    {
       dc.context.drawImage(nodes[i].img,nodes[i].x,nodes[i].y,nodes[i].w,nodes[i].h);
+      dc.context.fillText(nodes[i].title,nodes[i].x,nodes[i].y+20);
+    }
     //tokens
     for(var i = 0; i < tokens.length; i++)
       dc.context.drawImage(players[tokens[i].player_id-1].token_img,tokens[i].x,tokens[i].y,tokens[i].w,tokens[i].h);
@@ -186,7 +189,7 @@ var GamePlayScene = function(game, stage)
       node.title = game_data.nodes[i].title;
 
       node.wx = game_data.nodes[i].x;
-      node.wy = game_data.nodes[i].y;
+      node.wy = 1-game_data.nodes[i].y;
       node.ww = game_data.nodes[i].w;
       node.wh = game_data.nodes[i].h;
       transformToScreen(node);
@@ -535,7 +538,143 @@ var GamePlayScene = function(game, stage)
           edge:"EE",
         },
       ],
-  }
+  };
+
+  var CarbonCycleGameTemplate =
+  {
+    deck:100,
+    hand:5,
+    players:
+      [
+        {
+          title:"PlayerA",
+          token_img:"red_circle",
+        },
+        {
+          title:"PlayerB",
+          token_img:"blue_circle",
+        },
+      ],
+    nodes:
+      [
+        {
+          title:"Earth",
+          img:"circle",
+          x:0.5,
+          y:0.5,
+          w:0.1,
+          h:0.1,
+        },
+        {
+          title:"Atmosphere",
+          img:"circle",
+          x:0.1,
+          y:0.5,
+          w:0.1,
+          h:0.1,
+        },
+        {
+          title:"Plants",
+          img:"circle",
+          x:0.3,
+          y:0.8,
+          w:0.1,
+          h:0.1,
+        },
+        {
+          title:"Animals",
+          img:"circle",
+          x:0.7,
+          y:0.8,
+          w:0.1,
+          h:0.1,
+        },
+        {
+          title:"Fuel",
+          img:"circle",
+          x:0.7,
+          y:0.4,
+          w:0.1,
+          h:0.1,
+        },
+      ],
+    edges:
+      [
+        {
+          title:"Photosynthesis",
+          from:"Atmosphere",
+          to:"Plants",
+          amt:1,
+        },
+        {
+          title:"Eat",
+          from:"Plants",
+          to:"Animals",
+          amt:1,
+        },
+        {
+          title:"Respiration",
+          from:"Animals",
+          to:"Atmosphere",
+          amt:1,
+        },
+        {
+          title:"Animal Death",
+          from:"Animals",
+          to:"Earth",
+          amt:1,
+        },
+        {
+          title:"Plant Death",
+          from:"Plants",
+          to:"Earth",
+          amt:1,
+        },
+        {
+          title:"Combustion",
+          from:"Fuel",
+          to:"Atmosphere",
+          amt:1,
+        },
+        {
+          title:"Composition",
+          from:"Earth",
+          to:"Fuel",
+          amt:1,
+        },
+      ],
+    events:
+      [
+        {
+          title:"Photosynth",
+          edge:"Photosynthesis",
+        },
+        {
+          title:"Eat",
+          edge:"Eat",
+        },
+        {
+          title:"Respiration",
+          edge:"Respiration",
+        },
+        {
+          title:"Animal Death",
+          edge:"Animal Death",
+        },
+        {
+          title:"Plant Death",
+          edge:"Plant Death",
+        },
+        {
+          title:"Combustion",
+          edge:"Combustion",
+        },
+        {
+          title:"Composition",
+          edge:"Composition",
+        },
+      ],
+  };
 
 };
 
