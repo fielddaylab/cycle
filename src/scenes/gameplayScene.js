@@ -52,8 +52,9 @@ var GamePlayScene = function(game, stage)
     for(var i = 0; i < tokens.length; i++)
     {
       token = tokens[i];
-      token.x = lerp(token.x,token.target_x,0.1);
-      token.y = lerp(token.y,token.target_y,0.1);
+      token.wx = lerp(token.wx,token.target_wx,0.1);
+      token.wy = lerp(token.wy,token.target_wy,0.1);
+      transformToScreen(token);
     }
   };
 
@@ -111,9 +112,7 @@ var GamePlayScene = function(game, stage)
       var t = eligibletoks[ei];
       tokens[t].node_id = edge.to_id;
       tokens[t].transitions++;
-
-      tokens[t].target_x = nodes[tokens[t].node_id-1].x+Math.random()*(nodes[tokens[t].node_id-1].w-tokens[t].w);
-      tokens[t].target_y = nodes[tokens[t].node_id-1].y+Math.random()*(nodes[tokens[t].node_id-1].h-tokens[t].h);
+      tokenTargetNode(tokens[t],nodes[tokens[t].node_id-1]);
 
       eligibletoks.splice(ei,1);
     }
@@ -155,12 +154,11 @@ var GamePlayScene = function(game, stage)
       node.id = i+1;
       node.title = game_data.nodes[i].title;
 
-      node.w = dc.width*game_data.nodes[i].w;
-      node.h = dc.height*game_data.nodes[i].h;
-      node.mid_x = dc.width*game_data.nodes[i].x;
-      node.mid_y = dc.height*game_data.nodes[i].y;
-      node.x = node.mid_x-node.w/2;
-      node.y = node.mid_y-node.h/2;
+      node.wx = game_data.nodes[i].x;
+      node.wy = game_data.nodes[i].y;
+      node.ww = game_data.nodes[i].w;
+      node.wh = game_data.nodes[i].h;
+      transformToScreen(node);
 
       node.img = circle_icon;
 
@@ -184,12 +182,11 @@ var GamePlayScene = function(game, stage)
       edge.to_id   = game_data.edges[i].to_id;
       edge.amt     = game_data.edges[i].amt;
 
-      edge.start_x = nodes[edge.from_id-1].mid_x;
-      edge.start_y = nodes[edge.from_id-1].mid_y;
-      edge.end_x = nodes[edge.to_id-1].mid_x;
-      edge.end_y = nodes[edge.to_id-1].mid_y;
-      edge.mid_x = (edge.start_x+edge.end_x)/2;
-      edge.mid_y = (edge.start_y+edge.end_y)/2;
+      edge.start_wx = nodes[edge.from_id-1].wx;
+      edge.start_wy = nodes[edge.from_id-1].wy;
+      edge.end_wx = nodes[edge.to_id-1].wx;
+      edge.end_wy = nodes[edge.to_id-1].wy;
+      transformEdgeToScreen(edge);
 
       //inject id into event data
       for(var j = 0; j < game_data.events.length; j++)
@@ -220,13 +217,12 @@ var GamePlayScene = function(game, stage)
       token.node_id = Math.floor(Math.random()*nodes.length)+1;
       token.transitions = 0;
 
-      token.w = dc.width*0.01;
-      token.h = dc.height*0.01;
-      token.x = nodes[token.node_id-1].x+Math.random()*(nodes[token.node_id-1].w-token.w);
-      token.y = nodes[token.node_id-1].y+Math.random()*(nodes[token.node_id-1].h-token.h);
-
-      token.target_x = token.x;
-      token.target_y = token.y;
+      token.ww = 0.01;
+      token.wh = 0.01;
+      tokenTargetNode(token,nodes[token.node_id-1]);
+      token.wx = token.target_wx;
+      token.wy = token.target_wy;
+      transformToScreen(token);
 
       tokens.push(token);
     }
@@ -261,14 +257,19 @@ var GamePlayScene = function(game, stage)
   {
     var self = this;
 
-    self.x;
-    self.y;
-    self.w;
-    self.h;
-    self.mid_x;
-    self.mid_y;
+    self.x = 0;
+    self.y = 0;
+    self.w = 0;
+    self.h = 0;
+    self.mid_x = 0;
+    self.mid_y = 0;
 
-    self.img;
+    self.wx = 0;
+    self.wy = 0;
+    self.ww = 0;
+    self.wh = 0;
+
+    self.img = "";
 
     self.id = 0;
     self.title = "Node";
@@ -278,12 +279,17 @@ var GamePlayScene = function(game, stage)
   {
     var self = this;
 
-    self.start_x;
-    self.start_y;
-    self.mid_x;
-    self.mid_y;
-    self.end_x;
-    self.end_y;
+    self.start_x = 0;
+    self.start_y = 0;
+    self.mid_x = 0;
+    self.mid_y = 0;
+    self.end_x = 0;
+    self.end_y = 0;
+
+    self.start_wx = 0;
+    self.start_wy = 0;
+    self.end_wx = 0;
+    self.end_wy = 0;
 
     self.id = 0;
     self.title = "Edge";
@@ -305,13 +311,18 @@ var GamePlayScene = function(game, stage)
   {
     var self = this;
 
-    self.x;
-    self.y;
-    self.w;
-    self.h;
+    self.x = 0;
+    self.y = 0;
+    self.w = 0;
+    self.h = 0;
 
-    self.target_x;
-    self.target_y;
+    self.wx = 0;
+    self.wy = 0;
+    self.ww = 0;
+    self.wh = 0;
+
+    self.target_wx = 0;
+    self.target_wy = 0;
 
     self.id = 0;
     self.player_id = 0;
@@ -347,6 +358,28 @@ var GamePlayScene = function(game, stage)
     {
       playCard(self.index);
     }
+  }
+
+  var transformToScreen = function(o)
+  {
+    o.w = dc.width*o.ww;
+    o.h = dc.height*o.wh;
+    o.x = o.wx*dc.width-o.w/2;
+    o.y = o.wy*dc.height-o.h/2;
+  }
+  var transformEdgeToScreen = function(e)
+  {
+    e.start_x = e.start_wx*dc.width;
+    e.start_y = e.start_wy*dc.height;
+    e.end_x = e.end_wx*dc.width;
+    e.end_y = e.end_wy*dc.height;
+    e.mid_x = (e.start_x+e.end_x)/2;
+    e.mid_y = (e.start_y+e.end_y)/2;
+  }
+  var tokenTargetNode = function(t,n)
+  {
+    t.target_wx = n.wx-(n.ww/2)+Math.random()*n.ww;
+    t.target_wy = n.wy-(n.wh/2)+Math.random()*n.wh;
   }
 
   var circle_icon = GenIcon();
