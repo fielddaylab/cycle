@@ -106,7 +106,7 @@ var GamePlayScene = function(game, stage)
     var swap;
     for(var i = 0; i < deck.length-1; i++)
     {
-      swap = i+Math.floor((Math.random()*(events.length-i)));
+      swap = i+Math.floor((Math.random()*(deck.length-i)));
       tmp = deck[i];
       deck[i] = deck[swap];
       deck[swap] = tmp;
@@ -167,6 +167,7 @@ var GamePlayScene = function(game, stage)
     var event;
 
     var token;
+    var total_commonality; //used in populating deck
 
     players = [];
     for(var i = 0; i < game_data.players.length; i++)
@@ -231,6 +232,7 @@ var GamePlayScene = function(game, stage)
     }
 
     events = [];
+    total_commonality = 0;
     for(var i = 0; i < game_data.events.length; i++)
     {
       event = new Event();
@@ -238,6 +240,8 @@ var GamePlayScene = function(game, stage)
       event.title = game_data.events[i].title;
       event.edge_id = game_data.events[i].edge_id;
       event.amt     = game_data.events[i].amt;
+
+      total_commonality += game_data.events[i].common;
 
       events.push(event);
     }
@@ -264,8 +268,20 @@ var GamePlayScene = function(game, stage)
     deck = [];
     discard = [];
     //populate deck
+      //normalize commonality
+    for(var i = 0; i < game_data.events.length; i++)
+      game_data.events[i].common /= total_commonality;
+    var event_i = 0;
+    var next_event_threshhold = 0;
     for(var i = 0; i < game_data.deck; i++)
-      deck.push((i%events.length)+1);
+    {
+      while(i/game_data.deck > next_event_threshhold-0.01 && game_data.events[event_i])
+      {
+        next_event_threshhold += game_data.events[event_i].common;
+        event_i++;
+      }
+      deck.push(event_i);
+    }
     shuffleDeck();
     //deal
     for(var i = 0; i < players.length; i++)
@@ -515,26 +531,31 @@ var GamePlayScene = function(game, stage)
           title:"EvA",
           edge:"EA",
           amt:1,
+          common:1,
         },
         {
           title:"EvB",
           edge:"EB",
           amt:1,
+          common:1,
         },
         {
           title:"EvC",
           edge:"EC",
           amt:1,
+          common:1,
         },
         {
           title:"EvD",
           edge:"ED",
           amt:1,
+          common:1,
         },
         {
           title:"EvE",
           edge:"EE",
           amt:1,
+          common:1,
         },
       ],
   };
@@ -641,36 +662,43 @@ var GamePlayScene = function(game, stage)
           title:"Photosynth",
           edge:"Photosynthesis",
           amt:1,
+          common:1,
         },
         {
           title:"Eat",
           edge:"Eat",
           amt:1,
+          common:1,
         },
         {
           title:"Respiration",
           edge:"Respiration",
           amt:1,
+          common:1,
         },
         {
           title:"Animal Death",
           edge:"Animal Death",
           amt:1,
+          common:1,
         },
         {
           title:"Plant Death",
           edge:"Plant Death",
           amt:1,
+          common:1,
         },
         {
           title:"Combustion",
           edge:"Combustion",
           amt:1,
+          common:1,
         },
         {
           title:"Composition",
           edge:"Composition",
           amt:1,
+          common:1,
         },
       ],
   };
