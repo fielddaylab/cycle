@@ -1,3 +1,10 @@
+var ENUM;
+
+ENUM = 0;
+var MULTIPLAYER_LOCAL = ENUM; ENUM++;
+var MULTIPLAYER_AI    = ENUM; ENUM++;
+var MULTIPLAYER_NET   = ENUM; ENUM++;
+
 var Game = function(init)
 {
   var default_init =
@@ -11,9 +18,18 @@ var Game = function(init)
   doMapInitDefaults(init,init,default_init);
 
   var stage = new Stage({width:init.width,height:init.height,container:init.container});
-  var scenes = [new NullScene(self, stage), new LoadingScene(self, stage), /*new TestScene(self, stage),*/ new GamePlayScene(self, stage)];
+  var scenes = [
+    new NullScene(self, stage),
+    new LoadingScene(self, stage),
+    //new TestScene(self, stage),
+    new ConfigScene(self,stage),
+    new GamePlayScene(self, stage)
+  ];
   var cur_scene = 0;
   var old_cur_scene = -1;
+
+  var multiplayer;
+  var players;
 
   self.begin = function()
   {
@@ -26,7 +42,6 @@ var Game = function(init)
     requestAnimFrame(tick,stage.dispCanv.canvas);
     stage.clear();
     scenes[cur_scene].tick();
-    scenes[cur_scene].draw();
     if(old_cur_scene == cur_scene) //still in same scene- draw
     {
       scenes[cur_scene].draw();

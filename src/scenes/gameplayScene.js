@@ -5,6 +5,19 @@ var GamePlayScene = function(game, stage)
   var dc = stage.drawCanv;
   var clicker;
 
+  ENUM = 0;
+  var TURN_CHOOSE   = ENUM; ENUM++;
+  var TURN_TOGETHER = ENUM; ENUM++;
+  var TURN_AWAY     = ENUM; ENUM++;
+  var TURN_WAIT     = ENUM; ENUM++;
+
+  var scene_stage;
+  var turn_stage;
+
+  var players_mode;
+  var multiplayer_mode;
+
+  //game state
   var nodes;
   var edges;
   var events;
@@ -14,6 +27,7 @@ var GamePlayScene = function(game, stage)
 
   var deck;
   var discard;
+
   var turn;
   var player_turn;
 
