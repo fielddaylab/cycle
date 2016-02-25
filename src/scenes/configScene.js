@@ -12,6 +12,7 @@ var ConfigScene = function(game, stage)
   var CONFIG_COMMIT      = ENUM; ENUM++;
 
   var mode;
+  var hit_ui;
 
   var mbtn_local;
   var mbtn_ai;
@@ -29,13 +30,13 @@ var ConfigScene = function(game, stage)
 
     mode = CONFIG_MULTIPLAYER;
 
-    mbtn_local = new ButtonBox(10,10,dc.width-20,30,function(evt){ if(mode != CONFIG_MULTIPLAYER) return; multiplayer = MULTIPLAYER_LOCAL; mode = CONFIG_N_PLAYERS; });
-    mbtn_ai    = new ButtonBox(10,40,dc.width-20,30,function(evt){ if(mode != CONFIG_MULTIPLAYER) return; multiplayer = MULTIPLAYER_AI;    mode = CONFIG_N_PLAYERS; });
-    mbtn_net   = new ButtonBox(10,70,dc.width-20,30,function(evt){ if(mode != CONFIG_MULTIPLAYER) return; multiplayer = MULTIPLAYER_NET;   mode = CONFIG_N_PLAYERS; });
+    mbtn_local = new ButtonBox(10,10,dc.width-20,30,function(evt){ if(hit_ui || mode != CONFIG_MULTIPLAYER) return; hit_ui = true; multiplayer = MULTIPLAYER_LOCAL; mode = CONFIG_N_PLAYERS; });
+    mbtn_ai    = new ButtonBox(10,40,dc.width-20,30,function(evt){ if(hit_ui || mode != CONFIG_MULTIPLAYER) return; hit_ui = true; multiplayer = MULTIPLAYER_AI;    mode = CONFIG_N_PLAYERS; });
+    mbtn_net   = new ButtonBox(10,70,dc.width-20,30,function(evt){ if(hit_ui || mode != CONFIG_MULTIPLAYER) return; hit_ui = true; multiplayer = MULTIPLAYER_NET;   mode = CONFIG_N_PLAYERS; });
 
-    nbtn_2 = new ButtonBox(10,10,dc.width-20,30,function(evt){ if(mode != CONFIG_N_PLAYERS) return; players = 2; mode = CONFIG_COMMIT; });;
-    nbtn_3 = new ButtonBox(10,40,dc.width-20,30,function(evt){ if(mode != CONFIG_N_PLAYERS) return; players = 3; mode = CONFIG_COMMIT; });;
-    nbtn_4 = new ButtonBox(10,70,dc.width-20,30,function(evt){ if(mode != CONFIG_N_PLAYERS) return; players = 4; mode = CONFIG_COMMIT; });;
+    nbtn_2 = new ButtonBox(10,10,dc.width-20,30,function(evt){ if(hit_ui || mode != CONFIG_N_PLAYERS) return; hit_ui = true; players = 2; mode = CONFIG_COMMIT; });;
+    nbtn_3 = new ButtonBox(10,40,dc.width-20,30,function(evt){ if(hit_ui || mode != CONFIG_N_PLAYERS) return; hit_ui = true; players = 3; mode = CONFIG_COMMIT; });;
+    nbtn_4 = new ButtonBox(10,70,dc.width-20,30,function(evt){ if(hit_ui || mode != CONFIG_N_PLAYERS) return; hit_ui = true; players = 4; mode = CONFIG_COMMIT; });;
 
     clicker.register(mbtn_local);
     clicker.register(mbtn_ai);
@@ -48,6 +49,7 @@ var ConfigScene = function(game, stage)
   self.tick = function()
   {
     clicker.flush();
+    hit_ui = false;
     switch(mode)
     {
       case CONFIG_MULTIPLAYER:
