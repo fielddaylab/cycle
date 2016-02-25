@@ -137,7 +137,7 @@ var GamePlayScene = function(game, stage)
         dc.context.fillStyle = "#000000";
         dc.context.strokeRect(commit_btn.x,commit_btn.y,commit_btn.w,commit_btn.h);
         dc.context.fillText("Card Chosen:"+events[players[player_turn-1].hand[chosen_card]-1].title,commit_btn.x+20,commit_btn.y+20);
-        dc.context.fillText("When both players have seen, click to continue.",commit_btn.x+20,commit_btn.y+50);
+        dc.context.fillText("When both players have seen, click to continue.",commit_btn.x+20,commit_btn.y+40);
         break;
       case TURN_AWAY:
         //ready_btn.draw(dc);
