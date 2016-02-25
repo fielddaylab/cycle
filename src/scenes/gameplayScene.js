@@ -14,9 +14,6 @@ var GamePlayScene = function(game, stage)
   var scene_stage;
   var turn_stage;
 
-  var players_mode;
-  var multiplayer_mode;
-
   //game state
   var nodes;
   var edges;
@@ -206,7 +203,7 @@ var GamePlayScene = function(game, stage)
     var total_commonality; //used in populating deck
 
     players = [];
-    for(var i = 0; i < game_data.players.length; i++)
+    for(var i = 0; i < game_data.players.length && i < game.players; i++)
     {
       player = new Player();
       player.id = i+1;
@@ -214,6 +211,8 @@ var GamePlayScene = function(game, stage)
 
       if(i == 0) player.token_img = red_circle_icon;
       if(i == 1) player.token_img = blue_circle_icon;
+      if(i == 2) player.token_img = green_circle_icon;
+      if(i == 3) player.token_img = yellow_circle_icon;
 
       players.push(player);
     }
@@ -487,6 +486,19 @@ var GamePlayScene = function(game, stage)
   blue_circle_icon.context.arc(blue_circle_icon.width/2,blue_circle_icon.height/2,blue_circle_icon.width/2,0,2*Math.PI);
   blue_circle_icon.context.fill();
 
+  var green_circle_icon = GenIcon();
+  green_circle_icon.context.fillStyle = "#00FF00";
+  green_circle_icon.context.beginPath();
+  green_circle_icon.context.arc(green_circle_icon.width/2,green_circle_icon.height/2,green_circle_icon.width/2,0,2*Math.PI);
+  green_circle_icon.context.fill();
+
+  var yellow_circle_icon = GenIcon();
+  yellow_circle_icon.context.fillStyle = "#FFFF00";
+  yellow_circle_icon.context.beginPath();
+  yellow_circle_icon.context.arc(yellow_circle_icon.width/2,yellow_circle_icon.height/2,yellow_circle_icon.width/2,0,2*Math.PI);
+  yellow_circle_icon.context.fill();
+
+
   //TEMPLATE
 
   var GameTemplate =
@@ -503,6 +515,14 @@ var GamePlayScene = function(game, stage)
         {
           title:"PlayerB",
           token_img:"blue_circle",
+        },
+        {
+          title:"PlayerC",
+          token_img:"green_circle",
+        },
+        {
+          title:"PlayerD",
+          token_img:"yellow_circle",
         },
       ],
     nodes:
@@ -628,6 +648,14 @@ var GamePlayScene = function(game, stage)
         {
           title:"PlayerB",
           token_img:"blue_circle",
+        },
+        {
+          title:"PlayerC",
+          token_img:"green_circle",
+        },
+        {
+          title:"PlayerD",
+          token_img:"yellow_circle",
         },
       ],
     nodes:
