@@ -129,6 +129,7 @@ var GamePlayScene = function(game, stage)
   {
     var event = events[players[player_turn-1].hand[index]-1];
     var edge = edges[event.edge_id-1];
+    var token;
     var eligibletoks = [];
     for(var i = 0; i < tokens.length; i++)
     {
@@ -137,12 +138,33 @@ var GamePlayScene = function(game, stage)
     for(var i = 0; i < event.amt && eligibletoks.length > 0; i++)
     {
       var ei = Math.floor(Math.random()*eligibletoks.length);
-      var t = eligibletoks[ei];
-      tokens[t].node_id = edge.to_id;
-      tokens[t].transitions++;
-      tokenTargetNode(tokens[t],nodes[tokens[t].node_id-1]);
+      token = tokens[eligibletoks[ei]];
+      token.node_id = 0;
+      token.edge_id = edge.id;
+      token.edge_progress = 0;
 
       eligibletoks.splice(ei,1);
+    }
+
+    //update token progress
+    for(var i = 0; i < tokens.length; i++)
+    {
+      token = tokens[i];
+      if(token.edge_id)
+      {
+        edge = edges[token.edge_id-1];
+        token.edge_progress++;
+        if(token.edge_progress == edge.time+1)
+        {
+          token.node_id = edge.to_id;
+          token.edge_id = 0;
+          token.edge_progress = 0;
+          token.transitions++;
+          tokenWorldTargetNode(token,nodes[token.node_id-1]);
+        }
+        else
+          tokenWorldTargetEdge(token,edges[token.edge_id-1],token.edge_progress);
+      }
     }
 
     discardCard(players[player_turn-1].hand[index]);
@@ -215,6 +237,7 @@ var GamePlayScene = function(game, stage)
       edge.title   = game_data.edges[i].title;
       edge.from_id = game_data.edges[i].from_id;
       edge.to_id   = game_data.edges[i].to_id;
+      edge.time    = game_data.edges[i].time;
 
       edge.start_wx = nodes[edge.from_id-1].wx;
       edge.start_wy = nodes[edge.from_id-1].wy;
@@ -257,7 +280,7 @@ var GamePlayScene = function(game, stage)
 
       token.ww = 0.01;
       token.wh = 0.01;
-      tokenTargetNode(token,nodes[token.node_id-1]);
+      tokenWorldTargetNode(token,nodes[token.node_id-1]);
       token.wx = token.target_wx;
       token.wy = token.target_wy;
       transformToScreen(token);
@@ -335,6 +358,7 @@ var GamePlayScene = function(game, stage)
     self.title = "Edge";
     self.from_id = 0;
     self.to_id = 0;
+    self.time = 0;
   }
 
   var Event = function()
@@ -366,7 +390,11 @@ var GamePlayScene = function(game, stage)
 
     self.id = 0;
     self.player_id = 0;
+
     self.node_id = 0;
+    self.edge_id = 0;
+    self.edge_progress = 0;
+
     self.transitions = 0;
   }
 
@@ -416,7 +444,12 @@ var GamePlayScene = function(game, stage)
     e.mid_x = (e.start_x+e.end_x)/2;
     e.mid_y = (e.start_y+e.end_y)/2;
   }
-  var tokenTargetNode = function(t,n)
+  var tokenWorldTargetEdge = function(t,e,progress)
+  {
+    t.target_wx = lerp(e.start_wx,e.end_wx,progress/(e.time+1))-0.01+Math.random()*0.02;
+    t.target_wy = lerp(e.start_wy,e.end_wy,progress/(e.time+1))-0.01+Math.random()*0.02;
+  }
+  var tokenWorldTargetNode = function(t,n)
   {
     t.target_wx = n.wx-(n.ww/2)+Math.random()*n.ww;
     t.target_wy = n.wy-(n.wh/2)+Math.random()*n.wh;
@@ -498,31 +531,37 @@ var GamePlayScene = function(game, stage)
           title:"EA",
           from:"A",
           to:"B",
+          time:0,
         },
         {
           title:"EB",
           from:"B",
           to:"C",
+          time:0,
         },
         {
           title:"EC",
           from:"C",
           to:"D",
+          time:0,
         },
         {
           title:"ED",
           from:"D",
           to:"B",
+          time:0,
         },
         {
           title:"EE",
           from:"A",
           to:"C",
+          time:0,
         },
         {
           title:"EE",
           from:"D",
           to:"B",
+          time:0,
         },
       ],
     events:
@@ -624,36 +663,43 @@ var GamePlayScene = function(game, stage)
           title:"Photosynthesis",
           from:"Atmosphere",
           to:"Plants",
+          time:0,
         },
         {
           title:"Eat",
           from:"Plants",
           to:"Animals",
+          time:0,
         },
         {
           title:"Respiration",
           from:"Animals",
           to:"Atmosphere",
+          time:0,
         },
         {
           title:"Animal Death",
           from:"Animals",
           to:"Earth",
+          time:0,
         },
         {
           title:"Plant Death",
           from:"Plants",
           to:"Earth",
+          time:0,
         },
         {
           title:"Combustion",
           from:"Fuel",
           to:"Atmosphere",
+          time:0,
         },
         {
           title:"Composition",
           from:"Earth",
           to:"Fuel",
+          time:10,
         },
       ],
     events:
