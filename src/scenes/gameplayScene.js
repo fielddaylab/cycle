@@ -4,6 +4,7 @@ var GamePlayScene = function(game, stage)
 
   var dc = stage.drawCanv;
   var clicker;
+  var card_clicker;
 
   ENUM = 0;
   var TURN_CHOOSE   = ENUM; ENUM++;
@@ -11,7 +12,6 @@ var GamePlayScene = function(game, stage)
   var TURN_AWAY     = ENUM; ENUM++;
   var TURN_WAIT     = ENUM; ENUM++;
 
-  var scene_stage;
   var turn_stage;
 
   //game state
@@ -28,12 +28,18 @@ var GamePlayScene = function(game, stage)
   var turn;
   var player_turn;
 
+  var chosen_card;
+
   //ui only
+  var hit_ui;
   var cards;
+  var commit_btn;
+  var ready_btn;
 
   self.ready = function()
   {
     clicker = new Clicker({source:stage.dispCanv.canvas});
+    card_clicker = new Clicker({source:stage.dispCanv.canvas});
 
     constructGame(CarbonCycleGameTemplate);
 
@@ -51,13 +57,33 @@ var GamePlayScene = function(game, stage)
       card.h = size;
 
       cards.push(card);
-      clicker.register(card);
+      card_clicker.register(card);
     }
+
+    commit_btn = new ButtonBox(50,dc.height-120,dc.width-100,100,function(){ if(hit_ui || turn_stage != TURN_TOGETHER) return; playCard(chosen_card); turn_stage = TURN_AWAY; hit_ui = true; });
+    ready_btn  = new ButtonBox(50,dc.height-120,dc.width-100,100,function(){ if(hit_ui || turn_stage != TURN_AWAY)     return; turn_stage = TURN_CHOOSE; hit_ui = true; });
+    clicker.register(commit_btn);
+    clicker.register(ready_btn);
+
+    turn_stage = TURN_CHOOSE;
   };
 
   self.tick = function()
   {
-    clicker.flush();
+    switch(turn_stage)
+    {
+      case TURN_CHOOSE:
+        card_clicker.flush();
+        clicker.ignore();
+        break;
+      case TURN_TOGETHER:
+      case TURN_AWAY:
+      case TURN_WAIT:
+        clicker.flush();
+        card_clicker.ignore();
+        break;
+    }
+    hit_ui = false;
 
     var token;
     for(var i = 0; i < tokens.length; i++)
@@ -92,16 +118,38 @@ var GamePlayScene = function(game, stage)
     //tokens
     for(var i = 0; i < tokens.length; i++)
       dc.context.drawImage(players[tokens[i].player_id-1].token_img,tokens[i].x,tokens[i].y,tokens[i].w,tokens[i].h);
-    //hand
-    var player = players[player_turn-1];
-    for(var i = 0; i < player.hand.length; i++)
+
+
+    switch(turn_stage)
     {
-      var event = events[player.hand[i]-1];
-      dc.context.strokeRect(cards[i].x,cards[i].y,cards[i].w,cards[i].h);
-      dc.context.fillText(event.title,cards[i].x+10,cards[i].y+20);
+      case TURN_CHOOSE:
+        //hand
+        var player = players[player_turn-1];
+        for(var i = 0; i < player.hand.length; i++)
+        {
+          var event = events[player.hand[i]-1];
+          dc.context.strokeRect(cards[i].x,cards[i].y,cards[i].w,cards[i].h);
+          dc.context.fillText(event.title,cards[i].x+10,cards[i].y+20);
+        }
+        break;
+      case TURN_TOGETHER:
+        commit_btn.draw(dc);
+        dc.context.fillStyle = "#000000";
+        dc.context.fillText("Card Chosen:"+events[players[player_turn-1].hand[chosen_card]-1].title,commit_btn.x+20,commit_btn.y+20);
+        dc.context.fillText("When both players have seen, click to continue.",commit_btn.x+20,commit_btn.y+50);
+        break;
+      case TURN_AWAY:
+        ready_btn.draw(dc);
+        dc.context.fillStyle = "#000000";
+        dc.context.fillText("All players except "+players[player_turn-1].title+" look away.",commit_btn.x+20,commit_btn.y+20);
+        dc.context.fillText("When ready, click to continue.",commit_btn.x+20,commit_btn.y+40);
+        break;
+      case TURN_WAIT:
+        break;
     }
 
     //info
+    dc.context.fillStyle = "#000000";
     dc.context.fillText("Turn: "+turn,10,30);
     dc.context.fillText("Player: "+player_turn,10,50);
   };
@@ -136,6 +184,10 @@ var GamePlayScene = function(game, stage)
     discard.push(c);
   }
 
+  var chooseCard = function(index)
+  {
+    chosen_card = index;
+  }
   var playCard = function(index)
   {
     var event = events[players[player_turn-1].hand[index]-1];
@@ -437,7 +489,10 @@ var GamePlayScene = function(game, stage)
 
     self.click = function(evt)
     {
-      playCard(self.index);
+      if(hit_ui) return;
+      chooseCard(self.index);
+      turn_stage = TURN_TOGETHER;
+      hit_ui = true;
     }
   }
 
