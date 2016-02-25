@@ -134,7 +134,7 @@ var GamePlayScene = function(game, stage)
     {
       if(tokens[i].node_id == edge.from_id) eligibletoks.push(i);
     }
-    for(var i = 0; i < edge.amt && eligibletoks.length > 0; i++)
+    for(var i = 0; i < event.amt && eligibletoks.length > 0; i++)
     {
       var ei = Math.floor(Math.random()*eligibletoks.length);
       var t = eligibletoks[ei];
@@ -214,7 +214,6 @@ var GamePlayScene = function(game, stage)
       edge.title   = game_data.edges[i].title;
       edge.from_id = game_data.edges[i].from_id;
       edge.to_id   = game_data.edges[i].to_id;
-      edge.amt     = game_data.edges[i].amt;
 
       edge.start_wx = nodes[edge.from_id-1].wx;
       edge.start_wy = nodes[edge.from_id-1].wy;
@@ -238,6 +237,7 @@ var GamePlayScene = function(game, stage)
       event.id = i+1;
       event.title = game_data.events[i].title;
       event.edge_id = game_data.events[i].edge_id;
+      event.amt     = game_data.events[i].amt;
 
       events.push(event);
     }
@@ -319,7 +319,6 @@ var GamePlayScene = function(game, stage)
     self.title = "Edge";
     self.from_id = 0;
     self.to_id = 0;
-    self.amt = 0;
   }
 
   var Event = function()
@@ -329,6 +328,7 @@ var GamePlayScene = function(game, stage)
     self.id = 0;
     self.title = "Event";
     self.edge_id = 0;
+    self.amt = 0;
   }
 
   var Token = function()
@@ -482,37 +482,31 @@ var GamePlayScene = function(game, stage)
           title:"EA",
           from:"A",
           to:"B",
-          amt:1,
         },
         {
           title:"EB",
           from:"B",
           to:"C",
-          amt:1,
         },
         {
           title:"EC",
           from:"C",
           to:"D",
-          amt:1,
         },
         {
           title:"ED",
           from:"D",
           to:"B",
-          amt:1,
         },
         {
           title:"EE",
           from:"A",
           to:"C",
-          amt:1,
         },
         {
           title:"EE",
           from:"D",
           to:"B",
-          amt:1,
         },
       ],
     events:
@@ -520,22 +514,27 @@ var GamePlayScene = function(game, stage)
         {
           title:"EvA",
           edge:"EA",
+          amt:1,
         },
         {
           title:"EvB",
           edge:"EB",
+          amt:1,
         },
         {
           title:"EvC",
           edge:"EC",
+          amt:1,
         },
         {
           title:"EvD",
           edge:"ED",
+          amt:1,
         },
         {
           title:"EvE",
           edge:"EE",
+          amt:1,
         },
       ],
   };
@@ -604,43 +603,36 @@ var GamePlayScene = function(game, stage)
           title:"Photosynthesis",
           from:"Atmosphere",
           to:"Plants",
-          amt:1,
         },
         {
           title:"Eat",
           from:"Plants",
           to:"Animals",
-          amt:1,
         },
         {
           title:"Respiration",
           from:"Animals",
           to:"Atmosphere",
-          amt:1,
         },
         {
           title:"Animal Death",
           from:"Animals",
           to:"Earth",
-          amt:1,
         },
         {
           title:"Plant Death",
           from:"Plants",
           to:"Earth",
-          amt:1,
         },
         {
           title:"Combustion",
           from:"Fuel",
           to:"Atmosphere",
-          amt:1,
         },
         {
           title:"Composition",
           from:"Earth",
           to:"Fuel",
-          amt:1,
         },
       ],
     events:
@@ -648,30 +640,37 @@ var GamePlayScene = function(game, stage)
         {
           title:"Photosynth",
           edge:"Photosynthesis",
+          amt:1,
         },
         {
           title:"Eat",
           edge:"Eat",
+          amt:1,
         },
         {
           title:"Respiration",
           edge:"Respiration",
+          amt:1,
         },
         {
           title:"Animal Death",
           edge:"Animal Death",
+          amt:1,
         },
         {
           title:"Plant Death",
           edge:"Plant Death",
+          amt:1,
         },
         {
           title:"Combustion",
           edge:"Combustion",
+          amt:1,
         },
         {
           title:"Composition",
           edge:"Composition",
+          amt:1,
         },
       ],
   };
