@@ -51,17 +51,17 @@ var GamePlayScene = function(game, stage)
       card = new Card();
       card.index = i;
 
-      card.x = 10+i*(size+10);
-      card.y = dc.height-10-size;
       card.w = size;
-      card.h = size;
+      card.h = 100;
+      card.x = 10+i*(card.w+10);
+      card.y = dc.height-10-card.h;
 
       cards.push(card);
       card_clicker.register(card);
     }
 
-    commit_btn = new ButtonBox(50,dc.height-120,dc.width-100,100,function(){ if(hit_ui || turn_stage != TURN_TOGETHER) return; playCard(chosen_card); turn_stage = TURN_AWAY; hit_ui = true; });
-    ready_btn  = new ButtonBox(50,dc.height-120,dc.width-100,100,function(){ if(hit_ui || turn_stage != TURN_AWAY)     return; turn_stage = TURN_CHOOSE; hit_ui = true; });
+    commit_btn = new ButtonBox(10,dc.height-110,dc.width-20,100,function(){ if(hit_ui || turn_stage != TURN_TOGETHER) return; playCard(chosen_card); turn_stage = TURN_AWAY; hit_ui = true; });
+    ready_btn  = new ButtonBox(10,dc.height-110,dc.width-20,100,function(){ if(hit_ui || turn_stage != TURN_AWAY)     return; turn_stage = TURN_CHOOSE; hit_ui = true; });
     clicker.register(commit_btn);
     clicker.register(ready_btn);
 
@@ -133,16 +133,18 @@ var GamePlayScene = function(game, stage)
         }
         break;
       case TURN_TOGETHER:
-        commit_btn.draw(dc);
+        //commit_btn.draw(dc);
         dc.context.fillStyle = "#000000";
+        dc.context.strokeRect(commit_btn.x,commit_btn.y,commit_btn.w,commit_btn.h);
         dc.context.fillText("Card Chosen:"+events[players[player_turn-1].hand[chosen_card]-1].title,commit_btn.x+20,commit_btn.y+20);
         dc.context.fillText("When both players have seen, click to continue.",commit_btn.x+20,commit_btn.y+50);
         break;
       case TURN_AWAY:
-        ready_btn.draw(dc);
+        //ready_btn.draw(dc);
         dc.context.fillStyle = "#000000";
-        dc.context.fillText("All players except "+players[player_turn-1].title+" look away.",commit_btn.x+20,commit_btn.y+20);
-        dc.context.fillText("When ready, click to continue.",commit_btn.x+20,commit_btn.y+40);
+        dc.context.strokeRect(ready_btn.x,ready_btn.y,ready_btn.w,ready_btn.h);
+        dc.context.fillText("All players except "+players[player_turn-1].title+" look away.",ready_btn.x+20,ready_btn.y+20);
+        dc.context.fillText("When ready, click to continue.",ready_btn.x+20,ready_btn.y+40);
         break;
       case TURN_WAIT:
         break;
@@ -806,43 +808,43 @@ var GamePlayScene = function(game, stage)
         {
           title:"Photosynth",
           edge:"Photosynthesis",
-          amt:1,
+          amt:10,
           common:1,
         },
         {
           title:"Eat",
           edge:"Eat",
-          amt:1,
+          amt:10,
           common:1,
         },
         {
           title:"Respiration",
           edge:"Respiration",
-          amt:1,
+          amt:10,
           common:1,
         },
         {
           title:"Animal Death",
           edge:"Animal Death",
-          amt:1,
+          amt:10,
           common:1,
         },
         {
           title:"Plant Death",
           edge:"Plant Death",
-          amt:1,
+          amt:10,
           common:1,
         },
         {
           title:"Combustion",
           edge:"Combustion",
-          amt:5,
+          amt:50,
           common:1,
         },
         {
           title:"Composition",
           edge:"Composition",
-          amt:1,
+          amt:10,
           common:1,
         },
       ],
