@@ -270,7 +270,7 @@ var GamePlayScene = function(game, stage)
     }
 
     tokens = [];
-    for(var i = 0; i < 10; i++)
+    for(var i = 0; i < game_data.tokens*2; i++)
     {
       token = new Token();
       token.id = i+1;
@@ -477,6 +477,7 @@ var GamePlayScene = function(game, stage)
 
   var GameTemplate =
   {
+    tokens:10,
     deck:100,
     hand:5,
     players:
@@ -601,6 +602,7 @@ var GamePlayScene = function(game, stage)
 
   var CarbonCycleGameTemplate =
   {
+    tokens:100,
     deck:100,
     hand:5,
     players:
@@ -737,7 +739,7 @@ var GamePlayScene = function(game, stage)
         {
           title:"Combustion",
           edge:"Combustion",
-          amt:1,
+          amt:5,
           common:1,
         },
         {
