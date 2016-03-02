@@ -81,6 +81,8 @@ var Player = function()
   self.title = "Player";
 
   self.hand = [];
+  self.pts = 0;
+  self.disp_pts = 0;
 }
 
 var Deck = function()
@@ -104,5 +106,6 @@ var CycleGame = function()
   self.turn = 0;
   self.player_turn = 0;
   self.goal_node = undefined;
+  self.goal_blast = 0;
 }
 

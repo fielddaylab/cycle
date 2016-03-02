@@ -18,6 +18,8 @@ var GamePlayScene = function(game, stage)
   var g;
 
   var chosen_card;
+  var blasting_node_i;
+  var blasting_t;
 
   //ui only
   var hit_ui;
@@ -56,6 +58,10 @@ var GamePlayScene = function(game, stage)
     clicker.register(ready_btn);
 
     turn_stage = TURN_CHOOSE;
+
+    chosen_card = -1;
+    blasting_node_i = -1;
+    blasting_t = 0;
   };
 
   self.tick = function()
@@ -83,6 +89,15 @@ var GamePlayScene = function(game, stage)
       token.wy = lerp(token.wy,token.target_wy,0.1);
       transformToScreen(dc,token);
     }
+
+    if(!blasting_t)
+    {
+      for(var i = 0; i < g.players.length; i++)
+      {
+        if(g.players[i].pts > g.players[i].disp_pts)
+          g.players[i].disp_pts++;
+      }
+    }
   };
 
   self.draw = function()
@@ -109,6 +124,20 @@ var GamePlayScene = function(game, stage)
     for(var i = 0; i < g.tokens.length; i++)
       dc.context.drawImage(g.players[g.tokens[i].player_id-1].token_img,g.tokens[i].x,g.tokens[i].y,g.tokens[i].w,g.tokens[i].h);
 
+    var n = g.nodes[g.goal_node-1];
+    dc.context.strokeRect(n.x,n.y,n.w,n.h);
+    if(blasting_node_i != -1)
+    {
+      var n = g.nodes[blasting_node_i];
+      var w = Math.sin(blasting_t);
+      dc.context.strokeRect(n.x-w,n.y-w,n.w+2*w,n.h+2*w);
+      blasting_t--;
+      if(blasting_t <= 0)
+      {
+        blasting_node_i = -1;
+        blasting_t = 0;
+      }
+    }
 
     switch(turn_stage)
     {
@@ -142,8 +171,15 @@ var GamePlayScene = function(game, stage)
 
     //info
     dc.context.fillStyle = "#000000";
+    dc.context.textAlign = "left";
     dc.context.fillText("Turn: "+g.turn,10,30);
-    dc.context.fillText("Player: "+g.player_turn,10,50);
+    dc.context.fillText("Player: "+g.players[g.player_turn-1].title,10,50);
+
+    dc.context.textAlign = "right";
+    for(var i = 0; i < g.players.length; i++)
+      dc.context.fillText("Player: "+g.players[i].disp_pts,dc.width-10,30+i*20);
+
+    dc.context.textAlign = "left";
   };
 
   self.cleanup = function()
@@ -157,9 +193,7 @@ var GamePlayScene = function(game, stage)
     var token;
     var eligibletoks = [];
     for(var i = 0; i < g.tokens.length; i++)
-    {
       if(g.tokens[i].node_id == event.from_id) eligibletoks.push(i);
-    }
     for(var i = 0; i < event.amt && eligibletoks.length > 0; i++)
     {
       var ei = Math.floor(Math.random()*eligibletoks.length);
@@ -196,7 +230,23 @@ var GamePlayScene = function(game, stage)
     g.players[g.player_turn-1].hand.splice(index,1);
     g.player_turn = (g.player_turn%g.players.length)+1;
     g.players[g.player_turn-1].hand.push(drawCard(g.deck));
-    if(g.player_turn == 1) g.turn++;
+    if(g.player_turn == 1)
+    {
+      g.turn++;
+      g.goal_blast--;
+      if(g.goal_blast == 0)
+      {
+        for(var i = 0; i < g.tokens.length; i++)
+        {
+          if(g.tokens[i].node_id == g.goal_node)
+            g.players[g.tokens[i].player_id-1].pts++;
+        }
+        blasting_node_i = g.goal_node-1;
+        blasting_t = 100;
+        g.goal_blast = 5;
+        g.goal_node = (Math.floor(Math.random()*g.nodes.length))+1;
+      }
+    }
   }
 
   //no data- just used for interface

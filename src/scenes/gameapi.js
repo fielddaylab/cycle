@@ -101,6 +101,8 @@ var constructGame = function(game_data,n_players)
 
   g.turn = 0;
   g.player_turn = 1;
+  g.goal_node = (Math.floor(Math.random()*g.nodes.length))+1;
+  g.goal_blast = 5;
 
   return g;
 }
