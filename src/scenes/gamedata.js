@@ -93,3 +93,16 @@ var Deck = function()
   self.discard_i = 0;
 }
 
+var CycleGame = function()
+{
+  var self = this;
+  self.nodes = [];
+  self.events = [];
+  self.players = [];
+  self.tokens = [];
+  self.deck = new Deck();
+  self.turn = 0;
+  self.player_turn = 0;
+  self.goal_node = undefined;
+}
+

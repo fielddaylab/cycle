@@ -1,5 +1,7 @@
-var constructGame = function(game_data,n_players,players,nodes,events,tokens,deck_ptr)
+var constructGame = function(game_data,n_players)
 {
+  var g = new CycleGame();
+
   var player;
   var node;
   var event;
@@ -17,7 +19,7 @@ var constructGame = function(game_data,n_players,players,nodes,events,tokens,dec
     if(i == 2) player.token_img = green_circle_icon;
     if(i == 3) player.token_img = yellow_circle_icon;
 
-    players.push(player);
+    g.players.push(player);
   }
 
   for(var i = 0; i < game_data.nodes.length; i++)
@@ -40,7 +42,7 @@ var constructGame = function(game_data,n_players,players,nodes,events,tokens,dec
       if(game_data.events[j].to   == node.title) game_data.events[j].to_id   = node.id;
     }
 
-    nodes.push(node);
+    g.nodes.push(node);
   }
 
   total_commonality = 0;
@@ -55,47 +57,52 @@ var constructGame = function(game_data,n_players,players,nodes,events,tokens,dec
     event.amt     = game_data.events[i].amt;
     event.common  = game_data.events[i].common;
 
-    event.start_wx = nodes[event.from_id-1].wx;
-    event.start_wy = nodes[event.from_id-1].wy;
-    event.end_wx = nodes[event.to_id-1].wx;
-    event.end_wy = nodes[event.to_id-1].wy;
+    event.start_wx = g.nodes[event.from_id-1].wx;
+    event.start_wy = g.nodes[event.from_id-1].wy;
+    event.end_wx = g.nodes[event.to_id-1].wx;
+    event.end_wy = g.nodes[event.to_id-1].wy;
 
     total_commonality += game_data.events[i].common;
 
-    events.push(event);
+    g.events.push(event);
   }
   //normalize commonality
   for(var i = 0; i < game_data.events.length; i++)
-    events[i].common /= total_commonality;
+    g.events[i].common /= total_commonality;
 
   for(var i = 0; i < game_data.tokens*2; i++)
   {
     token = new Token();
     token.id = i+1;
-    token.player_id = (i%players.length)+1;
-    token.node_id = Math.floor(Math.random()*nodes.length)+1;
+    token.player_id = (i%g.players.length)+1;
+    token.node_id = Math.floor(Math.random()*g.nodes.length)+1;
     token.transitions = 0;
 
     token.ww = 0.01;
     token.wh = 0.01;
-    tokenWorldTargetNode(token,nodes[token.node_id-1]);
+    tokenWorldTargetNode(token,g.nodes[token.node_id-1]);
     token.wx = token.target_wx;
     token.wy = token.target_wy;
 
-    tokens.push(token);
+    g.tokens.push(token);
   }
 
   //populate deck
-  deck_ptr.deck = new Deck();
-  populateDeck(events,game_data.deck,deck_ptr.deck);
+  g.deck = new Deck();
+  populateDeck(g.events,game_data.deck,g.deck);
   //deal
-  for(var i = 0; i < players.length; i++)
+  for(var i = 0; i < g.players.length; i++)
   {
-    players[i].hand = [];
+    g.players[i].hand = [];
     for(var j = 0; j < game_data.hand-1; j++)
-      players[i].hand[j] = drawCard(deck_ptr.deck);
+      g.players[i].hand[j] = drawCard(g.deck);
   }
-  players[0].hand[game_data.hand-1] = drawCard(deck_ptr.deck); //first player immediately draw one card
+  g.players[0].hand[game_data.hand-1] = drawCard(g.deck); //first player immediately draw one card
+
+  g.turn = 0;
+  g.player_turn = 1;
+
+  return g;
 }
 
 var swapDiscardAndShuffle = function(deck)
