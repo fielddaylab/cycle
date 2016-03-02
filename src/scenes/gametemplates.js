@@ -3,6 +3,7 @@ var GameTemplate =
   tokens:10,
   deck:100,
   hand:5,
+  blast_turns:3,
   players:
     [
       {
@@ -107,6 +108,7 @@ var CarbonCycleGameTemplate =
   tokens:10,
   deck:100,
   hand:5,
+  blast_turns:3,
   players:
     [
       {

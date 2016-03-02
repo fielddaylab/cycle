@@ -243,7 +243,7 @@ var GamePlayScene = function(game, stage)
         }
         blasting_node_i = g.goal_node-1;
         blasting_t = 100;
-        g.goal_blast = 5;
+        g.goal_blast = g.turns_per_blast;
         g.goal_node = (Math.floor(Math.random()*g.nodes.length))+1;
       }
     }

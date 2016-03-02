@@ -103,6 +103,9 @@ var CycleGame = function()
   self.players = [];
   self.tokens = [];
   self.deck = new Deck();
+
+  self.turns_per_blast;
+
   self.turn = 0;
   self.player_turn = 0;
   self.goal_node = undefined;

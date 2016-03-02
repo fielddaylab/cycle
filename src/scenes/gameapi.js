@@ -99,10 +99,11 @@ var constructGame = function(game_data,n_players)
   }
   g.players[0].hand[game_data.hand-1] = drawCard(g.deck); //first player immediately draw one card
 
+  g.turns_per_blast = game_data.blast_turns;
   g.turn = 0;
   g.player_turn = 1;
   g.goal_node = (Math.floor(Math.random()*g.nodes.length))+1;
-  g.goal_blast = 5;
+  g.goal_blast = g.turns_per_blast;
 
   return g;
 }
