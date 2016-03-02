@@ -16,7 +16,6 @@ var GamePlayScene = function(game, stage)
 
   //game state
   var nodes;
-  var edges;
   var events;
 
   var players;
@@ -100,13 +99,13 @@ var GamePlayScene = function(game, stage)
     dc.context.fillStyle = "#000000";
     dc.context.strokeStyle = "#000000";
 
-    //edges
+    //events
     dc.context.strokeStyle = "#000000";
-    for(var i = 0; i < edges.length; i++)
+    for(var i = 0; i < events.length; i++)
     {
       dc.context.beginPath();
-      dc.context.moveTo(edges[i].start_x,edges[i].start_y);
-      dc.context.lineTo(edges[i].end_x,edges[i].end_y);
+      dc.context.moveTo(events[i].start_x,events[i].start_y);
+      dc.context.lineTo(events[i].end_x,events[i].end_y);
       dc.context.stroke();
     }
     //nodes
@@ -193,20 +192,19 @@ var GamePlayScene = function(game, stage)
   var playCard = function(index)
   {
     var event = events[players[player_turn-1].hand[index]-1];
-    var edge = edges[event.edge_id-1];
     var token;
     var eligibletoks = [];
     for(var i = 0; i < tokens.length; i++)
     {
-      if(tokens[i].node_id == edge.from_id) eligibletoks.push(i);
+      if(tokens[i].node_id == event.from_id) eligibletoks.push(i);
     }
     for(var i = 0; i < event.amt && eligibletoks.length > 0; i++)
     {
       var ei = Math.floor(Math.random()*eligibletoks.length);
       token = tokens[eligibletoks[ei]];
       token.node_id = 0;
-      token.edge_id = edge.id;
-      token.edge_progress = 0;
+      token.event_id = event.id;
+      token.event_progress = 0;
 
       eligibletoks.splice(ei,1);
     }
@@ -215,20 +213,20 @@ var GamePlayScene = function(game, stage)
     for(var i = 0; i < tokens.length; i++)
     {
       token = tokens[i];
-      if(token.edge_id)
+      if(token.event_id)
       {
-        edge = edges[token.edge_id-1];
-        token.edge_progress++;
-        if(token.edge_progress == edge.time+1)
+        event = events[token.event_id-1];
+        token.event_progress++;
+        if(token.event_progress == event.time+1)
         {
-          token.node_id = edge.to_id;
-          token.edge_id = 0;
-          token.edge_progress = 0;
+          token.node_id = event.to_id;
+          token.event_id = 0;
+          token.event_progress = 0;
           token.transitions++;
           tokenWorldTargetNode(token,nodes[token.node_id-1]);
         }
         else
-          tokenWorldTargetEdge(token,edges[token.edge_id-1],token.edge_progress);
+          tokenWorldTargetEvent(token,events[token.event_id-1],token.event_progress);
       }
     }
 
@@ -250,7 +248,6 @@ var GamePlayScene = function(game, stage)
   {
     var player;
     var node;
-    var edge;
     var event;
 
     var token;
@@ -286,39 +283,14 @@ var GamePlayScene = function(game, stage)
 
       node.img = circle_icon;
 
-      //inject id into edge data
-      for(var j = 0; j < game_data.edges.length; j++)
-      {
-        if(game_data.edges[j].from == node.title) game_data.edges[j].from_id = node.id;
-        if(game_data.edges[j].to   == node.title) game_data.edges[j].to_id   = node.id;
-      }
-
-      nodes.push(node);
-    }
-
-    edges = [];
-    for(var i = 0; i < game_data.edges.length; i++)
-    {
-      edge = new Edge();
-      edge.id = i+1;
-      edge.title   = game_data.edges[i].title;
-      edge.from_id = game_data.edges[i].from_id;
-      edge.to_id   = game_data.edges[i].to_id;
-      edge.time    = game_data.edges[i].time;
-
-      edge.start_wx = nodes[edge.from_id-1].wx;
-      edge.start_wy = nodes[edge.from_id-1].wy;
-      edge.end_wx = nodes[edge.to_id-1].wx;
-      edge.end_wy = nodes[edge.to_id-1].wy;
-      transformEdgeToScreen(edge);
-
       //inject id into event data
       for(var j = 0; j < game_data.events.length; j++)
       {
-        if(game_data.events[j].edge == edge.title) game_data.events[j].edge_id = edge.id;
+        if(game_data.events[j].from == node.title) game_data.events[j].from_id = node.id;
+        if(game_data.events[j].to   == node.title) game_data.events[j].to_id   = node.id;
       }
 
-      edges.push(edge);
+      nodes.push(node);
     }
 
     events = [];
@@ -328,8 +300,16 @@ var GamePlayScene = function(game, stage)
       event = new Event();
       event.id = i+1;
       event.title = game_data.events[i].title;
-      event.edge_id = game_data.events[i].edge_id;
-      event.amt     = game_data.events[i].amt;
+      event.from_id = game_data.events[i].from_id;
+      event.to_id   = game_data.events[i].to_id;
+      event.time    = game_data.events[i].time;
+      event.amt = game_data.events[i].amt;
+
+      event.start_wx = nodes[event.from_id-1].wx;
+      event.start_wy = nodes[event.from_id-1].wy;
+      event.end_wx = nodes[event.to_id-1].wx;
+      event.end_wy = nodes[event.to_id-1].wy;
+      transformEventToScreen(event);
 
       total_commonality += game_data.events[i].common;
 
@@ -405,7 +385,7 @@ var GamePlayScene = function(game, stage)
     self.title = "Node";
   }
 
-  var Edge = function()
+  var Event = function()
   {
     var self = this;
 
@@ -422,19 +402,11 @@ var GamePlayScene = function(game, stage)
     self.end_wy = 0;
 
     self.id = 0;
-    self.title = "Edge";
+    self.title = "Event";
     self.from_id = 0;
     self.to_id = 0;
     self.time = 0;
-  }
 
-  var Event = function()
-  {
-    var self = this;
-
-    self.id = 0;
-    self.title = "Event";
-    self.edge_id = 0;
     self.amt = 0;
   }
 
@@ -459,8 +431,8 @@ var GamePlayScene = function(game, stage)
     self.player_id = 0;
 
     self.node_id = 0;
-    self.edge_id = 0;
-    self.edge_progress = 0;
+    self.event_id = 0;
+    self.event_progress = 0;
 
     self.transitions = 0;
   }
@@ -505,7 +477,7 @@ var GamePlayScene = function(game, stage)
     o.x = o.wx*dc.width-o.w/2;
     o.y = o.wy*dc.height-o.h/2;
   }
-  var transformEdgeToScreen = function(e)
+  var transformEventToScreen = function(e)
   {
     e.start_x = e.start_wx*dc.width;
     e.start_y = e.start_wy*dc.height;
@@ -514,7 +486,7 @@ var GamePlayScene = function(game, stage)
     e.mid_x = (e.start_x+e.end_x)/2;
     e.mid_y = (e.start_y+e.end_y)/2;
   }
-  var tokenWorldTargetEdge = function(t,e,progress)
+  var tokenWorldTargetEvent = function(t,e,progress)
   {
     t.target_wx = lerp(e.start_wx,e.end_wx,progress/(e.time+1))-0.01+Math.random()*0.02;
     t.target_wy = lerp(e.start_wy,e.end_wy,progress/(e.time+1))-0.01+Math.random()*0.02;
@@ -617,74 +589,45 @@ var GamePlayScene = function(game, stage)
           h:0.1,
         },
       ],
-    edges:
-      [
-        {
-          title:"EA",
-          from:"A",
-          to:"B",
-          time:0,
-        },
-        {
-          title:"EB",
-          from:"B",
-          to:"C",
-          time:0,
-        },
-        {
-          title:"EC",
-          from:"C",
-          to:"D",
-          time:0,
-        },
-        {
-          title:"ED",
-          from:"D",
-          to:"B",
-          time:0,
-        },
-        {
-          title:"EE",
-          from:"A",
-          to:"C",
-          time:0,
-        },
-        {
-          title:"EE",
-          from:"D",
-          to:"B",
-          time:0,
-        },
-      ],
     events:
       [
         {
           title:"EvA",
-          edge:"EA",
+          from:"A",
+          to:"B",
+          time:0,
           amt:1,
           common:1,
         },
         {
           title:"EvB",
-          edge:"EB",
+          from:"B",
+          to:"C",
+          time:0,
           amt:1,
           common:1,
         },
         {
           title:"EvC",
-          edge:"EC",
+          from:"C",
+          to:"D",
+          time:0,
           amt:1,
           common:1,
         },
         {
           title:"EvD",
-          edge:"ED",
+          from:"D",
+          to:"B",
+          time:0,
           amt:1,
           common:1,
         },
         {
           title:"EvE",
-          edge:"EE",
+          from:"A",
+          to:"C",
+          time:0,
           amt:1,
           common:1,
         },
@@ -693,7 +636,7 @@ var GamePlayScene = function(game, stage)
 
   var CarbonCycleGameTemplate =
   {
-    tokens:100,
+    tokens:10,
     deck:100,
     hand:5,
     players:
@@ -758,93 +701,62 @@ var GamePlayScene = function(game, stage)
           h:0.1,
         },
       ],
-    edges:
+    events:
       [
         {
-          title:"Photosynthesis",
+          title:"Photosynth",
           from:"Atmosphere",
           to:"Plants",
           time:0,
+          amt:1,
+          common:1,
         },
         {
           title:"Eat",
           from:"Plants",
           to:"Animals",
           time:0,
+          amt:1,
+          common:1,
         },
         {
           title:"Respiration",
           from:"Animals",
           to:"Atmosphere",
           time:0,
+          amt:1,
+          common:1,
         },
         {
           title:"Animal Death",
           from:"Animals",
           to:"Earth",
           time:0,
+          amt:1,
+          common:1,
         },
         {
           title:"Plant Death",
           from:"Plants",
           to:"Earth",
           time:0,
+          amt:1,
+          common:1,
         },
         {
           title:"Combustion",
           from:"Fuel",
           to:"Atmosphere",
           time:0,
+          amt:5,
+          common:1,
         },
         {
           title:"Composition",
           from:"Earth",
           to:"Fuel",
           time:10,
-        },
-      ],
-    events:
-      [
-        {
-          title:"Photosynth",
-          edge:"Photosynthesis",
-          amt:10,
-          common:1,
-        },
-        {
-          title:"Eat",
-          edge:"Eat",
-          amt:10,
-          common:1,
-        },
-        {
-          title:"Respiration",
-          edge:"Respiration",
-          amt:10,
-          common:1,
-        },
-        {
-          title:"Animal Death",
-          edge:"Animal Death",
-          amt:10,
-          common:1,
-        },
-        {
-          title:"Plant Death",
-          edge:"Plant Death",
-          amt:10,
-          common:1,
-        },
-        {
-          title:"Combustion",
-          edge:"Combustion",
-          amt:50,
-          common:1,
-        },
-        {
-          title:"Composition",
-          edge:"Composition",
-          amt:10,
+          amt:1,
           common:1,
         },
       ],
