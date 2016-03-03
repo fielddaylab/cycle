@@ -54,7 +54,25 @@ var GamePlayScene = function(game, stage)
     }
 
     commit_btn = new ButtonBox(10,dc.height-110,dc.width-20,100,function(){ if(hit_ui || turn_stage != TURN_TOGETHER) return; playCard(chosen_card); turn_stage = TURN_AWAY; hit_ui = true; });
-    ready_btn  = new ButtonBox(10,dc.height-110,dc.width-20,100,function(){ if(hit_ui || turn_stage != TURN_AWAY)     return;                        turn_stage = TURN_CHOOSE; hit_ui = true; });
+    ready_btn  = new ButtonBox(10,dc.height-110,dc.width-20,100,
+      function()
+      {
+        if(hit_ui || turn_stage != TURN_AWAY) return;
+        if(game.multiplayer == MULTIPLAYER_LOCAL)
+          turn_stage = TURN_CHOOSE;
+        else if(game.multiplayer == MULTIPLAYER_NET_CREATE)
+        {
+          if(self.player_turn == 1) turn_stage = TURN_CHOOSE;
+          else turn_stage = TURN_WAIT;
+        }
+        else if(game.multiplayer == MULTIPLAYER_NET_JOIN)
+        {
+          if(self.player_turn == 1) turn_stage = TURN_WAIT;
+          else turn_stage = TURN_CHOOSE;
+        }
+        hit_ui = true;
+      }
+    );
     clicker.register(commit_btn);
     clicker.register(ready_btn);
 
@@ -75,7 +93,34 @@ var GamePlayScene = function(game, stage)
     switch(turn_stage)
     {
       case TURN_WAIT_FOR_JOIN:
+        if(cli.updated)
+        {
+          for(var i = cli.last_known+1; i < cli.database.length; i++)
+          {
+            if(cli.database[i].event == "JOIN" && cli.database[i].args[0] == cli.id)
+            {
+              cli.opponent = cli.database[i].user;
+              turn_stage = TURN_CHOOSE;
+            }
+          }
+          cli.last_known = cli.database.length-1;
+          cli.updated = false;
+        }
+        break;
       case TURN_WAIT:
+        if(cli.updated)
+        {
+          for(var i = cli.last_known+1; i < cli.database.length; i++)
+          {
+            if(cli.database[i].user == cli.opponent && cli.database[i].event == "MOVE")
+            {
+              chosen_card = cli.database[i].args[0];
+              turn_stage = TURN_TOGETHER;
+            }
+          }
+          cli.last_known = cli.database.length-1;
+          cli.updated = false;
+        }
         break;
       case TURN_CHOOSE:
         card_clicker.flush();
@@ -150,14 +195,6 @@ var GamePlayScene = function(game, stage)
     switch(turn_stage)
     {
       case TURN_WAIT_FOR_JOIN:
-        if(cli.updated)
-        {
-          for(var i = cli.last_known; i < cli.database.length; i++)
-          {
-            
-          }
-          cli.updated = false;
-        }
         break;
       case TURN_WAIT:
         break;
@@ -283,6 +320,8 @@ var GamePlayScene = function(game, stage)
     {
       if(hit_ui) return;
       chosen_card = self.index;
+      if(game.multiplayer == MULTIPLAYER_NET_CREATE || game.multiplayer == MULTIPLAYER_NET_JOIN)
+        cli.add(cli.id+" MOVE "+chosen_card);
       turn_stage = TURN_TOGETHER;
       hit_ui = true;
     }

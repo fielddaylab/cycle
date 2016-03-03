@@ -104,6 +104,17 @@ var ConfigScene = function(game, stage)
       case CONFIG_COMMIT:
         game.multiplayer = multiplayer;
         game.players = players;
+        if(game.multiplayer == MULTIPLAYER_NET_CREATE)
+        {
+          game.join = cli.id;
+          game.me = cli.id;
+        }
+        else if(game.multiplayer == MULTIPLAYER_NET_JOIN)
+        {
+          game.join = join;
+          game.opponent = game.join;
+          game.me = cli.id;
+        }
         game.nextScene();
         break;
     }

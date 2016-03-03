@@ -31,8 +31,11 @@ var Game = function(init)
   var cur_scene = 0;
   var old_cur_scene = -1;
 
-  var multiplayer;
-  var players;
+  self.multiplayer;
+  self.players;
+  self.join;
+  self.me;
+  self.opponent;
 
   self.begin = function()
   {
