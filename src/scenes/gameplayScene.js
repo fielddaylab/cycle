@@ -113,7 +113,7 @@ var GamePlayScene = function(game, stage)
           {
             if(cli.database[i].event == "JOIN" && cli.database[i].args[0] == cli.id)
             {
-              cli.opponent = cli.database[i].user;
+              game.opponent = cli.database[i].user;
               turn_stage = TURN_CHOOSE;
             }
           }
@@ -126,7 +126,7 @@ var GamePlayScene = function(game, stage)
         {
           for(var i = cli.last_known+1; i < cli.database.length; i++)
           {
-            if(cli.database[i].user == cli.opponent && cli.database[i].event == "MOVE")
+            if(cli.database[i].user == game.opponent && cli.database[i].event == "MOVE")
             {
               chosen_card = cli.database[i].args[0];
               turn_stage = TURN_TOGETHER;
