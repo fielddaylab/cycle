@@ -1,6 +1,6 @@
 <?php
   $filename = "data.txt";
-  $event = preg_replace('/[^A-Za-z0-9\-.,\'":]/', '', $_GET["event"]);
+  $event = preg_replace('/[^A-Za-z0-9\-.,\'": ]/', '', $_GET["event"]);
 
   $fp = fopen($filename, "r+");
   if(flock($fp, LOCK_EX))
