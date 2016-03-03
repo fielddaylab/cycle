@@ -66,7 +66,7 @@ var GamePlayScene = function(game, stage)
       {
         if(hit_ui || turn_stage != TURN_TOGETHER) return;
         playCard(g,chosen_card,sr);
-        if(g.goal_node-1 != blasting_node_i)
+        if(blasting_node_i != g.goal_node-1)
         {
           blasting_node_i = g.goal_node-1;
           blasting_t = 100;
@@ -206,10 +206,7 @@ var GamePlayScene = function(game, stage)
       dc.context.strokeRect(n.x-w,n.y-w,n.w+2*w,n.h+2*w);
       blasting_t--;
       if(blasting_t <= 0)
-      {
-        blasting_node_i = -1;
         blasting_t = 0;
-      }
     }
 
     switch(turn_stage)
