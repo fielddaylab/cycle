@@ -62,6 +62,12 @@ var ConfigScene = function(game, stage)
     clicker.register(mbtn_ai);
     clicker.register(mbtn_net_create);
     clicker.register(mbtn_net_join);
+    clicker.register(jbtn_a);
+    clicker.register(jbtn_b);
+    clicker.register(jbtn_c);
+    clicker.register(jbtn_d);
+    clicker.register(jbtn_e);
+    clicker.register(jbtn_f);
     clicker.register(nbtn_2);
     clicker.register(nbtn_3);
     clicker.register(nbtn_4);
