@@ -15,6 +15,9 @@ var GamePlayScene = function(game, stage)
 
   var turn_stage;
 
+  //seeded rand!
+  var sr;
+
   //game definition
   var g;
 
@@ -33,7 +36,10 @@ var GamePlayScene = function(game, stage)
     clicker = new Clicker({source:stage.dispCanv.canvas});
     card_clicker = new Clicker({source:stage.dispCanv.canvas});
 
-    g = constructGame(CarbonCycleGameTemplate,game.players);
+    if(game.join) sr = new SeededRand(game.join);
+    else          sr = new SeededRand(Math.floor(Math.random()*100000));
+
+    g = constructGame(CarbonCycleGameTemplate,game.players,sr);
     blasting_node_i = g.goal_node-1;
     blasting_t = 0;
     transformGame(dc,g.nodes,g.events,g.tokens)
@@ -59,7 +65,7 @@ var GamePlayScene = function(game, stage)
       function()
       {
         if(hit_ui || turn_stage != TURN_TOGETHER) return;
-        playCard(g,chosen_card);
+        playCard(g,chosen_card,sr);
         if(g.goal_node-1 != blasting_node_i)
         {
           blasting_node_i = g.goal_node-1;

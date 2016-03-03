@@ -1,4 +1,4 @@
-var constructGame = function(game_data,n_players)
+var constructGame = function(game_data,n_players,sr)
 {
   var g = new CycleGame();
 
@@ -75,7 +75,7 @@ var constructGame = function(game_data,n_players)
     token = new Token();
     token.id = i+1;
     token.player_id = (i%g.players.length)+1;
-    token.node_id = Math.floor(Math.random()*g.nodes.length)+1;
+    token.node_id = Math.floor(sr.next()*g.nodes.length)+1;
     token.transitions = 0;
 
     token.ww = 0.01;
@@ -89,26 +89,26 @@ var constructGame = function(game_data,n_players)
 
   //populate deck
   g.deck = new Deck();
-  populateDeck(g.events,game_data.deck,g.deck);
+  populateDeck(g.events,game_data.deck,g.deck,sr);
   //deal
   for(var i = 0; i < g.players.length; i++)
   {
     g.players[i].hand = [];
     for(var j = 0; j < game_data.hand-1; j++)
-      g.players[i].hand[j] = drawCard(g.deck);
+      g.players[i].hand[j] = drawCard(g.deck,sr);
   }
-  g.players[0].hand[game_data.hand-1] = drawCard(g.deck); //first player immediately draw one card
+  g.players[0].hand[game_data.hand-1] = drawCard(g.deck,sr); //first player immediately draw one card
 
   g.turns_per_blast = game_data.blast_turns;
   g.turn = 0;
   g.player_turn = 1;
-  g.goal_node = (Math.floor(Math.random()*g.nodes.length))+1;
+  g.goal_node = (Math.floor(sr.next()*g.nodes.length))+1;
   g.goal_blast = g.turns_per_blast;
 
   return g;
 }
 
-var swapDiscardAndShuffle = function(deck)
+var swapDiscardAndShuffle = function(deck,sr)
 {
   var tmp;
   var swap;
@@ -122,7 +122,7 @@ var swapDiscardAndShuffle = function(deck)
   var n_discarded = deck.discard_i;
   for(var i = 0; i < n_discarded-1; i++)
   {
-    swap = i+Math.floor((Math.random()*(n_discarded-i)));
+    swap = i+Math.floor((sr.next()*(n_discarded-i)));
     tmp = deck.stack[i];
     deck.stack[i] = deck.stack[swap];
     deck.stack[swap] = tmp;
@@ -132,7 +132,7 @@ var swapDiscardAndShuffle = function(deck)
   deck.discard_i = 0;
 }
 
-var populateDeck = function(events,n_cards,deck)
+var populateDeck = function(events,n_cards,deck,sr)
 {
   var event_i = 0;
   var next_event_threshhold = 0;
@@ -149,13 +149,13 @@ var populateDeck = function(events,n_cards,deck)
   }
   deck.stack_i = deck.n_cards;
   deck.discard_i = deck.n_cards;
-  swapDiscardAndShuffle(deck);
+  swapDiscardAndShuffle(deck,sr);
 }
 
-var drawCard = function(deck)
+var drawCard = function(deck,sr)
 {
   if(deck.stack_i >= deck.n_cards || deck.stack[deck.stack_i] == -1)
-    swapDiscardAndShuffle(deck);
+    swapDiscardAndShuffle(deck,sr);
   var card = deck.stack[deck.stack_i];
   deck.stack[deck.stack_i] = -1;
   deck.stack_i++;
@@ -168,7 +168,7 @@ var discardCard = function(card,deck)
   deck.discard_i++;
 }
 
-var playCard = function(game, index)
+var playCard = function(game, index, sr)
 {
   var event = game.events[game.players[game.player_turn-1].hand[index]-1];
   var token;
@@ -177,7 +177,7 @@ var playCard = function(game, index)
     if(game.tokens[i].node_id == event.from_id) eligibletoks.push(i);
   for(var i = 0; i < event.amt && eligibletoks.length > 0; i++)
   {
-    var ei = Math.floor(Math.random()*eligibletoks.length);
+    var ei = Math.floor(sr.next()*eligibletoks.length);
     token = game.tokens[eligibletoks[ei]];
     token.node_id = 0;
     token.event_id = event.id;
@@ -210,7 +210,7 @@ var playCard = function(game, index)
   discardCard(game.players[game.player_turn-1].hand[index],game.deck);
   game.players[game.player_turn-1].hand.splice(index,1);
   game.player_turn = (game.player_turn%game.players.length)+1;
-  game.players[game.player_turn-1].hand.push(drawCard(game.deck));
+  game.players[game.player_turn-1].hand.push(drawCard(game.deck,sr));
   if(game.player_turn == 1)
   {
     game.turn++;
@@ -223,7 +223,7 @@ var playCard = function(game, index)
           game.players[game.tokens[i].player_id-1].pts++;
       }
       game.goal_blast = game.turns_per_blast;
-      game.goal_node = (Math.floor(Math.random()*game.nodes.length))+1;
+      game.goal_node = (Math.floor(sr.next()*game.nodes.length))+1;
     }
   }
 }

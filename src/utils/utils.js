@@ -282,3 +282,15 @@ var GenIcon = function(w,h)
   return icon;
 }
 
+var SeededRand = function(s)
+{
+  var self = this;
+
+  self.seed = s;
+  self.next = function()
+  {
+    var x = Math.sin(self.seed++) * 10000;
+    return x - Math.floor(x);
+  }
+}
+
