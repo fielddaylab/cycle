@@ -1,7 +1,8 @@
-var client = function(error_func)
+var client = function(update_func,error_func)
 {
   var self = this;
 
+  self.id = Math.floor(Math.random()*100000000);
   self.server_url = "./src/serv/s.php";
   self.poll_rate = 3000; //ms between polls. 3000 = 3s
   self.db_i_begin = -1; //first known index of database
@@ -63,6 +64,7 @@ var client = function(error_func)
       for(var i = 0; i < merge_db.length; i++)
         self.database[i] = merge_db[i];
       self.db_i_begin = self.database[0].i;
+      update_func();
       return;
     }
 
@@ -74,11 +76,16 @@ var client = function(error_func)
     }
 
     //perform the merge
+    var updated = false;
     for(var i = 0; i < merge_db.length; i++)
     {
       if(merge_db[i].i > self.database[self.database.length-1].i)
+      {
         self.database[self.database.length] = merge_db[i];
+        updated = true;
+      }
     }
+    if(updated) update_func();
   }
 
   self.begin = function()

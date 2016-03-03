@@ -3,7 +3,10 @@ var ENUM;
 ENUM = 0;
 var MULTIPLAYER_LOCAL = ENUM; ENUM++;
 var MULTIPLAYER_AI    = ENUM; ENUM++;
-var MULTIPLAYER_NET   = ENUM; ENUM++;
+var MULTIPLAYER_NET_CREATE = ENUM; ENUM++;
+var MULTIPLAYER_NET_JOIN   = ENUM; ENUM++;
+
+var cli;
 
 var Game = function(init)
 {
@@ -33,6 +36,10 @@ var Game = function(init)
 
   self.begin = function()
   {
+    cli = new client(function(){cli.updated = true;},function(){console.log('something went wrong! :(');});
+    cli.updated = false;
+    cli.begin();
+
     self.nextScene();
     tick();
   };
