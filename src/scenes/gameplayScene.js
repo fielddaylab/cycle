@@ -16,6 +16,7 @@ var GamePlayScene = function(game, stage)
 
   //game definition
   var g;
+  var c;
 
   var chosen_card;
   var blasting_node_i;
@@ -34,6 +35,9 @@ var GamePlayScene = function(game, stage)
 
     g = constructGame(CarbonCycleGameTemplate,game.players);
     transformGame(dc,g.nodes,g.events,g.tokens)
+
+    c = new client(function(){console.log('wuuuuuttttt');});
+    c.begin();
 
     var card;
     cards = [];

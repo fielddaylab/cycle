@@ -1,0 +1,23 @@
+0 This is simultaneously the README *AND* the database!
+1 (If you actually care about this README, copy it outside of the server's directory)
+2 This database is incredibly simple.
+3 Really, it's just a network shared array
+4 Maybe queue is a better word?
+5 Anyways. The way it works is this:
+6 At any time, any client can request "the data"
+7 Then this whole file gets served up!
+8 Also, any client can request to "write" to "the database"
+9 This will result in a line being added with the data the client intended to write!
+10 <- You've probably noticed the numbers to the left
+11 Every time data is written, and a line is added, it gets prefixed by the next increment in line number (followed by one space)
+12 But to prevent "the database" from getting too big, the first line in this fil- er, "the database" gets cut!
+13 "But doesn't that result in loss of data?!?!"
+14 Yes. If you care about your data why in the hell are you using this database...
+15 Anyways...
+16 The idea is that any client keeps a local composition of all the data it knows about, using the line numbers to help with the merge
+17 And relies on its own spec to sift through what data it actually cares about "I'll prefix it with X", etc...
+18 So, just to be clear:
+19 ALL DATA IS INCREDIBLY OBVIOUSLY PUBLIC, ALL THE TIME
+20 ALL DATA IS TOTALLY UNTRUSTWORTHY
+21 BUT MOST IMPORTANTLY- HAVE FUN :)
+22 (dear god please don't actually use this)
