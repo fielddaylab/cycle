@@ -7,10 +7,11 @@ var GamePlayScene = function(game, stage)
   var card_clicker;
 
   ENUM = 0;
-  var TURN_CHOOSE   = ENUM; ENUM++;
-  var TURN_TOGETHER = ENUM; ENUM++;
-  var TURN_AWAY     = ENUM; ENUM++;
-  var TURN_WAIT     = ENUM; ENUM++;
+  var TURN_WAIT_FOR_JOIN = ENUM; ENUM++;
+  var TURN_WAIT          = ENUM; ENUM++;
+  var TURN_CHOOSE        = ENUM; ENUM++;
+  var TURN_TOGETHER      = ENUM; ENUM++;
+  var TURN_AWAY          = ENUM; ENUM++;
 
   var turn_stage;
 
@@ -57,7 +58,12 @@ var GamePlayScene = function(game, stage)
     clicker.register(commit_btn);
     clicker.register(ready_btn);
 
-    turn_stage = TURN_CHOOSE;
+    if(game.multiplayer == MULTIPLAYER_LOCAL)
+      turn_stage = TURN_CHOOSE;
+    else if(game.multiplayer == MULTIPLAYER_NET_CREATE)
+      turn_stage = TURN_WAIT_FOR_JOIN;
+    else if(game.multiplayer == MULTIPLAYER_NET_JOIN)
+      turn_Stage = TURN_WAIT;
 
     chosen_card = -1;
     blasting_node_i = -1;
@@ -68,13 +74,15 @@ var GamePlayScene = function(game, stage)
   {
     switch(turn_stage)
     {
+      case TURN_WAIT_FOR_JOIN:
+      case TURN_WAIT:
+        break;
       case TURN_CHOOSE:
         card_clicker.flush();
         clicker.ignore();
         break;
       case TURN_TOGETHER:
       case TURN_AWAY:
-      case TURN_WAIT:
         clicker.flush();
         card_clicker.ignore();
         break;
@@ -141,6 +149,18 @@ var GamePlayScene = function(game, stage)
 
     switch(turn_stage)
     {
+      case TURN_WAIT_FOR_JOIN:
+        if(cli.updated)
+        {
+          for(var i = cli.last_known; i < cli.database.length; i++)
+          {
+            
+          }
+          cli.updated = false;
+        }
+        break;
+      case TURN_WAIT:
+        break;
       case TURN_CHOOSE:
         //hand
         var player = g.players[g.player_turn-1];
@@ -164,8 +184,6 @@ var GamePlayScene = function(game, stage)
         dc.context.strokeRect(ready_btn.x,ready_btn.y,ready_btn.w,ready_btn.h);
         dc.context.fillText("All players except "+g.players[g.player_turn-1].title+" look away.",ready_btn.x+20,ready_btn.y+20);
         dc.context.fillText("When ready, click to continue.",ready_btn.x+20,ready_btn.y+40);
-        break;
-      case TURN_WAIT:
         break;
     }
 

@@ -38,6 +38,7 @@ var Game = function(init)
   {
     cli = new client(function(){cli.updated = true;},function(){console.log('something went wrong! :(');});
     cli.updated = false;
+    cli.last_known = 0;
     cli.begin();
 
     self.nextScene();

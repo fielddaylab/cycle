@@ -7,7 +7,7 @@ var client = function(update_func,error_func)
   self.poll_rate = 3000; //ms between polls. 3000 = 3s
   self.db_i_begin = -1; //first known index of database
   self.database = [];
-  var Entry = function(i,d) { this.i = i; this.data = d; }
+  var Entry = function(i,d) { this.i = i; this.data = d; this.user; this.event; this.args; }
 
   var getXHR = function() //to reduce code duplication out of laziness- not out of good practice
   {
@@ -45,6 +45,14 @@ var client = function(update_func,error_func)
     xhr.send();
   }
 
+  var parseEntry = function(e)
+  {
+    var d = e.data.split(" ");
+    if(d[0]) e.user = parseInt(d[0]);
+    if(d[1]) e.event = d[1];
+    if(d[2]) { d.splice(0,2); e.args = d; }
+  }
+
   self.got = function(r)
   {
     //console.log(r);
@@ -62,7 +70,10 @@ var client = function(update_func,error_func)
     if(self.db_i_begin == -1)
     {
       for(var i = 0; i < merge_db.length; i++)
+      {
         self.database[i] = merge_db[i];
+        parseEntry(self.database[self.database.length-1]);
+      }
       self.db_i_begin = self.database[0].i;
       update_func();
       return;
@@ -82,6 +93,7 @@ var client = function(update_func,error_func)
       if(merge_db[i].i > self.database[self.database.length-1].i)
       {
         self.database[self.database.length] = merge_db[i];
+        parseEntry(self.database[self.database.length-1]);
         updated = true;
       }
     }
