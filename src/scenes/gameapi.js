@@ -104,6 +104,7 @@ var constructGame = function(game_data,n_players)
   g.player_turn = 1;
   g.goal_node = (Math.floor(Math.random()*g.nodes.length))+1;
   g.goal_blast = g.turns_per_blast;
+  console.log(g.goal_node);
 
   return g;
 }
@@ -166,5 +167,65 @@ var discardCard = function(card,deck)
 {
   deck.discard[deck.discard_i] = card;
   deck.discard_i++;
+}
+
+var playCard = function(game, index)
+{
+  var event = game.events[game.players[game.player_turn-1].hand[index]-1];
+  var token;
+  var eligibletoks = [];
+  for(var i = 0; i < game.tokens.length; i++)
+    if(game.tokens[i].node_id == event.from_id) eligibletoks.push(i);
+  for(var i = 0; i < event.amt && eligibletoks.length > 0; i++)
+  {
+    var ei = Math.floor(Math.random()*eligibletoks.length);
+    token = game.tokens[eligibletoks[ei]];
+    token.node_id = 0;
+    token.event_id = event.id;
+    token.event_progress = 0;
+
+    eligibletoks.splice(ei,1);
+  }
+
+  //update token progress
+  for(var i = 0; i < game.tokens.length; i++)
+  {
+    token = game.tokens[i];
+    if(token.event_id)
+    {
+      event = game.events[token.event_id-1];
+      token.event_progress++;
+      if(token.event_progress == event.time+1)
+      {
+        token.node_id = event.to_id;
+        token.event_id = 0;
+        token.event_progress = 0;
+        token.transitions++;
+        tokenWorldTargetNode(token,game.nodes[token.node_id-1]);
+      }
+      else
+        tokenWorldTargetEvent(token,game.events[token.event_id-1],token.event_progress);
+    }
+  }
+
+  discardCard(game.players[game.player_turn-1].hand[index],game.deck);
+  game.players[game.player_turn-1].hand.splice(index,1);
+  game.player_turn = (game.player_turn%game.players.length)+1;
+  game.players[game.player_turn-1].hand.push(drawCard(game.deck));
+  if(game.player_turn == 1)
+  {
+    game.turn++;
+    game.goal_blast--;
+    if(game.goal_blast == 0)
+    {
+      for(var i = 0; i < game.tokens.length; i++)
+      {
+        if(game.tokens[i].node_id == game.goal_node)
+          game.players[game.tokens[i].player_id-1].pts++;
+      }
+      game.goal_blast = game.turns_per_blast;
+      game.goal_node = (Math.floor(Math.random()*game.nodes.length))+1;
+    }
+  }
 }
 
