@@ -77,12 +77,12 @@ var GamePlayScene = function(game, stage)
           turn_stage = TURN_CHOOSE;
         else if(game.multiplayer == MULTIPLAYER_NET_CREATE)
         {
-          if(self.player_turn == 1) turn_stage = TURN_CHOOSE;
+          if(g.player_turn == 1) turn_stage = TURN_CHOOSE;
           else turn_stage = TURN_WAIT;
         }
         else if(game.multiplayer == MULTIPLAYER_NET_JOIN)
         {
-          if(self.player_turn == 1) turn_stage = TURN_WAIT;
+          if(g.player_turn == 1) turn_stage = TURN_WAIT;
           else turn_stage = TURN_CHOOSE;
         }
         hit_ui = true;
