@@ -96,7 +96,7 @@ var GamePlayScene = function(game, stage)
     else if(game.multiplayer == MULTIPLAYER_NET_CREATE)
       turn_stage = TURN_WAIT_FOR_JOIN;
     else if(game.multiplayer == MULTIPLAYER_NET_JOIN)
-      turn_Stage = TURN_WAIT;
+      turn_stage = TURN_WAIT;
 
     chosen_card = -1;
     blasting_t = 0;

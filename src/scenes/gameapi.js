@@ -104,7 +104,6 @@ var constructGame = function(game_data,n_players)
   g.player_turn = 1;
   g.goal_node = (Math.floor(Math.random()*g.nodes.length))+1;
   g.goal_blast = g.turns_per_blast;
-  console.log(g.goal_node);
 
   return g;
 }
