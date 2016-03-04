@@ -103,7 +103,7 @@ var GameTemplate =
     ],
 };
 
-var CarbonCycleGameTemplate =
+var OldCarbonCycleGameTemplate =
 {
   tokens:10,
   deck:100,
@@ -232,7 +232,7 @@ var CarbonCycleGameTemplate =
     ],
 };
 
-var NewCarbonCycleGameTemplate =
+var CarbonCycleGameTemplate =
 {
   tokens:10,
   deck:100,

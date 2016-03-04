@@ -186,27 +186,6 @@ var playCard = function(game, index, sr)
     eligibletoks.splice(ei,1);
   }
 
-  //update token progress
-  for(var i = 0; i < game.tokens.length; i++)
-  {
-    token = game.tokens[i];
-    if(token.event_id)
-    {
-      event = game.events[token.event_id-1];
-      token.event_progress++;
-      if(token.event_progress == event.time+1)
-      {
-        token.node_id = event.to_id;
-        token.event_id = 0;
-        token.event_progress = 0;
-        token.transitions++;
-        tokenWorldTargetNode(token,game.nodes[token.node_id-1]);
-      }
-      else
-        tokenWorldTargetEvent(token,game.events[token.event_id-1],token.event_progress);
-    }
-  }
-
   discardCard(game.players[game.player_turn-1].hand[index],game.deck);
   game.players[game.player_turn-1].hand.splice(index,1);
   game.player_turn = (game.player_turn%game.players.length)+1;
@@ -214,6 +193,28 @@ var playCard = function(game, index, sr)
   if(game.player_turn == 1)
   {
     game.turn++;
+
+    //update token progress
+    for(var i = 0; i < game.tokens.length; i++)
+    {
+      token = game.tokens[i];
+      if(token.event_id)
+      {
+        event = game.events[token.event_id-1];
+        token.event_progress++;
+        if(token.event_progress == event.time+1)
+        {
+          token.node_id = event.to_id;
+          token.event_id = 0;
+          token.event_progress = 0;
+          token.transitions++;
+          tokenWorldTargetNode(token,game.nodes[token.node_id-1]);
+        }
+        else
+          tokenWorldTargetEvent(token,game.events[token.event_id-1],token.event_progress);
+      }
+    }
+
     game.goal_blast--;
     if(game.goal_blast == 0)
     {
