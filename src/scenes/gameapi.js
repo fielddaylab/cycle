@@ -223,7 +223,17 @@ var playCard = function(game, index, sr)
           game.players[game.tokens[i].player_id-1].pts++;
       }
       game.goal_blast = game.turns_per_blast;
-      game.goal_node = (Math.floor(sr.next()*game.nodes.length))+1;
+
+      var eligibleevts = [];
+      for(var i = 0; i < game.events.length; i++)
+        if(game.events[i].from_id == game.goal_node) eligibleevts.push(i);
+      if(eligibleevts.length)
+      {
+        var ei = Math.floor(sr.next()*eligibleevts.length);
+        game.goal_node = game.events[eligibleevts[ei]].to_id;
+      }
+      else //dead end! route to random
+        game.goal_node = (Math.floor(sr.next()*game.nodes.length))+1;
     }
   }
 }
