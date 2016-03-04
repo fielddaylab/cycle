@@ -16,8 +16,8 @@ var transformEventToScreen = function(canv,e)
 }
 var tokenWorldTargetEvent = function(t,e,progress)
 {
-  t.target_wx = lerp(e.start_wx,e.end_wx,progress/(e.time+1))-0.01+Math.random()*0.02;
-  t.target_wy = lerp(e.start_wy,e.end_wy,progress/(e.time+1))-0.01+Math.random()*0.02;
+  t.target_wx = lerp(e.start_wx,e.end_wx,(progress+1)/((e.time+1)+1)) - 0.01+Math.random()*0.02;
+  t.target_wy = lerp(e.start_wy,e.end_wy,(progress+1)/((e.time+1)+1)) - 0.01+Math.random()*0.02;
 }
 var tokenWorldTargetNode = function(t,n)
 {

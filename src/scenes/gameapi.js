@@ -183,6 +183,18 @@ var playCard = function(game, index, sr)
     token.event_id = event.id;
     token.event_progress = 0;
 
+    if(token.event_progress == event.time)
+    {
+      token.node_id = event.to_id;
+      token.event_id = 0;
+      token.event_progress = 0;
+      token.transitions++;
+      tokenWorldTargetNode(token,game.nodes[token.node_id-1]);
+    }
+    else
+      tokenWorldTargetEvent(token,game.events[token.event_id-1],token.event_progress);
+
+
     eligibletoks.splice(ei,1);
   }
 
@@ -202,7 +214,7 @@ var playCard = function(game, index, sr)
       {
         event = game.events[token.event_id-1];
         token.event_progress++;
-        if(token.event_progress == event.time+1)
+        if(token.event_progress >= event.time+1)
         {
           token.node_id = event.to_id;
           token.event_id = 0;

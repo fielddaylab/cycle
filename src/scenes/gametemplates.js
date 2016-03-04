@@ -103,7 +103,7 @@ var GameTemplate =
     ],
 };
 
-var OldCarbonCycleGameTemplate =
+var CarbonCycleGameTemplate =
 {
   tokens:10,
   deck:100,
@@ -225,14 +225,14 @@ var OldCarbonCycleGameTemplate =
         title:"Composition",
         from:"Earth",
         to:"Fuel",
-        time:10,
+        time:1,
         amt:1,
         common:1,
       },
     ],
 };
 
-var CarbonCycleGameTemplate =
+var NewCarbonCycleGameTemplate =
 {
   tokens:10,
   deck:100,
