@@ -1,7 +1,7 @@
 <?php
   $filename = "data.txt";
   $event = preg_replace('/[^A-Za-z0-9\-.,\'": ]/', '', $_GET["event"]);
-  if(!$preg_match($event,'^\d+ (CREATE|JOIN|MOVE) \d+$')) { echo "FAIL"; return; } //sanitization
+  if(!preg_match('/^\d+ (CREATE|JOIN|MOVE)( \d+)?$/',$event)) { echo "FAIL"; return; } //sanitization
 
   $fp = fopen($filename, "r+");
   if(flock($fp, LOCK_EX))
