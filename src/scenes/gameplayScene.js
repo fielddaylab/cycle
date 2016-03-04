@@ -218,7 +218,7 @@ var GamePlayScene = function(game, stage)
         break;
       case TURN_WAIT:
         dc.context.textAlign = "center";
-        dc.context.fillText("Waiting for opponent's turn...",dc.width/2,dc.height/2);
+        dc.context.fillText("Waiting for opponent's turn...",dc.width/2,dc.height/2+100);
         break;
       case TURN_CHOOSE:
         //hand
