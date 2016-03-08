@@ -9,6 +9,9 @@ var client = function(update_func,error_func)
   self.database = [];
   var Entry = function(i,d) { this.i = i; this.data = d; this.user; this.event; this.args; }
 
+  self.q = [];
+  self.sending = false;
+
   var getXHR = function() //to reduce code duplication out of laziness- not out of good practice
   {
     var xhr;
@@ -23,8 +26,15 @@ var client = function(update_func,error_func)
         case 3: //LOADING
           break;
         case 4: //DONE
-          if(xhr.status != 200 || xhr.responseText == "" || xhr.responseText == "FAIL") { error_func(); return; }
-          self.got(xhr.responseText);
+          if(xhr.status != 200 || xhr.responseText == "" || xhr.responseText == "FAIL")
+            error_func();
+          else
+          {
+            self.got(xhr.responseText);
+            if(self.q.length) self.q.splice(0,1);
+            if(self.q.length) self.get();
+          }
+          self.sending = false;
           break;
       }
     }
@@ -33,16 +43,19 @@ var client = function(update_func,error_func)
 
   self.get = function()
   {
+    if(self.sending) return;
     var xhr = getXHR();
-    xhr.open("GET",self.server_url);
+    self.sending = true;
+    if(self.q.length) xhr.open("GET",self.server_url+"?event="+self.q[0]);
+    else              xhr.open("GET",self.server_url);
     xhr.send();
   }
 
   self.add = function(event)
   {
-    var xhr = getXHR();
-    xhr.open("GET",self.server_url+"?event="+event);
-    xhr.send();
+    self.q.push(event);
+    if(self.sending) return;
+    self.get();
   }
 
   var parseEntry = function(e)
@@ -57,7 +70,7 @@ var client = function(update_func,error_func)
   {
     //console.log(r);
     var merge_lines = r.split("\n");
-    if(merge_lines.length == 0) return;
+    if(merge_lines.length == 0) { console.log("what"); console.log(r); return; }
     var merge_db = [];
     for(var i = 0; i < merge_lines.length; i++)
     {
@@ -104,5 +117,6 @@ var client = function(update_func,error_func)
   {
     setInterval(self.get,self.poll_rate);
   }
+
 }
 
