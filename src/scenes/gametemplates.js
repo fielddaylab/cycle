@@ -14,14 +14,6 @@ var GameTemplate =
         title:"PlayerB",
         token_img:"blue_circle",
       },
-      {
-        title:"PlayerC",
-        token_img:"green_circle",
-      },
-      {
-        title:"PlayerD",
-        token_img:"yellow_circle",
-      },
     ],
   nodes:
     [
@@ -118,14 +110,6 @@ var CarbonCycleGameTemplate =
       {
         title:"PlayerB",
         token_img:"blue_circle",
-      },
-      {
-        title:"PlayerC",
-        token_img:"green_circle",
-      },
-      {
-        title:"PlayerD",
-        token_img:"yellow_circle",
       },
     ],
   nodes:
@@ -247,14 +231,6 @@ var NewCarbonCycleGameTemplate =
       {
         title:"PlayerB",
         token_img:"blue_circle",
-      },
-      {
-        title:"PlayerC",
-        token_img:"green_circle",
-      },
-      {
-        title:"PlayerD",
-        token_img:"yellow_circle",
       },
     ],
   nodes:

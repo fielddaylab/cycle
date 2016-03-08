@@ -1,4 +1,4 @@
-var constructGame = function(game_data,n_players,sr)
+var constructGame = function(game_data,sr)
 {
   var g = new CycleGame();
 
@@ -8,7 +8,7 @@ var constructGame = function(game_data,n_players,sr)
   var token;
   var total_commonality; //used in populating deck
 
-  for(var i = 0; i < game_data.players.length && i < n_players; i++)
+  for(var i = 0; i < game_data.players.length && i < 2; i++)
   {
     player = new Player();
     player.id = i+1;
@@ -16,8 +16,6 @@ var constructGame = function(game_data,n_players,sr)
 
     if(i == 0) player.token_img = red_circle_icon;
     if(i == 1) player.token_img = blue_circle_icon;
-    if(i == 2) player.token_img = green_circle_icon;
-    if(i == 3) player.token_img = yellow_circle_icon;
 
     g.players.push(player);
   }
