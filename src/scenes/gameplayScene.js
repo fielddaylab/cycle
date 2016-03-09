@@ -163,6 +163,7 @@ var GamePlayScene = function(game, stage)
       for(var i = 0; i < g.tokens.length; i++)
       {
         t = g.tokens[i];
+        t.disp_node_id = t.node_id;
         t.wx = lerp(t.wx,t.target_wx,0.1);
         t.wy = lerp(t.wy,t.target_wy,0.1);
         transformToScreen(dc,t);
@@ -216,26 +217,56 @@ var GamePlayScene = function(game, stage)
       dc.context.fillText(n.disp_p2_tokens,n.x-10,n.y+10);
     }
     //tokens
+    var fromnode;
+    var random_highlit_tok_i;
+    if(transition_t > 20)
+    {
+      var last_event = g.events[g.last_event-1];
+      fromnode = g.nodes[last_event.from_id-1];
+      random_highlit_tok_i = Math.floor(Math.random()*(fromnode.disp_p1_tokens+fromnode.disp_p2_tokens));
+    }
     for(var i = 0; i < g.tokens.length; i++)
     {
       var t = g.tokens[i];
+      if(transition_t > 20)
+      {
+        if(t.disp_node_id == fromnode.id)
+        {
+          if(random_highlit_tok_i == 0)
+            dc.context.drawImage(highlit_token_icon,t.x-2,t.y-2,t.w+4,t.h+4);
+          random_highlit_tok_i--;
+        }
+      }
+      if(transition_t < 20)
+      {
+        if(Math.abs(t.wx-t.target_wx) > 0.01 || Math.abs(t.wy-t.target_wy) > 0.01)
+          dc.context.drawImage(highlit_token_icon,t.x-2,t.y-2,t.w+4,t.h+4);
+      }
       dc.context.drawImage(g.players[t.player_id-1].token_img,t.x,t.y,t.w,t.h);
     }
 
     //goal
-    var n = g.nodes[g.goal_node-1];
-    dc.context.strokeRect(n.x,n.y,n.w,n.h);
     if(blasting_t > 0)
     {
       var n = g.nodes[blasting_node_i];
-      var w = Math.sin(blasting_t);
-      dc.context.strokeRect(n.x-w,n.y-w,n.w+2*w,n.h+2*w);
-      blasting_t--;
-      if(blasting_t <= 0)
+      if(transition_t == 0)
       {
-        blasting_t = 0;
-        blasting_node_i = g.goal_node-1;
+        var w = Math.sin(blasting_t);
+        dc.context.strokeRect(n.x-w,n.y-w,n.w+2*w,n.h+2*w);
+        blasting_t--;
+        if(blasting_t <= 0)
+        {
+          blasting_t = 0;
+          blasting_node_i = g.goal_node-1;
+        }
       }
+      else
+        dc.context.strokeRect(n.x,n.y,n.w,n.h);
+    }
+    else
+    {
+      var n = g.nodes[g.goal_node-1];
+      dc.context.strokeRect(n.x,n.y,n.w,n.h);
     }
 
     switch(turn_stage)

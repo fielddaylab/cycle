@@ -188,7 +188,8 @@ var discardCard = function(card,deck)
 var playCard = function(game, index, sr)
 {
   //choose/move tokens
-  var event = game.events[game.players[game.player_turn-1].hand[index]-1];
+  game.last_event = game.players[game.player_turn-1].hand[index];
+  var event = game.events[game.last_event-1];
   var token;
   var eligibletoks = [];
   for(var i = 0; i < game.tokens.length; i++)
@@ -197,6 +198,7 @@ var playCard = function(game, index, sr)
   {
     var ei = Math.floor(sr.next()*eligibletoks.length);
     token = game.tokens[eligibletoks[ei]];
+    token.disp_node_id = token.node_id;
     token.node_id = 0;
     token.event_id = event.id;
     token.event_progress = 0;

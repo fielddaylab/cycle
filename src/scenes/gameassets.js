@@ -28,3 +28,9 @@ yellow_circle_icon.context.beginPath();
 yellow_circle_icon.context.arc(yellow_circle_icon.width/2,yellow_circle_icon.height/2,yellow_circle_icon.width/2,0,2*Math.PI);
 yellow_circle_icon.context.fill();
 
+var highlit_token_icon = GenIcon();
+highlit_token_icon.context.fillStyle = "#FFFF00";
+highlit_token_icon.context.beginPath();
+highlit_token_icon.context.arc(highlit_token_icon.width/2,highlit_token_icon.height/2,highlit_token_icon.width/2,0,2*Math.PI);
+highlit_token_icon.context.fill();
+

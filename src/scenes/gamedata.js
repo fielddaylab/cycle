@@ -70,6 +70,7 @@ var Token = function()
   self.player_id = 0;
 
   self.node_id = 0;
+  self.disp_node_id = 0;
   self.event_id = 0;
   self.event_progress = 0;
 
@@ -115,5 +116,7 @@ var CycleGame = function()
   self.player_turn = 0;
   self.goal_node = undefined;
   self.goal_blast = 0;
+
+  self.last_event;
 }
 
