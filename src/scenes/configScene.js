@@ -80,7 +80,7 @@ var ConfigScene = function(game, stage)
                 joins[joins.length] = cli.database[i].user;
               else if(cli.database[i].event == "JOIN") //game already joined- remove from list
               {
-                var joined = cli.database[i].user;
+                var joined = cli.database[i].data;
                 for(var j = 0; j < joins.length; j++)
                 {
                   if(joins[j] == joined)
