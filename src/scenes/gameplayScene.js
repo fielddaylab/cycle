@@ -179,21 +179,40 @@ var GamePlayScene = function(game, stage)
     dc.context.strokeStyle = "#000000";
     for(var i = 0; i < g.events.length; i++)
     {
+      var e = g.events[i];
       dc.context.beginPath();
-      dc.context.moveTo(g.events[i].start_x,g.events[i].start_y);
-      dc.context.lineTo(g.events[i].end_x,g.events[i].end_y);
+      dc.context.moveTo(e.start_x,e.start_y);
+      dc.context.lineTo(e.end_x,e.end_y);
       dc.context.stroke();
     }
     //nodes
     for(var i = 0; i < g.nodes.length; i++)
     {
-      dc.context.drawImage(g.nodes[i].img,g.nodes[i].x,g.nodes[i].y,g.nodes[i].w,g.nodes[i].h);
-      dc.context.fillText(g.nodes[i].title,g.nodes[i].x,g.nodes[i].y+20);
+      var n = g.nodes[i];
+      dc.context.drawImage(n.img,n.x,n.y,n.w,n.h);
+      dc.context.fillText(n.title,n.x,n.y+20);
+      var n_p1 = 0;
+      var n_p2 = 0;
+      for(var j = 0; j < g.tokens.length; j++)
+      {
+        var t = g.tokens[j];
+        if(t.node_id == n.id)
+        {
+          if(t.player_id == 1) n_p1++;
+          if(t.player_id == 2) n_p2++;
+        }
+      }
+      dc.context.fillText(n_p1,n.x-10,n.y);
+      dc.context.fillText(n_p2,n.x-10,n.y+10);
     }
     //tokens
     for(var i = 0; i < g.tokens.length; i++)
-      dc.context.drawImage(g.players[g.tokens[i].player_id-1].token_img,g.tokens[i].x,g.tokens[i].y,g.tokens[i].w,g.tokens[i].h);
+    {
+      var t = g.tokens[i];
+      dc.context.drawImage(g.players[t.player_id-1].token_img,t.x,t.y,t.w,t.h);
+    }
 
+    //goal
     var n = g.nodes[g.goal_node-1];
     dc.context.strokeRect(n.x,n.y,n.w,n.h);
     if(blasting_t > 0)
