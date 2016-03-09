@@ -25,6 +25,8 @@ var GamePlayScene = function(game, stage)
   var blasting_node_i;
   var blasting_t;
 
+  var transition_t;
+
   //ui only
   var hit_ui;
   var cards;
@@ -42,6 +44,7 @@ var GamePlayScene = function(game, stage)
     g = constructGame(CarbonCycleGameTemplate,sr);
     blasting_node_i = g.goal_node-1;
     blasting_t = 0;
+    transition_t = 0;
     transformGame(dc,g.nodes,g.events,g.tokens)
 
     var card;
@@ -66,6 +69,7 @@ var GamePlayScene = function(game, stage)
       {
         if(hit_ui || turn_stage != TURN_TOGETHER) return;
         playCard(g,chosen_card,sr);
+        transition_t = 100;
         if(blasting_t == 0 && blasting_node_i != g.goal_node-1)
           blasting_t = 100;
         turn_stage = TURN_AWAY;
@@ -151,21 +155,38 @@ var GamePlayScene = function(game, stage)
     }
     hit_ui = false;
 
-    var token;
-    for(var i = 0; i < g.tokens.length; i++)
+    if(transition_t) transition_t--;
+    else
     {
-      token = g.tokens[i];
-      token.wx = lerp(token.wx,token.target_wx,0.1);
-      token.wy = lerp(token.wy,token.target_wy,0.1);
-      transformToScreen(dc,token);
-    }
-
-    if(!blasting_t)
-    {
-      for(var i = 0; i < g.players.length; i++)
+      //update tok pos
+      var t;
+      for(var i = 0; i < g.tokens.length; i++)
       {
-        if(g.players[i].pts > g.players[i].disp_pts)
-          g.players[i].disp_pts++;
+        t = g.tokens[i];
+        t.wx = lerp(t.wx,t.target_wx,0.1);
+        t.wy = lerp(t.wy,t.target_wy,0.1);
+        transformToScreen(dc,t);
+      }
+
+      //update tok count
+      var n;
+      for(var i = 0; i < g.nodes.length; i++)
+      {
+        n = g.nodes[i];
+        if(n.disp_p1_tokens > n.p1_tokens) n.disp_p1_tokens--;
+        if(n.disp_p1_tokens < n.p1_tokens) n.disp_p1_tokens++;
+        if(n.disp_p2_tokens > n.p2_tokens) n.disp_p2_tokens--;
+        if(n.disp_p2_tokens < n.p2_tokens) n.disp_p2_tokens++;
+      }
+
+      //wiggle goal blast
+      if(!blasting_t)
+      {
+        for(var i = 0; i < g.players.length; i++)
+        {
+          if(g.players[i].pts > g.players[i].disp_pts)
+            g.players[i].disp_pts++;
+        }
       }
     }
   };
@@ -191,19 +212,8 @@ var GamePlayScene = function(game, stage)
       var n = g.nodes[i];
       dc.context.drawImage(n.img,n.x,n.y,n.w,n.h);
       dc.context.fillText(n.title,n.x,n.y+20);
-      var n_p1 = 0;
-      var n_p2 = 0;
-      for(var j = 0; j < g.tokens.length; j++)
-      {
-        var t = g.tokens[j];
-        if(t.node_id == n.id)
-        {
-          if(t.player_id == 1) n_p1++;
-          if(t.player_id == 2) n_p2++;
-        }
-      }
-      dc.context.fillText(n_p1,n.x-10,n.y);
-      dc.context.fillText(n_p2,n.x-10,n.y+10);
+      dc.context.fillText(n.disp_p1_tokens,n.x-10,n.y);
+      dc.context.fillText(n.disp_p2_tokens,n.x-10,n.y+10);
     }
     //tokens
     for(var i = 0; i < g.tokens.length; i++)
@@ -283,7 +293,10 @@ var GamePlayScene = function(game, stage)
 
     dc.context.textAlign = "right";
     for(var i = 0; i < g.players.length; i++)
-      dc.context.fillText("Player: "+g.players[i].disp_pts,dc.width-10,30+i*20);
+    {
+      var p = g.players[i];
+      dc.context.fillText(p.title+": "+p.disp_pts,dc.width-10,30+i*20);
+    }
 
     dc.context.textAlign = "left";
   };

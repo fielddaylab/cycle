@@ -16,6 +16,11 @@ var Node = function()
 
   self.id = 0;
   self.title = "Node";
+
+  self.p1_tokens = 0;
+  self.p2_tokens = 0;
+  self.disp_p1_tokens = 0;
+  self.disp_p2_tokens = 0;
 }
 
 var Event = function()

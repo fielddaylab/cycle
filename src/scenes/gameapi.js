@@ -85,6 +85,25 @@ var constructGame = function(game_data,sr)
     g.tokens.push(token);
   }
 
+  //count tokens at node
+  for(var i = 0; i < g.nodes.length; i++)
+  {
+    var n = g.nodes[i];
+    n.p1_tokens = 0;
+    n.p2_tokens = 0;
+    for(var j = 0; j < g.tokens.length; j++)
+    {
+      var t = g.tokens[j];
+      if(t.node_id == n.id)
+      {
+        if(t.player_id == 1) n.p1_tokens++;
+        if(t.player_id == 2) n.p2_tokens++;
+      }
+    }
+    n.disp_p1_tokens = n.p1_tokens;
+    n.disp_p2_tokens = n.p2_tokens;
+  }
+
   //populate deck
   g.deck = new Deck();
   populateDeck(g.events,game_data.deck,g.deck,sr);
@@ -168,6 +187,7 @@ var discardCard = function(card,deck)
 
 var playCard = function(game, index, sr)
 {
+  //choose/move tokens
   var event = game.events[game.players[game.player_turn-1].hand[index]-1];
   var token;
   var eligibletoks = [];
@@ -192,14 +212,15 @@ var playCard = function(game, index, sr)
     else
       tokenWorldTargetEvent(token,game.events[token.event_id-1],token.event_progress);
 
-
     eligibletoks.splice(ei,1);
   }
 
+  //distribute cards
   discardCard(game.players[game.player_turn-1].hand[index],game.deck);
   game.players[game.player_turn-1].hand.splice(index,1);
   game.player_turn = (game.player_turn%game.players.length)+1;
   game.players[game.player_turn-1].hand.push(drawCard(game.deck,sr));
+
   if(game.player_turn == 1)
   {
     game.turn++;
@@ -226,6 +247,7 @@ var playCard = function(game, index, sr)
     }
 
     game.goal_blast--;
+    //move goal
     if(game.goal_blast == 0)
     {
       for(var i = 0; i < game.tokens.length; i++)
@@ -247,5 +269,23 @@ var playCard = function(game, index, sr)
         game.goal_node = (Math.floor(sr.next()*game.nodes.length))+1;
     }
   }
+
+  //count tokens at node
+  for(var i = 0; i < game.nodes.length; i++)
+  {
+    var n = game.nodes[i];
+    n.p1_tokens = 0;
+    n.p2_tokens = 0;
+    for(var j = 0; j < game.tokens.length; j++)
+    {
+      var t = game.tokens[j];
+      if(t.node_id == n.id)
+      {
+        if(t.player_id == 1) n.p1_tokens++;
+        if(t.player_id == 2) n.p2_tokens++;
+      }
+    }
+  }
+
 }
 
