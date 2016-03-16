@@ -4,7 +4,8 @@ var GamePlayScene = function(game, stage)
 
   var dc = stage.drawCanv;
   var clicker;
-  var card_clicker;
+  var p1_card_clicker;
+  var p2_card_clicker;
 
   ENUM = 0;
   var TURN_WAIT_FOR_JOIN = ENUM; ENUM++;
@@ -32,14 +33,16 @@ var GamePlayScene = function(game, stage)
   //ui only
   var hit_ui;
   var goal_bounds;
-  var cards;
+  var p1_cards;
+  var p2_cards;
   var commit_btn;
   var ready_btn;
 
   self.ready = function()
   {
     clicker = new Clicker({source:stage.dispCanv.canvas});
-    card_clicker = new Clicker({source:stage.dispCanv.canvas});
+    p1_card_clicker = new Clicker({source:stage.dispCanv.canvas});
+    p2_card_clicker = new Clicker({source:stage.dispCanv.canvas});
 
     if(game.join) sr = new SeededRand(game.join);
     else          sr = new SeededRand(Math.floor(Math.random()*100000));
@@ -49,7 +52,7 @@ var GamePlayScene = function(game, stage)
     transformGame(dc,g.nodes,g.events,g.tokens)
 
     var card;
-    cards = [];
+    p1_cards = [];
     var size = ((dc.width-10)/g.players[0].hand.length)-10;
     for(var i = 0; i < g.players[0].hand.length; i++)
     {
@@ -57,12 +60,26 @@ var GamePlayScene = function(game, stage)
       card.index = i;
 
       card.w = size;
-      card.h = 100;
+      card.h = 45;
+      card.x = 10+i*(card.w+10);
+      card.y = dc.height-10-card.h-10-card.h;
+
+      p1_cards.push(card);
+      p1_card_clicker.register(card);
+    }
+    p2_cards = [];
+    for(var i = 0; i < g.players[0].hand.length; i++)
+    {
+      card = new Card();
+      card.index = i;
+
+      card.w = size;
+      card.h = 45;
       card.x = 10+i*(card.w+10);
       card.y = dc.height-10-card.h;
 
-      cards.push(card);
-      card_clicker.register(card);
+      p2_cards.push(card);
+      p2_card_clicker.register(card);
     }
 
     var n = g.nodes[g.goal_node-1];
@@ -161,13 +178,15 @@ var GamePlayScene = function(game, stage)
         }
         break;
       case TURN_CHOOSE:
-        card_clicker.flush();
+        if(g.player_turn == 1) p1_card_clicker.flush();
+        if(g.player_turn == 2) p2_card_clicker.flush();
         clicker.ignore();
         break;
       case TURN_TOGETHER:
       case TURN_AWAY:
         clicker.flush();
-        card_clicker.ignore();
+        p1_card_clicker.ignore();
+        p2_card_clicker.ignore();
         break;
     }
     hit_ui = false;
@@ -325,12 +344,20 @@ var GamePlayScene = function(game, stage)
         break;
       case TURN_CHOOSE:
         //hand
-        var player = g.players[g.player_turn-1];
+        var player;
+        player = g.players[0];
         for(var i = 0; i < player.hand.length; i++)
         {
           var event = g.events[player.hand[i]-1];
-          dc.context.strokeRect(cards[i].x,cards[i].y,cards[i].w,cards[i].h);
-          dc.context.fillText(event.title,cards[i].x+10,cards[i].y+20);
+          dc.context.strokeRect(p1_cards[i].x,p1_cards[i].y,p1_cards[i].w,p1_cards[i].h);
+          dc.context.fillText(event.title,p1_cards[i].x+10,p1_cards[i].y+20);
+        }
+        player = g.players[1];
+        for(var i = 0; i < player.hand.length; i++)
+        {
+          var event = g.events[player.hand[i]-1];
+          dc.context.strokeRect(p2_cards[i].x,p2_cards[i].y,p2_cards[i].w,p2_cards[i].h);
+          dc.context.fillText(event.title,p2_cards[i].x+10,p2_cards[i].y+20);
         }
         break;
       case TURN_TOGETHER:
