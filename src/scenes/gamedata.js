@@ -110,12 +110,12 @@ var CycleGame = function()
   self.tokens = [];
   self.deck = new Deck();
 
-  self.turns_per_blast;
+  self.turns_per_goal_shift;
 
   self.turn = 0;
   self.player_turn = 0;
   self.goal_node = undefined;
-  self.goal_blast = 0;
+  self.goal_shift = 0;
 
   self.last_event;
 }

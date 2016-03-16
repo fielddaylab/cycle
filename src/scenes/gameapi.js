@@ -116,11 +116,11 @@ var constructGame = function(game_data,sr)
   }
   g.players[0].hand[game_data.hand-1] = drawCard(g.deck,sr); //first player immediately draw one card
 
-  g.turns_per_blast = game_data.blast_turns;
+  g.turns_per_goal_shift = game_data.goal_shift_turns;
   g.turn = 0;
   g.player_turn = 1;
   g.goal_node = (Math.floor(sr.next()*g.nodes.length))+1;
-  g.goal_blast = g.turns_per_blast;
+  g.goal_shift = g.turns_per_goal_shift;
 
   return g;
 }
@@ -248,16 +248,18 @@ var playCard = function(game, index, sr)
       }
     }
 
-    game.goal_blast--;
-    //move goal
-    if(game.goal_blast == 0)
+    //score points
+    for(var i = 0; i < game.tokens.length; i++)
     {
-      for(var i = 0; i < game.tokens.length; i++)
-      {
-        if(game.tokens[i].node_id == game.goal_node)
-          game.players[game.tokens[i].player_id-1].pts++;
-      }
-      game.goal_blast = game.turns_per_blast;
+      if(game.tokens[i].node_id == game.goal_node)
+        game.players[game.tokens[i].player_id-1].pts++;
+    }
+
+    game.goal_shift--;
+    //move goal
+    if(game.goal_shift == 0)
+    {
+      game.goal_shift = game.turns_per_goal_shift;
 
       var eligibleevts = [];
       for(var i = 0; i < game.events.length; i++)
