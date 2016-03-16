@@ -282,6 +282,11 @@ var GenIcon = function(w,h)
   return icon;
 }
 
+function randIntBelow(n)
+{
+  return Math.floor(Math.random()*n);
+}
+
 var SeededRand = function(s)
 {
   var self = this;

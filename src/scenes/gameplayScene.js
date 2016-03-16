@@ -82,6 +82,15 @@ var GamePlayScene = function(game, stage)
         if(hit_ui || turn_stage != TURN_AWAY) return;
         if(game.multiplayer == MULTIPLAYER_LOCAL)
           turn_stage = TURN_CHOOSE;
+        else if(game.multiplayer == MULTIPLAYER_AI)
+        {
+          if(g.player_turn == 1) turn_stage = TURN_CHOOSE;
+          else
+          {
+            chosen_card = randIntBelow(g.players[1].hand.length);
+            turn_stage = TURN_TOGETHER;
+          }
+        }
         else if(game.multiplayer == MULTIPLAYER_NET_CREATE)
         {
           if(g.player_turn == 1) turn_stage = TURN_CHOOSE;
@@ -99,6 +108,8 @@ var GamePlayScene = function(game, stage)
     clicker.register(ready_btn);
 
     if(game.multiplayer == MULTIPLAYER_LOCAL)
+      turn_stage = TURN_CHOOSE;
+    else if(game.multiplayer == MULTIPLAYER_AI)
       turn_stage = TURN_CHOOSE;
     else if(game.multiplayer == MULTIPLAYER_NET_CREATE)
       turn_stage = TURN_WAIT_FOR_JOIN;
@@ -295,22 +306,22 @@ var GamePlayScene = function(game, stage)
         dc.context.fillStyle = "#000000";
         dc.context.strokeRect(commit_btn.x,commit_btn.y,commit_btn.w,commit_btn.h);
         dc.context.fillText("Card Chosen:"+g.events[g.players[g.player_turn-1].hand[chosen_card]-1].title,commit_btn.x+20,commit_btn.y+20);
-        if(game.multiplayer == MULTIPLAYER_NET_CREATE || game.multiplayer == MULTIPLAYER_NET_JOIN)
+        if(game.multiplayer == MULTIPLAYER_LOCAL)
+          dc.context.fillText("When both players have seen, click to continue.",commit_btn.x+20,commit_btn.y+40);
+        else if(game.multiplayer == MULTIPLAYER_AI)
+          dc.context.fillText("Click to continue.",commit_btn.x+20,commit_btn.y+40);
+        else if(game.multiplayer == MULTIPLAYER_NET_CREATE || game.multiplayer == MULTIPLAYER_NET_JOIN)
           dc.context.fillText("click to continue.",commit_btn.x+20,commit_btn.y+40);
-        else if(game.multiplayer == MULTIPLAYER_LOCAL)
-          dc.context.fillText("When both players have seen, click to continue.",commit_btn.x+20,commit_btn.y+40);
-        else
-          dc.context.fillText("When both players have seen, click to continue.",commit_btn.x+20,commit_btn.y+40);
         break;
       case TURN_AWAY:
         //ready_btn.draw(dc);
         dc.context.fillStyle = "#000000";
         dc.context.strokeRect(ready_btn.x,ready_btn.y,ready_btn.w,ready_btn.h);
-        if(game.multiplayer == MULTIPLAYER_NET_CREATE || game.multiplayer == MULTIPLAYER_NET_JOIN)
-          dc.context.fillText(g.players[g.player_turn-1].title+"'s turn.",ready_btn.x+20,ready_btn.y+20);
-        else if(game.multiplayer == MULTIPLAYER_LOCAL)
+        if(game.multiplayer == MULTIPLAYER_LOCAL)
           dc.context.fillText(g.players[g.player_turn-1].title+"'s turn. All players except "+g.players[g.player_turn-1].title+" look away.",ready_btn.x+20,ready_btn.y+20);
-        else
+        else if(game.multiplayer == MULTIPLAYER_AI)
+          dc.context.fillText(g.players[g.player_turn-1].title+"'s turn.",ready_btn.x+20,ready_btn.y+20);
+        else if(game.multiplayer == MULTIPLAYER_NET_CREATE || game.multiplayer == MULTIPLAYER_NET_JOIN)
           dc.context.fillText(g.players[g.player_turn-1].title+"'s turn.",ready_btn.x+20,ready_btn.y+20);
         dc.context.fillText("When ready, click to continue.",ready_btn.x+20,ready_btn.y+40);
         break;
