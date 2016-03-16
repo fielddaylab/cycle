@@ -1,8 +1,10 @@
-var circle_icon = GenIcon();
-circle_icon.context.fillStyle = "#555555";
+var circle_icon = GenIcon(20,20);
+circle_icon.context.fillStyle = "#FFFFFF";
+circle_icon.context.strokeStyle = "#555555";
 circle_icon.context.beginPath();
 circle_icon.context.arc(circle_icon.width/2,circle_icon.height/2,circle_icon.width/2,0,2*Math.PI);
 circle_icon.context.fill();
+circle_icon.context.stroke();
 
 var red_circle_icon = GenIcon();
 red_circle_icon.context.fillStyle = "#FF0000";
