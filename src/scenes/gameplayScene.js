@@ -202,16 +202,16 @@ var GamePlayScene = function(game, stage)
           if(n.disp_p2_tokens > n.p2_tokens) n.disp_p2_tokens--;
           if(n.disp_p2_tokens < n.p2_tokens) n.disp_p2_tokens++;
         }
-
+      }
+      else if(transition_t < TRANSITION_KEY_MOVE_GOAL)
+      {
         //increase dispd player counts
         for(var i = 0; i < g.players.length; i++)
         {
           if(g.players[i].pts > g.players[i].disp_pts)
             g.players[i].disp_pts++;
         }
-      }
-      else if(transition_t < TRANSITION_KEY_MOVE_GOAL)
-      {
+
         //update goal pos
         var n = g.nodes[g.goal_node-1];
         goal_bounds.x = lerp(goal_bounds.x,n.x,0.1);
@@ -282,6 +282,21 @@ var GamePlayScene = function(game, stage)
       }
       else if(transition_t < TRANSITION_KEY_SCORE_PTS)
       {
+        if(g.player_turn == 1)
+        {
+          var trans_len = 50;
+          var progress = (transition_t+trans_len-TRANSITION_KEY_SCORE_PTS)/50;
+
+          for(var i = 0; i < g.tokens.length; i++)
+          {
+            var t = g.tokens[i];
+            if(t.disp_node_id == g.nodes[g.last_goal_node-1].id)
+            {
+                   if(t.player_id == 1) dc.context.drawImage(g.players[0].token_img,lerp(t.x-2,dc.width-10,progress*progress),lerp(t.y-2,30-2-10,1-(1-progress)*(1-progress)),t.w+4,t.h+4);
+              else if(t.player_id == 2) dc.context.drawImage(g.players[1].token_img,lerp(t.x-2,dc.width-10,progress*progress),lerp(t.y-2,50-2-10,1-(1-progress)*(1-progress)),t.w+4,t.h+4);
+            }
+          }
+        }
       }
       else if(transition_t < TRANSITION_KEY_MOVE_GOAL)
       {

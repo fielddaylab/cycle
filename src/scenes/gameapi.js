@@ -120,6 +120,7 @@ var constructGame = function(game_data,sr)
   g.turn = 0;
   g.player_turn = 1;
   g.goal_node = (Math.floor(sr.next()*g.nodes.length))+1;
+  g.last_goal_node = g.goal_node;
   g.goal_shift = g.turns_per_goal_shift;
 
   return g;
@@ -267,10 +268,14 @@ var playCard = function(game, index, sr)
       if(eligibleevts.length)
       {
         var ei = Math.floor(sr.next()*eligibleevts.length);
+        game.last_goal_node = game.goal_node;
         game.goal_node = game.events[eligibleevts[ei]].to_id;
       }
       else //dead end! route to random
+      {
+        game.last_goal_node = game.goal_node;
         game.goal_node = (Math.floor(sr.next()*game.nodes.length))+1;
+      }
     }
   }
 

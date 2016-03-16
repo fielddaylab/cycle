@@ -114,7 +114,8 @@ var CycleGame = function()
 
   self.turn = 0;
   self.player_turn = 0;
-  self.goal_node = undefined;
+  self.goal_node = 0;
+  self.last_goal_node = 0;
   self.goal_shift = 0;
 
   self.last_event;
