@@ -22,13 +22,16 @@ var GamePlayScene = function(game, stage)
   var g;
 
   var chosen_card;
-  var blasting_node_i;
-  var blasting_t;
 
   var transition_t;
+  var TRANSITION_KEY_SHUFFLE   = 50;
+  var TRANSITION_KEY_MOVE_TOK  = 100;
+  var TRANSITION_KEY_SCORE_PTS = 150;
+  var TRANSITION_KEY_MOVE_GOAL = 200;
 
   //ui only
   var hit_ui;
+  var goal_bounds;
   var cards;
   var commit_btn;
   var ready_btn;
@@ -42,8 +45,6 @@ var GamePlayScene = function(game, stage)
     else          sr = new SeededRand(Math.floor(Math.random()*100000));
 
     g = constructGame(CarbonCycleGameTemplate,sr);
-    blasting_node_i = g.goal_node-1;
-    blasting_t = 0;
     transition_t = 0;
     transformGame(dc,g.nodes,g.events,g.tokens)
 
@@ -64,14 +65,20 @@ var GamePlayScene = function(game, stage)
       card_clicker.register(card);
     }
 
+    var n = g.nodes[g.goal_node-1];
+    goal_bounds = {
+      x:n.x,
+      y:n.y,
+      w:n.w,
+      h:n.h
+    };
+
     commit_btn = new ButtonBox(10,dc.height-110,dc.width-20,100,
       function()
       {
         if(hit_ui || turn_stage != TURN_TOGETHER) return;
         playCard(g,chosen_card,sr);
-        transition_t = 100;
-        if(blasting_t == 0 && blasting_node_i != g.goal_node-1)
-          blasting_t = 100;
+        transition_t = 1;
         turn_stage = TURN_AWAY;
         hit_ui = true;
       }
@@ -117,7 +124,6 @@ var GamePlayScene = function(game, stage)
       turn_stage = TURN_WAIT;
 
     chosen_card = -1;
-    blasting_t = 0;
   };
 
   self.tick = function()
@@ -166,40 +172,55 @@ var GamePlayScene = function(game, stage)
     }
     hit_ui = false;
 
-    if(transition_t) transition_t--;
-    else
+    if(transition_t)
     {
-      //update tok pos
-      var t;
-      for(var i = 0; i < g.tokens.length; i++)
+      transition_t++;
+      if(transition_t < TRANSITION_KEY_SHUFFLE)
       {
-        t = g.tokens[i];
-        t.disp_node_id = t.node_id;
-        t.wx = lerp(t.wx,t.target_wx,0.1);
-        t.wy = lerp(t.wy,t.target_wy,0.1);
-        transformToScreen(dc,t);
       }
-
-      //update tok count
-      var n;
-      for(var i = 0; i < g.nodes.length; i++)
+      else if(transition_t < TRANSITION_KEY_MOVE_TOK)
       {
-        n = g.nodes[i];
-        if(n.disp_p1_tokens > n.p1_tokens) n.disp_p1_tokens--;
-        if(n.disp_p1_tokens < n.p1_tokens) n.disp_p1_tokens++;
-        if(n.disp_p2_tokens > n.p2_tokens) n.disp_p2_tokens--;
-        if(n.disp_p2_tokens < n.p2_tokens) n.disp_p2_tokens++;
+        var t;
+        for(var i = 0; i < g.tokens.length; i++)
+        {
+          t = g.tokens[i];
+          t.disp_node_id = t.node_id;
+          t.wx = lerp(t.wx,t.target_wx,0.1);
+          t.wy = lerp(t.wy,t.target_wy,0.1);
+          transformToScreen(dc,t);
+        }
       }
-
-      //wiggle goal blast
-      if(!blasting_t)
+      else if(transition_t < TRANSITION_KEY_SCORE_PTS)
       {
+        //update tok count
+        var n;
+        for(var i = 0; i < g.nodes.length; i++)
+        {
+          n = g.nodes[i];
+          if(n.disp_p1_tokens > n.p1_tokens) n.disp_p1_tokens--;
+          if(n.disp_p1_tokens < n.p1_tokens) n.disp_p1_tokens++;
+          if(n.disp_p2_tokens > n.p2_tokens) n.disp_p2_tokens--;
+          if(n.disp_p2_tokens < n.p2_tokens) n.disp_p2_tokens++;
+        }
+
+        //increase dispd player counts
         for(var i = 0; i < g.players.length; i++)
         {
           if(g.players[i].pts > g.players[i].disp_pts)
             g.players[i].disp_pts++;
         }
       }
+      else if(transition_t < TRANSITION_KEY_MOVE_GOAL)
+      {
+        //update goal pos
+        var n = g.nodes[g.goal_node-1];
+        goal_bounds.x = lerp(goal_bounds.x,n.x,0.1);
+        goal_bounds.y = lerp(goal_bounds.y,n.y,0.1);
+        goal_bounds.w = lerp(goal_bounds.w,n.w,0.1);
+        goal_bounds.h = lerp(goal_bounds.h,n.h,0.1);
+      }
+      else if(transition_t >= TRANSITION_KEY_MOVE_GOAL)
+        transition_t = 0;
     }
   };
 
@@ -227,58 +248,52 @@ var GamePlayScene = function(game, stage)
       dc.context.fillText(n.disp_p1_tokens,n.x-10,n.y);
       dc.context.fillText(n.disp_p2_tokens,n.x-10,n.y+10);
     }
-    //tokens
-    var fromnode;
-    var random_highlit_tok_i;
-    if(transition_t > 20)
+
+    if(transition_t)
     {
-      var last_event = g.events[g.last_event-1];
-      fromnode = g.nodes[last_event.from_id-1];
-      random_highlit_tok_i = Math.floor(Math.random()*(fromnode.disp_p1_tokens+fromnode.disp_p2_tokens));
+      if(transition_t < TRANSITION_KEY_SHUFFLE)
+      {
+        var fromnode;
+        var random_highlit_tok_i;
+
+        var last_event = g.events[g.last_event-1];
+        fromnode = g.nodes[last_event.from_id-1];
+        random_highlit_tok_i = Math.floor(Math.random()*(fromnode.disp_p1_tokens+fromnode.disp_p2_tokens));
+
+        for(var i = 0; i < g.tokens.length; i++)
+        {
+          var t = g.tokens[i];
+          if(t.disp_node_id == fromnode.id)
+          {
+            if(random_highlit_tok_i == 0)
+              dc.context.drawImage(highlit_token_icon,t.x-2,t.y-2,t.w+4,t.h+4);
+            random_highlit_tok_i--;
+          }
+        }
+      }
+      else if(transition_t < TRANSITION_KEY_MOVE_TOK)
+      {
+        for(var i = 0; i < g.tokens.length; i++)
+        {
+          var t = g.tokens[i];
+          if(Math.abs(t.wx-t.target_wx) > 0.01 || Math.abs(t.wy-t.target_wy) > 0.01)
+            dc.context.drawImage(highlit_token_icon,t.x-2,t.y-2,t.w+4,t.h+4);
+        }
+      }
+      else if(transition_t < TRANSITION_KEY_SCORE_PTS)
+      {
+      }
+      else if(transition_t < TRANSITION_KEY_MOVE_GOAL)
+      {
+      }
     }
+
     for(var i = 0; i < g.tokens.length; i++)
     {
       var t = g.tokens[i];
-      if(transition_t > 20)
-      {
-        if(t.disp_node_id == fromnode.id)
-        {
-          if(random_highlit_tok_i == 0)
-            dc.context.drawImage(highlit_token_icon,t.x-2,t.y-2,t.w+4,t.h+4);
-          random_highlit_tok_i--;
-        }
-      }
-      if(transition_t < 20)
-      {
-        if(Math.abs(t.wx-t.target_wx) > 0.01 || Math.abs(t.wy-t.target_wy) > 0.01)
-          dc.context.drawImage(highlit_token_icon,t.x-2,t.y-2,t.w+4,t.h+4);
-      }
       dc.context.drawImage(g.players[t.player_id-1].token_img,t.x,t.y,t.w,t.h);
     }
-
-    //goal
-    if(blasting_t > 0)
-    {
-      var n = g.nodes[blasting_node_i];
-      if(transition_t == 0)
-      {
-        var w = Math.sin(blasting_t);
-        dc.context.strokeRect(n.x-w,n.y-w,n.w+2*w,n.h+2*w);
-        blasting_t--;
-        if(blasting_t <= 0)
-        {
-          blasting_t = 0;
-          blasting_node_i = g.goal_node-1;
-        }
-      }
-      else
-        dc.context.strokeRect(n.x,n.y,n.w,n.h);
-    }
-    else
-    {
-      var n = g.nodes[g.goal_node-1];
-      dc.context.strokeRect(n.x,n.y,n.w,n.h);
-    }
+    dc.context.strokeRect(goal_bounds.x,goal_bounds.y,goal_bounds.w,goal_bounds.h);
 
     switch(turn_stage)
     {
