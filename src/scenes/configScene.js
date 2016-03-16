@@ -24,7 +24,7 @@ var ConfigScene = function(game, stage)
   var tbtn_10;
   var tbtn_20;
   var tbtn_30;
-  var turns;
+  var turn;
 
   var jbtn_a;
   var jbtn_b;
@@ -33,6 +33,7 @@ var ConfigScene = function(game, stage)
   var jbtn_e;
   var jbtn_f;
   var joins;
+  var turns;
   var join;
 
   self.ready = function()
@@ -43,7 +44,7 @@ var ConfigScene = function(game, stage)
 
     mbtn_local      = new ButtonBox(10,10, dc.width-20,30,function(evt){ if(hit_ui || mode != CONFIG_MULTIPLAYER) return; hit_ui = true; multiplayer = MULTIPLAYER_LOCAL;      mode = CONFIG_TURN; });
     mbtn_ai         = new ButtonBox(10,50, dc.width-20,30,function(evt){ if(hit_ui || mode != CONFIG_MULTIPLAYER) return; hit_ui = true; multiplayer = MULTIPLAYER_AI;         mode = CONFIG_TURN; });
-    mbtn_net_create = new ButtonBox(10,90, dc.width-20,30,function(evt){ if(hit_ui || mode != CONFIG_MULTIPLAYER) return; hit_ui = true; multiplayer = MULTIPLAYER_NET_CREATE; mode = CONFIG_TURN; cli.begin(); cli.add(cli.id+" CREATE"); });
+    mbtn_net_create = new ButtonBox(10,90, dc.width-20,30,function(evt){ if(hit_ui || mode != CONFIG_MULTIPLAYER) return; hit_ui = true; multiplayer = MULTIPLAYER_NET_CREATE; mode = CONFIG_TURN; cli.begin(); });
     mbtn_net_join   = new ButtonBox(10,130,dc.width-20,30,function(evt){ if(hit_ui || mode != CONFIG_MULTIPLAYER) return; hit_ui = true; multiplayer = MULTIPLAYER_NET_JOIN;   mode = CONFIG_JOIN; cli.begin(); });
 
     joins = [];
@@ -54,9 +55,9 @@ var ConfigScene = function(game, stage)
     jbtn_e = new ButtonBox(10,170,dc.width-20,30,function(evt){ if(hit_ui || mode != CONFIG_JOIN || joins.length < 5) return; hit_ui = true; join = joins[4]; cli.add(cli.id+" JOIN "+join); mode = CONFIG_TURN; });
     jbtn_f = new ButtonBox(10,210,dc.width-20,30,function(evt){ if(hit_ui || mode != CONFIG_JOIN || joins.length < 6) return; hit_ui = true; join = joins[5]; cli.add(cli.id+" JOIN "+join); mode = CONFIG_TURN; });
 
-    tbtn_10 = new ButtonBox(10,10, dc.width-20,30,function(evt){ if(hit_ui || mode != CONFIG_TURN) return; hit_ui = true; turns = 10; mode = CONFIG_COMMIT; });
-    tbtn_20 = new ButtonBox(10,50, dc.width-20,30,function(evt){ if(hit_ui || mode != CONFIG_TURN) return; hit_ui = true; turns = 20; mode = CONFIG_COMMIT; });
-    tbtn_30 = new ButtonBox(10,90, dc.width-20,30,function(evt){ if(hit_ui || mode != CONFIG_TURN) return; hit_ui = true; turns = 30; mode = CONFIG_COMMIT; });
+    tbtn_10 = new ButtonBox(10,10, dc.width-20,30,function(evt){ if(hit_ui || mode != CONFIG_TURN) return; hit_ui = true; turn = 10; mode = CONFIG_COMMIT; });
+    tbtn_20 = new ButtonBox(10,50, dc.width-20,30,function(evt){ if(hit_ui || mode != CONFIG_TURN) return; hit_ui = true; turn = 20; mode = CONFIG_COMMIT; });
+    tbtn_30 = new ButtonBox(10,90, dc.width-20,30,function(evt){ if(hit_ui || mode != CONFIG_TURN) return; hit_ui = true; turn = 30; mode = CONFIG_COMMIT; });
 
     clicker.register(mbtn_local);
     clicker.register(mbtn_ai);
@@ -85,19 +86,26 @@ var ConfigScene = function(game, stage)
         if(cli.updated)
         {
           joins = [];
+          turns = [];
           for(var i = 0; i < cli.database.length; i++)
           {
             if(cli.database[i].event)
             {
               if(cli.database[i].event == "CREATE") //add to list of known joinables
+              {
                 joins[joins.length] = cli.database[i].user;
+                turns[turns.length] = parseInt(cli.database[i].args[0]);
+              }
               else if(cli.database[i].event == "JOIN") //game already joined- remove from list
               {
                 var joined = parseInt(cli.database[i].args[0]);
                 for(var j = 0; j < joins.length; j++)
                 {
                   if(joins[j] == joined)
+                  {
                     joins.splice(j,1);
+                    turns.splice(j,1);
+                  }
                 }
               }
             }
@@ -107,9 +115,11 @@ var ConfigScene = function(game, stage)
         break;
       case CONFIG_COMMIT:
         game.multiplayer = multiplayer;
-        game.turns = turns;
+        game.turns = turn;
+        console.log(game.turns);
         if(game.multiplayer == MULTIPLAYER_NET_CREATE)
         {
+          cli.add(cli.id+" CREATE "+turn);
           game.join = cli.id;
           game.me = cli.id;
         }
