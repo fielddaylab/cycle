@@ -81,7 +81,8 @@ var Player = function()
 {
   var self = this;
 
-  self.token_img;
+  self.token_img = undefined;
+  self.color = "#000000";
 
   self.id = 0;
   self.title = "Player";

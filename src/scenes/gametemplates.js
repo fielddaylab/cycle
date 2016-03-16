@@ -9,10 +9,12 @@ var GameTemplate =
       {
         title:"PlayerA",
         token_img:"red_circle",
+        color:"#FF0000",
       },
       {
         title:"PlayerB",
         token_img:"blue_circle",
+        color:"#0000FF",
       },
     ],
   nodes:
@@ -106,10 +108,12 @@ var CarbonCycleGameTemplate =
       {
         title:"PlayerA",
         token_img:"red_circle",
+        color:"#FF0000",
       },
       {
         title:"PlayerB",
         token_img:"blue_circle",
+        color:"#0000FF",
       },
     ],
   nodes:
@@ -227,10 +231,12 @@ var NewCarbonCycleGameTemplate =
       {
         title:"PlayerA",
         token_img:"red_circle",
+        color:"#FF0000",
       },
       {
         title:"PlayerB",
         token_img:"blue_circle",
+        color:"#0000FF",
       },
     ],
   nodes:

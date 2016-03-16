@@ -116,7 +116,6 @@ var ConfigScene = function(game, stage)
       case CONFIG_COMMIT:
         game.multiplayer = multiplayer;
         game.turns = turn;
-        console.log(game.turns);
         if(game.multiplayer == MULTIPLAYER_NET_CREATE)
         {
           cli.add(cli.id+" CREATE "+turn);

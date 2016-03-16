@@ -363,16 +363,14 @@ var GamePlayScene = function(game, stage)
     dc.context.fillStyle = "#000000";
     dc.context.textAlign = "left";
     dc.context.fillText("Turn: "+g.turn,10,30);
-    if(g.player_turn == 1) dc.context.fillStyle = "#FF0000";
-    else                   dc.context.fillStyle = "#0000FF";
+    dc.context.fillStyle = g.players[g.player_turn-1].color;
     dc.context.fillText("Player: "+g.players[g.player_turn-1].title,10,50);
 
     dc.context.textAlign = "right";
     for(var i = 0; i < g.players.length; i++)
     {
       var p = g.players[i];
-      if(p.id == 1) dc.context.fillStyle = "#FF0000";
-      else          dc.context.fillStyle = "#0000FF";
+      dc.context.fillStyle = p.color;
       dc.context.fillText(p.title+": "+p.disp_pts,dc.width-10,30+i*20);
     }
 

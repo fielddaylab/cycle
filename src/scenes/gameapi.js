@@ -16,6 +16,7 @@ var constructGame = function(game_data,sr)
 
     if(i == 0) player.token_img = red_circle_icon;
     if(i == 1) player.token_img = blue_circle_icon;
+    player.color = game_data.players[i].color;
 
     g.players.push(player);
   }
