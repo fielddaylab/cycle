@@ -32,6 +32,7 @@ var Game = function(init)
   var old_cur_scene = -1;
 
   self.multiplayer;
+  self.turns;
   self.join;
   self.me;
   self.opponent;
