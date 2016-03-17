@@ -33,6 +33,8 @@ var GamePlayScene = function(game, stage)
   //ui only
   var hit_ui;
   var goal_bounds;
+  var p1_pts_bounds;
+  var p2_pts_bounds;
   var p1_cards;
   var p2_cards;
   var commit_btn;
@@ -61,8 +63,8 @@ var GamePlayScene = function(game, stage)
 
       card.w = size;
       card.h = 45;
-      card.x = 10+i*(card.w+10);
-      card.y = dc.height-10-card.h-10-card.h;
+      card.x = 0;
+      card.y = 40+10+(card.h+10)*i;
 
       p1_cards.push(card);
       p1_card_clicker.register(card);
@@ -75,8 +77,8 @@ var GamePlayScene = function(game, stage)
 
       card.w = size;
       card.h = 45;
-      card.x = 10+i*(card.w+10);
-      card.y = dc.height-10-card.h;
+      card.x = dc.width-card.w;
+      card.y = 40+10+(card.h+10)*i;
 
       p2_cards.push(card);
       p2_card_clicker.register(card);
@@ -87,7 +89,21 @@ var GamePlayScene = function(game, stage)
       x:n.x,
       y:n.y,
       w:n.w,
-      h:n.h
+      h:n.h,
+    };
+
+    p1_pts_bounds = {
+      x:50,
+      y:10,
+      w:10,
+      h:10,
+    };
+
+    p2_pts_bounds = {
+      x:dc.width-50-10,
+      y:10,
+      w:10,
+      h:10,
     };
 
     commit_btn = new ButtonBox(10,dc.height-110,dc.width-20,100,
@@ -313,8 +329,8 @@ var GamePlayScene = function(game, stage)
             var t = g.tokens[i];
             if(t.disp_node_id == g.nodes[g.last_goal_node-1].id)
             {
-                   if(t.player_id == 1) dc.context.drawImage(g.players[0].token_img,lerp(t.x-2,dc.width-10,progress*progress),lerp(t.y-2,30-2-10,1-(1-progress)*(1-progress)),t.w+4,t.h+4);
-              else if(t.player_id == 2) dc.context.drawImage(g.players[1].token_img,lerp(t.x-2,dc.width-10,progress*progress),lerp(t.y-2,50-2-10,1-(1-progress)*(1-progress)),t.w+4,t.h+4);
+                   if(t.player_id == 1) dc.context.drawImage(g.players[0].token_img,lerp(t.x-2,p1_pts_bounds.x,progress*progress),lerp(t.y-2,p1_pts_bounds.y,1-(1-progress)*(1-progress)),t.w+4,t.h+4);
+              else if(t.player_id == 2) dc.context.drawImage(g.players[1].token_img,lerp(t.x-2,p2_pts_bounds.x,progress*progress),lerp(t.y-2,p2_pts_bounds.y,1-(1-progress)*(1-progress)),t.w+4,t.h+4);
             }
           }
         }
@@ -388,18 +404,22 @@ var GamePlayScene = function(game, stage)
 
     //info
     dc.context.fillStyle = "#000000";
-    dc.context.textAlign = "left";
-    dc.context.fillText("Turn: "+g.turn,10,30);
+    dc.context.textAlign = "center";
+    dc.context.fillText("Turn: "+g.turn,dc.width/2,20);
     dc.context.fillStyle = g.players[g.player_turn-1].color;
-    dc.context.fillText("Player: "+g.players[g.player_turn-1].title,10,50);
+    dc.context.fillText("Player: "+g.players[g.player_turn-1].title,dc.width/2,35);
+
+    var p;
+
+    dc.context.textAlign = "left";
+    p = g.players[0];
+    dc.context.fillStyle = p.color;
+    dc.context.fillText(p.title+": "+p.disp_pts,10,20);
 
     dc.context.textAlign = "right";
-    for(var i = 0; i < g.players.length; i++)
-    {
-      var p = g.players[i];
-      dc.context.fillStyle = p.color;
-      dc.context.fillText(p.title+": "+p.disp_pts,dc.width-10,30+i*20);
-    }
+    p = g.players[1];
+    dc.context.fillStyle = p.color;
+    dc.context.fillText(p.disp_pts+" :"+p.title,dc.width-10,20);
 
     dc.context.textAlign = "left";
   };
