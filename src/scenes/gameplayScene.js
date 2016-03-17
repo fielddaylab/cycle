@@ -475,7 +475,7 @@ var GamePlayScene = function(game, stage)
     {
       case TURN_WAIT_FOR_JOIN:
         dc.context.fillText("waiting for opponent...",dc.width/2,50);
-        dc.context.fillText("(Room #"+game.join+")",dc.width/2,100);
+        dc.context.fillText("(Room #"+game.join+")",dc.width/2,70);
         break;
       case TURN_WAIT:
         dc.context.fillText("waiting for opponent's turn...",dc.width/2,50);
