@@ -115,6 +115,8 @@ var GamePlayScene = function(game, stage)
       {
         if(hit_ui || turn_stage != TURN_CHOOSE_TARGET) return;
         chosen_target = 1;
+        if(game.multiplayer == MULTIPLAYER_NET_CREATE || game.multiplayer == MULTIPLAYER_NET_JOIN)
+          cli.add(cli.id+" MOVE "+chosen_card+" "+chosen_target);
         turn_stage = TURN_SUMMARY;
         hit_ui = true;
       }
@@ -124,6 +126,8 @@ var GamePlayScene = function(game, stage)
       {
         if(hit_ui || turn_stage != TURN_CHOOSE_TARGET) return;
         chosen_target = 2;
+        if(game.multiplayer == MULTIPLAYER_NET_CREATE || game.multiplayer == MULTIPLAYER_NET_JOIN)
+          cli.add(cli.id+" MOVE "+chosen_card+" "+chosen_target);
         turn_stage = TURN_SUMMARY;
         hit_ui = true;
       }
@@ -215,7 +219,8 @@ var GamePlayScene = function(game, stage)
             if(cli.database[i].user == game.opponent && cli.database[i].event == "MOVE")
             {
               chosen_card = cli.database[i].args[0];
-              turn_stage = TURN_CHOOSE_TARGET;
+              chosen_target = cli.database[i].args[1];
+              turn_stage = TURN_SUMMARY;
             }
           }
           cli.last_known = cli.database.length-1;
@@ -469,8 +474,6 @@ var GamePlayScene = function(game, stage)
     {
       if(hit_ui) return;
       chosen_card = self.index;
-      if(game.multiplayer == MULTIPLAYER_NET_CREATE || game.multiplayer == MULTIPLAYER_NET_JOIN)
-        cli.add(cli.id+" MOVE "+chosen_card);
       turn_stage = TURN_CHOOSE_TARGET;
       hit_ui = true;
     }
