@@ -62,9 +62,14 @@ var Game = function(init)
 
   self.nextScene = function()
   {
-    scenes[cur_scene].cleanup();
-    cur_scene++;
-    scenes[cur_scene].ready();
+    self.setScene(cur_scene+1);
   };
+
+  self.setScene = function(i)
+  {
+    scenes[cur_scene].cleanup();
+    cur_scene = i;
+    scenes[cur_scene].ready();
+  }
 };
 

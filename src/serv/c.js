@@ -9,6 +9,7 @@ var client = function(update_func,error_func)
   self.database = [];
   var Entry = function(i,d) { this.i = i; this.data = d; this.user; this.event; this.args; }
 
+  self.interval;
   self.q = [];
   self.sending = false;
 
@@ -115,7 +116,12 @@ var client = function(update_func,error_func)
 
   self.begin = function()
   {
-    setInterval(self.get,self.poll_rate);
+    self.interval = setInterval(self.get,self.poll_rate);
+  }
+
+  self.stop = function()
+  {
+    clearInterval(self.interval);
   }
 
 }

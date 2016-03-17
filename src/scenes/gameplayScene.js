@@ -13,6 +13,7 @@ var GamePlayScene = function(game, stage)
   var TURN_CHOOSE_CARD   = ENUM; ENUM++;
   var TURN_CHOOSE_TARGET = ENUM; ENUM++;
   var TURN_SUMMARY       = ENUM; ENUM++;
+  var TURN_DONE          = ENUM; ENUM++;
 
   var turn_stage;
 
@@ -43,6 +44,7 @@ var GamePlayScene = function(game, stage)
   var p2_target_btn;
   var cancel_target_btn;
   var ready_btn;
+  var done_btn;
 
   self.ready = function()
   {
@@ -152,7 +154,8 @@ var GamePlayScene = function(game, stage)
         chosen_target = 0;
         transition_t = 1;
 
-        if(game.multiplayer == MULTIPLAYER_LOCAL)
+        if(g.turn == game.turns) turn_stage = TURN_DONE;
+        else if(game.multiplayer == MULTIPLAYER_LOCAL)
           turn_stage = TURN_CHOOSE_CARD;
         else if(game.multiplayer == MULTIPLAYER_AI)
         {
@@ -176,11 +179,21 @@ var GamePlayScene = function(game, stage)
         hit_ui = true;
       }
     );
+    done_btn  = new ButtonBox(dc.width/2-200,dc.height-60,400,50,
+      function()
+      {
+        if(hit_ui || turn_stage != TURN_DONE) return;
+        cli.stop();
+        game.setScene(2);
+        hit_ui = true;
+      }
+    );
     clicker.register(p1_target_btn);
     clicker.register(p2_target_btn);
     clicker.register(cancel_target_btn);
 
     clicker.register(ready_btn);
+    clicker.register(done_btn);
 
     if(game.multiplayer == MULTIPLAYER_LOCAL)
       turn_stage = TURN_CHOOSE_CARD;
@@ -236,9 +249,10 @@ var GamePlayScene = function(game, stage)
         break;
       case TURN_CHOOSE_TARGET:
       case TURN_SUMMARY:
-        clicker.flush();
+      case TURN_DONE:
         p1_card_clicker.ignore();
         p2_card_clicker.ignore();
+        clicker.flush();
         break;
     }
     hit_ui = false;
@@ -445,6 +459,15 @@ var GamePlayScene = function(game, stage)
         dc.context.fillText(player.title+" played "+g.events[player.hand[chosen_card]-1].title+" on "+g.players[chosen_target-1].title+"'s tokens",ready_btn.x+10,ready_btn.y+20);
         dc.context.fillText("When ready, click to continue.",ready_btn.x+10,ready_btn.y+40);
         break;
+      case TURN_DONE:
+        dc.context.textAlign = "left";
+        dc.context.fillStyle = "#000000";
+        dc.context.strokeRect(done_btn.x,done_btn.y,done_btn.w,done_btn.h);
+
+        var player = g.players[g.player_turn-1];
+        dc.context.fillText("Game Over!",done_btn.x+10,done_btn.y+20);
+        dc.context.fillText("When ready, click to continue.",done_btn.x+10,done_btn.y+40);
+        break;
     }
 
     dc.context.textAlign = "center";
@@ -466,6 +489,9 @@ var GamePlayScene = function(game, stage)
       case TURN_SUMMARY:
         dc.context.fillText("",dc.width/2,50);
         break;
+      case TURN_DONE:
+        dc.context.fillText("Game Over!",dc.width/2,50);
+        break;
     }
 
     dc.context.textAlign = "left";
@@ -473,7 +499,12 @@ var GamePlayScene = function(game, stage)
 
   self.cleanup = function()
   {
-
+    clicker.detach();
+    clicker = undefined;
+    p1_card_clicker.detach();
+    p1_card_clicker = undefined;
+    p2_card_clicker.detach();
+    p2_card_clicker = undefined;
   };
 
   //no data- just used for interface
