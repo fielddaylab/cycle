@@ -187,15 +187,16 @@ var discardCard = function(card,deck)
   deck.discard_i++;
 }
 
-var playCard = function(game, index, sr)
+var playCard = function(game, index, target, sr)
 {
   //choose/move tokens
   game.last_event = game.players[game.player_turn-1].hand[index];
+  game.last_target = target;
   var event = game.events[game.last_event-1];
   var token;
   var eligibletoks = [];
   for(var i = 0; i < game.tokens.length; i++)
-    if(game.tokens[i].node_id == event.from_id) eligibletoks.push(i);
+    if(game.tokens[i].node_id == event.from_id && game.tokens[i].player_id == target) eligibletoks.push(i);
   for(var i = 0; i < event.amt && eligibletoks.length > 0; i++)
   {
     var ei = Math.floor(sr.next()*eligibletoks.length);

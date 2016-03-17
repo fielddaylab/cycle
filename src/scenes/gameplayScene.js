@@ -10,9 +10,9 @@ var GamePlayScene = function(game, stage)
   ENUM = 0;
   var TURN_WAIT_FOR_JOIN = ENUM; ENUM++;
   var TURN_WAIT          = ENUM; ENUM++;
-  var TURN_CHOOSE        = ENUM; ENUM++;
-  var TURN_TOGETHER      = ENUM; ENUM++;
-  var TURN_AWAY          = ENUM; ENUM++;
+  var TURN_CHOOSE_CARD   = ENUM; ENUM++;
+  var TURN_CHOOSE_TARGET = ENUM; ENUM++;
+  var TURN_SUMMARY       = ENUM; ENUM++;
 
   var turn_stage;
 
@@ -23,6 +23,7 @@ var GamePlayScene = function(game, stage)
   var g;
 
   var chosen_card;
+  var chosen_target;
 
   var transition_t;
   var TRANSITION_KEY_SHUFFLE   = 50;
@@ -37,7 +38,10 @@ var GamePlayScene = function(game, stage)
   var p2_pts_bounds;
   var p1_cards;
   var p2_cards;
-  var commit_btn;
+
+  var p1_target_btn;
+  var p2_target_btn;
+  var cancel_target_btn;
   var ready_btn;
 
   self.ready = function()
@@ -106,51 +110,76 @@ var GamePlayScene = function(game, stage)
       h:10,
     };
 
-    commit_btn = new ButtonBox(10,dc.height-110,dc.width-20,100,
+    p1_target_btn = new ButtonBox(dc.width/2-100,dc.height-60,90,20,
       function()
       {
-        if(hit_ui || turn_stage != TURN_TOGETHER) return;
-        playCard(g,chosen_card,sr);
-        transition_t = 1;
-        turn_stage = TURN_AWAY;
+        if(hit_ui || turn_stage != TURN_CHOOSE_TARGET) return;
+        chosen_target = 1;
+        turn_stage = TURN_SUMMARY;
         hit_ui = true;
       }
     );
-    ready_btn  = new ButtonBox(10,dc.height-110,dc.width-20,100,
+    p2_target_btn = new ButtonBox(dc.width/2+10,dc.height-60,90,20,
       function()
       {
-        if(hit_ui || turn_stage != TURN_AWAY) return;
+        if(hit_ui || turn_stage != TURN_CHOOSE_TARGET) return;
+        chosen_target = 2;
+        turn_stage = TURN_SUMMARY;
+        hit_ui = true;
+      }
+    );
+    cancel_target_btn = new ButtonBox(dc.width/2-100,dc.height-30,200,20,
+      function()
+      {
+        if(hit_ui || turn_stage != TURN_CHOOSE_TARGET) return;
+        chosen_card = undefined;
+        turn_stage = TURN_CHOOSE_CARD;
+        hit_ui = true;
+      }
+    );
+
+    ready_btn  = new ButtonBox(dc.width/2-200,dc.height-60,400,50,
+      function()
+      {
+        if(hit_ui || turn_stage != TURN_SUMMARY) return;
+
+        playCard(g,chosen_card,chosen_target,sr);
+        transition_t = 1;
+
         if(game.multiplayer == MULTIPLAYER_LOCAL)
-          turn_stage = TURN_CHOOSE;
+          turn_stage = TURN_CHOOSE_CARD;
         else if(game.multiplayer == MULTIPLAYER_AI)
         {
-          if(g.player_turn == 1) turn_stage = TURN_CHOOSE;
+          if(g.player_turn == 1) turn_stage = TURN_CHOOSE_CARD;
           else
           {
             chosen_card = randIntBelow(g.players[1].hand.length);
-            turn_stage = TURN_TOGETHER;
+            chosen_target = 1+randIntBelow(2);
           }
         }
         else if(game.multiplayer == MULTIPLAYER_NET_CREATE)
         {
-          if(g.player_turn == 1) turn_stage = TURN_CHOOSE;
+          if(g.player_turn == 1) turn_stage = TURN_CHOOSE_CARD;
           else turn_stage = TURN_WAIT;
         }
         else if(game.multiplayer == MULTIPLAYER_NET_JOIN)
         {
           if(g.player_turn == 1) turn_stage = TURN_WAIT;
-          else turn_stage = TURN_CHOOSE;
+          else turn_stage = TURN_CHOOSE_CARD;
         }
         hit_ui = true;
       }
     );
-    clicker.register(commit_btn);
+    clicker.register(p1_target_btn);
+    clicker.register(p2_target_btn);
+    clicker.register(cancel_target_btn);
+
     clicker.register(ready_btn);
 
     if(game.multiplayer == MULTIPLAYER_LOCAL)
-      turn_stage = TURN_CHOOSE;
+      turn_stage = TURN_CHOOSE_CARD;
     else if(game.multiplayer == MULTIPLAYER_AI)
-      turn_stage = TURN_CHOOSE;
+      turn_stage = TURN_CHOOSE_CARD;
     else if(game.multiplayer == MULTIPLAYER_NET_CREATE)
       turn_stage = TURN_WAIT_FOR_JOIN;
     else if(game.multiplayer == MULTIPLAYER_NET_JOIN)
@@ -171,7 +200,7 @@ var GamePlayScene = function(game, stage)
             if(cli.database[i].event == "JOIN" && cli.database[i].args[0] == cli.id)
             {
               game.opponent = cli.database[i].user;
-              turn_stage = TURN_CHOOSE;
+              turn_stage = TURN_CHOOSE_CARD;
             }
           }
           cli.last_known = cli.database.length-1;
@@ -186,20 +215,20 @@ var GamePlayScene = function(game, stage)
             if(cli.database[i].user == game.opponent && cli.database[i].event == "MOVE")
             {
               chosen_card = cli.database[i].args[0];
-              turn_stage = TURN_TOGETHER;
+              turn_stage = TURN_CHOOSE_TARGET;
             }
           }
           cli.last_known = cli.database.length-1;
           cli.updated = false;
         }
         break;
-      case TURN_CHOOSE:
+      case TURN_CHOOSE_CARD:
         if(g.player_turn == 1) p1_card_clicker.flush();
         if(g.player_turn == 2) p2_card_clicker.flush();
         clicker.ignore();
         break;
-      case TURN_TOGETHER:
-      case TURN_AWAY:
+      case TURN_CHOOSE_TARGET:
+      case TURN_SUMMARY:
         clicker.flush();
         p1_card_clicker.ignore();
         p2_card_clicker.ignore();
@@ -290,17 +319,19 @@ var GamePlayScene = function(game, stage)
     {
       if(transition_t < TRANSITION_KEY_SHUFFLE)
       {
-        var fromnode;
         var random_highlit_tok_i;
 
         var last_event = g.events[g.last_event-1];
-        fromnode = g.nodes[last_event.from_id-1];
-        random_highlit_tok_i = Math.floor(Math.random()*(fromnode.disp_p1_tokens+fromnode.disp_p2_tokens));
+        var fromnode = g.nodes[last_event.from_id-1];
+        var toks_at_last_target;
+        if(g.last_target == 1) target_toks = fromnode.disp_p1_tokens;
+        else                   target_toks = fromnode.disp_p2_tokens;
+        random_highlit_tok_i = Math.floor(Math.random()*target_toks);
 
         for(var i = 0; i < g.tokens.length; i++)
         {
           var t = g.tokens[i];
-          if(t.disp_node_id == fromnode.id)
+          if(t.disp_node_id == fromnode.id && t.player_id == g.last_target)
           {
             if(random_highlit_tok_i == 0)
               dc.context.drawImage(highlit_token_icon,t.x-2,t.y-2,t.w+4,t.h+4);
@@ -358,7 +389,7 @@ var GamePlayScene = function(game, stage)
         dc.context.textAlign = "center";
         dc.context.fillText("Waiting for opponent's turn...",dc.width/2,dc.height/2+100);
         break;
-      case TURN_CHOOSE:
+      case TURN_CHOOSE_CARD:
         //hand
         var player;
         player = g.players[0];
@@ -376,29 +407,22 @@ var GamePlayScene = function(game, stage)
           dc.context.fillText(event.title,p2_cards[i].x+10,p2_cards[i].y+20);
         }
         break;
-      case TURN_TOGETHER:
-        //commit_btn.draw(dc);
+      case TURN_CHOOSE_TARGET:
+        dc.context.textAlign = "center";
+        dc.context.fillStyle = g.players[0].color;
+        dc.context.strokeRect(p1_target_btn.x,p1_target_btn.y,p1_target_btn.w,p1_target_btn.h); dc.context.fillText("Target P1",p1_target_btn.x+p1_target_btn.w/2,p1_target_btn.y+10);
+        dc.context.fillStyle = g.players[1].color;
+        dc.context.strokeRect(p2_target_btn.x,p2_target_btn.y,p2_target_btn.w,p2_target_btn.h); dc.context.fillText("Target P2",p2_target_btn.x+p2_target_btn.w/2,p2_target_btn.y+10);
         dc.context.fillStyle = "#000000";
-        dc.context.strokeRect(commit_btn.x,commit_btn.y,commit_btn.w,commit_btn.h);
-        dc.context.fillText("Card Chosen:"+g.events[g.players[g.player_turn-1].hand[chosen_card]-1].title,commit_btn.x+20,commit_btn.y+20);
-        if(game.multiplayer == MULTIPLAYER_LOCAL)
-          dc.context.fillText("When both players have seen, click to continue.",commit_btn.x+20,commit_btn.y+40);
-        else if(game.multiplayer == MULTIPLAYER_AI)
-          dc.context.fillText("Click to continue.",commit_btn.x+20,commit_btn.y+40);
-        else if(game.multiplayer == MULTIPLAYER_NET_CREATE || game.multiplayer == MULTIPLAYER_NET_JOIN)
-          dc.context.fillText("click to continue.",commit_btn.x+20,commit_btn.y+40);
+        dc.context.strokeRect(cancel_target_btn.x,cancel_target_btn.y,cancel_target_btn.w,cancel_target_btn.h); dc.context.fillText("Cancel",cancel_target_btn.x+cancel_target_btn.w/2,cancel_target_btn.y+10);
         break;
-      case TURN_AWAY:
-        //ready_btn.draw(dc);
+      case TURN_SUMMARY:
         dc.context.fillStyle = "#000000";
         dc.context.strokeRect(ready_btn.x,ready_btn.y,ready_btn.w,ready_btn.h);
-        if(game.multiplayer == MULTIPLAYER_LOCAL)
-          dc.context.fillText(g.players[g.player_turn-1].title+"'s turn. All players except "+g.players[g.player_turn-1].title+" look away.",ready_btn.x+20,ready_btn.y+20);
-        else if(game.multiplayer == MULTIPLAYER_AI)
-          dc.context.fillText(g.players[g.player_turn-1].title+"'s turn.",ready_btn.x+20,ready_btn.y+20);
-        else if(game.multiplayer == MULTIPLAYER_NET_CREATE || game.multiplayer == MULTIPLAYER_NET_JOIN)
-          dc.context.fillText(g.players[g.player_turn-1].title+"'s turn.",ready_btn.x+20,ready_btn.y+20);
-        dc.context.fillText("When ready, click to continue.",ready_btn.x+20,ready_btn.y+40);
+
+        var player = g.players[g.player_turn-1];
+        dc.context.fillText(player.title+" played "+g.events[player.hand[chosen_card]-1].title+" on "+g.players[chosen_target-1].title+"'s tokens",ready_btn.x+10,ready_btn.y+20);
+        dc.context.fillText("When ready, click to continue.",ready_btn.x+10,ready_btn.y+40);
         break;
     }
 
@@ -447,7 +471,7 @@ var GamePlayScene = function(game, stage)
       chosen_card = self.index;
       if(game.multiplayer == MULTIPLAYER_NET_CREATE || game.multiplayer == MULTIPLAYER_NET_JOIN)
         cli.add(cli.id+" MOVE "+chosen_card);
-      turn_stage = TURN_TOGETHER;
+      turn_stage = TURN_CHOOSE_TARGET;
       hit_ui = true;
     }
   }
