@@ -136,7 +136,7 @@ var GamePlayScene = function(game, stage)
       function()
       {
         if(hit_ui || turn_stage != TURN_CHOOSE_TARGET) return;
-        chosen_card = undefined;
+        chosen_card = -1;
         turn_stage = TURN_CHOOSE_CARD;
         hit_ui = true;
       }
@@ -148,6 +148,8 @@ var GamePlayScene = function(game, stage)
         if(hit_ui || turn_stage != TURN_SUMMARY) return;
 
         playCard(g,chosen_card,chosen_target,sr);
+        chosen_card = -1;
+        chosen_target = 0;
         transition_t = 1;
 
         if(game.multiplayer == MULTIPLAYER_LOCAL)
@@ -383,35 +385,48 @@ var GamePlayScene = function(game, stage)
     }
     dc.context.strokeRect(goal_bounds.x,goal_bounds.y,goal_bounds.w,goal_bounds.h);
 
+    //hand
+    dc.context.textAlign = "left";
+    var player;
+    player = g.players[0];
+    dc.context.textAlign = "left";
+    dc.context.fillStyle = player.color;
+    dc.context.fillText(player.title+": "+player.disp_pts,10,20);
+    for(var i = 0; i < player.hand.length; i++)
+    {
+      var event = g.events[player.hand[i]-1];
+      if(g.player_turn == 1 && chosen_card == i) dc.context.strokeStyle = "#00FF00";
+      else dc.context.strokeStyle = "#000000";
+      dc.context.strokeRect(p1_cards[i].x,p1_cards[i].y,p1_cards[i].w,p1_cards[i].h);
+      dc.context.fillText(event.title,p1_cards[i].x+10,p1_cards[i].y+20);
+    }
+    player = g.players[1];
+    dc.context.textAlign = "right";
+    dc.context.fillStyle = player.color;
+    dc.context.fillText(player.disp_pts+" :"+player.title,dc.width-10,20);
+    for(var i = 0; i < player.hand.length; i++)
+    {
+      var event = g.events[player.hand[i]-1];
+      if(g.player_turn == 2 && chosen_card == i) dc.context.strokeStyle = "#00FF00";
+      else dc.context.strokeStyle = "#000000";
+      dc.context.strokeRect(p2_cards[i].x,p2_cards[i].y,p2_cards[i].w,p2_cards[i].h);
+      dc.context.fillText(event.title,p2_cards[i].x+p2_cards[i].w-10,p2_cards[i].y+20);
+    }
+
+    //info
+    dc.context.fillStyle = "#000000";
+    dc.context.textAlign = "center";
+    dc.context.fillText("Turn: "+g.turn,dc.width/2,20);
+    player = g.players[g.player_turn-1];
+    dc.context.fillStyle = player.color;
+    dc.context.fillText(player.title,dc.width/2,35);
+
+
     switch(turn_stage)
     {
-      case TURN_WAIT_FOR_JOIN:
-        dc.context.textAlign = "center";
-        dc.context.fillText("Room "+game.join,dc.width/2,dc.height/2-10+100);
-        dc.context.fillText("Waiting for opponent...",dc.width/2,dc.height/2+10+100);
-        break;
-      case TURN_WAIT:
-        dc.context.textAlign = "center";
-        dc.context.fillText("Waiting for opponent's turn...",dc.width/2,dc.height/2+100);
-        break;
-      case TURN_CHOOSE_CARD:
-        //hand
-        var player;
-        player = g.players[0];
-        for(var i = 0; i < player.hand.length; i++)
-        {
-          var event = g.events[player.hand[i]-1];
-          dc.context.strokeRect(p1_cards[i].x,p1_cards[i].y,p1_cards[i].w,p1_cards[i].h);
-          dc.context.fillText(event.title,p1_cards[i].x+10,p1_cards[i].y+20);
-        }
-        player = g.players[1];
-        for(var i = 0; i < player.hand.length; i++)
-        {
-          var event = g.events[player.hand[i]-1];
-          dc.context.strokeRect(p2_cards[i].x,p2_cards[i].y,p2_cards[i].w,p2_cards[i].h);
-          dc.context.fillText(event.title,p2_cards[i].x+10,p2_cards[i].y+20);
-        }
-        break;
+      case TURN_WAIT_FOR_JOIN: break;
+      case TURN_WAIT: break;
+      case TURN_CHOOSE_CARD: break;
       case TURN_CHOOSE_TARGET:
         dc.context.textAlign = "center";
         dc.context.fillStyle = g.players[0].color;
@@ -422,6 +437,7 @@ var GamePlayScene = function(game, stage)
         dc.context.strokeRect(cancel_target_btn.x,cancel_target_btn.y,cancel_target_btn.w,cancel_target_btn.h); dc.context.fillText("Cancel",cancel_target_btn.x+cancel_target_btn.w/2,cancel_target_btn.y+10);
         break;
       case TURN_SUMMARY:
+        dc.context.textAlign = "left";
         dc.context.fillStyle = "#000000";
         dc.context.strokeRect(ready_btn.x,ready_btn.y,ready_btn.w,ready_btn.h);
 
@@ -431,24 +447,26 @@ var GamePlayScene = function(game, stage)
         break;
     }
 
-    //info
-    dc.context.fillStyle = "#000000";
     dc.context.textAlign = "center";
-    dc.context.fillText("Turn: "+g.turn,dc.width/2,20);
-    dc.context.fillStyle = g.players[g.player_turn-1].color;
-    dc.context.fillText("Player: "+g.players[g.player_turn-1].title,dc.width/2,35);
-
-    var p;
-
-    dc.context.textAlign = "left";
-    p = g.players[0];
-    dc.context.fillStyle = p.color;
-    dc.context.fillText(p.title+": "+p.disp_pts,10,20);
-
-    dc.context.textAlign = "right";
-    p = g.players[1];
-    dc.context.fillStyle = p.color;
-    dc.context.fillText(p.disp_pts+" :"+p.title,dc.width-10,20);
+    switch(turn_stage)
+    {
+      case TURN_WAIT_FOR_JOIN:
+        dc.context.fillText("waiting for opponent...",dc.width/2,50);
+        dc.context.fillText("(Room #"+game.join+")",dc.width/2,100);
+        break;
+      case TURN_WAIT:
+        dc.context.fillText("waiting for opponent's turn...",dc.width/2,50);
+      break;
+      case TURN_CHOOSE_CARD:
+        dc.context.fillText("Choose A Card!",dc.width/2,50);
+        break;
+      case TURN_CHOOSE_TARGET:
+        dc.context.fillText("Choose A Target!",dc.width/2,50);
+        break;
+      case TURN_SUMMARY:
+        dc.context.fillText("",dc.width/2,50);
+        break;
+    }
 
     dc.context.textAlign = "left";
   };

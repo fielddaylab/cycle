@@ -154,7 +154,7 @@ var CarbonCycleGameTemplate =
         title:"Fuel",
         img:"circle",
         x:0.7,
-        y:0.2,
+        y:0.3,
         w:0.1,
         h:0.1,
       },
