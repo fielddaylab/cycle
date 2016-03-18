@@ -625,3 +625,126 @@ var NewCarbonCycleGameTemplate =
       },
     ],
 };
+
+var NitrogenCycleGameTemplate =
+{
+  tokens:10,
+  deck:100,
+  hand:5,
+  goal_shift_turns:3,
+  players:
+    [
+      {
+        title:"PlayerA",
+        token_img:"red_circle",
+        color:"#FF0000",
+      },
+      {
+        title:"PlayerB",
+        token_img:"blue_circle",
+        color:"#0000FF",
+      },
+    ],
+  nodes:
+    [
+      {
+        title:"Atmosphere",
+        img:"circle",
+        x:0.5,
+        y:0.6,
+        w:0.1,
+        h:0.1,
+      },
+      {
+        title:"Soil",
+        img:"circle",
+        x:0.5,
+        y:0.3,
+        w:0.1,
+        h:0.1,
+      },
+      {
+        title:"Plants",
+        img:"circle",
+        x:0.3,
+        y:0.4,
+        w:0.1,
+        h:0.1,
+      },
+      {
+        title:"Animals",
+        img:"circle",
+        x:0.7,
+        y:0.4,
+        w:0.1,
+        h:0.1,
+      },
+    ],
+  events:
+    [
+      {
+        title:"Lightning",
+        from:"Atmosphere",
+        to:"Soil",
+        time:0,
+        amt:1,
+        common:1,
+      },
+      {
+        title:"Bacteria Consumption",
+        from:"Soil",
+        to:"Atmosphere",
+        time:0,
+        amt:1,
+        common:1,
+      },
+      {
+        title:"Plant Absorption",
+        from:"Soil",
+        to:"Plants",
+        time:0,
+        amt:1,
+        common:1,
+      },
+      {
+        title:"Plant Death",
+        from:"Plants",
+        to:"Soil",
+        time:0,
+        amt:1,
+        common:1,
+      },
+      {
+        title:"Animal Death",
+        from:"Animals",
+        to:"Soil",
+        time:0,
+        amt:1,
+        common:1,
+      },
+      {
+        title:"Herbivorism",
+        from:"Plants",
+        to:"Animals",
+        time:0,
+        amt:1,
+        common:1,
+      },
+      {
+        title:"Plants doin stuff",
+        from:"Atmosphere",
+        to:"Plants",
+        time:0,
+        amt:1,
+        common:1,
+      },
+      {
+        title:"Nitrigen-Fixing Plant Bacteria",
+        from:"Plants",
+        to:"Soil",
+        time:0,
+        amt:1,
+        common:1,
+      },
+    ],
+};
