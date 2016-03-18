@@ -41,6 +41,7 @@ var Event = function()
 
   self.id = 0;
   self.title = "Event";
+  self.description = "Wow An Event";
   self.from_id = 0;
   self.to_id = 0;
   self.time = 0;

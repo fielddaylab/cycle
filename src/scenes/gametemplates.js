@@ -56,6 +56,7 @@ var GameTemplate =
     [
       {
         title:"EvA",
+        description:"EvA Is a THING",
         from:"A",
         to:"B",
         time:0,
@@ -64,6 +65,7 @@ var GameTemplate =
       },
       {
         title:"EvB",
+        description:"EvB Is a THING",
         from:"B",
         to:"C",
         time:0,
@@ -72,6 +74,7 @@ var GameTemplate =
       },
       {
         title:"EvC",
+        description:"EvC Is a THING",
         from:"C",
         to:"D",
         time:0,
@@ -80,6 +83,7 @@ var GameTemplate =
       },
       {
         title:"EvD",
+        description:"EvD Is a THING",
         from:"D",
         to:"B",
         time:0,
@@ -88,6 +92,7 @@ var GameTemplate =
       },
       {
         title:"EvE",
+        description:"EvE Is a THING",
         from:"A",
         to:"C",
         time:0,
@@ -163,6 +168,7 @@ var CarbonCycleGameTemplate =
     [
       {
         title:"Photosynth",
+        description:"Makin' plants' energy!",
         from:"Atmosphere",
         to:"Plants",
         time:0,
@@ -171,6 +177,7 @@ var CarbonCycleGameTemplate =
       },
       {
         title:"Eat",
+        description:"Herbivores gotta eat...",
         from:"Plants",
         to:"Animals",
         time:0,
@@ -179,6 +186,7 @@ var CarbonCycleGameTemplate =
       },
       {
         title:"Respiration",
+        description:"BREEEEEAAAATHE",
         from:"Animals",
         to:"Atmosphere",
         time:0,
@@ -187,6 +195,7 @@ var CarbonCycleGameTemplate =
       },
       {
         title:"Animal Death",
+        description:"Sad to see them go.",
         from:"Animals",
         to:"Earth",
         time:0,
@@ -195,6 +204,7 @@ var CarbonCycleGameTemplate =
       },
       {
         title:"Plant Death",
+        description:"Not as sad to see them go.",
         from:"Plants",
         to:"Earth",
         time:0,
@@ -203,6 +213,7 @@ var CarbonCycleGameTemplate =
       },
       {
         title:"Combustion",
+        description:"BOOM",
         from:"Fuel",
         to:"Atmosphere",
         time:0,
@@ -210,7 +221,8 @@ var CarbonCycleGameTemplate =
         common:1,
       },
       {
-        title:"Composition",
+        title:"MillionYearDecay",
+        description:"Turning Coal to Petroleum",
         from:"Earth",
         to:"Fuel",
         time:1,
@@ -294,6 +306,7 @@ var WaterCycleGameTemplate =
     [
       {
         title:"Evaporation",
+        description:"The air is thirsty",
         from:"Surface",
         to:"Atmosphere",
         time:0,
@@ -302,6 +315,7 @@ var WaterCycleGameTemplate =
       },
       {
         title:"Evaporation",
+        description:"The air is thirsty",
         from:"Ocean",
         to:"Atmosphere",
         time:0,
@@ -310,6 +324,7 @@ var WaterCycleGameTemplate =
       },
       {
         title:"Evaporation",
+        description:"The air is thirsty",
         from:"River",
         to:"Atmosphere",
         time:0,
@@ -318,6 +333,7 @@ var WaterCycleGameTemplate =
       },
       {
         title:"Runoff",
+        description:"The water's gotta go somewhere...",
         from:"Surface",
         to:"River",
         time:0,
@@ -326,6 +342,7 @@ var WaterCycleGameTemplate =
       },
       {
         title:"Runoff",
+        description:"The water's gotta go somewhere...",
         from:"Surface",
         to:"Ocean",
         time:0,
@@ -334,6 +351,7 @@ var WaterCycleGameTemplate =
       },
       {
         title:"Condensation",
+        description:"Makes the air visible",
         from:"Atmosphere",
         to:"Clouds",
         time:0,
@@ -342,6 +360,7 @@ var WaterCycleGameTemplate =
       },
       {
         title:"Precipitation",
+        description:"Rain Sleet Snow or Hail",
         from:"Clouds",
         to:"Ocean",
         time:0,
@@ -350,6 +369,7 @@ var WaterCycleGameTemplate =
       },
       {
         title:"Precipitation",
+        description:"Rain Sleet Snow or Hail",
         from:"Clouds",
         to:"River",
         time:0,
@@ -358,6 +378,7 @@ var WaterCycleGameTemplate =
       },
       {
         title:"Precipitation",
+        description:"Rain Sleet Snow or Hail",
         from:"Clouds",
         to:"Surface",
         time:0,
@@ -366,6 +387,7 @@ var WaterCycleGameTemplate =
       },
       {
         title:"Soil Absorption",
+        description:"A sinking puddle",
         from:"Surface",
         to:"Earth",
         time:0,
@@ -373,7 +395,8 @@ var WaterCycleGameTemplate =
         common:1,
       },
       {
-        title:"Groud Water Route to River",
+        title:"Ground Water Route to River",
+        description:"I have nothing interesting to add",
         from:"Earth",
         to:"River",
         time:0,
@@ -382,6 +405,7 @@ var WaterCycleGameTemplate =
       },
       {
         title:"Ground Water Route to Ocean",
+        description:"I have nothing interesting to add",
         from:"Earth",
         to:"Ocean",
         time:0,
@@ -489,6 +513,7 @@ var NewCarbonCycleGameTemplate =
     [
       {
         title:"Animal Respiration",
+        description:"BREATHE",
         from:"Animals",
         to:"Atmosphere",
         time:0,
@@ -497,6 +522,7 @@ var NewCarbonCycleGameTemplate =
       },
       {
         title:"Plant Respiration",
+        description:"Plants breathe too!",
         from:"Plants",
         to:"Atmosphere",
         time:0,
@@ -505,6 +531,7 @@ var NewCarbonCycleGameTemplate =
       },
       {
         title:"Photosynthesis",
+        description:"Turnin' sunshine to energy",
         from:"Atmosphere",
         to:"Plants",
         time:0,
@@ -513,6 +540,7 @@ var NewCarbonCycleGameTemplate =
       },
       {
         title:"Herbivore",
+        description:"Eat your veggies",
         from:"Plants",
         to:"Animals",
         time:0,
@@ -521,6 +549,7 @@ var NewCarbonCycleGameTemplate =
       },
       {
         title:"Animal Death",
+        description:"Poor things",
         from:"Animals",
         to:"Earth (Surface)",
         time:0,
@@ -529,6 +558,7 @@ var NewCarbonCycleGameTemplate =
       },
       {
         title:"Plant Death",
+        description:"Live and die",
         from:"Plants",
         to:"Earth (Surface)",
         time:0,
@@ -537,6 +567,7 @@ var NewCarbonCycleGameTemplate =
       },
       {
         title:"Fire",
+        description:"Mass plant eradication",
         from:"Plants",
         to:"Atmosphere",
         time:0,
@@ -545,6 +576,7 @@ var NewCarbonCycleGameTemplate =
       },
       {
         title:"Soil Respiration",
+        description:"Happens everywhere",
         from:"Earth (Surface)",
         to:"Atmosphere",
         time:0,
@@ -553,6 +585,7 @@ var NewCarbonCycleGameTemplate =
       },
       {
         title:"Million-Year Decay",
+        description:"Takes a while",
         from:"Earth (Surface)",
         to:"Earth (Deep)",
         time:0,
@@ -561,6 +594,7 @@ var NewCarbonCycleGameTemplate =
       },
       {
         title:"Harvest Oil",
+        description:"That's one way to bring it back up",
         from:"Earth (Deep)",
         to:"Factory",
         time:0,
@@ -569,6 +603,7 @@ var NewCarbonCycleGameTemplate =
       },
       {
         title:"Proccess Fossil Fuels",
+        description:"Human intervention",
         from:"Factory",
         to:"Fuel",
         time:0,
@@ -577,6 +612,7 @@ var NewCarbonCycleGameTemplate =
       },
       {
         title:"Combustion",
+        description:"BOOM",
         from:"Fuel",
         to:"Atmosphere",
         time:0,
@@ -585,6 +621,7 @@ var NewCarbonCycleGameTemplate =
       },
       {
         title:"Erosion",
+        description:"One Big Resevoir to another",
         from:"Earth (Surface)",
         to:"Ocean (Surface)",
         time:0,
@@ -592,7 +629,8 @@ var NewCarbonCycleGameTemplate =
         common:1,
       },
       {
-        title:"Sink?",
+        title:"Sinking Sediment",
+        description:"Pretty straightforward process",
         from:"Ocean (Surface)",
         to:"Ocean (Deep)",
         time:0,
@@ -601,6 +639,7 @@ var NewCarbonCycleGameTemplate =
       },
       {
         title:"Ocean Deposit",
+        description:"Slowly reintegrate onto land",
         from:"Ocean (Deep)",
         to:"Earth (Deep)",
         time:0,
@@ -609,6 +648,7 @@ var NewCarbonCycleGameTemplate =
       },
       {
         title:"Ocean Diffusion",
+        description:"Happens Everywhere- both ways!",
         from:"Ocean (Surface)",
         to:"Atmosphere",
         time:0,
@@ -617,6 +657,7 @@ var NewCarbonCycleGameTemplate =
       },
       {
         title:"Ocean Diffusion",
+        description:"Happens Everywhere- both ways!",
         from:"Atmosphere",
         to:"Ocean (Surface)",
         time:0,
@@ -684,6 +725,7 @@ var NitrogenCycleGameTemplate =
     [
       {
         title:"Lightning",
+        description:"Thunder Boomers",
         from:"Atmosphere",
         to:"Soil",
         time:0,
@@ -692,6 +734,7 @@ var NitrogenCycleGameTemplate =
       },
       {
         title:"Bacteria Consumption",
+        description:"Bacteria fart too!",
         from:"Soil",
         to:"Atmosphere",
         time:0,
@@ -699,7 +742,8 @@ var NitrogenCycleGameTemplate =
         common:1,
       },
       {
-        title:"Plant Absorption",
+        title:"Plant Assimilation",
+        description:"Through the roots!",
         from:"Soil",
         to:"Plants",
         time:0,
@@ -708,6 +752,7 @@ var NitrogenCycleGameTemplate =
       },
       {
         title:"Plant Death",
+        description:"Sorry, plants. :(",
         from:"Plants",
         to:"Soil",
         time:0,
@@ -716,6 +761,7 @@ var NitrogenCycleGameTemplate =
       },
       {
         title:"Animal Death",
+        description:"Sad day.",
         from:"Animals",
         to:"Soil",
         time:0,
@@ -724,6 +770,7 @@ var NitrogenCycleGameTemplate =
       },
       {
         title:"Herbivorism",
+        description:"High in fiber.",
         from:"Plants",
         to:"Animals",
         time:0,
@@ -731,16 +778,9 @@ var NitrogenCycleGameTemplate =
         common:1,
       },
       {
-        title:"Plants doin stuff",
-        from:"Atmosphere",
-        to:"Plants",
-        time:0,
-        amt:1,
-        common:1,
-      },
-      {
         title:"Nitrigen-Fixing Plant Bacteria",
-        from:"Plants",
+        description:"Actually doesn't pass through the plant",
+        from:"Atmosphere",
         to:"Soil",
         time:0,
         amt:1,
