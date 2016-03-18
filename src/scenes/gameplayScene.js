@@ -57,9 +57,9 @@ var GamePlayScene = function(game, stage)
 
     //g = constructGame(GameTemplate,sr);
     //g = constructGame(CarbonCycleGameTemplate,sr);
-    //g = constructGame(NewCarbonCycleGameTemplate,sr);
+    g = constructGame(NewCarbonCycleGameTemplate,sr);
     //g = constructGame(WaterCycleGameTemplate,sr);
-    g = constructGame(NitrogenCycleGameTemplate,sr);
+    //g = constructGame(NitrogenCycleGameTemplate,sr);
     transition_t = 0;
     transformGame(dc,g.nodes,g.events,g.tokens)
 
@@ -336,8 +336,11 @@ var GamePlayScene = function(game, stage)
       dc.context.textAlign = "center";
       dc.context.fillText(n.title,n.x+n.w/2,n.y+20);
       dc.context.textAlign = "left";
+      dc.context.fillStyle = g.players[0].color;
       dc.context.fillText(n.disp_p1_tokens,n.x-10,n.y);
+      dc.context.fillStyle = g.players[1].color;
       dc.context.fillText(n.disp_p2_tokens,n.x-10,n.y+10);
+      dc.context.fillStyle = "#000000";
     }
 
     if(transition_t)
@@ -447,6 +450,7 @@ var GamePlayScene = function(game, stage)
       case TURN_CHOOSE_CARD: break;
       case TURN_CHOOSE_TARGET:
         dc.context.textAlign = "center";
+        dc.context.strokeStyle = "#000000";
         dc.context.fillStyle = g.players[0].color;
         dc.context.strokeRect(p1_target_btn.x,p1_target_btn.y,p1_target_btn.w,p1_target_btn.h); dc.context.fillText("Target P1",p1_target_btn.x+p1_target_btn.w/2,p1_target_btn.y+10);
         dc.context.fillStyle = g.players[1].color;
@@ -457,6 +461,7 @@ var GamePlayScene = function(game, stage)
       case TURN_SUMMARY:
         dc.context.textAlign = "left";
         dc.context.fillStyle = "#000000";
+        dc.context.strokeStyle = "#000000";
         dc.context.strokeRect(ready_btn.x,ready_btn.y,ready_btn.w,ready_btn.h);
 
         var player = g.players[g.player_turn-1];

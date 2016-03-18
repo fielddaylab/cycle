@@ -138,18 +138,19 @@ var ConfigScene = function(game, stage)
     switch(mode)
     {
       case CONFIG_MULTIPLAYER:
-        mbtn_local.draw(dc);      dc.context.fillStyle = "#000000"; dc.context.fillText("Local",        mbtn_local.x+10,      mbtn_local.y+20);
-        mbtn_ai.draw(dc);         dc.context.fillStyle = "#000000"; dc.context.fillText("AI",           mbtn_ai.x+10,         mbtn_ai.y+20);
-        mbtn_net_create.draw(dc); dc.context.fillStyle = "#000000"; dc.context.fillText("Net (Create)", mbtn_net_create.x+10, mbtn_net_create.y+20);
-        mbtn_net_join.draw(dc);   dc.context.fillStyle = "#000000"; dc.context.fillText("Net (Join)",   mbtn_net_join.x+10,   mbtn_net_join.y+20);
+        mbtn_local.draw(dc);      dc.context.fillStyle = "#000000"; dc.context.fillText("Same Screen Multiplayer",        mbtn_local.x+10,      mbtn_local.y+20);
+        mbtn_ai.draw(dc);         dc.context.fillStyle = "#000000"; dc.context.fillText("Play Against AI",           mbtn_ai.x+10,         mbtn_ai.y+20);
+        mbtn_net_create.draw(dc); dc.context.fillStyle = "#000000"; dc.context.fillText("Internet Multiplayer (Create Room)", mbtn_net_create.x+10, mbtn_net_create.y+20);
+        mbtn_net_join.draw(dc);   dc.context.fillStyle = "#000000"; dc.context.fillText("Internet Multiplayer (Join Room)",   mbtn_net_join.x+10,   mbtn_net_join.y+20);
         break;
       case CONFIG_JOIN:
-        if(joins.length > 0) { jbtn_a.draw(dc); dc.context.fillStyle = "#000000"; dc.context.fillText("join "+joins[0], jbtn_a.x+10, jbtn_a.y+20); }
-        if(joins.length > 1) { jbtn_b.draw(dc); dc.context.fillStyle = "#000000"; dc.context.fillText("join "+joins[1], jbtn_b.x+10, jbtn_b.y+20); }
-        if(joins.length > 2) { jbtn_c.draw(dc); dc.context.fillStyle = "#000000"; dc.context.fillText("join "+joins[2], jbtn_c.x+10, jbtn_c.y+20); }
-        if(joins.length > 3) { jbtn_d.draw(dc); dc.context.fillStyle = "#000000"; dc.context.fillText("join "+joins[3], jbtn_d.x+10, jbtn_d.y+20); }
-        if(joins.length > 4) { jbtn_e.draw(dc); dc.context.fillStyle = "#000000"; dc.context.fillText("join "+joins[4], jbtn_e.x+10, jbtn_e.y+20); }
-        if(joins.length > 5) { jbtn_f.draw(dc); dc.context.fillStyle = "#000000"; dc.context.fillText("join "+joins[5], jbtn_f.x+10, jbtn_f.y+20); }
+        if(!joins.length)    {                  dc.context.fillStyle = "#000000"; dc.context.fillText("Waiting For Room...", jbtn_a.x+10, jbtn_a.y+20); };
+        if(joins.length > 0) { jbtn_a.draw(dc); dc.context.fillStyle = "#000000"; dc.context.fillText("Join "+joins[0], jbtn_a.x+10, jbtn_a.y+20); }
+        if(joins.length > 1) { jbtn_b.draw(dc); dc.context.fillStyle = "#000000"; dc.context.fillText("Join "+joins[1], jbtn_b.x+10, jbtn_b.y+20); }
+        if(joins.length > 2) { jbtn_c.draw(dc); dc.context.fillStyle = "#000000"; dc.context.fillText("Join "+joins[2], jbtn_c.x+10, jbtn_c.y+20); }
+        if(joins.length > 3) { jbtn_d.draw(dc); dc.context.fillStyle = "#000000"; dc.context.fillText("Join "+joins[3], jbtn_d.x+10, jbtn_d.y+20); }
+        if(joins.length > 4) { jbtn_e.draw(dc); dc.context.fillStyle = "#000000"; dc.context.fillText("Join "+joins[4], jbtn_e.x+10, jbtn_e.y+20); }
+        if(joins.length > 5) { jbtn_f.draw(dc); dc.context.fillStyle = "#000000"; dc.context.fillText("Join "+joins[5], jbtn_f.x+10, jbtn_f.y+20); }
         break;
       case CONFIG_TURN:
         tbtn_10.draw(dc); dc.context.fillStyle = "#000000"; dc.context.fillText("10 Turns", tbtn_10.x+10, tbtn_10.y+20);
