@@ -132,10 +132,12 @@ var constructGame = function(game_data,sr)
 var synthesizeEventInfo = function(event)
 {
   event.info = "";
-  if(event.amt != 1)
-    event.info = "Moves "+event.amt+" tokens ";
-  if(event.time != 0)
-    event.info = "Over "+(event.time+1)+" turns";
+  if(event.amt != 1 && event.time != 0)
+    event.info = "Moves "+event.amt+" tokens over "+(event.time+1)+" turns.";
+  else if(event.amt != 1)
+    event.info = "Moves "+event.amt+" tokens.";
+  else if(event.time != 0)
+    event.info = "Takes "+(event.time+1)+" turns.";
 }
 
 var swapDiscardAndShuffle = function(deck,sr)

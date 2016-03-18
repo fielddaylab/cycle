@@ -421,6 +421,7 @@ var GamePlayScene = function(game, stage)
       dc.context.strokeRect(p1_cards[i].x,p1_cards[i].y,p1_cards[i].w,p1_cards[i].h);
       dc.context.fillText(event.title,p1_cards[i].x+10,p1_cards[i].y+20);
       dc.context.fillText(event.description,p1_cards[i].x+10,p1_cards[i].y+30);
+      dc.context.fillText(event.info,p1_cards[i].x+10,p1_cards[i].y+40);
     }
     player = g.players[1];
     dc.context.textAlign = "right";
@@ -434,6 +435,7 @@ var GamePlayScene = function(game, stage)
       dc.context.strokeRect(p2_cards[i].x,p2_cards[i].y,p2_cards[i].w,p2_cards[i].h);
       dc.context.fillText(event.title,p2_cards[i].x+p2_cards[i].w-10,p2_cards[i].y+20);
       dc.context.fillText(event.description,p2_cards[i].x+p2_cards[i].w-10,p2_cards[i].y+30);
+      dc.context.fillText(event.info,p2_cards[i].x+p2_cards[i].w-10,p2_cards[i].y+40);
     }
 
     //info
