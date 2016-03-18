@@ -64,6 +64,7 @@ var constructGame = function(game_data,sr)
 
     total_commonality += game_data.events[i].common;
 
+    synthesizeEventInfo(event);
     g.events.push(event);
   }
   //normalize commonality
@@ -126,6 +127,15 @@ var constructGame = function(game_data,sr)
   g.goal_shift = g.turns_per_goal_shift;
 
   return g;
+}
+
+var synthesizeEventInfo = function(event)
+{
+  event.info = "";
+  if(event.amt != 1)
+    event.info = "Moves "+event.amt+" tokens ";
+  if(event.time != 0)
+    event.info = "Over "+(event.time+1)+" turns";
 }
 
 var swapDiscardAndShuffle = function(deck,sr)
