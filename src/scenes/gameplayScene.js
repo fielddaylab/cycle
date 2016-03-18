@@ -315,11 +315,14 @@ var GamePlayScene = function(game, stage)
 
   self.draw = function()
   {
+    dc.context.fillStyle = "#FFFFAA";
+    if(g.player_turn == 1) dc.context.fillRect(0,0,150,dc.height);
+    if(g.player_turn == 2) dc.context.fillRect(dc.width-150,0,150,dc.height);
+
     dc.context.fillStyle = "#000000";
     dc.context.strokeStyle = "#000000";
 
     //events
-    dc.context.strokeStyle = "#000000";
     for(var i = 0; i < g.events.length; i++)
     {
       var e = g.events[i];
