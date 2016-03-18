@@ -55,7 +55,7 @@ var GamePlayScene = function(game, stage)
     if(game.join) sr = new SeededRand(game.join);
     else          sr = new SeededRand(Math.floor(Math.random()*100000));
 
-    g = constructGame(CarbonCycleGameTemplate,sr);
+    g = constructGame(WaterCycleGameTemplate,sr);
     transition_t = 0;
     transformGame(dc,g.nodes,g.events,g.tokens)
 
