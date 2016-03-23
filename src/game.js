@@ -26,7 +26,8 @@ var Game = function(init)
     new LoadingScene(self, stage),
     //new TestScene(self, stage),
     new ConfigScene(self,stage),
-    new GamePlayScene(self, stage)
+    new TutorialScene(self,stage),
+    new GamePlayScene(self, stage),
   ];
   var cur_scene = 0;
   var old_cur_scene = -1;

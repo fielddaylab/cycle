@@ -567,6 +567,8 @@ var GamePlayScene = function(game, stage)
     p1_card_clicker = undefined;
     p2_card_clicker.detach();
     p2_card_clicker = undefined;
+    card_hoverer.detach();
+    card_hoverer = undefined;
   };
 
   //no data- just used for interface

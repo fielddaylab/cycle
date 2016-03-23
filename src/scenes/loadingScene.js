@@ -30,7 +30,7 @@ var LoadingScene = function(game, stage)
     for(var i = 0; i < img_srcs.length; i++)
     {
       images[i] = new Image();
-      images[i].onload = imageLoaded; 
+      images[i].onload = imageLoaded;
       images[i].src = img_srcs[i];
     }
     imageLoaded(); //call once to prevent 0/0 != 100% bug
