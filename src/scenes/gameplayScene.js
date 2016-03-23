@@ -263,6 +263,10 @@ var GamePlayScene = function(game, stage)
         clicker.ignore();
         break;
       case TURN_CHOOSE_TARGET:
+        if(g.player_turn == 1) p1_card_clicker.flush();
+        if(g.player_turn == 2) p2_card_clicker.flush();
+        clicker.flush();
+        break;
       case TURN_SUMMARY:
       case TURN_DONE:
         p1_card_clicker.ignore();
@@ -341,6 +345,21 @@ var GamePlayScene = function(game, stage)
       if(hovering_card_i >= 0)
       {
         var e_id = g.players[hovering_card_p-1].hand[hovering_card_i];
+        if(e_id && e_id == e.id)
+        {
+          dc.context.strokeStyle = "#FFFF00";
+          dc.context.lineWidth = 10;
+          dc.context.beginPath();
+          dc.context.moveTo(e.start_x,e.start_y);
+          dc.context.lineTo(e.end_x,e.end_y);
+          dc.context.stroke();
+          dc.context.lineWidth = 2;
+          dc.context.strokeStyle = "#000000";
+        }
+      }
+      if(chosen_card_i >= 0)
+      {
+        var e_id = g.players[g.player_turn-1].hand[chosen_card_i];
         if(e_id && e_id == e.id)
         {
           dc.context.strokeStyle = "#FFFF00";
