@@ -294,7 +294,7 @@ var GamePlayScene = function(game, stage)
         clicker.flush();
         break;
     }
-    card_hoverer.flush();
+    if(card_hoverer) card_hoverer.flush(); //check because "setScene" could have cleaned up hoverer. causes error in console, but no other issues.
     hit_ui = false;
 
     if(transition_t)
