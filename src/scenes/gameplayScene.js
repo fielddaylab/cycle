@@ -63,8 +63,8 @@ var GamePlayScene = function(game, stage)
     else          sr = new SeededRand(Math.floor(Math.random()*100000));
 
     //g = constructGame(GameTemplate,sr);
-    //g = constructGame(CarbonCycleGameTemplate,sr);
-    g = constructGame(NewCarbonCycleGameTemplate,sr);
+    //g = constructGame(OldCarbonCycleGameTemplate,sr);
+    g = constructGame(CarbonCycleGameTemplate,sr);
     //g = constructGame(WaterCycleGameTemplate,sr);
     //g = constructGame(NitrogenCycleGameTemplate,sr);
     transition_t = 0;
@@ -412,8 +412,10 @@ var GamePlayScene = function(game, stage)
       dc.context.textAlign = "center";
       dc.context.fillText(n.title,n.x+n.w/2,n.y+20);
       dc.context.textAlign = "left";
+      dc.context.drawImage(ghost_circle_icon,n.x-12,n.y-10,10,10);
       dc.context.fillStyle = g.players[0].color;
       dc.context.fillText(n.disp_p1_tokens,n.x-10,n.y);
+      dc.context.drawImage(ghost_circle_icon,n.x-12,n.y,10,10);
       dc.context.fillStyle = g.players[1].color;
       dc.context.fillText(n.disp_p2_tokens,n.x-10,n.y+10);
       dc.context.fillStyle = "#000000";
@@ -487,7 +489,7 @@ var GamePlayScene = function(game, stage)
     var turns_left = 3-(g.turn%g.turns_per_goal_shift);
     if(!goal_close && turns_left == 3) turns_left = 0;
     dc.context.strokeRect(goal_bounds.x,goal_bounds.y,goal_bounds.w,goal_bounds.h);
-    dc.context.fillText(turns_left+" turns remaining...",goal_bounds.x,goal_bounds.y);
+    dc.context.fillText(turns_left+" turns til shift",goal_bounds.x,goal_bounds.y-3);
 
     //hand
     dc.context.textAlign = "left";

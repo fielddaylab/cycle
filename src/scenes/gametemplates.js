@@ -102,7 +102,7 @@ var GameTemplate =
     ],
 };
 
-var CarbonCycleGameTemplate =
+var OldCarbonCycleGameTemplate =
 {
   tokens:10,
   deck:100,
@@ -415,7 +415,7 @@ var WaterCycleGameTemplate =
     ],
 };
 
-var NewCarbonCycleGameTemplate =
+var CarbonCycleGameTemplate =
 {
   tokens:10,
   deck:100,
@@ -456,7 +456,7 @@ var NewCarbonCycleGameTemplate =
         title:"Plants",
         img:"circle",
         x:0.45,
-        y:0.55,
+        y:0.5,
         w:0.1,
         h:0.1,
       },
@@ -487,8 +487,8 @@ var NewCarbonCycleGameTemplate =
       {
         title:"Factory",
         img:"circle",
-        x:0.55,
-        y:0.5,
+        x:0.575,
+        y:0.475,
         w:0.1,
         h:0.1,
       },
