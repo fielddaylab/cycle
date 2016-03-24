@@ -116,6 +116,7 @@ var client = function(update_func,error_func)
 
   self.begin = function()
   {
+    self.id = Math.floor(Math.random()*100000000);
     self.interval = setInterval(self.get,self.poll_rate);
   }
 

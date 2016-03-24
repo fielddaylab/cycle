@@ -253,6 +253,9 @@ var GamePlayScene = function(game, stage)
           cli.last_known = cli.database.length-1;
           cli.updated = false;
         }
+        p1_card_clicker.ignore();
+        p2_card_clicker.ignore();
+        clicker.ignore();
         break;
       case TURN_WAIT:
         if(cli.updated)
@@ -270,6 +273,9 @@ var GamePlayScene = function(game, stage)
           cli.last_known = cli.database.length-1;
           cli.updated = false;
         }
+        p1_card_clicker.ignore();
+        p2_card_clicker.ignore();
+        clicker.ignore();
         break;
       case TURN_CHOOSE_CARD:
         if(g.player_turn == 1) p1_card_clicker.flush();
