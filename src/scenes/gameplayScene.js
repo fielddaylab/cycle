@@ -3,6 +3,7 @@ var GamePlayScene = function(game, stage)
   var self = this;
 
   var dc = stage.drawCanv;
+  var n_ticks;
   var clicker;
   var card_hoverer;
   var p1_card_clicker;
@@ -25,9 +26,11 @@ var GamePlayScene = function(game, stage)
   var g;
 
   var chosen_card_i;
+  var chosen_card_t;
   var chosen_target_p;
   var hovering_card_i;
   var hovering_card_p;
+  var hovering_card_t;
 
   var transition_t;
   var TRANSITION_KEY_SHUFFLE   = 50;
@@ -174,7 +177,9 @@ var GamePlayScene = function(game, stage)
           if(g.player_turn == 1) turn_stage = TURN_CHOOSE_CARD;
           else
           {
-            chosen_card_i = randIntBelow(g.players[1].hand.length);
+            var new_chosen_card_i = randIntBelow(g.players[1].hand.length);
+            if(chosen_card_i != new_chosen_card_i) chosen_card_t = 0;
+            chosen_card_i = new_chosen_card_i;
             chosen_target_p = 1+randIntBelow(2);
           }
         }
@@ -217,13 +222,21 @@ var GamePlayScene = function(game, stage)
       turn_stage = TURN_WAIT;
 
     chosen_card_i = -1;
+    chosen_card_t = 0;
     chosen_target_p = 0;
     hovering_card_i = -1;
     hovering_card_p = 0;
+    hovering_card_t = 0;
+
+    n_ticks = 0;
   };
 
   self.tick = function()
   {
+    n_ticks++;
+    chosen_card_t++;
+    hovering_card_t++;
+
     switch(turn_stage)
     {
       case TURN_WAIT_FOR_JOIN:
@@ -248,6 +261,7 @@ var GamePlayScene = function(game, stage)
           {
             if(cli.database[i].user == game.opponent && cli.database[i].event == "MOVE")
             {
+              if(chosen_card_i != cli.database[i].args[0]) chosen_card_t = 0;
               chosen_card_i = cli.database[i].args[0];
               chosen_target_p = cli.database[i].args[1];
               turn_stage = TURN_SUMMARY;
@@ -339,6 +353,7 @@ var GamePlayScene = function(game, stage)
     dc.context.strokeStyle = "#000000";
 
     //events
+    var sim_t = 40;
     for(var i = 0; i < g.events.length; i++)
     {
       var e = g.events[i];
@@ -355,9 +370,13 @@ var GamePlayScene = function(game, stage)
           dc.context.stroke();
           dc.context.lineWidth = 2;
           dc.context.strokeStyle = "#000000";
+          var t = (hovering_card_t%sim_t)/sim_t;
+          t *= t;
+          dc.context.fillStyle = "#FF0000";
+          dc.context.drawImage(circle_icon,lerp(e.start_x,e.end_x,t)-5,lerp(e.start_y,e.end_y,t)-5,10,10);
         }
       }
-      if(chosen_card_i >= 0)
+      if(chosen_card_i >= 0 && !(hovering_card_i >= 0))
       {
         var e_id = g.players[g.player_turn-1].hand[chosen_card_i];
         if(e_id && e_id == e.id)
@@ -370,6 +389,9 @@ var GamePlayScene = function(game, stage)
           dc.context.stroke();
           dc.context.lineWidth = 2;
           dc.context.strokeStyle = "#000000";
+          var t = (chosen_card_t%sim_t)/sim_t;
+          t *= t;
+          dc.context.drawImage(circle_icon,lerp(e.start_x,e.end_x,t)-5,lerp(e.start_y,e.end_y,t)-5,10,10);
         }
       }
       dc.context.beginPath();
@@ -587,6 +609,7 @@ var GamePlayScene = function(game, stage)
     self.click = function(evt)
     {
       if(hit_ui) return;
+      if(chosen_card_i != self.index) chosen_card_t = 0;
       chosen_card_i = self.index;
       turn_stage = TURN_CHOOSE_TARGET;
       hit_ui = true;
@@ -594,6 +617,7 @@ var GamePlayScene = function(game, stage)
 
     self.hover = function(evt)
     {
+      if(hovering_card_i == -1) hovering_card_t = 0;
       hovering_card_i = self.index;
       hovering_card_p = self.player;
     }
