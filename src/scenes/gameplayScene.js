@@ -54,6 +54,7 @@ var GamePlayScene = function(game, stage)
 
   self.ready = function()
   {
+    dc.context.font = "12px Arial";
     clicker = new Clicker({source:stage.dispCanv.canvas});
     p1_card_clicker = new Clicker({source:stage.dispCanv.canvas});
     p2_card_clicker = new Clicker({source:stage.dispCanv.canvas});
@@ -489,7 +490,7 @@ var GamePlayScene = function(game, stage)
     var turns_left = 3-(g.turn%g.turns_per_goal_shift);
     if(!goal_close && turns_left == 3) turns_left = 0;
     dc.context.strokeRect(goal_bounds.x,goal_bounds.y,goal_bounds.w,goal_bounds.h);
-    dc.context.fillText(turns_left+" turns til shift",goal_bounds.x,goal_bounds.y-3);
+    dc.outlineText(turns_left+" turns til goal shift",goal_bounds.x,goal_bounds.y-3,"#000000","#FFFFFF");
 
     //hand
     dc.context.textAlign = "left";
@@ -498,28 +499,34 @@ var GamePlayScene = function(game, stage)
     dc.context.textAlign = "left";
     dc.context.fillStyle = player.color;
     dc.context.fillText(player.title+": "+player.disp_pts,10,20);
+    dc.context.fillStyle = "#000000";
     for(var i = 0; i < player.hand.length; i++)
     {
       var event = g.events[player.hand[i]-1];
       if(g.player_turn == 1 && chosen_card_i == i) dc.context.strokeStyle = "#00FF00";
-      else dc.context.strokeStyle = "#000000";
+      else dc.context.strokeStyle = player.color;
       dc.context.strokeRect(p1_cards[i].x,p1_cards[i].y,p1_cards[i].w,p1_cards[i].h);
       dc.context.fillText(event.title,p1_cards[i].x+10,p1_cards[i].y+20);
+      dc.context.font = "italic 10px Arial";
       dc.context.fillText(event.description,p1_cards[i].x+10,p1_cards[i].y+30);
+      dc.context.font = "12px Arial";
       dc.context.fillText(event.info,p1_cards[i].x+10,p1_cards[i].y+40);
     }
     player = g.players[1];
     dc.context.textAlign = "right";
     dc.context.fillStyle = player.color;
     dc.context.fillText(player.disp_pts+" :"+player.title,dc.width-10,20);
+    dc.context.fillStyle = "#000000";
     for(var i = 0; i < player.hand.length; i++)
     {
       var event = g.events[player.hand[i]-1];
       if(g.player_turn == 2 && chosen_card_i == i) dc.context.strokeStyle = "#00FF00";
-      else dc.context.strokeStyle = "#000000";
+      else dc.context.strokeStyle = player.color;
       dc.context.strokeRect(p2_cards[i].x,p2_cards[i].y,p2_cards[i].w,p2_cards[i].h);
       dc.context.fillText(event.title,p2_cards[i].x+p2_cards[i].w-10,p2_cards[i].y+20);
+      dc.context.font = "italic 10px Arial";
       dc.context.fillText(event.description,p2_cards[i].x+p2_cards[i].w-10,p2_cards[i].y+30);
+      dc.context.font = "12px Arial";
       dc.context.fillText(event.info,p2_cards[i].x+p2_cards[i].w-10,p2_cards[i].y+40);
     }
 
@@ -569,6 +576,7 @@ var GamePlayScene = function(game, stage)
     }
 
     dc.context.textAlign = "center";
+    dc.context.font = "20px Arial";
     switch(turn_stage)
     {
       case TURN_WAIT_FOR_JOIN:
@@ -593,6 +601,7 @@ var GamePlayScene = function(game, stage)
     }
 
     dc.context.textAlign = "left";
+    dc.context.font = "12px Arial";
   };
 
   self.cleanup = function()

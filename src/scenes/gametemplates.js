@@ -602,7 +602,7 @@ var CarbonCycleGameTemplate =
         common:0.75,
       },
       {
-        title:"Proccess Fossil Fuels",
+        title:"Process Fossil Fuels",
         description:"Human intervention",
         from:"Factory",
         to:"Fuel",

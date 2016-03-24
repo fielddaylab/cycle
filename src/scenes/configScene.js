@@ -39,6 +39,7 @@ var ConfigScene = function(game, stage)
 
   self.ready = function()
   {
+    dc.context.font = "12px Arial";
     clicker = new Clicker({source:stage.dispCanv.canvas});
 
     mode = CONFIG_MULTIPLAYER;
