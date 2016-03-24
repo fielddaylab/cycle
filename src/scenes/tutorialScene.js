@@ -487,6 +487,7 @@ var TutorialScene = function(game, stage)
     for(var i = 0; i < g.tokens.length; i++)
     {
       var t = g.tokens[i];
+      if(cur_prompt == 5) dc.context.drawImage(highlit_token_icon,t.x-2,t.y-2,t.w+4,t.h+4);
       dc.context.drawImage(g.players[t.player_id-1].token_img,t.x,t.y,t.w,t.h);
     }
     var goal_node = g.nodes[g.goal_node-1];
@@ -495,6 +496,7 @@ var TutorialScene = function(game, stage)
       goal_close = true;
     var turns_left = 3-(g.turn%g.turns_per_goal_shift);
     if(!goal_close && turns_left == 3) turns_left = 0;
+    if(cur_prompt == 12) dc.context.strokeStyle = "#00FF00";
     dc.context.strokeRect(goal_bounds.x,goal_bounds.y,goal_bounds.w,goal_bounds.h);
     dc.outlineText(turns_left+" turns til goal shift",goal_bounds.x,goal_bounds.y-3,"#000000","#FFFFFF");
 
@@ -504,6 +506,7 @@ var TutorialScene = function(game, stage)
     player = g.players[0];
     dc.context.textAlign = "left";
     dc.context.fillStyle = player.color;
+    if(cur_prompt == 4) dc.context.fillStyle = "#00FF00";
     dc.context.fillText(player.title+": "+player.disp_pts,10,20);
     dc.context.fillStyle = "#000000";
     for(var i = 0; i < player.hand.length; i++)
@@ -511,6 +514,7 @@ var TutorialScene = function(game, stage)
       var event = g.events[player.hand[i]-1];
       if(g.player_turn == 1 && chosen_card_i == i) dc.context.strokeStyle = "#00FF00";
       else dc.context.strokeStyle = player.color;
+      if(cur_prompt == 2) dc.context.strokeStyle = "#00FF00";
       dc.context.strokeRect(p1_cards[i].x,p1_cards[i].y,p1_cards[i].w,p1_cards[i].h);
       dc.context.fillText(event.title,p1_cards[i].x+10,p1_cards[i].y+20);
       dc.context.font = "italic 10px Arial";
@@ -521,6 +525,7 @@ var TutorialScene = function(game, stage)
     player = g.players[1];
     dc.context.textAlign = "right";
     dc.context.fillStyle = player.color;
+    if(cur_prompt == 4) dc.context.fillStyle = "#00FF00";
     dc.context.fillText(player.disp_pts+" :"+player.title,dc.width-10,20);
     dc.context.fillStyle = "#000000";
     for(var i = 0; i < player.hand.length; i++)
@@ -528,6 +533,7 @@ var TutorialScene = function(game, stage)
       var event = g.events[player.hand[i]-1];
       if(g.player_turn == 2 && chosen_card_i == i) dc.context.strokeStyle = "#00FF00";
       else dc.context.strokeStyle = player.color;
+      if(cur_prompt == 3) dc.context.strokeStyle = "#00FF00";
       dc.context.strokeRect(p2_cards[i].x,p2_cards[i].y,p2_cards[i].w,p2_cards[i].h);
       dc.context.fillText(event.title,p2_cards[i].x+p2_cards[i].w-10,p2_cards[i].y+20);
       dc.context.font = "italic 10px Arial";
@@ -539,7 +545,9 @@ var TutorialScene = function(game, stage)
     //info
     dc.context.fillStyle = "#000000";
     dc.context.textAlign = "center";
+    if(cur_prompt == 6) dc.context.fillStyle = "#00FF00";
     dc.context.fillText("Turn: "+g.turn,dc.width/2,20);
+    dc.context.fillStyle = "#000000";
     player = g.players[g.player_turn-1];
     dc.context.fillStyle = player.color;
     dc.context.fillText(player.title,dc.width/2,35);
