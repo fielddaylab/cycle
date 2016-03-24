@@ -480,7 +480,14 @@ var GamePlayScene = function(game, stage)
       var t = g.tokens[i];
       dc.context.drawImage(g.players[t.player_id-1].token_img,t.x,t.y,t.w,t.h);
     }
+    var goal_node = g.nodes[g.goal_node-1];
+    var goal_close = false;
+    if(Math.abs(goal_bounds.x-goal_node.x)+Math.abs(goal_bounds.y-goal_node.y) < 10)
+      goal_close = true;
+    var turns_left = 3-(g.turn%g.turns_per_goal_shift);
+    if(!goal_close && turns_left == 3) turns_left = 0;
     dc.context.strokeRect(goal_bounds.x,goal_bounds.y,goal_bounds.w,goal_bounds.h);
+    dc.context.fillText(turns_left+" turns remaining...",goal_bounds.x,goal_bounds.y);
 
     //hand
     dc.context.textAlign = "left";

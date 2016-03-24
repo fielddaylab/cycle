@@ -7,12 +7,12 @@ var GameTemplate =
   players:
     [
       {
-        title:"PlayerA",
+        title:"Player 1",
         token_img:"red_circle",
         color:"#FF0000",
       },
       {
-        title:"PlayerB",
+        title:"Player 2",
         token_img:"blue_circle",
         color:"#0000FF",
       },
@@ -111,12 +111,12 @@ var CarbonCycleGameTemplate =
   players:
     [
       {
-        title:"PlayerA",
+        title:"Player 1",
         token_img:"red_circle",
         color:"#FF0000",
       },
       {
-        title:"PlayerB",
+        title:"Player 2",
         token_img:"blue_circle",
         color:"#0000FF",
       },
@@ -241,12 +241,12 @@ var WaterCycleGameTemplate =
   players:
     [
       {
-        title:"PlayerA",
+        title:"Player 1",
         token_img:"red_circle",
         color:"#FF0000",
       },
       {
-        title:"PlayerB",
+        title:"Player 2",
         token_img:"blue_circle",
         color:"#0000FF",
       },
@@ -424,12 +424,12 @@ var NewCarbonCycleGameTemplate =
   players:
     [
       {
-        title:"PlayerA",
+        title:"Player 1",
         token_img:"red_circle",
         color:"#FF0000",
       },
       {
-        title:"PlayerB",
+        title:"Player 2",
         token_img:"blue_circle",
         color:"#0000FF",
       },
@@ -676,12 +676,12 @@ var NitrogenCycleGameTemplate =
   players:
     [
       {
-        title:"PlayerA",
+        title:"Player 1",
         token_img:"red_circle",
         color:"#FF0000",
       },
       {
-        title:"PlayerB",
+        title:"Player 2",
         token_img:"blue_circle",
         color:"#0000FF",
       },
