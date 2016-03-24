@@ -21,8 +21,8 @@ var tokenWorldTargetEvent = function(t,e,progress)
 }
 var tokenWorldTargetNode = function(t,n)
 {
-  t.target_wx = n.wx-(n.ww/2)+Math.random()*n.ww;
-  t.target_wy = n.wy-(n.wh/2)+Math.random()*n.wh;
+  t.target_wx = n.wx-((n.ww/2)/2)+Math.random()*(n.ww/2);
+  t.target_wy = n.wy-((n.wh/2)/2)+Math.random()*(n.wh/2);
 }
 
 var transformGame = function(canv,nodes,events,tokens)
