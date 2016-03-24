@@ -378,7 +378,6 @@ var GamePlayScene = function(game, stage)
           dc.context.strokeStyle = "#000000";
           var t = (hovering_card_t%sim_t)/sim_t;
           t *= t;
-          dc.context.fillStyle = "#FF0000";
           dc.context.drawImage(circle_icon,lerp(e.start_x,e.end_x,t)-5,lerp(e.start_y,e.end_y,t)-5,10,10);
         }
       }
