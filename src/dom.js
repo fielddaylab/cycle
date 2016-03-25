@@ -114,7 +114,7 @@ var BottomMessageWrangler = function()
     if(lines && lines.length > cur_line)
       text_el.innerHTML  = lines[cur_line];
     else
-      self.dismissMessage();
+      self.dismiss();
   }
 
   var el = document.getElementById("bottom_display");

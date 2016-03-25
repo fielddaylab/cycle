@@ -16,8 +16,12 @@ var GamePlayScene = function(game, stage)
   var TURN_CHOOSE_TARGET = ENUM; ENUM++;
   var TURN_SUMMARY       = ENUM; ENUM++;
   var TURN_DONE          = ENUM; ENUM++;
-
   var turn_stage;
+
+  ENUM = 0;
+  var INPUT_RESUME = ENUM; ENUM++;
+  var INPUT_PAUSE = ENUM; ENUM++;
+  var input_state;
 
   //seeded rand!
   var sr;
@@ -51,6 +55,7 @@ var GamePlayScene = function(game, stage)
   var cancel_target_btn;
   var ready_btn;
   var done_btn;
+  var bmwrangler;
 
   self.ready = function()
   {
@@ -213,6 +218,9 @@ var GamePlayScene = function(game, stage)
     clicker.register(ready_btn);
     clicker.register(done_btn);
 
+    bmwrangler = new BottomMessageWrangler();
+    bmwrangler.immediateDismiss();
+
     if(game.multiplayer == MULTIPLAYER_LOCAL)
       turn_stage = TURN_CHOOSE_CARD;
     else if(game.multiplayer == MULTIPLAYER_AI)
@@ -221,6 +229,8 @@ var GamePlayScene = function(game, stage)
       turn_stage = TURN_WAIT_FOR_JOIN;
     else if(game.multiplayer == MULTIPLAYER_NET_JOIN)
       turn_stage = TURN_WAIT;
+
+    input_state = INPUT_RESUME;
 
     chosen_card_i = -1;
     chosen_card_t = 0;
@@ -232,11 +242,18 @@ var GamePlayScene = function(game, stage)
     n_ticks = 0;
   };
 
+  var displayed_turn_3_warning = false;
   self.tick = function()
   {
     n_ticks++;
     chosen_card_t++;
     hovering_card_t++;
+
+    if(g.turn >= 3 && !displayed_turn_3_warning)
+    {
+      displayed_turn_3_warning = true;
+      displayMessage(["WARNING! We're going to remove that nice visualizer that shows <b>which direction</b> each card transitions. You'll have to figure it out on your own! Good luck!"]);
+    }
 
     switch(turn_stage)
     {
@@ -348,6 +365,7 @@ var GamePlayScene = function(game, stage)
       else if(transition_t >= TRANSITION_KEY_MOVE_GOAL)
         transition_t = 0;
     }
+    bmwrangler.tick();
   };
 
   self.draw = function()
@@ -626,6 +644,17 @@ var GamePlayScene = function(game, stage)
     card_hoverer.detach();
     card_hoverer = undefined;
   };
+
+  var doneDisplay = function ()
+  {
+    input_state = INPUT_RESUME;
+  }
+
+  var displayMessage = function(lines)
+  {
+    input_state = INPUT_PAUSE;
+    bmwrangler.popMessage(lines,doneDisplay);
+  }
 
   //no data- just used for interface
   var Card = function()
