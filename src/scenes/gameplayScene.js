@@ -42,6 +42,8 @@ var GamePlayScene = function(game, stage)
   var TRANSITION_KEY_SCORE_PTS = 150;
   var TRANSITION_KEY_MOVE_GOAL = 200;
 
+  var direction_viz_enabled;
+
   //ui only
   var hit_ui;
   var goal_bounds;
@@ -239,6 +241,8 @@ var GamePlayScene = function(game, stage)
     hovering_card_t = 0;
 
     n_ticks = 0;
+
+    direction_viz_enabled = true;
   };
 
   var displayed_turn_3_warning = false;
@@ -253,7 +257,7 @@ var GamePlayScene = function(game, stage)
       displayed_turn_3_warning = true;
       displayMessage([
         "WARNING! See how when you hover over an event card, you get a nice visualization of where the carbon atoms will move? Well, we're going to remove that visualization for you.",
-        "Don't worry! We'll still keep the visualization of which two reservoirs are affected- but you will now have to figure out <b>in which direction</b> it will affect the carbon atoms, yourself.",
+        "Don't worry! We'll still keep the visualization highlighting which two reservoirs are affected- but you will now have to figure out <b>in which direction</b> it will affect the carbon atoms, yourself.",
         "Good luck! :)",
       ]);
     }
@@ -398,7 +402,7 @@ var GamePlayScene = function(game, stage)
           dc.context.stroke();
           dc.context.lineWidth = 2;
           dc.context.strokeStyle = "#000000";
-          if(g.turn < 3 ||
+          if(direction_viz_enabled ||
             (
               turn_stage == TURN_SUMMARY &&
               chosen_card_i == hovering_card_i &&
@@ -425,7 +429,7 @@ var GamePlayScene = function(game, stage)
           dc.context.stroke();
           dc.context.lineWidth = 2;
           dc.context.strokeStyle = "#000000";
-          if(g.turn < 3 || turn_stage == TURN_SUMMARY)
+          if(direction_viz_enabled || turn_stage == TURN_SUMMARY)
           {
             var t = (chosen_card_t%sim_t)/sim_t;
             t *= t;
@@ -656,6 +660,7 @@ var GamePlayScene = function(game, stage)
   var doneDisplay = function ()
   {
     input_state = INPUT_RESUME;
+    direction_viz_enabled = false;
   }
 
   var displayMessage = function(lines)
