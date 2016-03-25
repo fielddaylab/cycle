@@ -456,10 +456,9 @@ var GamePlayScene = function(game, stage)
       if(transition_t < TRANSITION_KEY_SHUFFLE)
       {
         var random_highlit_tok_i;
-
+        var toks_at_last_target;
         var last_event = g.events[g.last_event-1];
         var fromnode = g.nodes[last_event.from_id-1];
-        var toks_at_last_target;
         if(g.last_target == 1) target_toks = fromnode.disp_p1_tokens;
         else                   target_toks = fromnode.disp_p2_tokens;
         random_highlit_tok_i = Math.floor(Math.random()*target_toks);
@@ -507,9 +506,15 @@ var GamePlayScene = function(game, stage)
       }
     }
 
+    var event = g.events[g.players[g.player_turn-1].hand[chosen_card_i]-1];
     for(var i = 0; i < g.tokens.length; i++)
     {
       var t = g.tokens[i];
+      if(turn_stage == TURN_SUMMARY)
+      {
+        if(t.disp_node_id == event.from_id && t.player_id == chosen_target_p)
+          dc.context.drawImage(highlit_token_icon,t.x-2,t.y-2,t.w+4,t.h+4);
+      }
       dc.context.drawImage(g.players[t.player_id-1].token_img,t.x,t.y,t.w,t.h);
     }
     var goal_node = g.nodes[g.goal_node-1];

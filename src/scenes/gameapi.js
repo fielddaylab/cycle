@@ -78,6 +78,7 @@ var constructGame = function(game_data,sr)
     token.player_id = (i%g.players.length)+1;
     token.node_id = (Math.floor(i/2)%g.nodes.length)+1; //even
     //token.node_id = Math.floor(sr.next()*g.nodes.length)+1; //random
+    token.disp_node_id = token.node_id;
     token.transitions = 0;
 
     token.ww = 0.01;
