@@ -16,8 +16,8 @@ var ConfigScene = function(game, stage)
   var hit_ui;
 
   var mbtn_tutorial;
-  var mbtn_local;
   var mbtn_ai;
+  var mbtn_local;
   var mbtn_net_create;
   var mbtn_net_join;
   var multiplayer;
@@ -46,8 +46,8 @@ var ConfigScene = function(game, stage)
     mode = CONFIG_MULTIPLAYER;
 
     mbtn_tutorial   = new ButtonBox(10,10, dc.width-20,30,function(evt){ if(hit_ui || mode != CONFIG_MULTIPLAYER) return; game.setScene(3); });
-    mbtn_local      = new ButtonBox(10,50, dc.width-20,30,function(evt){ if(hit_ui || mode != CONFIG_MULTIPLAYER) return; hit_ui = true; multiplayer = MULTIPLAYER_LOCAL;      mode = CONFIG_TURN; });
-    mbtn_ai         = new ButtonBox(10,90, dc.width-20,30,function(evt){ if(hit_ui || mode != CONFIG_MULTIPLAYER) return; hit_ui = true; multiplayer = MULTIPLAYER_AI;         mode = CONFIG_TURN; });
+    mbtn_ai         = new ButtonBox(10,50, dc.width-20,30,function(evt){ if(hit_ui || mode != CONFIG_MULTIPLAYER) return; hit_ui = true; multiplayer = MULTIPLAYER_AI;         mode = CONFIG_TURN; });
+    mbtn_local      = new ButtonBox(10,90, dc.width-20,30,function(evt){ if(hit_ui || mode != CONFIG_MULTIPLAYER) return; hit_ui = true; multiplayer = MULTIPLAYER_LOCAL;      mode = CONFIG_TURN; });
     mbtn_net_create = new ButtonBox(10,130,dc.width-20,30,function(evt){ if(hit_ui || mode != CONFIG_MULTIPLAYER) return; hit_ui = true; multiplayer = MULTIPLAYER_NET_CREATE; mode = CONFIG_TURN; cli.begin(); });
     mbtn_net_join   = new ButtonBox(10,170,dc.width-20,30,function(evt){ if(hit_ui || mode != CONFIG_MULTIPLAYER) return; hit_ui = true; multiplayer = MULTIPLAYER_NET_JOIN;   mode = CONFIG_JOIN; cli.begin(); });
 
@@ -64,8 +64,8 @@ var ConfigScene = function(game, stage)
     tbtn_30 = new ButtonBox(10,90, dc.width-20,30,function(evt){ if(hit_ui || mode != CONFIG_TURN) return; hit_ui = true; turn = 30; mode = CONFIG_COMMIT; });
 
     clicker.register(mbtn_tutorial);
-    clicker.register(mbtn_local);
     clicker.register(mbtn_ai);
+    clicker.register(mbtn_local);
     clicker.register(mbtn_net_create);
     clicker.register(mbtn_net_join);
     clicker.register(jbtn_a);
@@ -147,11 +147,11 @@ var ConfigScene = function(game, stage)
     switch(mode)
     {
       case CONFIG_MULTIPLAYER:
-        mbtn_tutorial.draw(dc);   dc.context.fillStyle = "#000000"; dc.context.fillText("Tutorial",                           mbtn_tutorial.x+10,   mbtn_tutorial.y+20);
-        mbtn_local.draw(dc);      dc.context.fillStyle = "#000000"; dc.context.fillText("Same Screen Multiplayer",            mbtn_local.x+10,      mbtn_local.y+20);
-        mbtn_ai.draw(dc);         dc.context.fillStyle = "#000000"; dc.context.fillText("Play Against AI",                    mbtn_ai.x+10,         mbtn_ai.y+20);
-        mbtn_net_create.draw(dc); dc.context.fillStyle = "#000000"; dc.context.fillText("Internet Multiplayer (Create Room)", mbtn_net_create.x+10, mbtn_net_create.y+20);
-        mbtn_net_join.draw(dc);   dc.context.fillStyle = "#000000"; dc.context.fillText("Internet Multiplayer (Join Room)",   mbtn_net_join.x+10,   mbtn_net_join.y+20);
+        mbtn_tutorial.draw(dc);   dc.context.fillStyle = "#000000"; dc.context.fillText("Tutorial",                                               mbtn_tutorial.x+10,   mbtn_tutorial.y+20);
+        mbtn_ai.draw(dc);         dc.context.fillStyle = "#000000"; dc.context.fillText("Single Player - Play against a (bad) AI",                mbtn_ai.x+10,         mbtn_ai.y+20);
+        mbtn_local.draw(dc);      dc.context.fillStyle = "#000000"; dc.context.fillText("Multiplayer - Same Screen/Device (Pass back and forth)", mbtn_local.x+10,      mbtn_local.y+20);
+        mbtn_net_create.draw(dc); dc.context.fillStyle = "#000000"; dc.context.fillText("Multiplayer - Internet (Create Room)",                   mbtn_net_create.x+10, mbtn_net_create.y+20);
+        mbtn_net_join.draw(dc);   dc.context.fillStyle = "#000000"; dc.context.fillText("Multiplayer - Internet (Join Room)",                     mbtn_net_join.x+10,   mbtn_net_join.y+20);
         break;
       case CONFIG_JOIN:
         if(!joins.length)    {                  dc.context.fillStyle = "#000000"; dc.context.fillText("Waiting For Room...", jbtn_a.x+10, jbtn_a.y+20); };
