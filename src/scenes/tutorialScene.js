@@ -61,15 +61,24 @@ var TutorialScene = function(game, stage)
     clicker = new Clicker({source:stage.dispCanv.canvas});
 
     //tut stuff
+    game.multiplayer = MULTIPLAYER_LOCAL;
+    game.turns = 10;
+
     next_btn = new ButtonBox(0,0,dc.width,dc.height,function(){
       cur_prompt++;
-      if(cur_prompt >= prompts.length) game.setScene(2);
+      if(cur_prompt == 17) p1_cards[1].click();
+      else if(cur_prompt == 18) p1_target_btn.click({});
+      else if(cur_prompt == 19) ready_btn.click({});
+      else if(cur_prompt == 21) p2_cards[3].click();
+      else if(cur_prompt == 22) p2_target_btn.click({});
+      else if(cur_prompt == 24) ready_btn.click({});
+      else if(cur_prompt >= prompts.length) game.setScene(2);
     });
     prompts = [];
     cur_prompt = 0;
     var i = 0;
 
-    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "Hi!"),dc.width/4,dc.height-50); i++;
+    /*0*/prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "Hi!"),dc.width/4,dc.height-50); i++;
     prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "Cycle Game is a 2 Player Game"),dc.width/4,dc.height-50); i++;
     prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "Here's Player 1 (Red)"),dc.width/4,dc.height-50); i++;
     prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "And Here's Player 2 (Blue)"),dc.width/4,dc.height-50); i++;
@@ -79,15 +88,24 @@ var TutorialScene = function(game, stage)
     prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "Each turn has a few steps:"),dc.width/4,dc.height-50); i++;
     prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "First, player 1 plays a card."),dc.width/4,dc.height-50); i++;
     prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "Then, player 2 plays a card."),dc.width/4,dc.height-50); i++;
-    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "Playing a card moves tokens from one node to another."),dc.width/4,dc.height-50); i++;
+    /*10*/prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "Playing a card moves tokens from one node to another."),dc.width/4,dc.height-50); i++;
     prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "After both cards have been played,"),dc.width/4,dc.height-50); i++;
     prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "all the tokens at the \"goal node\" are added as points"),dc.width/4,dc.height-50); i++;
     prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "to the corresponding player"),dc.width/4,dc.height-50); i++;
     prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "The player with the most points at the end of 10 turns, wins."),dc.width/4,dc.height-50); i++;
-    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "Some other things to look out for:"),dc.width/4,dc.height-50); i++;
-    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "Every 3 turns, the goal node will make a move through the cycle."),dc.width/4,dc.height-50); i++;
-    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "Some cards move more than one token."),dc.width/4,dc.height-50); i++;
-    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "Some cards take more than one turn to move tokens."),dc.width/4,dc.height-50); i++;
+    /*15*/prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "Ok. Let's go through a turn."),dc.width/4,dc.height-50); i++;
+    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "Player 1 selects a card to play by clicking on it."),dc.width/4,dc.height-50); i++;
+    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/3, "Then, they choose who to target with this card."),(dc.width/4)*3-50,dc.height-40); i++;
+    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/3, "After a quick confirmation..."),(dc.width/4)*3-50,dc.height-50); i++;
+    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "Player 2 goes through the same motions."),dc.width/4,dc.height-50); i++;
+    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "Choose a card..."),dc.width/4,dc.height-50); i++;
+    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/3, "Choose a target..."),(dc.width/4)*3-50,dc.height-40); i++;
+    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/3, "Quick confirmation..."),(dc.width/4)*3-50,dc.height-50); i++;
+    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "(Watch the goal node after we click confirm...)"),dc.width/4,dc.height-100); i++;
+    /*0*/prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "Some other things to look out for:"),dc.width/4,dc.height-50); i++;
+    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "1. Every 3 turns, the goal node will make a move through the cycle."),dc.width/4,dc.height-50); i++;
+    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "2. Some cards move more than one token."),dc.width/4,dc.height-50); i++;
+    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "3. Some cards take more than one turn to move tokens."),dc.width/4,dc.height-50); i++;
     prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "Ok. You should be able to figure it out from here."),dc.width/4,dc.height-50); i++;
     prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "Good luck!"),dc.width/4,dc.height-50); i++;
     clicker.register(next_btn);
