@@ -83,29 +83,29 @@ var TutorialScene = function(game, stage)
     prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "Here's Player 1 (Red)"),dc.width/4,dc.height-50); i++;
     prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "And Here's Player 2 (Blue)"),dc.width/4,dc.height-50); i++;
     prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "Both Players begin with 0 points..."),dc.width/4,dc.height-50); i++;
-    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "and tokens spread around the board."),dc.width/4,dc.height-50); i++;
+    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "and carbon spread around the board."),dc.width/4,dc.height-50); i++;
     prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "The game takes place over 10 turns."),dc.width/4,dc.height-50); i++;
     prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "Each turn has a few steps:"),dc.width/4,dc.height-50); i++;
-    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "First, player 1 plays a card."),dc.width/4,dc.height-50); i++;
-    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "Then, player 2 plays a card."),dc.width/4,dc.height-50); i++;
-    /*10*/prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "Playing a card moves tokens from one node to another."),dc.width/4,dc.height-50); i++;
+    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "First, player 1 plays an event card."),dc.width/4,dc.height-50); i++;
+    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "Then, player 2 plays an event card."),dc.width/4,dc.height-50); i++;
+    /*10*/prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "Playing an event card moves carbon from one reservoir to another."),dc.width/4,dc.height-50); i++;
     prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "After both cards have been played,"),dc.width/4,dc.height-50); i++;
-    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "all the tokens at the \"goal node\" are added"),dc.width/4,dc.height-50); i++;
+    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "all the carbon at the \"goal reservoir\" are added"),dc.width/4,dc.height-50); i++;
     prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "as points to each player."),dc.width/4,dc.height-50); i++;
     prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "The player with the most points at the end of 10 turns, wins."),dc.width/4,dc.height-50); i++;
     /*15*/prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "Ok. Let's go through a turn."),dc.width/4,dc.height-50); i++;
-    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "Player 1 selects a card to play by clicking on it."),dc.width/4,dc.height-50); i++;
+    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "Player 1 selects an event card to play by clicking on it."),dc.width/4,dc.height-50); i++;
     prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/3, "Then, they choose who to target with this card."),(dc.width/4)*3-50,dc.height-40); i++;
     prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/3, "After a quick confirmation..."),(dc.width/4)*3-50,dc.height-50); i++;
     prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "Player 2 goes through the same motions."),dc.width/4,dc.height-50); i++;
-    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "Choose a card..."),dc.width/4,dc.height-50); i++;
+    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "Choose an event card..."),dc.width/4,dc.height-50); i++;
     prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/3, "Choose a target..."),(dc.width/4)*3-50,dc.height-40); i++;
     prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/3, "Quick confirmation..."),(dc.width/4)*3-50,dc.height-50); i++;
-    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "(Watch the goal node after we click confirm...)"),dc.width/4,dc.height-100); i++;
+    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "(Watch the goal reservoir after we click confirm...)"),dc.width/4,dc.height-100); i++;
     /*0*/prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "Some other things to look out for:"),dc.width/4,dc.height-50); i++;
-    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "1. Every 3 turns, the goal node will make a move through the cycle."),dc.width/4,dc.height-50); i++;
-    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "2. Some cards move more than one token."),dc.width/4,dc.height-50); i++;
-    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "3. Some cards take more than one turn to move tokens."),dc.width/4,dc.height-50); i++;
+    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "1. Every 3 turns, the goal reservoir will make a move through the cycle."),dc.width/4,dc.height-50); i++;
+    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "2. Some cards move more than one carbon."),dc.width/4,dc.height-50); i++;
+    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "3. Some cards take more than one turn to move carbon."),dc.width/4,dc.height-50); i++;
     prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "Ok. You should be able to figure it out from here."),dc.width/4,dc.height-50); i++;
     prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "Good luck!"),dc.width/4,dc.height-50); i++;
     clicker.register(next_btn);
@@ -593,7 +593,7 @@ var TutorialScene = function(game, stage)
         dc.context.strokeRect(ready_btn.x,ready_btn.y,ready_btn.w,ready_btn.h);
 
         var player = g.players[g.player_turn-1];
-        dc.context.fillText(player.title+" played "+g.events[player.hand[chosen_card_i]-1].title+" on "+g.players[chosen_target_p-1].title+"'s tokens",ready_btn.x+10,ready_btn.y+20);
+        dc.context.fillText(player.title+" played "+g.events[player.hand[chosen_card_i]-1].title+" on "+g.players[chosen_target_p-1].title+"'s carbon",ready_btn.x+10,ready_btn.y+20);
         dc.context.fillText("When ready, click to continue.",ready_btn.x+10,ready_btn.y+40);
         break;
       case TURN_DONE:
@@ -619,7 +619,7 @@ var TutorialScene = function(game, stage)
         dc.context.fillText("waiting for opponent's turn...",dc.width/2,50);
       break;
       case TURN_CHOOSE_CARD:
-        dc.context.fillText("Choose A Card!",dc.width/2,50);
+        dc.context.fillText("Choose an Event Card!",dc.width/2,50);
         break;
       case TURN_CHOOSE_TARGET:
         dc.context.fillText("Choose A Target!",dc.width/2,50);

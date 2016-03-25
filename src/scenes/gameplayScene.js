@@ -251,7 +251,11 @@ var GamePlayScene = function(game, stage)
     if(g.turn >= 3 && !displayed_turn_3_warning)
     {
       displayed_turn_3_warning = true;
-      displayMessage(["WARNING! We're going to remove that nice visualizer that shows <b>which direction</b> each card transitions. You'll have to figure it out on your own! Good luck!"]);
+      displayMessage([
+        "WARNING! See how when you hover over an event card, you get a nice visualization of where the carbon atoms will move? Well, we're going to remove that visualization for you.",
+        "Don't worry! We'll still keep the visualization of which two reservoirs are affected- but you will now have to figure out <b>in which direction</b> it will affect the carbon atoms, yourself.",
+        "Good luck! :)",
+      ]);
     }
 
     switch(turn_stage)
@@ -594,7 +598,7 @@ var GamePlayScene = function(game, stage)
         dc.context.strokeRect(ready_btn.x,ready_btn.y,ready_btn.w,ready_btn.h);
 
         var player = g.players[g.player_turn-1];
-        dc.context.fillText(player.title+" played "+g.events[player.hand[chosen_card_i]-1].title+" on "+g.players[chosen_target_p-1].title+"'s tokens",ready_btn.x+10,ready_btn.y+20);
+        dc.context.fillText(player.title+" played "+g.events[player.hand[chosen_card_i]-1].title+" on "+g.players[chosen_target_p-1].title+"'s carbon",ready_btn.x+10,ready_btn.y+20);
         dc.context.fillText("When ready, click to continue.",ready_btn.x+10,ready_btn.y+40);
         break;
       case TURN_DONE:
@@ -620,7 +624,7 @@ var GamePlayScene = function(game, stage)
         dc.context.fillText("waiting for opponent's turn...",dc.width/2,50);
       break;
       case TURN_CHOOSE_CARD:
-        dc.context.fillText("Choose A Card!",dc.width/2,50);
+        dc.context.fillText("Choose an Event Card!",dc.width/2,50);
         break;
       case TURN_CHOOSE_TARGET:
         dc.context.fillText("Choose A Target!",dc.width/2,50);
