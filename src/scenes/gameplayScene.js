@@ -69,7 +69,6 @@ var GamePlayScene = function(game, stage)
     else          sr = new SeededRand(Math.floor(Math.random()*100000));
 
     //g = constructGame(GameTemplate,sr);
-    //g = constructGame(OldCarbonCycleGameTemplate,sr);
     g = constructGame(CarbonCycleGameTemplate,sr);
     //g = constructGame(WaterCycleGameTemplate,sr);
     //g = constructGame(NitrogenCycleGameTemplate,sr);
