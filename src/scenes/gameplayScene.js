@@ -377,9 +377,18 @@ var GamePlayScene = function(game, stage)
           dc.context.stroke();
           dc.context.lineWidth = 2;
           dc.context.strokeStyle = "#000000";
-          var t = (hovering_card_t%sim_t)/sim_t;
-          t *= t;
-          dc.context.drawImage(circle_icon,lerp(e.start_x,e.end_x,t)-5,lerp(e.start_y,e.end_y,t)-5,10,10);
+          if(g.turn < 3 ||
+            (
+              turn_stage == TURN_SUMMARY &&
+              chosen_card_i == hovering_card_i &&
+              hovering_card_p == g.player_turn
+            )
+          )
+          {
+            var t = (hovering_card_t%sim_t)/sim_t;
+            t *= t;
+            dc.context.drawImage(circle_icon,lerp(e.start_x,e.end_x,t)-5,lerp(e.start_y,e.end_y,t)-5,10,10);
+          }
         }
       }
       if(chosen_card_i >= 0 && !(hovering_card_i >= 0))
@@ -395,9 +404,12 @@ var GamePlayScene = function(game, stage)
           dc.context.stroke();
           dc.context.lineWidth = 2;
           dc.context.strokeStyle = "#000000";
-          var t = (chosen_card_t%sim_t)/sim_t;
-          t *= t;
-          dc.context.drawImage(circle_icon,lerp(e.start_x,e.end_x,t)-5,lerp(e.start_y,e.end_y,t)-5,10,10);
+          if(g.turn < 3 || turn_stage == TURN_SUMMARY)
+          {
+            var t = (chosen_card_t%sim_t)/sim_t;
+            t *= t;
+            dc.context.drawImage(circle_icon,lerp(e.start_x,e.end_x,t)-5,lerp(e.start_y,e.end_y,t)-5,10,10);
+          }
         }
       }
       dc.context.beginPath();
@@ -538,7 +550,6 @@ var GamePlayScene = function(game, stage)
     dc.context.fillStyle = player.color;
     dc.context.fillText(player.title,dc.width/2,35);
 
-
     switch(turn_stage)
     {
       case TURN_WAIT_FOR_JOIN: break;
@@ -632,7 +643,13 @@ var GamePlayScene = function(game, stage)
     self.click = function(evt)
     {
       if(hit_ui) return;
-      if(chosen_card_i != self.index) chosen_card_t = 0;
+      if(chosen_card_i != self.index)
+      {
+        if(hovering_card_i == self.index && hovering_card_p == self.player)
+          chosen_card_t = hovering_card_t;
+        else
+          chosen_card_t = 0;
+      }
       chosen_card_i = self.index;
       turn_stage = TURN_CHOOSE_TARGET;
       hit_ui = true;
@@ -640,7 +657,12 @@ var GamePlayScene = function(game, stage)
 
     self.hover = function(evt)
     {
-      if(hovering_card_i == -1) hovering_card_t = 0;
+      if(hovering_card_i == -1)
+      {
+        if(chosen_card_i == self.index && g.player_turn == self.player)
+          hovering_card_t = chosen_card_t;
+        else hovering_card_t = 0;
+      }
       hovering_card_i = self.index;
       hovering_card_p = self.player;
     }
@@ -648,6 +670,8 @@ var GamePlayScene = function(game, stage)
     {
       hovering_card_i = -1;
       hovering_card_p = 0;
+      if(chosen_card_i != self.index || g.player_turn != self.player)
+        chosen_card_t = 0;
     }
   }
 };
