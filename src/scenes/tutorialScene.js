@@ -90,8 +90,8 @@ var TutorialScene = function(game, stage)
     prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "Then, player 2 plays a card."),dc.width/4,dc.height-50); i++;
     /*10*/prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "Playing a card moves tokens from one node to another."),dc.width/4,dc.height-50); i++;
     prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "After both cards have been played,"),dc.width/4,dc.height-50); i++;
-    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "all the tokens at the \"goal node\" are added as points"),dc.width/4,dc.height-50); i++;
-    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "to the corresponding player"),dc.width/4,dc.height-50); i++;
+    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "all the tokens at the \"goal node\" are added"),dc.width/4,dc.height-50); i++;
+    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "as points to each player."),dc.width/4,dc.height-50); i++;
     prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "The player with the most points at the end of 10 turns, wins."),dc.width/4,dc.height-50); i++;
     /*15*/prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "Ok. Let's go through a turn."),dc.width/4,dc.height-50); i++;
     prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "Player 1 selects a card to play by clicking on it."),dc.width/4,dc.height-50); i++;
@@ -632,15 +632,19 @@ var TutorialScene = function(game, stage)
         break;
     }
 
-    dc.context.textAlign = "left";
-
     //tut stuff
     var p = prompts[cur_prompt];
     dc.context.fillStyle = "#000000";
+    dc.context.textAlign = "left";
     dc.context.font = "20px Arial";
     for(var i = 0; i < p.lines.length; i++)
       dc.outlineText(p.lines[i],p.x,p.y+i*20,"#000000","#FFFFFF");
 
+    dc.context.textAlign = "center";
+    dc.context.font = "12px Arial";
+    dc.outlineText("(click to continue)",dc.width/2,dc.height-12,"#000000","#FFFFFF");
+
+    dc.context.textAlign = "left";
     dc.context.font = "12px Arial";
   };
 
