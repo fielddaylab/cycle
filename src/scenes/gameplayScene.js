@@ -5,7 +5,7 @@ var GamePlayScene = function(game, stage)
   var dc = stage.drawCanv;
   var n_ticks;
   var clicker;
-  var card_hoverer;
+  var hoverer;
   var p1_card_clicker;
   var p2_card_clicker;
 
@@ -35,6 +35,7 @@ var GamePlayScene = function(game, stage)
   var hovering_card_i;
   var hovering_card_p;
   var hovering_card_t;
+  var hovering_target_p;
 
   var transition_t;
   var TRANSITION_KEY_SHUFFLE   = 50;
@@ -65,7 +66,7 @@ var GamePlayScene = function(game, stage)
     clicker = new Clicker({source:stage.dispCanv.canvas});
     p1_card_clicker = new Clicker({source:stage.dispCanv.canvas});
     p2_card_clicker = new Clicker({source:stage.dispCanv.canvas});
-    card_hoverer = new PersistentHoverer({source:stage.dispCanv.canvas});
+    hoverer = new PersistentHoverer({source:stage.dispCanv.canvas});
 
     if(game.join) sr = new SeededRand(game.join);
     else          sr = new SeededRand(Math.floor(Math.random()*100000));
@@ -93,7 +94,7 @@ var GamePlayScene = function(game, stage)
 
       p1_cards.push(card);
       p1_card_clicker.register(card);
-      card_hoverer.register(card);
+      hoverer.register(card);
     }
     p2_cards = [];
     for(var i = 0; i < g.players[0].hand.length; i++)
@@ -109,7 +110,7 @@ var GamePlayScene = function(game, stage)
 
       p2_cards.push(card);
       p2_card_clicker.register(card);
-      card_hoverer.register(card);
+      hoverer.register(card);
     }
 
     var n = g.nodes[g.goal_node-1];
@@ -142,9 +143,12 @@ var GamePlayScene = function(game, stage)
         if(game.multiplayer == MULTIPLAYER_NET_CREATE || game.multiplayer == MULTIPLAYER_NET_JOIN)
           cli.add(cli.id+" MOVE "+chosen_card_i+" "+chosen_target_p);
         turn_stage = TURN_SUMMARY;
+        hovering_target_p = 0;
         hit_ui = true;
       }
     );
+    p1_target_btn.hover   = function(evt) { if(turn_stage != TURN_CHOOSE_TARGET) return; hovering_target_p = 1; }
+    p1_target_btn.unhover = function(evt) { if(turn_stage != TURN_CHOOSE_TARGET) return; hovering_target_p = 0; }
     p2_target_btn = new ButtonBox(dc.width/2+10,dc.height-60,90,20,
       function()
       {
@@ -153,9 +157,12 @@ var GamePlayScene = function(game, stage)
         if(game.multiplayer == MULTIPLAYER_NET_CREATE || game.multiplayer == MULTIPLAYER_NET_JOIN)
           cli.add(cli.id+" MOVE "+chosen_card_i+" "+chosen_target_p);
         turn_stage = TURN_SUMMARY;
+        hovering_target_p = 0;
         hit_ui = true;
       }
     );
+    p2_target_btn.hover   = function(evt) { if(turn_stage != TURN_CHOOSE_TARGET) return; hovering_target_p = 2; }
+    p2_target_btn.unhover = function(evt) { if(turn_stage != TURN_CHOOSE_TARGET) return; hovering_target_p = 0; }
     cancel_target_btn = new ButtonBox(dc.width/2-100,dc.height-30,200,20,
       function()
       {
@@ -213,7 +220,9 @@ var GamePlayScene = function(game, stage)
       }
     );
     clicker.register(p1_target_btn);
+    hoverer.register(p1_target_btn);
     clicker.register(p2_target_btn);
+    hoverer.register(p2_target_btn);
     clicker.register(cancel_target_btn);
 
     clicker.register(ready_btn);
@@ -239,6 +248,7 @@ var GamePlayScene = function(game, stage)
     hovering_card_i = -1;
     hovering_card_p = 0;
     hovering_card_t = 0;
+    hovering_target_p = 0;
 
     n_ticks = 0;
 
@@ -319,7 +329,7 @@ var GamePlayScene = function(game, stage)
         clicker.flush();
         break;
     }
-    if(card_hoverer) card_hoverer.flush(); //check because "setScene" could have cleaned up hoverer. causes error in console, but no other issues.
+    if(hoverer) hoverer.flush(); //check because "setScene" could have cleaned up hoverer. causes error in console, but no other issues.
     hit_ui = false;
 
     if(transition_t)
@@ -523,6 +533,12 @@ var GamePlayScene = function(game, stage)
         if(t.disp_node_id == event.from_id && t.player_id == chosen_target_p)
           dc.context.drawImage(highlit_token_icon,t.x-2,t.y-2,t.w+4,t.h+4);
       }
+      else if(turn_stage == TURN_CHOOSE_TARGET && direction_viz_enabled)
+      {
+        if(t.disp_node_id == event.from_id && t.player_id == hovering_target_p)
+          dc.context.drawImage(highlit_token_icon,t.x-2,t.y-2,t.w+4,t.h+4);
+      }
+
       dc.context.drawImage(g.players[t.player_id-1].token_img,t.x,t.y,t.w,t.h);
     }
     var goal_node = g.nodes[g.goal_node-1];
@@ -653,8 +669,8 @@ var GamePlayScene = function(game, stage)
     p1_card_clicker = undefined;
     p2_card_clicker.detach();
     p2_card_clicker = undefined;
-    card_hoverer.detach();
-    card_hoverer = undefined;
+    hoverer.detach();
+    hoverer = undefined;
   };
 
   var doneDisplay = function ()
