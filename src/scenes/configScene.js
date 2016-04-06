@@ -182,3 +182,4 @@ var ConfigScene = function(game, stage)
     clicker = undefined;
   };
 };
+

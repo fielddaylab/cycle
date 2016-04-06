@@ -72,5 +72,6 @@ var Game = function(init)
     cur_scene = i;
     scenes[cur_scene].ready();
   }
+
 };
 

@@ -1,0 +1,38 @@
+Considerations:
+- Any UI/Infrastructure must be universalizable across carbon, nitrogen, and water
+- UI ought be usable via touch devices
+  - Can't make use of hover
+  - Need big, touchable buttons (or gestures)
+- Game might be played in iframe
+  - Shouldn't treat game as full browser web page- isolated rectangle more naturally iframe-able
+- Full information game
+  - That is, every player's cards/info must be visible at all times, from every player
+    - (this way, we avoid the need to say "ok, now player 1 turn around" when doing shared screen multiplayer)
+
+Necessary Information:
+- What nodes exist
+- How many of each player's tokens are on each node
+  - Also, tokens can exist "between nodes" due to multi-turn events
+- What event cards each player has
+  - What nodes each event card affects (only for first half of game! viz must be toggleable)
+  - The direction each event card moves tokens (only for first third of game! viz must be toggleable)
+- Which node is the goal node
+  - How much longer before goal node shifts
+- Which player's turn it is
+- Who the player is (It's one thing to know it's "the red player's turn"- it's another to know "you're the red player"- for a definition of "you" dependent on if there's a shared screen, a networked game, or playing an AI)
+- The score
+- The Current Turn # (out of how many total turns)
+- The last played card (so a player doesn't miss what happened)
+- The necessity of the edges between the nodes (currently black lines) is up for debate... could eperiment with that
+- Probably a bit more...
+
+Necessary Non-Information:
+- Cards can only show specifics of what they do during the first parts of the game (if at all)
+
+Necessary Interaction:
+- Preview cards (of opponent and self)
+- Choose card (on your turn)
+- Choose target
+- Confirm that a play has been chosen (before animation plays)
+
+
