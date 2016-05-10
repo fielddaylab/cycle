@@ -82,8 +82,8 @@ var constructGame = function(game_data,sr)
     token.disp_node_id = token.node_id;
     token.transitions = 0;
 
-    token.ww = 0.01;
-    token.wh = 0.01;
+    token.ww = 0.02;
+    token.wh = 0.02;
     tokenWorldTargetNode(token,g.nodes[token.node_id-1]);
     token.wx = token.target_wx;
     token.wy = token.target_wy;

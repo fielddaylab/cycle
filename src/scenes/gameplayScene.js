@@ -418,22 +418,24 @@ var GamePlayScene = function(game, stage)
 
   self.draw = function()
   {
+    ctx.font = "18px Arial";
     ctx.fillStyle = red;
     ctx.fillRect(0,0,sidebar_w,dc.height);
     ctx.fillStyle = lred;
     ctx.fillRect(0,0,sidebar_w,40);
     ctx.fillStyle = dred;
-    ctx.fillText("Red Team",20,20);
-    ctx.drawImage(red_token_icon,100,20,20,15);
+    ctx.fillText("Red Team",10,28);
+    ctx.drawImage(red_token_icon,sidebar_w-40,15,20,15);
 
     ctx.fillStyle = blue;
     ctx.fillRect(dc.width-sidebar_w,0,sidebar_w,dc.height);
     ctx.fillStyle = lblue;
     ctx.fillRect(dc.width-sidebar_w,0,sidebar_w,40);
     ctx.fillStyle = dblue;
-    ctx.fillText("Blue Team",dc.width-sidebar_w+20,20);
-    ctx.drawImage(blue_token_icon,dc.width-sidebar_w+100,20,20,15);
+    ctx.fillText("Blue Team",dc.width-sidebar_w+10,28);
+    ctx.drawImage(blue_token_icon,dc.width-40,15,20,15);
 
+    ctx.font = "12px Arial";
     ctx.fillStyle = "#000000";
     ctx.strokeStyle = "#000000";
 
@@ -585,18 +587,22 @@ var GamePlayScene = function(game, stage)
     dc.outlineText(turns_left+" turns til goal shift",goal_bounds.x,goal_bounds.y-3,"#000000","#FFFFFF");
 
     //hand
-    ctx.textAlign = "left";
     var player;
     player = g.players[0];
     ctx.fillStyle = dred;
-    ctx.fillText("x"+player.disp_pts,sidebar_w-20,20);
+    ctx.textAlign = "left";
+    ctx.font = "10px Arial";
+    ctx.fillText("X"+player.disp_pts,sidebar_w-20,25);
     ctx.fillStyle = "#000000";
     for(var i = 0; i < player.hand.length; i++) p1_cards[i].draw();
     player = g.players[1];
     ctx.fillStyle = dblue;
-    ctx.fillText("x"+player.disp_pts,dc.width-20,20);
+    ctx.textAlign = "left";
+    ctx.font = "10px Arial";
+    ctx.fillText("X"+player.disp_pts,dc.width-20,25);
     ctx.fillStyle = "#000000";
     for(var i = 0; i < player.hand.length; i++) p2_cards[i].draw();
+    ctx.font = "12px Arial";
 
     //info
     ctx.fillStyle = "#000000";
@@ -730,20 +736,28 @@ var GamePlayScene = function(game, stage)
 
     self.draw = function(event)
     {
+      var player = g.players[self.player-1];
+      var event = g.events[player.hand[self.index]-1];
+
       ctx.textAlign = "center";
       ctx.fillStyle = "#FFFAF7";
       ctx.fillRect(self.x,self.y,self.w,self.h);
-      ctx.fillStyle = "#000000";
-      var player = g.players[self.player-1];
-      var event = g.events[player.hand[self.index]-1];
+
       if(g.player_turn == player.id && chosen_card_i == self.index) ctx.strokeStyle = "#00FF00";
       else ctx.strokeStyle = player.color;
       ctx.strokeRect(self.x,self.y,self.w,self.h);
-      ctx.fillText(event.title,self.x+self.w/2,self.y+20);
+
+      var icon_s = 35;
+      ctx.drawImage(circle_icon,self.x+20,self.y+20,icon_s,icon_s);
+      ctx.drawImage(circle_icon,self.x+self.w-20-icon_s,self.y+20,icon_s,icon_s);
+      ctx.drawImage(biarrow_icon,self.x+self.w/2-(icon_s/4),self.y+20+icon_s/4,icon_s/2,icon_s/2);
+
+      ctx.fillStyle = "#000000";
+      ctx.fillText(event.title,self.x+self.w/2,self.y+70);
       ctx.font = "italic 10px Arial";
-      ctx.fillText(event.description,self.x+self.w/2,self.y+30);
+      ctx.fillText(event.description,self.x+self.w/2,self.y+85);
       ctx.font = "12px Arial";
-      ctx.fillText(event.info,self.x+self.w/2,self.y+40);
+      ctx.fillText(event.info,self.x+self.w/2,self.y+95);
     }
 
     self.click = function(evt)

@@ -48,3 +48,9 @@ red_token_icon.src = "assets/red_token.png";
 var blue_token_icon = new Image();
 blue_token_icon.src = "assets/blue_token.png";
 
+var arrow_icon = new Image();
+arrow_icon.src = "assets/arrow.png";
+
+var biarrow_icon = new Image();
+biarrow_icon.src = "assets/biarrow.png";
+
