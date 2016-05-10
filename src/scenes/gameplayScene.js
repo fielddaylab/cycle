@@ -64,6 +64,10 @@ var GamePlayScene = function(game, stage)
   var done_btn;
   var bmwrangler;
 
+  var sidebar_w = 150;
+  var topmost_bar_h = 20;
+  var score_header_h = 40;
+
   self.ready = function()
   {
     ctx.font = "12px Arial";
@@ -82,15 +86,15 @@ var GamePlayScene = function(game, stage)
     transition_t = 0;
     transformGame(dc,g.nodes,g.events,g.tokens)
 
-    var size = ((dc.width-10)/g.players[0].hand.length)-10;
-    var w = size;
-    var h = 45;
+    var w = sidebar_w-20;
+    var gap = topmost_bar_h+score_header_h+20;
+    var h = (dc.height-gap)/g.players[0].hand.length;
     p1_cards_bounds = [];
     for(var i = 0; i < g.players[0].hand.length; i++)
     {
       p1_cards_bounds[i] = {
-        x:0,
-        y:40+10+(h+10)*i,
+        x:10,
+        y:gap+h*i,
         w:w,
         h:h,
       };
@@ -99,8 +103,8 @@ var GamePlayScene = function(game, stage)
     for(var i = 0; i < g.players[0].hand.length; i++)
     {
       p2_cards_bounds[i] = {
-        x:dc.width-w,
-        y:40+10+(h+10)*i,
+        x:dc.width-w-10,
+        y:gap+h*i,
         w:w,
         h:h,
       };
@@ -414,8 +418,6 @@ var GamePlayScene = function(game, stage)
 
   self.draw = function()
   {
-    var sidebar_w = 150;
-
     ctx.fillStyle = red;
     ctx.fillRect(0,0,sidebar_w,dc.height);
     ctx.fillStyle = lred;
