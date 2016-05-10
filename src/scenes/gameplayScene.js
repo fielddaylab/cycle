@@ -321,8 +321,8 @@ var GamePlayScene = function(game, stage)
         break;
       case TURN_CHOOSE_TARGET:
         hover_card.tick();
-        if(g.player_turn == 1) p1_card_clicker.flush();
-        if(g.player_turn == 2) p2_card_clicker.flush();
+        if(g.player_turn == 1) p1_card_clicker.ignore();
+        if(g.player_turn == 2) p2_card_clicker.ignore();
         clicker.flush();
         break;
       case TURN_SUMMARY:
@@ -866,10 +866,10 @@ var GamePlayScene = function(game, stage)
           ctx.strokeStyle = "#000000";
           ctx.fillStyle = g.players[0].color;
           ctx.strokeRect(self.x+self.target_1_x,self.y+self.target_1_y,self.target_1_w,self.target_1_h);
-          ctx.fillText("Target P1",self.x+self.target_1_x+self.target_1_w/2,self.y+self.target_1_y+10);
+          ctx.fillText("P1",self.x+self.target_1_x+self.target_1_w/2,self.y+self.target_1_y+10);
           ctx.fillStyle = g.players[1].color;
           ctx.strokeRect(self.x+self.target_2_x,self.y+self.target_2_y,self.target_2_w,self.target_2_h);
-          ctx.fillText("Target P2",self.x+self.target_2_x+self.target_2_w/2,self.y+self.target_2_y+10);
+          ctx.fillText("P2",self.x+self.target_2_x+self.target_2_w/2,self.y+self.target_2_y+10);
           break;
         case TURN_SUMMARY: break;
         case TURN_DONE: break;
@@ -902,7 +902,7 @@ var GamePlayScene = function(game, stage)
         }
 
         //p2 hit
-        if(ptWithin(evt.doX,evt.doY,self.x+self.target_1_x,self.y+self.target_1_y,self.target_1_w,self.target_1_h))
+        if(ptWithin(evt.doX,evt.doY,self.x+self.target_2_x,self.y+self.target_2_y,self.target_2_w,self.target_2_h))
         {
           chosen_target_p = 2;
           return;
