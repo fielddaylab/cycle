@@ -14,6 +14,7 @@ var GamePlayScene = function(game, stage)
   var TURN_WAIT_FOR_JOIN = ENUM; ENUM++;
   var TURN_WAIT          = ENUM; ENUM++;
   var TURN_CHOOSE_CARD   = ENUM; ENUM++;
+  var TURN_CONFIRM_CARD  = ENUM; ENUM++;
   var TURN_CHOOSE_TARGET = ENUM; ENUM++;
   var TURN_SUMMARY       = ENUM; ENUM++;
   var TURN_DONE          = ENUM; ENUM++;
@@ -56,10 +57,8 @@ var GamePlayScene = function(game, stage)
   var p2_cards_bounds;
   var p1_cards;
   var p2_cards;
+  var hover_card;
 
-  var p1_target_btn;
-  var p2_target_btn;
-  var cancel_target_btn;
   var ready_btn;
   var done_btn;
   var bmwrangler;
@@ -165,44 +164,12 @@ var GamePlayScene = function(game, stage)
       p2_card_clicker.register(card);
       hoverer.register(card);
     }
-
-    p1_target_btn = new ButtonBox(dc.width/2-100,dc.height-60,90,20,
-      function()
-      {
-        if(hit_ui || turn_stage != TURN_CHOOSE_TARGET) return;
-        chosen_target_p = 1;
-        if(game.multiplayer == MULTIPLAYER_NET_CREATE || game.multiplayer == MULTIPLAYER_NET_JOIN)
-          cli.add(cli.id+" MOVE "+chosen_card_i+" "+chosen_target_p);
-        turn_stage = TURN_SUMMARY;
-        hovering_target_p = 0;
-        hit_ui = true;
-      }
-    );
-    p1_target_btn.hover   = function(evt) { if(turn_stage != TURN_CHOOSE_TARGET) return; hovering_target_p = 1; }
-    p1_target_btn.unhover = function(evt) { if(turn_stage != TURN_CHOOSE_TARGET) return; hovering_target_p = 0; }
-    p2_target_btn = new ButtonBox(dc.width/2+10,dc.height-60,90,20,
-      function()
-      {
-        if(hit_ui || turn_stage != TURN_CHOOSE_TARGET) return;
-        chosen_target_p = 2;
-        if(game.multiplayer == MULTIPLAYER_NET_CREATE || game.multiplayer == MULTIPLAYER_NET_JOIN)
-          cli.add(cli.id+" MOVE "+chosen_card_i+" "+chosen_target_p);
-        turn_stage = TURN_SUMMARY;
-        hovering_target_p = 0;
-        hit_ui = true;
-      }
-    );
-    p2_target_btn.hover   = function(evt) { if(turn_stage != TURN_CHOOSE_TARGET) return; hovering_target_p = 2; }
-    p2_target_btn.unhover = function(evt) { if(turn_stage != TURN_CHOOSE_TARGET) return; hovering_target_p = 0; }
-    cancel_target_btn = new ButtonBox(dc.width/2-100,dc.height-30,200,20,
-      function()
-      {
-        if(hit_ui || turn_stage != TURN_CHOOSE_TARGET) return;
-        chosen_card_i = -1;
-        turn_stage = TURN_CHOOSE_CARD;
-        hit_ui = true;
-      }
-    );
+    hover_card = new HoverCard();
+    hover_card.x = p1_cards_bounds[0].x;
+    hover_card.y = p1_cards_bounds[0].y;
+    hover_card.w = p1_cards_bounds[0].w;
+    hover_card.h = p1_cards_bounds[0].h*2;
+    hover_card.set();
 
     ready_btn  = new ButtonBox(dc.width/2-200,dc.height-60,400,50,
       function()
@@ -250,12 +217,9 @@ var GamePlayScene = function(game, stage)
         hit_ui = true;
       }
     );
-    clicker.register(p1_target_btn);
-    hoverer.register(p1_target_btn);
-    clicker.register(p2_target_btn);
-    hoverer.register(p2_target_btn);
-    clicker.register(cancel_target_btn);
 
+    clicker.register(hover_card);
+    hoverer.register(hover_card);
     clicker.register(ready_btn);
     clicker.register(done_btn);
 
@@ -330,7 +294,8 @@ var GamePlayScene = function(game, stage)
           {
             if(cli.database[i].user == game.opponent && cli.database[i].event == "MOVE")
             {
-              if(chosen_card_i != cli.database[i].args[0]) chosen_card_t = 0;
+              if(chosen_card_i != cli.database[i].args[0])
+                chosen_card_t = 0;
               chosen_card_i = cli.database[i].args[0];
               chosen_target_p = cli.database[i].args[1];
               turn_stage = TURN_SUMMARY;
@@ -348,7 +313,14 @@ var GamePlayScene = function(game, stage)
         if(g.player_turn == 2) p2_card_clicker.flush();
         clicker.ignore();
         break;
+      case TURN_CONFIRM_CARD:
+        hover_card.tick();
+        if(g.player_turn == 1) p1_card_clicker.ignore();
+        if(g.player_turn == 2) p2_card_clicker.ignore();
+        clicker.flush();
+        break;
       case TURN_CHOOSE_TARGET:
+        hover_card.tick();
         if(g.player_turn == 1) p1_card_clicker.flush();
         if(g.player_turn == 2) p2_card_clicker.flush();
         clicker.flush();
@@ -617,15 +589,11 @@ var GamePlayScene = function(game, stage)
       case TURN_WAIT_FOR_JOIN: break;
       case TURN_WAIT: break;
       case TURN_CHOOSE_CARD: break;
+      case TURN_CONFIRM_CARD:
+        hover_card.draw(player,g.events[player.hand[chosen_card_i]-1]);
+        break;
       case TURN_CHOOSE_TARGET:
-        ctx.textAlign = "center";
-        ctx.strokeStyle = "#000000";
-        ctx.fillStyle = g.players[0].color;
-        ctx.strokeRect(p1_target_btn.x,p1_target_btn.y,p1_target_btn.w,p1_target_btn.h); ctx.fillText("Target P1",p1_target_btn.x+p1_target_btn.w/2,p1_target_btn.y+10);
-        ctx.fillStyle = g.players[1].color;
-        ctx.strokeRect(p2_target_btn.x,p2_target_btn.y,p2_target_btn.w,p2_target_btn.h); ctx.fillText("Target P2",p2_target_btn.x+p2_target_btn.w/2,p2_target_btn.y+10);
-        ctx.fillStyle = "#000000";
-        ctx.strokeRect(cancel_target_btn.x,cancel_target_btn.y,cancel_target_btn.w,cancel_target_btn.h); ctx.fillText("Cancel",cancel_target_btn.x+cancel_target_btn.w/2,cancel_target_btn.y+10);
+        hover_card.draw(player,g.events[player.hand[chosen_card_i]-1]);
         break;
       case TURN_SUMMARY:
         ctx.textAlign = "left";
@@ -661,6 +629,9 @@ var GamePlayScene = function(game, stage)
       break;
       case TURN_CHOOSE_CARD:
         ctx.fillText("Choose an Event Card!",dc.width/2,50);
+        break;
+      case TURN_CONFIRM_CARD:
+        ctx.fillText("",dc.width/2,50);
         break;
       case TURN_CHOOSE_TARGET:
         ctx.fillText("Choose A Target!",dc.width/2,50);
@@ -734,7 +705,7 @@ var GamePlayScene = function(game, stage)
       self.h = lerp(self.h,self.dh,0.1);
     }
 
-    self.draw = function(event)
+    self.draw = function()
     {
       var player = g.players[self.player-1];
       var event = g.events[player.hand[self.index]-1];
@@ -771,7 +742,11 @@ var GamePlayScene = function(game, stage)
           chosen_card_t = 0;
       }
       chosen_card_i = self.index;
-      turn_stage = TURN_CHOOSE_TARGET;
+      hover_card.dx = self.x;
+      hover_card.dy = self.y;
+      hover_card.y = self.y-20;
+      hover_card.t = 0;
+      turn_stage = TURN_CONFIRM_CARD;
       hit_ui = true;
     }
 
@@ -794,5 +769,175 @@ var GamePlayScene = function(game, stage)
         chosen_card_t = 0;
     }
   }
+
+  var HoverCard = function()
+  {
+    var self = this;
+
+    self.x = 0;
+    self.y = 0;
+    self.w = 0;
+    self.h = 0;
+
+    self.dx = 0;
+    self.dy = 0;
+    self.dw = 0;
+    self.dh = 0;
+
+    self.t = 0;
+
+    //relative vals!
+    self.play_x = 0;
+    self.play_y = 0;
+    self.play_w = 0;
+    self.play_h = 0;
+    self.target_1_x = 0;
+    self.target_1_y = 0;
+    self.target_1_w = 0;
+    self.target_1_h = 0;
+    self.target_2_x = 0;
+    self.target_2_y = 0;
+    self.target_2_w = 0;
+    self.target_2_h = 0;
+
+    self.set = function()
+    {
+      self.dx = self.x;
+      self.dy = self.y;
+      self.dw = self.w;
+      self.dh = self.h;
+
+      self.play_x = self.w/2-30;
+      self.play_y = self.h-30;
+      self.play_w = 60;
+      self.play_h = 20;
+      self.target_1_x = self.w/2-30;
+      self.target_1_y = self.h-60;
+      self.target_1_w = 20;
+      self.target_1_h = 20;
+      self.target_2_x = self.w/2+10;
+      self.target_2_y = self.h-60;
+      self.target_2_w = 20;
+      self.target_2_h = 20;
+    }
+
+    self.tick = function()
+    {
+      self.t++;
+      self.x = lerp(self.x,self.dx,0.1);
+      self.y = lerp(self.y,self.dy,0.1);
+      self.w = lerp(self.w,self.dw,0.1);
+      self.h = lerp(self.h,self.dh,0.1);
+    }
+
+    self.draw = function(player,event)
+    {
+      ctx.textAlign = "center";
+      ctx.fillStyle = "#FFFAF7";
+      ctx.fillRect(self.x,self.y,self.w,self.h);
+
+      if(g.player_turn == player.id && chosen_card_i == self.index) ctx.strokeStyle = "#00FF00";
+      else ctx.strokeStyle = player.color;
+      ctx.strokeRect(self.x,self.y,self.w,self.h);
+
+      var icon_s = 35;
+      ctx.drawImage(circle_icon,self.x+20,self.y+20,icon_s,icon_s);
+      ctx.drawImage(circle_icon,self.x+self.w-20-icon_s,self.y+20,icon_s,icon_s);
+      ctx.drawImage(biarrow_icon,self.x+self.w/2-(icon_s/4),self.y+20+icon_s/4,icon_s/2,icon_s/2);
+
+      ctx.fillStyle = "#000000";
+      ctx.fillText(event.title,self.x+self.w/2,self.y+70);
+      ctx.font = "italic 10px Arial";
+      ctx.fillText(event.description,self.x+self.w/2,self.y+85);
+      ctx.font = "12px Arial";
+      ctx.fillText(event.info,self.x+self.w/2,self.y+95);
+
+      ctx.fillStyle = "#00FF00";
+      ctx.fillRect(self.x+self.play_x,self.y+self.play_y,self.play_w,self.play_h);
+
+      switch(turn_stage)
+      {
+        case TURN_WAIT_FOR_JOIN: break;
+        case TURN_WAIT: break;
+        case TURN_CHOOSE_CARD: break;
+        case TURN_CONFIRM_CARD: break;
+        case TURN_CHOOSE_TARGET:
+          ctx.textAlign = "center";
+          ctx.strokeStyle = "#000000";
+          ctx.fillStyle = g.players[0].color;
+          ctx.strokeRect(self.x+self.target_1_x,self.y+self.target_1_y,self.target_1_w,self.target_1_h);
+          ctx.fillText("Target P1",self.x+self.target_1_x+self.target_1_w/2,self.y+self.target_1_y+10);
+          ctx.fillStyle = g.players[1].color;
+          ctx.strokeRect(self.x+self.target_2_x,self.y+self.target_2_y,self.target_2_w,self.target_2_h);
+          ctx.fillText("Target P2",self.x+self.target_2_x+self.target_2_w/2,self.y+self.target_2_y+10);
+          break;
+        case TURN_SUMMARY: break;
+        case TURN_DONE: break;
+      }
+    }
+
+    self.click = function(evt)
+    {
+      if(hit_ui) return;
+      hit_ui = true;
+
+      if(turn_stage == TURN_CONFIRM_CARD)
+      {
+        if(ptWithin(evt.doX,evt.doY,self.x+self.play_x,self.y+self.play_y,self.play_w,self.play_h))
+        {
+          turn_stage = TURN_CHOOSE_TARGET;
+          return;
+        }
+
+        chosen_card_i = -1;
+        turn_stage = TURN_CHOOSE_CARD;
+      }
+
+      if(turn_stage == TURN_CHOOSE_TARGET)
+      {
+        if(ptWithin(evt.doX,evt.doY,self.x+self.target_1_x,self.y+self.target_1_y,self.target_1_w,self.target_1_h))
+        {
+          chosen_target_p = 1;
+          return;
+        }
+
+        //p2 hit
+        if(ptWithin(evt.doX,evt.doY,self.x+self.target_1_x,self.y+self.target_1_y,self.target_1_w,self.target_1_h))
+        {
+          chosen_target_p = 2;
+          return;
+        }
+
+        if(chosen_target_p > 0 && ptWithin(evt.doX,evt.doY,self.x+self.play_x,self.y+self.play_y,self.play_w,self.play_h))
+        {
+          turn_stage = TURN_CHOOSE_TARGET;
+          if(game.multiplayer == MULTIPLAYER_NET_CREATE || game.multiplayer == MULTIPLAYER_NET_JOIN)
+            cli.add(cli.id+" MOVE "+chosen_card_i+" "+chosen_target_p);
+          turn_stage = TURN_SUMMARY;
+          hovering_target_p = 0;
+          return;
+        }
+
+        chosen_card_i = -1;
+        turn_stage = TURN_CHOOSE_CARD;
+      }
+    }
+
+    self.hovering = false;
+    self.hover = function(evt)
+    {
+      self.hovering = true;
+      if(turn_stage != TURN_CHOOSE_TARGET) return;
+      if(ptWithin(evt.doX,evt.doY,self.x+self.target_1_x,self.y+self.target_1_y,self.target_1_w,self.target_1_h)) hovering_target_p = 1;
+      else if(ptWithin(evt.doX,evt.doY,self.x+self.target_2_x,self.y+self.target_2_y,self.target_2_w,self.target_2_h)) hovering_target_p = 2;
+      else hovering_target_p = 0;
+    }
+    self.unhover = function()
+    {
+      self.hovering = false;
+      hovering_target_p = 0;
+    }
+  }
+
 };
 
