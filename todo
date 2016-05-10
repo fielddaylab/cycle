@@ -1,0 +1,12 @@
+mockup notes
+
+- What does intro screen look like (choose gametype, etc...)
+- Who's turn is it?
+- What happens when player 2 plays? (whether it be internet player, AI, or local)
+- What happens when the game is over?
+- Does it show how many turns left before goal shifts?
+- The "(TokenImg) X3" things might look like it's counting # tokens you have on the board (which is actually constant)
+- Is there to be any indicator of how many tokens owned by each player exist on each space? (Can get crowded)
+- Given that the cards have less info as the game goes on- what does that look like? (Question marks in place of icons?)
+- What does it look like when waiting for other player's turn?
+
