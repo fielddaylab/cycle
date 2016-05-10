@@ -1,3 +1,10 @@
+var red = "#FD7D6E";
+var blue = "#66C9E0";
+var lred = "#FAC9C3";
+var lblue = "#C5F0F8";
+var dred = "#E64E51";
+var dblue = "#3296E7";
+
 var transformToScreen = function(canv,o)
 {
   o.w = canv.width*o.ww;

@@ -3,6 +3,7 @@ var GamePlayScene = function(game, stage)
   var self = this;
 
   var dc = stage.drawCanv;
+  var ctx = dc.context;
   var n_ticks;
   var clicker;
   var hoverer;
@@ -44,12 +45,15 @@ var GamePlayScene = function(game, stage)
   var TRANSITION_KEY_MOVE_GOAL = 200;
 
   var direction_viz_enabled;
+  var displayed_turn_3_warning;
 
   //ui only
   var hit_ui;
   var goal_bounds;
   var p1_pts_bounds;
   var p2_pts_bounds;
+  var p1_cards_bounds;
+  var p2_cards_bounds;
   var p1_cards;
   var p2_cards;
 
@@ -62,7 +66,7 @@ var GamePlayScene = function(game, stage)
 
   self.ready = function()
   {
-    dc.context.font = "12px Arial";
+    ctx.font = "12px Arial";
     clicker = new Clicker({source:stage.dispCanv.canvas});
     p1_card_clicker = new Clicker({source:stage.dispCanv.canvas});
     p2_card_clicker = new Clicker({source:stage.dispCanv.canvas});
@@ -78,39 +82,28 @@ var GamePlayScene = function(game, stage)
     transition_t = 0;
     transformGame(dc,g.nodes,g.events,g.tokens)
 
-    var card;
-    p1_cards = [];
     var size = ((dc.width-10)/g.players[0].hand.length)-10;
+    var w = size;
+    var h = 45;
+    p1_cards_bounds = [];
     for(var i = 0; i < g.players[0].hand.length; i++)
     {
-      card = new Card();
-      card.index = i;
-      card.player = 1;
-
-      card.w = size;
-      card.h = 45;
-      card.x = 0;
-      card.y = 40+10+(card.h+10)*i;
-
-      p1_cards.push(card);
-      p1_card_clicker.register(card);
-      hoverer.register(card);
+      p1_cards_bounds[i] = {
+        x:0,
+        y:40+10+(h+10)*i,
+        w:w,
+        h:h,
+      };
     }
-    p2_cards = [];
+    p2_cards_bounds = [];
     for(var i = 0; i < g.players[0].hand.length; i++)
     {
-      card = new Card();
-      card.index = i;
-      card.player = 2;
-
-      card.w = size;
-      card.h = 45;
-      card.x = dc.width-card.w;
-      card.y = 40+10+(card.h+10)*i;
-
-      p2_cards.push(card);
-      p2_card_clicker.register(card);
-      hoverer.register(card);
+      p2_cards_bounds[i] = {
+        x:dc.width-w,
+        y:40+10+(h+10)*i,
+        w:w,
+        h:h,
+      };
     }
 
     var n = g.nodes[g.goal_node-1];
@@ -134,6 +127,40 @@ var GamePlayScene = function(game, stage)
       w:10,
       h:10,
     };
+
+    var card;
+    p1_cards = [];
+    for(var i = 0; i < g.players[0].hand.length; i++)
+    {
+      card = new Card();
+      card.index = i;
+      card.player = 1;
+
+      card.x = p1_cards_bounds[i].x;
+      card.y = p1_cards_bounds[i].y;
+      card.w = p1_cards_bounds[i].w;
+      card.h = p1_cards_bounds[i].h;
+
+      p1_cards.push(card);
+      p1_card_clicker.register(card);
+      hoverer.register(card);
+    }
+    p2_cards = [];
+    for(var i = 0; i < g.players[0].hand.length; i++)
+    {
+      card = new Card();
+      card.index = i;
+      card.player = 2;
+
+      card.x = p2_cards_bounds[i].x;
+      card.y = p2_cards_bounds[i].y;
+      card.w = p2_cards_bounds[i].w;
+      card.h = p2_cards_bounds[i].h;
+
+      p2_cards.push(card);
+      p2_card_clicker.register(card);
+      hoverer.register(card);
+    }
 
     p1_target_btn = new ButtonBox(dc.width/2-100,dc.height-60,90,20,
       function()
@@ -253,9 +280,9 @@ var GamePlayScene = function(game, stage)
     n_ticks = 0;
 
     direction_viz_enabled = true;
+    displayed_turn_3_warning = false;
   };
 
-  var displayed_turn_3_warning = false;
   self.tick = function()
   {
     n_ticks++;
@@ -387,88 +414,91 @@ var GamePlayScene = function(game, stage)
 
   self.draw = function()
   {
-    dc.context.fillStyle = "#FFFFAA";
-    if(g.player_turn == 1) dc.context.fillRect(0,0,150,dc.height);
-    if(g.player_turn == 2) dc.context.fillRect(dc.width-150,0,150,dc.height);
+    var sidebar_w = 150;
 
-    dc.context.fillStyle = "#000000";
-    dc.context.strokeStyle = "#000000";
+    ctx.fillStyle = red;
+    ctx.fillRect(0,0,sidebar_w,dc.height);
+    ctx.fillStyle = lred;
+    ctx.fillRect(0,0,sidebar_w,40);
+    ctx.fillStyle = dred;
+    ctx.fillText("Red Team",20,20);
+    ctx.drawImage(red_token_icon,100,20,20,15);
 
-    //events
-    var sim_t = 40;
-    for(var i = 0; i < g.events.length; i++)
+    ctx.fillStyle = blue;
+    ctx.fillRect(dc.width-sidebar_w,0,sidebar_w,dc.height);
+    ctx.fillStyle = lblue;
+    ctx.fillRect(dc.width-sidebar_w,0,sidebar_w,40);
+    ctx.fillStyle = dblue;
+    ctx.fillText("Blue Team",dc.width-sidebar_w+20,20);
+    ctx.drawImage(blue_token_icon,dc.width-sidebar_w+100,20,20,15);
+
+    ctx.fillStyle = "#000000";
+    ctx.strokeStyle = "#000000";
+
+    //draw hover arrows
+    var sim_t = 40; //dictates speed of sim'd transfer
+    var hovering_valid = (hovering_card_i >= 0 && hovering_card_i < g.players[hovering_card_p-1].hand.length);
+    var chosen_valid = (chosen_card_i >= 0 && chosen_card_i < g.players[g.player_turn-1].hand.length);
+    if(hovering_valid || chosen_valid)
     {
-      var e = g.events[i];
-      if(hovering_card_i >= 0)
-      {
-        var e_id = g.players[hovering_card_p-1].hand[hovering_card_i];
-        if(e_id && e_id == e.id)
-        {
-          dc.context.strokeStyle = "#FFFF00";
-          dc.context.lineWidth = 10;
-          dc.context.beginPath();
-          dc.context.moveTo(e.start_x,e.start_y);
-          dc.context.lineTo(e.end_x,e.end_y);
-          dc.context.stroke();
-          dc.context.lineWidth = 2;
-          dc.context.strokeStyle = "#000000";
-          if(direction_viz_enabled ||
-            (
-              turn_stage == TURN_SUMMARY &&
-              chosen_card_i == hovering_card_i &&
-              hovering_card_p == g.player_turn
-            )
+      var e_id;
+      if(hovering_valid)    e_id = g.players[hovering_card_p-1].hand[hovering_card_i];
+      else if(chosen_valid) e_id = g.players[g.player_turn-1].hand[chosen_card_i];
+      var e = g.events[e_id-1];
+      ctx.strokeStyle = "#FFFF00";
+      ctx.lineWidth = 10;
+      ctx.beginPath();
+      ctx.moveTo(e.start_x,e.start_y);
+      ctx.lineTo(e.end_x,e.end_y);
+      ctx.stroke();
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = "#000000";
+      if(hovering_valid &&
+        (
+          direction_viz_enabled ||
+          (
+            turn_stage == TURN_SUMMARY &&
+            chosen_card_i == hovering_card_i &&
+            hovering_card_p == g.player_turn
           )
-          {
-            var t = (hovering_card_t%sim_t)/sim_t;
-            t *= t;
-            dc.context.drawImage(circle_icon,lerp(e.start_x,e.end_x,t)-5,lerp(e.start_y,e.end_y,t)-5,10,10);
-          }
-        }
-      }
-      if(chosen_card_i >= 0 && !(hovering_card_i >= 0))
+        )
+      )
       {
-        var e_id = g.players[g.player_turn-1].hand[chosen_card_i];
-        if(e_id && e_id == e.id)
-        {
-          dc.context.strokeStyle = "#FFFF00";
-          dc.context.lineWidth = 10;
-          dc.context.beginPath();
-          dc.context.moveTo(e.start_x,e.start_y);
-          dc.context.lineTo(e.end_x,e.end_y);
-          dc.context.stroke();
-          dc.context.lineWidth = 2;
-          dc.context.strokeStyle = "#000000";
-          if(direction_viz_enabled || turn_stage == TURN_SUMMARY)
-          {
-            var t = (chosen_card_t%sim_t)/sim_t;
-            t *= t;
-            dc.context.drawImage(circle_icon,lerp(e.start_x,e.end_x,t)-5,lerp(e.start_y,e.end_y,t)-5,10,10);
-          }
-        }
+        var t = (hovering_card_t%sim_t)/sim_t;
+        t *= t;
+        ctx.drawImage(circle_icon,lerp(e.start_x,e.end_x,t)-5,lerp(e.start_y,e.end_y,t)-5,10,10);
       }
-      dc.context.beginPath();
-      dc.context.moveTo(e.start_x,e.start_y);
-      dc.context.lineTo(e.end_x,e.end_y);
-      dc.context.stroke();
+      else if(chosen_valid &&
+        (
+          direction_viz_enabled ||
+          turn_stage == TURN_SUMMARY
+        )
+      )
+      {
+        var t = (chosen_card_t%sim_t)/sim_t;
+        t *= t;
+        ctx.drawImage(circle_icon,lerp(e.start_x,e.end_x,t)-5,lerp(e.start_y,e.end_y,t)-5,10,10);
+      }
     }
+
     //nodes
     for(var i = 0; i < g.nodes.length; i++)
     {
       var n = g.nodes[i];
-      dc.context.drawImage(n.img,n.x,n.y,n.w,n.h);
-      dc.context.textAlign = "center";
-      dc.context.fillText(n.title,n.x+n.w/2,n.y+20);
-      dc.context.textAlign = "left";
-      dc.context.drawImage(ghost_circle_icon,n.x-12,n.y-10,10,10);
-      dc.context.fillStyle = g.players[0].color;
-      dc.context.fillText(n.disp_p1_tokens,n.x-10,n.y);
-      dc.context.drawImage(ghost_circle_icon,n.x-12,n.y,10,10);
-      dc.context.fillStyle = g.players[1].color;
-      dc.context.fillText(n.disp_p2_tokens,n.x-10,n.y+10);
-      dc.context.fillStyle = "#000000";
+      ctx.drawImage(n.img,n.x,n.y,n.w,n.h);
+      ctx.textAlign = "center";
+      ctx.fillText(n.title,n.x+n.w/2,n.y+20);
+      ctx.textAlign = "left";
+      ctx.drawImage(ghost_circle_icon,n.x-12,n.y-10,10,10);
+      ctx.fillStyle = g.players[0].color;
+      ctx.fillText(n.disp_p1_tokens,n.x-10,n.y);
+      ctx.drawImage(ghost_circle_icon,n.x-12,n.y,10,10);
+      ctx.fillStyle = g.players[1].color;
+      ctx.fillText(n.disp_p2_tokens,n.x-10,n.y+10);
+      ctx.fillStyle = "#000000";
     }
 
+    //transition
     if(transition_t)
     {
       if(transition_t < TRANSITION_KEY_SHUFFLE)
@@ -487,7 +517,7 @@ var GamePlayScene = function(game, stage)
           if(t.disp_node_id == fromnode.id && t.player_id == g.last_target)
           {
             if(random_highlit_tok_i == 0)
-              dc.context.drawImage(highlit_token_icon,t.x-2,t.y-2,t.w+4,t.h+4);
+              ctx.drawImage(highlit_token_icon,t.x-2,t.y-2,t.w+4,t.h+4);
             random_highlit_tok_i--;
           }
         }
@@ -498,7 +528,7 @@ var GamePlayScene = function(game, stage)
         {
           var t = g.tokens[i];
           if(Math.abs(t.wx-t.target_wx) > 0.01 || Math.abs(t.wy-t.target_wy) > 0.01)
-            dc.context.drawImage(highlit_token_icon,t.x-2,t.y-2,t.w+4,t.h+4);
+            ctx.drawImage(highlit_token_icon,t.x-2,t.y-2,t.w+4,t.h+4);
         }
       }
       else if(transition_t < TRANSITION_KEY_SCORE_PTS)
@@ -513,8 +543,8 @@ var GamePlayScene = function(game, stage)
             var t = g.tokens[i];
             if(t.disp_node_id == g.nodes[g.last_goal_node-1].id)
             {
-                   if(t.player_id == 1) dc.context.drawImage(g.players[0].token_img,lerp(t.x-2,p1_pts_bounds.x,progress*progress),lerp(t.y-2,p1_pts_bounds.y,1-(1-progress)*(1-progress)),t.w+4,t.h+4);
-              else if(t.player_id == 2) dc.context.drawImage(g.players[1].token_img,lerp(t.x-2,p2_pts_bounds.x,progress*progress),lerp(t.y-2,p2_pts_bounds.y,1-(1-progress)*(1-progress)),t.w+4,t.h+4);
+                   if(t.player_id == 1) ctx.drawImage(g.players[0].token_img,lerp(t.x-2,p1_pts_bounds.x,progress*progress),lerp(t.y-2,p1_pts_bounds.y,1-(1-progress)*(1-progress)),t.w+4,t.h+4);
+              else if(t.player_id == 2) ctx.drawImage(g.players[1].token_img,lerp(t.x-2,p2_pts_bounds.x,progress*progress),lerp(t.y-2,p2_pts_bounds.y,1-(1-progress)*(1-progress)),t.w+4,t.h+4);
             }
           }
         }
@@ -524,6 +554,7 @@ var GamePlayScene = function(game, stage)
       }
     }
 
+    //tokens
     var event = g.events[g.players[g.player_turn-1].hand[chosen_card_i]-1];
     for(var i = 0; i < g.tokens.length; i++)
     {
@@ -531,70 +562,47 @@ var GamePlayScene = function(game, stage)
       if(turn_stage == TURN_SUMMARY)
       {
         if(t.disp_node_id == event.from_id && t.player_id == chosen_target_p)
-          dc.context.drawImage(highlit_token_icon,t.x-2,t.y-2,t.w+4,t.h+4);
+          ctx.drawImage(highlit_token_icon,t.x-2,t.y-2,t.w+4,t.h+4);
       }
       else if(turn_stage == TURN_CHOOSE_TARGET && direction_viz_enabled)
       {
         if(t.disp_node_id == event.from_id && t.player_id == hovering_target_p)
-          dc.context.drawImage(highlit_token_icon,t.x-2,t.y-2,t.w+4,t.h+4);
+          ctx.drawImage(highlit_token_icon,t.x-2,t.y-2,t.w+4,t.h+4);
       }
-
-      dc.context.drawImage(g.players[t.player_id-1].token_img,t.x,t.y,t.w,t.h);
+      ctx.drawImage(g.players[t.player_id-1].token_img,t.x,t.y,t.w,t.h);
     }
+
+    //goal
     var goal_node = g.nodes[g.goal_node-1];
     var goal_close = false;
     if(Math.abs(goal_bounds.x-goal_node.x)+Math.abs(goal_bounds.y-goal_node.y) < 10)
       goal_close = true;
     var turns_left = 3-(g.turn%g.turns_per_goal_shift);
     if(!goal_close && turns_left == 3) turns_left = 0;
-    dc.context.strokeRect(goal_bounds.x,goal_bounds.y,goal_bounds.w,goal_bounds.h);
+    ctx.strokeRect(goal_bounds.x,goal_bounds.y,goal_bounds.w,goal_bounds.h);
     dc.outlineText(turns_left+" turns til goal shift",goal_bounds.x,goal_bounds.y-3,"#000000","#FFFFFF");
 
     //hand
-    dc.context.textAlign = "left";
+    ctx.textAlign = "left";
     var player;
     player = g.players[0];
-    dc.context.textAlign = "left";
-    dc.context.fillStyle = player.color;
-    dc.context.fillText(player.title+": "+player.disp_pts,10,20);
-    dc.context.fillStyle = "#000000";
-    for(var i = 0; i < player.hand.length; i++)
-    {
-      var event = g.events[player.hand[i]-1];
-      if(g.player_turn == 1 && chosen_card_i == i) dc.context.strokeStyle = "#00FF00";
-      else dc.context.strokeStyle = player.color;
-      dc.context.strokeRect(p1_cards[i].x,p1_cards[i].y,p1_cards[i].w,p1_cards[i].h);
-      dc.context.fillText(event.title,p1_cards[i].x+10,p1_cards[i].y+20);
-      dc.context.font = "italic 10px Arial";
-      dc.context.fillText(event.description,p1_cards[i].x+10,p1_cards[i].y+30);
-      dc.context.font = "12px Arial";
-      dc.context.fillText(event.info,p1_cards[i].x+10,p1_cards[i].y+40);
-    }
+    ctx.fillStyle = dred;
+    ctx.fillText("x"+player.disp_pts,sidebar_w-20,20);
+    ctx.fillStyle = "#000000";
+    for(var i = 0; i < player.hand.length; i++) p1_cards[i].draw();
     player = g.players[1];
-    dc.context.textAlign = "right";
-    dc.context.fillStyle = player.color;
-    dc.context.fillText(player.disp_pts+" :"+player.title,dc.width-10,20);
-    dc.context.fillStyle = "#000000";
-    for(var i = 0; i < player.hand.length; i++)
-    {
-      var event = g.events[player.hand[i]-1];
-      if(g.player_turn == 2 && chosen_card_i == i) dc.context.strokeStyle = "#00FF00";
-      else dc.context.strokeStyle = player.color;
-      dc.context.strokeRect(p2_cards[i].x,p2_cards[i].y,p2_cards[i].w,p2_cards[i].h);
-      dc.context.fillText(event.title,p2_cards[i].x+p2_cards[i].w-10,p2_cards[i].y+20);
-      dc.context.font = "italic 10px Arial";
-      dc.context.fillText(event.description,p2_cards[i].x+p2_cards[i].w-10,p2_cards[i].y+30);
-      dc.context.font = "12px Arial";
-      dc.context.fillText(event.info,p2_cards[i].x+p2_cards[i].w-10,p2_cards[i].y+40);
-    }
+    ctx.fillStyle = dblue;
+    ctx.fillText("x"+player.disp_pts,dc.width-20,20);
+    ctx.fillStyle = "#000000";
+    for(var i = 0; i < player.hand.length; i++) p2_cards[i].draw();
 
     //info
-    dc.context.fillStyle = "#000000";
-    dc.context.textAlign = "center";
-    dc.context.fillText("Turn: "+g.turn,dc.width/2,20);
+    ctx.fillStyle = "#000000";
+    ctx.textAlign = "center";
+    ctx.fillText("Turn: "+g.turn,dc.width/2,20);
     player = g.players[g.player_turn-1];
-    dc.context.fillStyle = player.color;
-    dc.context.fillText(player.title,dc.width/2,35);
+    ctx.fillStyle = player.color;
+    ctx.fillText(player.title,dc.width/2,35);
 
     switch(turn_stage)
     {
@@ -602,63 +610,63 @@ var GamePlayScene = function(game, stage)
       case TURN_WAIT: break;
       case TURN_CHOOSE_CARD: break;
       case TURN_CHOOSE_TARGET:
-        dc.context.textAlign = "center";
-        dc.context.strokeStyle = "#000000";
-        dc.context.fillStyle = g.players[0].color;
-        dc.context.strokeRect(p1_target_btn.x,p1_target_btn.y,p1_target_btn.w,p1_target_btn.h); dc.context.fillText("Target P1",p1_target_btn.x+p1_target_btn.w/2,p1_target_btn.y+10);
-        dc.context.fillStyle = g.players[1].color;
-        dc.context.strokeRect(p2_target_btn.x,p2_target_btn.y,p2_target_btn.w,p2_target_btn.h); dc.context.fillText("Target P2",p2_target_btn.x+p2_target_btn.w/2,p2_target_btn.y+10);
-        dc.context.fillStyle = "#000000";
-        dc.context.strokeRect(cancel_target_btn.x,cancel_target_btn.y,cancel_target_btn.w,cancel_target_btn.h); dc.context.fillText("Cancel",cancel_target_btn.x+cancel_target_btn.w/2,cancel_target_btn.y+10);
+        ctx.textAlign = "center";
+        ctx.strokeStyle = "#000000";
+        ctx.fillStyle = g.players[0].color;
+        ctx.strokeRect(p1_target_btn.x,p1_target_btn.y,p1_target_btn.w,p1_target_btn.h); ctx.fillText("Target P1",p1_target_btn.x+p1_target_btn.w/2,p1_target_btn.y+10);
+        ctx.fillStyle = g.players[1].color;
+        ctx.strokeRect(p2_target_btn.x,p2_target_btn.y,p2_target_btn.w,p2_target_btn.h); ctx.fillText("Target P2",p2_target_btn.x+p2_target_btn.w/2,p2_target_btn.y+10);
+        ctx.fillStyle = "#000000";
+        ctx.strokeRect(cancel_target_btn.x,cancel_target_btn.y,cancel_target_btn.w,cancel_target_btn.h); ctx.fillText("Cancel",cancel_target_btn.x+cancel_target_btn.w/2,cancel_target_btn.y+10);
         break;
       case TURN_SUMMARY:
-        dc.context.textAlign = "left";
-        dc.context.fillStyle = "#000000";
-        dc.context.strokeStyle = "#000000";
-        dc.context.strokeRect(ready_btn.x,ready_btn.y,ready_btn.w,ready_btn.h);
+        ctx.textAlign = "left";
+        ctx.fillStyle = "#000000";
+        ctx.strokeStyle = "#000000";
+        ctx.strokeRect(ready_btn.x,ready_btn.y,ready_btn.w,ready_btn.h);
 
         var player = g.players[g.player_turn-1];
-        dc.context.fillText(player.title+" played "+g.events[player.hand[chosen_card_i]-1].title+" on "+g.players[chosen_target_p-1].title+"'s carbon",ready_btn.x+10,ready_btn.y+20);
-        dc.context.fillText("When ready, click to continue.",ready_btn.x+10,ready_btn.y+40);
+        ctx.fillText(player.title+" played "+g.events[player.hand[chosen_card_i]-1].title+" on "+g.players[chosen_target_p-1].title+"'s carbon",ready_btn.x+10,ready_btn.y+20);
+        ctx.fillText("When ready, click to continue.",ready_btn.x+10,ready_btn.y+40);
         break;
       case TURN_DONE:
-        dc.context.textAlign = "left";
-        dc.context.fillStyle = "#000000";
-        dc.context.strokeRect(done_btn.x,done_btn.y,done_btn.w,done_btn.h);
+        ctx.textAlign = "left";
+        ctx.fillStyle = "#000000";
+        ctx.strokeRect(done_btn.x,done_btn.y,done_btn.w,done_btn.h);
 
         var player = g.players[g.player_turn-1];
-        dc.context.fillText("Game Over!",done_btn.x+10,done_btn.y+20);
-        dc.context.fillText("When ready, click to continue.",done_btn.x+10,done_btn.y+40);
+        ctx.fillText("Game Over!",done_btn.x+10,done_btn.y+20);
+        ctx.fillText("When ready, click to continue.",done_btn.x+10,done_btn.y+40);
         break;
     }
 
-    dc.context.textAlign = "center";
-    dc.context.font = "20px Arial";
+    ctx.textAlign = "center";
+    ctx.font = "20px Arial";
     switch(turn_stage)
     {
       case TURN_WAIT_FOR_JOIN:
-        dc.context.fillText("waiting for opponent...",dc.width/2,50);
-        dc.context.fillText("(Room #"+game.join+")",dc.width/2,70);
+        ctx.fillText("waiting for opponent...",dc.width/2,50);
+        ctx.fillText("(Room #"+game.join+")",dc.width/2,70);
         break;
       case TURN_WAIT:
-        dc.context.fillText("waiting for opponent's turn...",dc.width/2,50);
+        ctx.fillText("waiting for opponent's turn...",dc.width/2,50);
       break;
       case TURN_CHOOSE_CARD:
-        dc.context.fillText("Choose an Event Card!",dc.width/2,50);
+        ctx.fillText("Choose an Event Card!",dc.width/2,50);
         break;
       case TURN_CHOOSE_TARGET:
-        dc.context.fillText("Choose A Target!",dc.width/2,50);
+        ctx.fillText("Choose A Target!",dc.width/2,50);
         break;
       case TURN_SUMMARY:
-        dc.context.fillText("",dc.width/2,50);
+        ctx.fillText("",dc.width/2,50);
         break;
       case TURN_DONE:
-        dc.context.fillText("Game Over!",dc.width/2,50);
+        ctx.fillText("Game Over!",dc.width/2,50);
         break;
     }
 
-    dc.context.textAlign = "left";
-    dc.context.font = "12px Arial";
+    ctx.textAlign = "left";
+    ctx.font = "12px Arial";
   };
 
   self.cleanup = function()
@@ -697,6 +705,44 @@ var GamePlayScene = function(game, stage)
     self.y;
     self.w;
     self.h;
+
+    self.dx;
+    self.dy;
+    self.dw;
+    self.dh;
+
+    self.tick = function()
+    {
+      if(!self.dw || !self.dh)
+      {
+        self.dx = self.x;
+        self.dy = self.y;
+        self.dw = self.w;
+        self.dh = self.h;
+      }
+      self.x = lerp(self.x,self.dx,0.1);
+      self.y = lerp(self.y,self.dy,0.1);
+      self.w = lerp(self.w,self.dw,0.1);
+      self.h = lerp(self.h,self.dh,0.1);
+    }
+
+    self.draw = function(event)
+    {
+      ctx.textAlign = "center";
+      ctx.fillStyle = "#FFFAF7";
+      ctx.fillRect(self.x,self.y,self.w,self.h);
+      ctx.fillStyle = "#000000";
+      var player = g.players[self.player-1];
+      var event = g.events[player.hand[self.index]-1];
+      if(g.player_turn == player.id && chosen_card_i == self.index) ctx.strokeStyle = "#00FF00";
+      else ctx.strokeStyle = player.color;
+      ctx.strokeRect(self.x,self.y,self.w,self.h);
+      ctx.fillText(event.title,self.x+self.w/2,self.y+20);
+      ctx.font = "italic 10px Arial";
+      ctx.fillText(event.description,self.x+self.w/2,self.y+30);
+      ctx.font = "12px Arial";
+      ctx.fillText(event.info,self.x+self.w/2,self.y+40);
+    }
 
     self.click = function(evt)
     {
