@@ -62,9 +62,9 @@ var GamePlayScene = function(game, stage)
   var done_btn;
   var bmwrangler;
 
-  var sidebar_w = 150;
-  var topmost_bar_h = 20;
-  var score_header_h = 40;
+  var sidebar_w = 160;
+  var topmost_bar_y = 40;
+  var score_header_y = 70;
 
   self.ready = function()
   {
@@ -83,7 +83,7 @@ var GamePlayScene = function(game, stage)
     transformGame(dc,g.nodes,g.events,g.tokens)
 
     var w = sidebar_w-20;
-    var gap = topmost_bar_h+score_header_h+15;
+    var gap = score_header_y+15;
     var h = (dc.height-gap)/g.players[0].hand.length;
     p1_cards_bounds = [];
     for(var i = 0; i < g.players[0].hand.length; i++)
@@ -423,23 +423,26 @@ var GamePlayScene = function(game, stage)
 
   self.draw = function()
   {
+    ctx.fillStyle = gray;
+    ctx.fillRect(0,0,dc.width,topmost_bar_y);
+
     ctx.font = "18px Arial";
     ctx.textAlign = "left";
     ctx.fillStyle = red;
-    ctx.fillRect(0,0,sidebar_w,dc.height);
+    ctx.fillRect(0,topmost_bar_y,sidebar_w,dc.height);
     ctx.fillStyle = lred;
-    ctx.fillRect(0,0,sidebar_w,40);
+    ctx.fillRect(0,topmost_bar_y,sidebar_w,score_header_y-topmost_bar_y);
     ctx.fillStyle = dred;
-    ctx.fillText("RED TEAM",10,28);
-    ctx.drawImage(red_token_icon,sidebar_w-40,15,20,15);
+    ctx.fillText("RED TEAM",10,score_header_y-6);
+    ctx.drawImage(red_token_icon,sidebar_w-40,score_header_y-18,20,15);
 
     ctx.fillStyle = blue;
-    ctx.fillRect(dc.width-sidebar_w,0,sidebar_w,dc.height);
+    ctx.fillRect(dc.width-sidebar_w,topmost_bar_y,sidebar_w,dc.height);
     ctx.fillStyle = lblue;
-    ctx.fillRect(dc.width-sidebar_w,0,sidebar_w,40);
+    ctx.fillRect(dc.width-sidebar_w,topmost_bar_y,sidebar_w,score_header_y-topmost_bar_y);
     ctx.fillStyle = dblue;
-    ctx.fillText("BLUE TEAM",dc.width-sidebar_w+10,28);
-    ctx.drawImage(blue_token_icon,dc.width-40,15,20,15);
+    ctx.fillText("BLUE TEAM",dc.width-sidebar_w+10,score_header_y-6);
+    ctx.drawImage(blue_token_icon,dc.width-40,score_header_y-18,20,15);
 
     ctx.font = "12px Arial";
     ctx.fillStyle = "#000000";
@@ -598,7 +601,7 @@ var GamePlayScene = function(game, stage)
     ctx.fillStyle = dred;
     ctx.textAlign = "left";
     ctx.font = "10px Arial";
-    ctx.fillText("X"+player.disp_pts,sidebar_w-20,25);
+    ctx.fillText("X"+player.disp_pts,sidebar_w-20,score_header_y-7);
     ctx.fillStyle = "#000000";
     for(var i = 0; i < player.hand.length; i++)
     {
@@ -611,7 +614,7 @@ var GamePlayScene = function(game, stage)
     ctx.fillStyle = dblue;
     ctx.textAlign = "left";
     ctx.font = "10px Arial";
-    ctx.fillText("X"+player.disp_pts,dc.width-20,25);
+    ctx.fillText("X"+player.disp_pts,dc.width-20,score_header_y-7);
     ctx.fillStyle = "#000000";
     for(var i = 0; i < player.hand.length; i++)
     {
@@ -680,9 +683,9 @@ var GamePlayScene = function(game, stage)
     ctx.textAlign = "left";
     ctx.font = "12px Arial";
     ctx.fillStyle = gray;
-    ctx.fillText("Current Zone: "+g.nodes[g.goal_node-1].title,sidebar_w+20,topmost_bar_h+15);
+    ctx.fillText("Current Zone: "+g.nodes[g.goal_node-1].title,sidebar_w+20,topmost_bar_y+15);
     ctx.textAlign = "right";
-    ctx.fillText("Up Next: "+g.nodes[g.next_goal_node-1].title,dc.width-sidebar_w-20,topmost_bar_h+15);
+    ctx.fillText("Up Next: "+g.nodes[g.next_goal_node-1].title,dc.width-sidebar_w-20,topmost_bar_y+15);
   };
 
   self.cleanup = function()
