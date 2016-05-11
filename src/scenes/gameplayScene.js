@@ -746,9 +746,10 @@ var GamePlayScene = function(game, stage)
           chosen_card_t = 0;
       }
       chosen_card_i = self.index;
+      hover_card.x = self.x;
+      hover_card.y = self.y;
       hover_card.dx = self.x;
-      hover_card.dy = self.y;
-      hover_card.y = self.y-20;
+      hover_card.dy = self.y-50;
       hover_card.t = 0;
       turn_stage = TURN_CONFIRM_CARD;
       hit_ui = true;
@@ -841,10 +842,6 @@ var GamePlayScene = function(game, stage)
       ctx.fillStyle = "#FFFAF7";
       ctx.fillRect(self.x,self.y,self.w,self.h);
 
-      if(g.player_turn == player.id && chosen_card_i == self.index) ctx.strokeStyle = "#00FF00";
-      else ctx.strokeStyle = player.color;
-      ctx.strokeRect(self.x,self.y,self.w,self.h);
-
       var icon_s = 35;
       ctx.drawImage(circle_icon,self.x+20,self.y+20,icon_s,icon_s);
       ctx.drawImage(circle_icon,self.x+self.w-20-icon_s,self.y+20,icon_s,icon_s);
@@ -863,12 +860,14 @@ var GamePlayScene = function(game, stage)
         case TURN_WAIT: break;
         case TURN_CHOOSE_CARD: break;
         case TURN_CONFIRM_CARD:
-          if(g.player_turn == 1) ctx.fillStyle = red;
-          if(g.player_turn == 2) ctx.fillStyle = blue;
+          if(g.player_turn == 1) { ctx.strokeStyle = red; ctx.fillStyle = red; }
+          if(g.player_turn == 2) { ctx.strokeStyle = blue; ctx.fillStyle = blue; }
+          ctx.lineWidth = 0.5;
+          dc.drawLine(self.x,self.y+self.h/2,self.x+self.w,self.y+self.h/2);
           ctx.fillRect(self.x+self.play_x,self.y+self.play_y,self.play_w,self.play_h);
           ctx.fillStyle = white;
           ctx.fillText("PLAY CARD",self.x+self.play_x+self.play_w/2,self.y+self.play_y+self.play_h-2);
-            break;
+          break;
         case TURN_CHOOSE_TARGET:
           ctx.textAlign = "center";
           ctx.fillStyle = gray;
@@ -925,6 +924,10 @@ var GamePlayScene = function(game, stage)
         case TURN_DONE: break;
       }
 
+      ctx.lineWidth = 5;
+      ctx.strokeStyle = white;
+      ctx.strokeRect(self.x,self.y,self.w,self.h);
+      ctx.lineWidth = 2;
     }
 
     self.click = function(evt)
@@ -961,7 +964,6 @@ var GamePlayScene = function(game, stage)
 
         if(chosen_target_p > 0 && ptWithin(evt.doX,evt.doY,self.x+self.play_x,self.y+self.play_y,self.play_w,self.play_h))
         {
-          turn_stage = TURN_CHOOSE_TARGET;
           if(game.multiplayer == MULTIPLAYER_NET_CREATE || game.multiplayer == MULTIPLAYER_NET_JOIN)
             cli.add(cli.id+" MOVE "+chosen_card_i+" "+chosen_target_p);
           turn_stage = TURN_SUMMARY;
