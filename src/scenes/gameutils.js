@@ -4,6 +4,8 @@ var lred = "#FAC9C3";
 var lblue = "#C5F0F8";
 var dred = "#E64E51";
 var dblue = "#3296E7";
+var gray = "#3A3A3A";
+var white = "#FFFFFF";
 
 var transformToScreen = function(canv,o)
 {

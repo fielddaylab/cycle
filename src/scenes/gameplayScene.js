@@ -811,14 +811,14 @@ var GamePlayScene = function(game, stage)
       self.play_y = self.h-30;
       self.play_w = 60;
       self.play_h = 20;
-      self.target_1_x = self.w/2-30;
-      self.target_1_y = self.h-60;
-      self.target_1_w = 20;
-      self.target_1_h = 20;
+      self.target_1_x = self.w/2-40;
+      self.target_1_y = self.h/2+30;
+      self.target_1_w = 30;
+      self.target_1_h = 30;
       self.target_2_x = self.w/2+10;
-      self.target_2_y = self.h-60;
-      self.target_2_w = 20;
-      self.target_2_h = 20;
+      self.target_2_y = self.h/2+30;
+      self.target_2_w = 30;
+      self.target_2_h = 30;
     }
 
     self.tick = function()
@@ -852,28 +852,74 @@ var GamePlayScene = function(game, stage)
       ctx.font = "12px Arial";
       ctx.fillText(event.info,self.x+self.w/2,self.y+95);
 
-      ctx.fillStyle = "#00FF00";
-      ctx.fillRect(self.x+self.play_x,self.y+self.play_y,self.play_w,self.play_h);
-
       switch(turn_stage)
       {
         case TURN_WAIT_FOR_JOIN: break;
         case TURN_WAIT: break;
         case TURN_CHOOSE_CARD: break;
-        case TURN_CONFIRM_CARD: break;
+        case TURN_CONFIRM_CARD:
+          if(g.player_turn == 1) ctx.fillStyle = red;
+          if(g.player_turn == 2) ctx.fillStyle = blue;
+          ctx.fillRect(self.x+self.play_x,self.y+self.play_y,self.play_w,self.play_h);
+          ctx.fillStyle = white;
+          ctx.fillText("PLAY CARD",self.x+self.play_x+self.play_w/2,self.y+self.play_y+self.play_h-2);
+            break;
         case TURN_CHOOSE_TARGET:
           ctx.textAlign = "center";
-          ctx.strokeStyle = "#000000";
-          ctx.fillStyle = g.players[0].color;
+          ctx.fillStyle = gray;
+          ctx.fillRect(self.x,self.y+self.h/2,self.w,20);
+          ctx.fillStyle = white;
+          ctx.fillText("SELECT CARBON",self.x+self.w/2,self.y+self.h/2+15);
+          if(chosen_target_p == 1)
+          {
+            ctx.fillStyle = lred;
+            ctx.fillRect(self.x,self.y+self.h/2+20,self.w,self.h/2-20);
+            ctx.fillStyle = dred;
+            ctx.fillRect(self.x+self.target_1_x,self.y+self.target_1_y,self.target_1_w,self.target_1_h);
+
+            ctx.fillStyle = blue;
+            ctx.fillRect(self.x+self.play_x,self.y+self.play_y,self.play_w,self.play_h);
+            ctx.fillStyle = white;
+            ctx.fillText("PLAY CARD",self.x+self.play_x+self.play_w/2,self.y+self.play_y+self.play_h-2);
+            ctx.fillText("RED",self.x+self.target_1_x+self.target_1_w/2,self.y+self.target_1_y+self.target_1_h);
+          }
+          if(chosen_target_p == 2)
+          {
+            ctx.fillStyle = lblue;
+            ctx.fillRect(self.x,self.y+self.h/2+20,self.w,self.h/2-20);
+            ctx.fillStyle = dblue;
+            ctx.fillRect(self.x+self.target_2_x,self.y+self.target_2_y,self.target_2_w,self.target_2_h);
+
+            ctx.fillStyle = red;
+            ctx.fillRect(self.x+self.play_x,self.y+self.play_y,self.play_w,self.play_h);
+            ctx.fillStyle = white;
+            ctx.fillText("PLAY CARD",self.x+self.play_x+self.play_w/2,self.y+self.play_y+self.play_h-2);
+            ctx.fillText("BLUE",self.x+self.target_2_x+self.target_2_w/2,self.y+self.target_2_y+self.target_2_h);
+          }
+
+          if(chosen_target_p != 1)
+          {
+            ctx.fillStyle = dred;
+            ctx.fillText("RED",self.x+self.target_1_x+self.target_1_w/2,self.y+self.target_1_y+self.target_1_h);
+          }
+
+          if(chosen_target_p != 2)
+          {
+            ctx.fillStyle = dblue;
+            ctx.fillText("BLUE",self.x+self.target_2_x+self.target_2_w/2,self.y+self.target_2_y+self.target_2_h);
+          }
+
+          ctx.strokeStyle = dred;
           ctx.strokeRect(self.x+self.target_1_x,self.y+self.target_1_y,self.target_1_w,self.target_1_h);
-          ctx.fillText("P1",self.x+self.target_1_x+self.target_1_w/2,self.y+self.target_1_y+10);
-          ctx.fillStyle = g.players[1].color;
+          ctx.drawImage(red_token_icon,self.x+self.target_1_x+self.target_1_w/2-10,self.y+self.target_1_y+self.target_1_h/2-8,20,15);
+          ctx.strokeStyle = dblue;
           ctx.strokeRect(self.x+self.target_2_x,self.y+self.target_2_y,self.target_2_w,self.target_2_h);
-          ctx.fillText("P2",self.x+self.target_2_x+self.target_2_w/2,self.y+self.target_2_y+10);
+          ctx.drawImage(blue_token_icon,self.x+self.target_2_x+self.target_2_w/2-10,self.y+self.target_2_y+self.target_2_h/2-8,20,15);
           break;
         case TURN_SUMMARY: break;
         case TURN_DONE: break;
       }
+
     }
 
     self.click = function(evt)
