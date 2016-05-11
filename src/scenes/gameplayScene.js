@@ -7,8 +7,6 @@ var GamePlayScene = function(game, stage)
   var n_ticks;
   var clicker;
   var hoverer;
-  var p1_card_clicker;
-  var p2_card_clicker;
 
   ENUM = 0;
   var TURN_WAIT_FOR_JOIN = ENUM; ENUM++;
@@ -49,6 +47,7 @@ var GamePlayScene = function(game, stage)
 
   //ui only
   var hit_ui;
+  var hovhit_ui;
   var goal_bounds;
   var p1_pts_bounds;
   var p2_pts_bounds;
@@ -71,8 +70,6 @@ var GamePlayScene = function(game, stage)
   {
     ctx.font = "12px Arial";
     clicker = new Clicker({source:stage.dispCanv.canvas});
-    p1_card_clicker = new Clicker({source:stage.dispCanv.canvas});
-    p2_card_clicker = new Clicker({source:stage.dispCanv.canvas});
     hoverer = new PersistentHoverer({source:stage.dispCanv.canvas});
 
     if(game.join) sr = new SeededRand(game.join);
@@ -137,7 +134,9 @@ var GamePlayScene = function(game, stage)
     hover_card.w = p1_cards_bounds[0].w;
     hover_card.h = p1_cards_bounds[0].h*2;
     hover_card.set();
-    hoverer.register(hover_card); //need to register to hover before cards
+    //need to register before cards
+    hoverer.register(hover_card);
+    clicker.register(hover_card);
 
     var card;
     p1_cards = [];
@@ -153,7 +152,7 @@ var GamePlayScene = function(game, stage)
       card.h = p1_cards_bounds[i].h;
 
       p1_cards.push(card);
-      p1_card_clicker.register(card);
+      clicker.register(card);
       hoverer.register(card);
     }
     p2_cards = [];
@@ -169,7 +168,7 @@ var GamePlayScene = function(game, stage)
       card.h = p2_cards_bounds[i].h;
 
       p2_cards.push(card);
-      p2_card_clicker.register(card);
+      clicker.register(card);
       hoverer.register(card);
     }
 
@@ -230,7 +229,6 @@ var GamePlayScene = function(game, stage)
       }
     );
 
-    clicker.register(hover_card);
     clicker.register(ready_btn);
     clicker.register(done_btn);
 
@@ -316,8 +314,6 @@ var GamePlayScene = function(game, stage)
           cli.last_known = cli.database.length-1;
           cli.updated = false;
         }
-        p1_card_clicker.ignore();
-        p2_card_clicker.ignore();
         clicker.ignore();
         break;
       case TURN_WAIT:
@@ -347,41 +343,30 @@ var GamePlayScene = function(game, stage)
           cli.last_known = cli.database.length-1;
           cli.updated = false;
         }
-        p1_card_clicker.ignore();
-        p2_card_clicker.ignore();
         clicker.ignore();
         break;
       case TURN_CHOOSE_CARD:
-        if(g.player_turn == 1) p1_card_clicker.flush();
-        if(g.player_turn == 2) p2_card_clicker.flush();
-        clicker.ignore();
+        clicker.flush();
         break;
       case TURN_CONFIRM_CARD:
         hover_card.tick();
-        if(g.player_turn == 1) p1_card_clicker.ignore();
-        if(g.player_turn == 2) p2_card_clicker.ignore();
         clicker.flush();
         break;
       case TURN_CHOOSE_TARGET:
         hover_card.tick();
-        if(g.player_turn == 1) p1_card_clicker.ignore();
-        if(g.player_turn == 2) p2_card_clicker.ignore();
         clicker.flush();
         break;
       case TURN_SUMMARY:
         hover_card.tick();
-        p1_card_clicker.ignore();
-        p2_card_clicker.ignore();
         clicker.flush();
         break;
       case TURN_DONE:
-        p1_card_clicker.ignore();
-        p2_card_clicker.ignore();
         clicker.flush();
         break;
     }
     if(hoverer) hoverer.flush(); //check because "setScene" could have cleaned up hoverer. causes error in console, but no other issues.
     hit_ui = false;
+    hovhit_ui = false;
 
     if(transition_t)
     {
@@ -704,10 +689,6 @@ var GamePlayScene = function(game, stage)
   {
     clicker.detach();
     clicker = undefined;
-    p1_card_clicker.detach();
-    p1_card_clicker = undefined;
-    p2_card_clicker.detach();
-    p2_card_clicker = undefined;
     hoverer.detach();
     hoverer = undefined;
   };
@@ -786,26 +767,35 @@ var GamePlayScene = function(game, stage)
     self.click = function(evt)
     {
       if(hit_ui) return;
-      if(chosen_card_i != self.index)
+      if(g.player_turn != self.player) return;
+      if(turn_stage == TURN_CONFIRM_CARD || turn_stage == TURN_CHOOSE_TARGET)
       {
-        if(hovering_card_i == self.index && hovering_card_p == self.player)
-          chosen_card_t = hovering_card_t;
-        else
-          chosen_card_t = 0;
+        chosen_target_p = 0;
+        turn_stage = TURN_CHOOSE_CARD;
       }
-      chosen_card_i = self.index;
-      hover_card.x = self.x;
-      hover_card.y = self.y;
-      hover_card.dx = self.x;
-      hover_card.dy = self.y-self.h;
-      hover_card.t = 0;
-      turn_stage = TURN_CONFIRM_CARD;
-      hit_ui = true;
+      if(turn_stage == TURN_CHOOSE_CARD)
+      {
+        if(chosen_card_i != self.index)
+        {
+          if(hovering_card_i == self.index && hovering_card_p == self.player)
+            chosen_card_t = hovering_card_t;
+          else
+            chosen_card_t = 0;
+        }
+        chosen_card_i = self.index;
+        hover_card.x = self.x;
+        hover_card.y = self.y;
+        hover_card.dx = self.x;
+        hover_card.dy = self.y-self.h;
+        hover_card.t = 0;
+        turn_stage = TURN_CONFIRM_CARD;
+        hit_ui = true;
+      }
     }
 
     self.hover = function(evt)
     {
-      if(hit_ui) return;
+      if(hovhit_ui) return;
       if(hovering_card_i == -1)
       {
         if(chosen_card_i == self.index && g.player_turn == self.player)
@@ -1012,6 +1002,11 @@ var GamePlayScene = function(game, stage)
     self.click = function(evt)
     {
       if(hit_ui) return;
+      if(
+        turn_stage != TURN_CONFIRM_CARD &&
+        turn_stage != TURN_CHOOSE_TARGET
+        )
+        return;
       hit_ui = true;
 
       if(turn_stage == TURN_CONFIRM_CARD)
@@ -1019,11 +1014,7 @@ var GamePlayScene = function(game, stage)
         if(ptWithin(evt.doX,evt.doY,self.x+self.play_x,self.y+self.play_y,self.play_w,self.play_h))
         {
           turn_stage = TURN_CHOOSE_TARGET;
-          return;
         }
-
-        chosen_card_i = -1;
-        turn_stage = TURN_CHOOSE_CARD;
       }
 
       if(turn_stage == TURN_CHOOSE_TARGET)
@@ -1031,14 +1022,12 @@ var GamePlayScene = function(game, stage)
         if(ptWithin(evt.doX,evt.doY,self.x+self.target_1_x,self.y+self.target_1_y,self.target_1_w,self.target_1_h))
         {
           chosen_target_p = 1;
-          return;
         }
 
         //p2 hit
         if(ptWithin(evt.doX,evt.doY,self.x+self.target_2_x,self.y+self.target_2_y,self.target_2_w,self.target_2_h))
         {
           chosen_target_p = 2;
-          return;
         }
 
         if(chosen_target_p > 0 && ptWithin(evt.doX,evt.doY,self.x+self.play_x,self.y+self.play_y,self.play_w,self.play_h))
@@ -1046,12 +1035,7 @@ var GamePlayScene = function(game, stage)
           if(game.multiplayer == MULTIPLAYER_NET_CREATE || game.multiplayer == MULTIPLAYER_NET_JOIN)
             cli.add(cli.id+" MOVE "+chosen_card_i+" "+chosen_target_p);
           turn_stage = TURN_SUMMARY;
-          return;
         }
-
-        chosen_target_p = 0;
-        chosen_card_i = -1;
-        turn_stage = TURN_CHOOSE_CARD;
       }
     }
 
@@ -1060,7 +1044,7 @@ var GamePlayScene = function(game, stage)
     {
       if(turn_stage != TURN_CONFIRM_CARD && turn_stage != TURN_CHOOSE_TARGET) return;
       self.hovering = true;
-      hit_ui = true;
+      hovhit_ui = true;
     }
     self.unhover = function()
     {
