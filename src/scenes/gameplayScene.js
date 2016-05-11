@@ -149,7 +149,7 @@ var GamePlayScene = function(game, stage)
       card.x = p1_cards_bounds[i].x;
       card.y = p1_cards_bounds[i].y;
       card.w = p1_cards_bounds[i].w;
-      card.h = p1_cards_bounds[i].h;
+      card.h = p1_cards_bounds[i].h+20;
 
       p1_cards.push(card);
       p1_card_clicker.register(card);
@@ -165,7 +165,7 @@ var GamePlayScene = function(game, stage)
       card.x = p2_cards_bounds[i].x;
       card.y = p2_cards_bounds[i].y;
       card.w = p2_cards_bounds[i].w;
-      card.h = p2_cards_bounds[i].h;
+      card.h = p2_cards_bounds[i].h+20;
 
       p2_cards.push(card);
       p2_card_clicker.register(card);
@@ -555,7 +555,7 @@ var GamePlayScene = function(game, stage)
       goal_close = true;
     var turns_left = 3-(g.turn%g.turns_per_goal_shift);
     if(!goal_close && turns_left == 3) turns_left = 0;
-    ctx.strokeRect(goal_bounds.x,goal_bounds.y,goal_bounds.w,goal_bounds.h);
+    dc.strokeRoundRect(goal_bounds.x,goal_bounds.y,goal_bounds.w,goal_bounds.h,5);
     dc.outlineText(turns_left+" turns til goal shift",goal_bounds.x,goal_bounds.y-3,"#000000","#FFFFFF");
 
     //hand
@@ -599,7 +599,7 @@ var GamePlayScene = function(game, stage)
         ctx.textAlign = "left";
         ctx.fillStyle = "#000000";
         ctx.strokeStyle = "#000000";
-        ctx.strokeRect(ready_btn.x,ready_btn.y,ready_btn.w,ready_btn.h);
+        dc.strokeRoundRect(ready_btn.x,ready_btn.y,ready_btn.w,ready_btn.h,5);
 
         var player = g.players[g.player_turn-1];
         ctx.fillText(player.title+" played "+g.events[player.hand[chosen_card_i]-1].title+" on "+g.players[chosen_target_p-1].title+"'s carbon",ready_btn.x+10,ready_btn.y+20);
@@ -608,7 +608,7 @@ var GamePlayScene = function(game, stage)
       case TURN_DONE:
         ctx.textAlign = "left";
         ctx.fillStyle = "#000000";
-        ctx.strokeRect(done_btn.x,done_btn.y,done_btn.w,done_btn.h);
+        dc.strokeRoundRect(done_btn.x,done_btn.y,done_btn.w,done_btn.h,5);
 
         var player = g.players[g.player_turn-1];
         ctx.fillText("Game Over!",done_btn.x+10,done_btn.y+20);
@@ -716,11 +716,12 @@ var GamePlayScene = function(game, stage)
 
       ctx.textAlign = "center";
       ctx.fillStyle = "#FFFAF7";
-      ctx.fillRect(self.x,self.y,self.w,self.h);
+      dc.fillRoundRect(self.x,self.y,self.w,self.h,5);
 
       if(g.player_turn == player.id && chosen_card_i == self.index) ctx.strokeStyle = "#00FF00";
       else ctx.strokeStyle = player.color;
-      ctx.strokeRect(self.x,self.y,self.w,self.h);
+      ctx.lineWidth = 0.5;
+      dc.strokeRoundRect(self.x,self.y,self.w,self.h,5);
 
       var icon_s = 35;
       ctx.drawImage(circle_icon,self.x+20,self.y+20,icon_s,icon_s);
@@ -813,18 +814,18 @@ var GamePlayScene = function(game, stage)
       self.dw = self.w;
       self.dh = self.h;
 
-      self.play_x = self.w/2-30;
-      self.play_y = self.h-30;
-      self.play_w = 60;
+      self.play_w = 80;
       self.play_h = 20;
-      self.target_1_x = self.w/2-40;
+      self.play_x = self.w/2-self.play_w/2;
+      self.play_y = self.h-30;
+      self.target_1_w = 35;
+      self.target_1_h = 35;
+      self.target_1_x = self.w/2-self.target_1_w-10;
       self.target_1_y = self.h/2+30;
-      self.target_1_w = 30;
-      self.target_1_h = 30;
+      self.target_2_w = 35;
+      self.target_2_h = 35;
       self.target_2_x = self.w/2+10;
       self.target_2_y = self.h/2+30;
-      self.target_2_w = 30;
-      self.target_2_h = 30;
     }
 
     self.tick = function()
@@ -840,7 +841,7 @@ var GamePlayScene = function(game, stage)
     {
       ctx.textAlign = "center";
       ctx.fillStyle = "#FFFAF7";
-      ctx.fillRect(self.x,self.y,self.w,self.h);
+      dc.fillRoundRect(self.x,self.y,self.w,self.h,5);
 
       var icon_s = 35;
       ctx.drawImage(circle_icon,self.x+20,self.y+20,icon_s,icon_s);
@@ -864,7 +865,7 @@ var GamePlayScene = function(game, stage)
           if(g.player_turn == 2) { ctx.strokeStyle = blue; ctx.fillStyle = blue; }
           ctx.lineWidth = 0.5;
           dc.drawLine(self.x,self.y+self.h/2,self.x+self.w,self.y+self.h/2);
-          ctx.fillRect(self.x+self.play_x,self.y+self.play_y,self.play_w,self.play_h);
+          dc.fillRoundRect(self.x+self.play_x,self.y+self.play_y,self.play_w,self.play_h,5);
           ctx.fillStyle = white;
           ctx.fillText("PLAY CARD",self.x+self.play_x+self.play_w/2,self.y+self.play_y+self.play_h-2);
           break;
@@ -879,46 +880,50 @@ var GamePlayScene = function(game, stage)
             ctx.fillStyle = lred;
             ctx.fillRect(self.x,self.y+self.h/2+20,self.w,self.h/2-20);
             ctx.fillStyle = dred;
-            ctx.fillRect(self.x+self.target_1_x,self.y+self.target_1_y,self.target_1_w,self.target_1_h);
+            dc.fillRoundRect(self.x+self.target_1_x,self.y+self.target_1_y,self.target_1_w,self.target_1_h,5);
 
             ctx.fillStyle = blue;
-            ctx.fillRect(self.x+self.play_x,self.y+self.play_y,self.play_w,self.play_h);
+            dc.fillRoundRect(self.x+self.play_x,self.y+self.play_y,self.play_w,self.play_h,5);
             ctx.fillStyle = white;
             ctx.fillText("PLAY CARD",self.x+self.play_x+self.play_w/2,self.y+self.play_y+self.play_h-2);
-            ctx.fillText("RED",self.x+self.target_1_x+self.target_1_w/2,self.y+self.target_1_y+self.target_1_h);
+            ctx.font = "10px Arial";
+            ctx.fillText("RED",self.x+self.target_1_x+self.target_1_w/2,self.y+self.target_1_y+self.target_1_h-3);
           }
           if(chosen_target_p == 2)
           {
             ctx.fillStyle = lblue;
             ctx.fillRect(self.x,self.y+self.h/2+20,self.w,self.h/2-20);
             ctx.fillStyle = dblue;
-            ctx.fillRect(self.x+self.target_2_x,self.y+self.target_2_y,self.target_2_w,self.target_2_h);
+            dc.fillRoundRect(self.x+self.target_2_x,self.y+self.target_2_y,self.target_2_w,self.target_2_h,5);
 
             ctx.fillStyle = red;
-            ctx.fillRect(self.x+self.play_x,self.y+self.play_y,self.play_w,self.play_h);
+            dc.fillRoundRect(self.x+self.play_x,self.y+self.play_y,self.play_w,self.play_h,5);
             ctx.fillStyle = white;
             ctx.fillText("PLAY CARD",self.x+self.play_x+self.play_w/2,self.y+self.play_y+self.play_h-2);
-            ctx.fillText("BLUE",self.x+self.target_2_x+self.target_2_w/2,self.y+self.target_2_y+self.target_2_h);
+            ctx.font = "10px Arial";
+            ctx.fillText("BLUE",self.x+self.target_2_x+self.target_2_w/2,self.y+self.target_2_y+self.target_2_h-3);
           }
 
           if(chosen_target_p != 1)
           {
             ctx.fillStyle = dred;
-            ctx.fillText("RED",self.x+self.target_1_x+self.target_1_w/2,self.y+self.target_1_y+self.target_1_h);
+            ctx.font = "10px Arial";
+            ctx.fillText("RED",self.x+self.target_1_x+self.target_1_w/2,self.y+self.target_1_y+self.target_1_h-3);
           }
 
           if(chosen_target_p != 2)
           {
             ctx.fillStyle = dblue;
-            ctx.fillText("BLUE",self.x+self.target_2_x+self.target_2_w/2,self.y+self.target_2_y+self.target_2_h);
+            ctx.font = "10px Arial";
+            ctx.fillText("BLUE",self.x+self.target_2_x+self.target_2_w/2,self.y+self.target_2_y+self.target_2_h-3);
           }
 
           ctx.strokeStyle = dred;
-          ctx.strokeRect(self.x+self.target_1_x,self.y+self.target_1_y,self.target_1_w,self.target_1_h);
-          ctx.drawImage(red_token_icon,self.x+self.target_1_x+self.target_1_w/2-10,self.y+self.target_1_y+self.target_1_h/2-8,20,15);
+          dc.strokeRoundRect(self.x+self.target_1_x,self.y+self.target_1_y,self.target_1_w,self.target_1_h,5);
+          ctx.drawImage(red_token_icon,self.x+self.target_1_x+self.target_1_w/2-8,self.y+self.target_1_y+8,16,12);
           ctx.strokeStyle = dblue;
-          ctx.strokeRect(self.x+self.target_2_x,self.y+self.target_2_y,self.target_2_w,self.target_2_h);
-          ctx.drawImage(blue_token_icon,self.x+self.target_2_x+self.target_2_w/2-10,self.y+self.target_2_y+self.target_2_h/2-8,20,15);
+          dc.strokeRoundRect(self.x+self.target_2_x,self.y+self.target_2_y,self.target_2_w,self.target_2_h,5);
+          ctx.drawImage(blue_token_icon,self.x+self.target_2_x+self.target_2_w/2-8,self.y+self.target_2_y+8,16,12);
           break;
         case TURN_SUMMARY: break;
         case TURN_DONE: break;
@@ -926,7 +931,7 @@ var GamePlayScene = function(game, stage)
 
       ctx.lineWidth = 5;
       ctx.strokeStyle = white;
-      ctx.strokeRect(self.x,self.y,self.w,self.h);
+      dc.strokeRoundRect(self.x,self.y,self.w,self.h,5);
       ctx.lineWidth = 2;
     }
 
