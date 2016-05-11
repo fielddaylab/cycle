@@ -649,7 +649,7 @@ var GamePlayScene = function(game, stage)
     ctx.fillStyle = gray;
     ctx.fillText("Current Zone: "+g.nodes[g.goal_node-1].title,sidebar_w+20,topmost_bar_h+15);
     ctx.textAlign = "right";
-    ctx.fillText("Up Next: "+g.nodes[g.goal_node-1].title,dc.width-sidebar_w-20,topmost_bar_h+15);
+    ctx.fillText("Up Next: "+g.nodes[g.next_goal_node-1].title,dc.width-sidebar_w-20,topmost_bar_h+15);
   };
 
   self.cleanup = function()

@@ -125,7 +125,22 @@ var constructGame = function(game_data,sr)
   g.turns_per_goal_shift = game_data.goal_shift_turns;
   g.turn = 0;
   g.player_turn = 1;
+
   g.goal_node = (Math.floor(sr.next()*g.nodes.length))+1;
+
+  var eligibleevts = [];
+  for(var i = 0; i < g.events.length; i++)
+    if(g.events[i].from_id == g.goal_node) eligibleevts.push(i);
+  if(eligibleevts.length)
+  {
+    var ei = Math.floor(sr.next()*eligibleevts.length);
+    g.next_goal_node = g.events[eligibleevts[ei]].to_id;
+  }
+  else //dead end! route to random
+  {
+    g.next_goal_node = (Math.floor(sr.next()*g.nodes.length))+1;
+  }
+
   g.last_goal_node = g.goal_node;
   g.goal_shift = g.turns_per_goal_shift;
 
@@ -281,17 +296,19 @@ var playCard = function(game, index, target, sr)
     {
       game.goal_shift = game.turns_per_goal_shift;
 
+      game.goal_node = game.next_goal_node;
+
       var eligibleevts = [];
       for(var i = 0; i < game.events.length; i++)
         if(game.events[i].from_id == game.goal_node) eligibleevts.push(i);
       if(eligibleevts.length)
       {
         var ei = Math.floor(sr.next()*eligibleevts.length);
-        game.goal_node = game.events[eligibleevts[ei]].to_id;
+        game.next_goal_node = game.events[eligibleevts[ei]].to_id;
       }
       else //dead end! route to random
       {
-        game.goal_node = (Math.floor(sr.next()*game.nodes.length))+1;
+        game.next_goal_node = (Math.floor(sr.next()*game.nodes.length))+1;
       }
     }
   }

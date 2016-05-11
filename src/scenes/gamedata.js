@@ -120,6 +120,7 @@ var CycleGame = function()
   self.goal_node = 0;
   self.goal_shift = 0;
 
+  self.next_goal_node = 0;
   self.last_goal_node = 0;
   self.last_event = 0;
   self.last_target = 0;
