@@ -885,6 +885,12 @@ var GamePlayScene = function(game, stage)
       self.y = lerp(self.y,self.dy+hover_pulse*5,0.1);
       self.w = lerp(self.w,self.dw,0.1);
       self.h = lerp(self.h,self.dh,0.1);
+
+      if(self.w < 0)
+      {
+        self.w = Math.abs(self.w);
+        self.dw = Math.abs(self.dw);
+      }
     }
 
     self.draw = function(player,event)
