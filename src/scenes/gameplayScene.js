@@ -57,6 +57,7 @@ var GamePlayScene = function(game, stage)
   var p1_cards;
   var p2_cards;
   var hover_card;
+  var abyss;
 
   var ready_btn;
   var done_btn;
@@ -258,6 +259,29 @@ var GamePlayScene = function(game, stage)
 
     direction_viz_enabled = true;
     displayed_turn_3_warning = false;
+
+    abyss =
+    {
+     x:0,
+     y:0,
+     w:dc.width,
+     h:dc.height
+    }
+    abyss.click = function(evt)
+    {
+      if(hit_ui) return;
+      switch(turn_stage)
+      {
+
+        case TURN_CONFIRM_CARD:
+        case TURN_CHOOSE_TARGET:
+          chosen_target_p = 0;
+          chosen_card_i = -1;
+          turn_stage = TURN_CHOOSE_CARD;
+          break;
+      }
+    }
+    clicker.register(abyss);
   };
 
   self.tick = function()
