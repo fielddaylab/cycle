@@ -773,7 +773,7 @@ var GamePlayScene = function(game, stage)
       var icon_s = 35;
       ctx.drawImage(circle_icon,self.x+20,self.y+20,icon_s,icon_s);
       ctx.drawImage(circle_icon,self.x+self.w-20-icon_s,self.y+20,icon_s,icon_s);
-      ctx.drawImage(biarrow_icon,self.x+self.w/2-(icon_s/4),self.y+20+icon_s/4,icon_s/2,icon_s/2);
+      ctx.drawImage(arrow_icon,self.x+self.w/2-(icon_s/4),self.y+20+icon_s/4,icon_s/2,icon_s/2);
 
       ctx.fillStyle = "#000000";
       ctx.font = "10px Arial";
@@ -896,7 +896,7 @@ var GamePlayScene = function(game, stage)
       var icon_s = 35;
       ctx.drawImage(circle_icon,self.x+20,self.y+20,icon_s,icon_s);
       ctx.drawImage(circle_icon,self.x+self.w-20-icon_s,self.y+20,icon_s,icon_s);
-      ctx.drawImage(biarrow_icon,self.x+self.w/2-(icon_s/4),self.y+20+icon_s/4,icon_s/2,icon_s/2);
+      ctx.drawImage(arrow_icon,self.x+self.w/2-(icon_s/4),self.y+20+icon_s/4,icon_s/2,icon_s/2);
 
       //text (title/info/description)
       ctx.fillStyle = "#000000";
