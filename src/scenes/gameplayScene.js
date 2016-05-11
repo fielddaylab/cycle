@@ -855,14 +855,14 @@ var GamePlayScene = function(game, stage)
       self.play_h = 20;
       self.play_x = self.w/2-self.play_w/2;
       self.play_y = self.h-30;
-      self.target_1_w = 35;
-      self.target_1_h = 35;
+      self.target_1_w = 40;
+      self.target_1_h = 40;
       self.target_1_x = self.w/2-self.target_1_w-10;
-      self.target_1_y = self.h/2+30;
-      self.target_2_w = 35;
-      self.target_2_h = 35;
+      self.target_1_y = self.h/2+20;
+      self.target_2_w = 40;
+      self.target_2_h = 40;
       self.target_2_x = self.w/2+10;
-      self.target_2_y = self.h/2+30;
+      self.target_2_y = self.h/2+20;
     }
 
     self.tick = function()
@@ -916,37 +916,28 @@ var GamePlayScene = function(game, stage)
         ctx.fillText("PLAY CARD",self.x+self.play_x+self.play_w/2,self.y+self.play_y+self.play_h/2+4);
       }
 
-      if(turn_stage == TURN_CHOOSE_TARGET)
-      {
-        //"choose carbon" banner
-        ctx.textAlign = "center";
-        ctx.fillStyle = gray;
-        ctx.fillRect(self.x,self.y+self.h/2,self.w,20);
-        ctx.fillStyle = white;
-        ctx.fillText("SELECT CARBON",self.x+self.w/2,self.y+self.h/2+15);
-      }
-
       if(turn_stage == TURN_CHOOSE_TARGET || turn_stage == TURN_SUMMARY)
       {
         //bottom-half bg
         if(chosen_target_p == 1) ctx.fillStyle = lred;
         else if(chosen_target_p == 2) ctx.fillStyle = lblue;
         if(chosen_target_p)
-          ctx.fillRect(self.x,self.y+self.h/2+20,self.w,self.h/2-20);
+          ctx.fillRect(self.x,self.y+self.h/2,self.w,self.h/2);
+        ctx.lineWidth = 1;
 
         //target (red)
           //stroke
-        ctx.strokeStyle = dred;
+        ctx.strokeStyle = red;
         dc.strokeRoundRect(self.x+self.target_1_x,self.y+self.target_1_y,self.target_1_w,self.target_1_h,5);
         if(chosen_target_p == 1)
         {
           //fill
-          ctx.fillStyle = dred;
+          ctx.fillStyle = red;
           dc.fillRoundRect(self.x+self.target_1_x,self.y+self.target_1_y,self.target_1_w,self.target_1_h,5);
           //text (selected)
           ctx.fillStyle = white;
         }
-        else ctx.fillStyle = dred; //text (deselected)
+        else ctx.fillStyle = red; //text (deselected)
           //text
         ctx.font = "10px Arial";
         ctx.fillText("RED",self.x+self.target_1_x+self.target_1_w/2,self.y+self.target_1_y+self.target_1_h-3);
@@ -955,17 +946,17 @@ var GamePlayScene = function(game, stage)
 
         //target (blue)
           //stroke
-        ctx.strokeStyle = dblue;
+        ctx.strokeStyle = blue;
         dc.strokeRoundRect(self.x+self.target_2_x,self.y+self.target_2_y,self.target_2_w,self.target_2_h,5);
         if(chosen_target_p == 2)
         {
           //fill
-          ctx.fillStyle = dblue;
+          ctx.fillStyle = blue;
           dc.fillRoundRect(self.x+self.target_2_x,self.y+self.target_2_y,self.target_2_w,self.target_2_h,5);
           //text (selected)
           ctx.fillStyle = white;
         }
-        else ctx.fillStyle = dblue; //text (deselected)
+        else ctx.fillStyle = blue; //text (deselected)
           //text
         ctx.font = "10px Arial";
         ctx.fillText("BLUE",self.x+self.target_2_x+self.target_2_w/2,self.y+self.target_2_y+self.target_2_h-3);
@@ -993,9 +984,31 @@ var GamePlayScene = function(game, stage)
         }
       }
 
-      ctx.lineWidth = 5;
+      if(turn_stage == TURN_CHOOSE_TARGET)
+      {
+        //"choose carbon" banner
+        ctx.textAlign = "center";
+        ctx.fillStyle = gray;
+        ctx.fillRect(self.x,self.y+self.h/2-10,self.w,20);
+        ctx.beginPath();
+        ctx.moveTo(self.x+self.w/2-10,self.y+self.h/2+5);
+        ctx.lineTo(self.x+self.w/2,self.y+self.h/2+10+5);
+        ctx.lineTo(self.x+self.w/2+10,self.y+self.h/2+5);
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.fillStyle = white;
+        ctx.fillText("SELECT CARBON",self.x+self.w/2,self.y+self.h/2+5);
+      }
+
+      var thick = 5;
+      ctx.lineWidth = thick;
       ctx.strokeStyle = white;
       dc.strokeRoundRect(self.x,self.y,self.w,self.h,5);
+      ctx.lineWidth = 0.5;
+      if(g.player_turn == 1) ctx.strokeStyle = red;
+      if(g.player_turn == 2) ctx.strokeStyle = blue;
+      dc.strokeRoundRect(self.x-thick/2,self.y-thick/2,self.w+thick,self.h+thick,5);
       ctx.lineWidth = 2;
     }
 
