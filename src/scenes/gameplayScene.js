@@ -57,6 +57,8 @@ var GamePlayScene = function(game, stage)
   var p2_cards;
   var hover_card;
   var abyss;
+  var hover_pulse_t;
+  var hover_pulse;
 
   var ready_btn;
   var done_btn;
@@ -198,6 +200,7 @@ var GamePlayScene = function(game, stage)
             var card;
             if(g.player_turn == 1) card = p1_cards[chosen_card_i];
             else if(g.player_turn == 2) card = p2_cards[chosen_card_i];
+            hover_pulse_t = Math.PI;
             hover_card.x = card.x;
             hover_card.y = card.y;
             hover_card.dx = card.x;
@@ -280,6 +283,9 @@ var GamePlayScene = function(game, stage)
       }
     }
     clicker.register(abyss);
+
+    hover_pulse_t = 0;
+    hover_pulse = Math.sin(hover_pulse_t);
   };
 
   self.tick = function()
@@ -287,6 +293,8 @@ var GamePlayScene = function(game, stage)
     n_ticks++;
     chosen_card_t++;
     hovering_card_t++;
+    hover_pulse_t += 0.05;
+    hover_pulse = Math.sin(hover_pulse_t);
 
     if(g.turn >= 3 && !displayed_turn_3_warning)
     {
@@ -331,6 +339,7 @@ var GamePlayScene = function(game, stage)
               var card;
               if(g.player_turn == 1) card = p1_cards[chosen_card_i];
               else if(g.player_turn == 2) card = p2_cards[chosen_card_i];
+              hover_pulse_t = Math.PI;
               hover_card.x = card.x;
               hover_card.y = card.y;
               hover_card.dx = card.x;
@@ -786,6 +795,7 @@ var GamePlayScene = function(game, stage)
             chosen_card_t = 0;
         }
         chosen_card_i = self.index;
+        hover_pulse_t = Math.PI;
         hover_card.x = self.x;
         hover_card.y = self.y;
         hover_card.dx = self.x;
@@ -872,7 +882,7 @@ var GamePlayScene = function(game, stage)
     {
       self.t++;
       self.x = lerp(self.x,self.dx,0.1);
-      self.y = lerp(self.y,self.dy,0.1);
+      self.y = lerp(self.y,self.dy+hover_pulse*5,0.1);
       self.w = lerp(self.w,self.dw,0.1);
       self.h = lerp(self.h,self.dh,0.1);
     }
