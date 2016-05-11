@@ -659,18 +659,10 @@ var GamePlayScene = function(game, stage)
       case TURN_WAIT:
         ctx.fillText("waiting for opponent's turn...",dc.width/2,50);
       break;
-      case TURN_CHOOSE_CARD:
-        ctx.fillText("Choose an Event Card!",dc.width/2,50);
-        break;
-      case TURN_CONFIRM_CARD:
-        ctx.fillText("",dc.width/2,50);
-        break;
-      case TURN_CHOOSE_TARGET:
-        ctx.fillText("Choose A Target!",dc.width/2,50);
-        break;
-      case TURN_SUMMARY:
-        ctx.fillText("",dc.width/2,50);
-        break;
+      case TURN_CHOOSE_CARD: break;
+      case TURN_CONFIRM_CARD: break;
+      case TURN_CHOOSE_TARGET: break;
+      case TURN_SUMMARY: break;
       case TURN_DONE:
         ctx.fillText("Game Over!",dc.width/2,50);
         break;
@@ -923,11 +915,10 @@ var GamePlayScene = function(game, stage)
       if(turn_stage == TURN_CHOOSE_TARGET || turn_stage == TURN_SUMMARY)
       {
         //bottom-half bg
-        if(chosen_target_p == 1)
-          ctx.fillStyle = lred;
-        else
-          ctx.fillStyle = lblue;
-        ctx.fillRect(self.x,self.y+self.h/2+20,self.w,self.h/2-20);
+        if(chosen_target_p == 1) ctx.fillStyle = lred;
+        else if(chosen_target_p == 2) ctx.fillStyle = lblue;
+        if(chosen_target_p)
+          ctx.fillRect(self.x,self.y+self.h/2+20,self.w,self.h/2-20);
 
         //target (red)
           //stroke
@@ -1034,6 +1025,7 @@ var GamePlayScene = function(game, stage)
           return;
         }
 
+        chosen_target_p = 0;
         chosen_card_i = -1;
         turn_stage = TURN_CHOOSE_CARD;
       }
