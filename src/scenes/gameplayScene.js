@@ -117,15 +117,15 @@ var GamePlayScene = function(game, stage)
     };
 
     p1_pts_bounds = {
-      x:50,
-      y:10,
+      x:sidebar_w-20,
+      y:score_header_y-7,
       w:10,
       h:10,
     };
 
     p2_pts_bounds = {
-      x:dc.width-50-10,
-      y:10,
+      x:dc.width-20,
+      y:score_header_y-7,
       w:10,
       h:10,
     };
