@@ -15,6 +15,7 @@ var GamePlayScene = function(game, stage)
   var TURN_CONFIRM_CARD  = ENUM; ENUM++;
   var TURN_CHOOSE_TARGET = ENUM; ENUM++;
   var TURN_SUMMARY       = ENUM; ENUM++;
+  var TURN_ANIM_CARD     = ENUM; ENUM++;
   var TURN_DONE          = ENUM; ENUM++;
   var turn_stage;
 
@@ -179,47 +180,55 @@ var GamePlayScene = function(game, stage)
       {
         if(hit_ui || turn_stage != TURN_SUMMARY) return;
 
-        playCard(g,chosen_card_i,chosen_target_p,sr);
-        chosen_card_i = -1;
-        chosen_target_p = 0;
-        transition_t = 1;
+        turn_stage = TURN_ANIM_CARD;
+        hover_card.dx = dc.width/2-hover_card.w/2;
+        hover_card.dy = dc.height+10;
 
-        if(g.turn == game.turns) turn_stage = TURN_DONE;
-        else if(game.multiplayer == MULTIPLAYER_LOCAL)
-          turn_stage = TURN_CHOOSE_CARD;
-        else if(game.multiplayer == MULTIPLAYER_AI)
+        setTimeout(function() //oh god...
         {
-          if(g.player_turn == 1) turn_stage = TURN_CHOOSE_CARD;
-          else
+          playCard(g,chosen_card_i,chosen_target_p,sr);
+          chosen_card_i = -1;
+          chosen_target_p = 0;
+          transition_t = 1;
+
+          if(g.turn == game.turns) turn_stage = TURN_DONE;
+          else if(game.multiplayer == MULTIPLAYER_LOCAL)
+            turn_stage = TURN_CHOOSE_CARD;
+          else if(game.multiplayer == MULTIPLAYER_AI)
           {
-            var new_chosen_card_i = randIntBelow(g.players[1].hand.length);
-            if(chosen_card_i != new_chosen_card_i) chosen_card_t = 0;
-            chosen_card_i = new_chosen_card_i;
-            chosen_target_p = 1+randIntBelow(2);
+            if(g.player_turn == 1) turn_stage = TURN_CHOOSE_CARD;
+            else
+            {
+              var new_chosen_card_i = randIntBelow(g.players[1].hand.length);
+              if(chosen_card_i != new_chosen_card_i) chosen_card_t = 0;
+              chosen_card_i = new_chosen_card_i;
+              chosen_target_p = 1+randIntBelow(2);
 
-            var card;
-            if(g.player_turn == 1) card = p1_cards[chosen_card_i];
-            else if(g.player_turn == 2) card = p2_cards[chosen_card_i];
-            hover_pulse_t = Math.PI;
-            hover_card.x = card.x;
-            hover_card.y = card.y;
-            hover_card.dx = card.x;
-            hover_card.dy = card.y-card.h;
-            hover_card.t = 0;
+              var card;
+              if(g.player_turn == 1) card = p1_cards[chosen_card_i];
+              else if(g.player_turn == 2) card = p2_cards[chosen_card_i];
+              hover_pulse_t = Math.PI;
+              hover_card.x = card.x;
+              hover_card.y = card.y;
+              hover_card.dx = card.x;
+              hover_card.dy = card.y-card.h;
+              hover_card.t = 0;
 
+              turn_stage = TURN_SUMMARY;
+            }
           }
-        }
-        else if(game.multiplayer == MULTIPLAYER_NET_CREATE)
-        {
-          if(g.player_turn == 1) turn_stage = TURN_CHOOSE_CARD;
-          else turn_stage = TURN_WAIT;
-        }
-        else if(game.multiplayer == MULTIPLAYER_NET_JOIN)
-        {
-          if(g.player_turn == 1) turn_stage = TURN_WAIT;
-          else turn_stage = TURN_CHOOSE_CARD;
-        }
-        hit_ui = true;
+          else if(game.multiplayer == MULTIPLAYER_NET_CREATE)
+          {
+            if(g.player_turn == 1) turn_stage = TURN_CHOOSE_CARD;
+            else turn_stage = TURN_WAIT;
+          }
+          else if(game.multiplayer == MULTIPLAYER_NET_JOIN)
+          {
+            if(g.player_turn == 1) turn_stage = TURN_WAIT;
+            else turn_stage = TURN_CHOOSE_CARD;
+          }
+          hit_ui = true;
+        }, 800);
       }
     );
     done_btn  = new ButtonBox(dc.width/2-200,dc.height-60,400,50,
@@ -355,20 +364,10 @@ var GamePlayScene = function(game, stage)
         clicker.ignore();
         break;
       case TURN_CHOOSE_CARD:
-        clicker.flush();
-        break;
       case TURN_CONFIRM_CARD:
-        hover_card.tick();
-        clicker.flush();
-        break;
       case TURN_CHOOSE_TARGET:
-        hover_card.tick();
-        clicker.flush();
-        break;
       case TURN_SUMMARY:
-        hover_card.tick();
-        clicker.flush();
-        break;
+      case TURN_ANIM_CARD:
       case TURN_DONE:
         clicker.flush();
         break;
@@ -376,6 +375,8 @@ var GamePlayScene = function(game, stage)
     if(hoverer) hoverer.flush(); //check because "setScene" could have cleaned up hoverer. causes error in console, but no other issues.
     hit_ui = false;
     hovhit_ui = false;
+
+    hover_card.tick();
 
     if(transition_t)
     {
@@ -614,7 +615,7 @@ var GamePlayScene = function(game, stage)
     ctx.fillStyle = "#000000";
     for(var i = 0; i < player.hand.length; i++)
     {
-      if(g.player_turn == 1 && chosen_card_i == i && (turn_stage == TURN_CONFIRM_CARD || turn_stage == TURN_CHOOSE_TARGET || turn_stage == TURN_SUMMARY))
+      if(g.player_turn == 1 && chosen_card_i == i)
         hover_card.draw(player,g.events[player.hand[chosen_card_i]-1]);
       else
         p1_cards[i].draw();
@@ -627,7 +628,7 @@ var GamePlayScene = function(game, stage)
     ctx.fillStyle = "#000000";
     for(var i = 0; i < player.hand.length; i++)
     {
-      if(g.player_turn == 2 && chosen_card_i == i && (turn_stage == TURN_CONFIRM_CARD || turn_stage == TURN_CHOOSE_TARGET || turn_stage == TURN_SUMMARY))
+      if(g.player_turn == 2 && chosen_card_i == i)
         hover_card.draw(player,g.events[player.hand[chosen_card_i]-1]);
       else
         p2_cards[i].draw();
@@ -658,6 +659,7 @@ var GamePlayScene = function(game, stage)
         ctx.fillText(player.title+" played "+g.events[player.hand[chosen_card_i]-1].title+" on "+g.players[chosen_target_p-1].title+"'s carbon",ready_btn.x+10,ready_btn.y+20);
         ctx.fillText("When ready, click to continue.",ready_btn.x+10,ready_btn.y+40);
         break;
+      case TURN_ANIM_CARD: break;
       case TURN_DONE:
         ctx.textAlign = "left";
         ctx.fillStyle = "#000000";
@@ -684,6 +686,7 @@ var GamePlayScene = function(game, stage)
       case TURN_CONFIRM_CARD: break;
       case TURN_CHOOSE_TARGET: break;
       case TURN_SUMMARY: break;
+      case TURN_ANIM_CARD: break;
       case TURN_DONE:
         ctx.fillText("Game Over!",dc.width/2,50);
         break;
@@ -881,7 +884,7 @@ var GamePlayScene = function(game, stage)
     self.tick = function()
     {
       self.t++;
-      self.x = lerp(self.x,self.dx,0.1);
+      self.x = lerp(self.x,self.dx,0.2);
       self.y = lerp(self.y,self.dy+hover_pulse*5,0.1);
       self.w = lerp(self.w,self.dw,0.1);
       self.h = lerp(self.h,self.dh,0.1);
@@ -916,7 +919,7 @@ var GamePlayScene = function(game, stage)
       ctx.fillText(event.description,self.x+self.w/2,self.y+85);
       ctx.font = "10px Arial";
 
-      if(turn_stage == TURN_CONFIRM_CARD || turn_stage == TURN_SUMMARY)
+      if(turn_stage == TURN_CONFIRM_CARD || turn_stage == TURN_SUMMARY || turn_stage == TURN_ANIM_CARD)
       {
         //separator line
         if(g.player_turn == 1) ctx.strokeStyle = red;
@@ -935,7 +938,7 @@ var GamePlayScene = function(game, stage)
         ctx.fillText("PLAY CARD",self.x+self.play_x+self.play_w/2,self.y+self.play_y+self.play_h/2+4);
       }
 
-      if(turn_stage == TURN_CHOOSE_TARGET || turn_stage == TURN_SUMMARY)
+      if(turn_stage == TURN_CHOOSE_TARGET || turn_stage == TURN_SUMMARY || turn_stage == TURN_ANIM_CARD)
       {
         //bottom-half bg
         if(chosen_target_p == 1) ctx.fillStyle = lred;
