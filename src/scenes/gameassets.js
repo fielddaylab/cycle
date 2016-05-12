@@ -1,46 +1,114 @@
+var w;
+var h;
+var lw;
+
+w = 100;
+h = 100;
+lw = 10;
+var oct_icon = GenIcon(w,h);
+oct_icon.context.strokeStyle = "#BBBBBB";
+oct_icon.context.lineWidth = lw;
+oct_icon.context.beginPath();
+oct_icon.context.moveTo(w/3,lw/2);
+oct_icon.context.lineTo(w/3*2,lw/2);
+oct_icon.context.lineTo(w-lw/2,h/3);
+oct_icon.context.lineTo(w-lw/2,h/3*2);
+oct_icon.context.lineTo(w/3*2,h-lw/2);
+oct_icon.context.lineTo(w/3,h-lw/2);
+oct_icon.context.lineTo(lw/2,h/3*2);
+oct_icon.context.lineTo(lw/2,h/3);
+oct_icon.context.closePath();
+oct_icon.context.stroke();
+
+w = 100;
+h = 100;
+lw = 10;
+var hex_icon = GenIcon(w,h);
+hex_icon.context.strokeStyle = "#BBBBBB";
+hex_icon.context.lineWidth = lw;
+hex_icon.context.beginPath();
+hex_icon.context.moveTo(w/3,lw/2);
+hex_icon.context.lineTo(w/3*2,lw/2);
+hex_icon.context.lineTo(w-lw/2,h/2);
+hex_icon.context.lineTo(w/3*2,h-lw/2);
+hex_icon.context.lineTo(w/3,h-lw/2);
+hex_icon.context.lineTo(lw/2,h/2);
+hex_icon.context.closePath();
+hex_icon.context.stroke();
+
+w = 100;
+h = 100;
+lw = 2;
+var highlit_hex_icon = GenIcon(w,h);
+highlit_hex_icon.context.strokeStyle = "#FFFF00";
+highlit_hex_icon.context.lineWidth = lw;
+highlit_hex_icon.context.beginPath();
+highlit_hex_icon.context.moveTo(w/3,lw/2);
+highlit_hex_icon.context.lineTo(w/3*2,lw/2);
+highlit_hex_icon.context.lineTo(w-lw/2,h/2);
+highlit_hex_icon.context.lineTo(w/3*2,h-lw/2);
+highlit_hex_icon.context.lineTo(w/3,h-lw/2);
+highlit_hex_icon.context.lineTo(lw/2,h/2);
+highlit_hex_icon.context.closePath();
+highlit_hex_icon.context.stroke();
+
+w = 100;
+h = 100;
 var circle_icon = GenIcon(100,100);
 circle_icon.context.fillStyle = "#FFFFFF";
 circle_icon.context.strokeStyle = "#BBBBBB";
 circle_icon.context.lineWidth = 5;
 circle_icon.context.beginPath();
-circle_icon.context.arc(circle_icon.width/2,circle_icon.height/2,circle_icon.width/2-circle_icon.context.lineWidth,0,2*Math.PI);
+circle_icon.context.arc(w/2,h/2,w/2-circle_icon.context.lineWidth,0,2*Math.PI);
 circle_icon.context.fill();
 circle_icon.context.stroke();
 
-var red_circle_icon = GenIcon();
+w = 100;
+h = 100;
+var red_circle_icon = GenIcon(w,h);
 red_circle_icon.context.fillStyle = red;
 red_circle_icon.context.beginPath();
-red_circle_icon.context.arc(red_circle_icon.width/2,red_circle_icon.height/2,red_circle_icon.width/2,0,2*Math.PI);
+red_circle_icon.context.arc(w/2,h/2,w/2,0,2*Math.PI);
 red_circle_icon.context.fill();
 
-var blue_circle_icon = GenIcon();
+w = 100;
+h = 100;
+var blue_circle_icon = GenIcon(w,h);
 blue_circle_icon.context.fillStyle = blue;
 blue_circle_icon.context.beginPath();
-blue_circle_icon.context.arc(blue_circle_icon.width/2,blue_circle_icon.height/2,blue_circle_icon.width/2,0,2*Math.PI);
+blue_circle_icon.context.arc(w/2,h/2,w/2,0,2*Math.PI);
 blue_circle_icon.context.fill();
 
-var green_circle_icon = GenIcon();
+w = 100;
+h = 100;
+var green_circle_icon = GenIcon(w,h);
 green_circle_icon.context.fillStyle = "#00FF00";
 green_circle_icon.context.beginPath();
-green_circle_icon.context.arc(green_circle_icon.width/2,green_circle_icon.height/2,green_circle_icon.width/2,0,2*Math.PI);
+green_circle_icon.context.arc(w/2,h/2,w/2,0,2*Math.PI);
 green_circle_icon.context.fill();
 
-var yellow_circle_icon = GenIcon();
+w = 100;
+h = 100;
+var yellow_circle_icon = GenIcon(w,h);
 yellow_circle_icon.context.fillStyle = "#FFFF00";
 yellow_circle_icon.context.beginPath();
-yellow_circle_icon.context.arc(yellow_circle_icon.width/2,yellow_circle_icon.height/2,yellow_circle_icon.width/2,0,2*Math.PI);
+yellow_circle_icon.context.arc(w/2,h/2,w/2,0,2*Math.PI);
 yellow_circle_icon.context.fill();
 
-var ghost_circle_icon = GenIcon();
+w = 100;
+h = 100;
+var ghost_circle_icon = GenIcon(w,h);
 ghost_circle_icon.context.fillStyle = "rgba(255,255,255,0.9)";
 ghost_circle_icon.context.beginPath();
-ghost_circle_icon.context.arc(ghost_circle_icon.width/2,ghost_circle_icon.height/2,ghost_circle_icon.width/2,0,2*Math.PI);
+ghost_circle_icon.context.arc(w/2,h/2,w/2,0,2*Math.PI);
 ghost_circle_icon.context.fill();
 
-var highlit_token_icon = GenIcon();
+w = 100;
+h = 100;
+var highlit_token_icon = GenIcon(w,h);
 highlit_token_icon.context.fillStyle = "#FFFF00";
 highlit_token_icon.context.beginPath();
-highlit_token_icon.context.arc(highlit_token_icon.width/2,highlit_token_icon.height/2,highlit_token_icon.width/2,0,2*Math.PI);
+highlit_token_icon.context.arc(w/2,h/2,w/2,0,2*Math.PI);
 highlit_token_icon.context.fill();
 
 var red_token_icon = new Image();

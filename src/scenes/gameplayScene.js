@@ -455,16 +455,40 @@ var GamePlayScene = function(game, stage)
     ctx.fillStyle = "#000000";
     ctx.strokeStyle = "#000000";
 
-    //draw hover arrows
-    var sim_t = 40; //dictates speed of sim'd transfer
+    //hover data
     var hovering_valid = (hovering_card_i >= 0 && hovering_card_i < g.players[hovering_card_p-1].hand.length);
     var chosen_valid = (chosen_card_i >= 0 && chosen_card_i < g.players[g.player_turn-1].hand.length);
+    var e_id;
+    var e;
     if(hovering_valid || chosen_valid)
     {
-      var e_id;
       if(hovering_valid)    e_id = g.players[hovering_card_p-1].hand[hovering_card_i];
       else if(chosen_valid) e_id = g.players[g.player_turn-1].hand[chosen_card_i];
-      var e = g.events[e_id-1];
+      e = g.events[e_id-1];
+    }
+
+    //nodes
+    for(var i = 0; i < g.nodes.length; i++)
+    {
+      var n = g.nodes[i];
+      ctx.drawImage(n.img,n.x,n.y,n.w,n.h);
+      if(e && (e.from_id == n.id || e.to_id == n.id))
+        ctx.drawImage(highlit_hex_icon,n.x,n.y,n.w,n.h);
+      ctx.textAlign = "center";
+      ctx.fillText(n.title,n.x+n.w/2,n.y+20);
+      ctx.textAlign = "left";
+      ctx.drawImage(ghost_circle_icon,n.x-12,n.y-10,10,10);
+      ctx.fillStyle = g.players[0].color;
+      ctx.fillText(n.disp_p1_tokens,n.x-10,n.y);
+      ctx.drawImage(ghost_circle_icon,n.x-12,n.y,10,10);
+      ctx.fillStyle = g.players[1].color;
+      ctx.fillText(n.disp_p2_tokens,n.x-10,n.y+10);
+      ctx.fillStyle = "#000000";
+    }
+
+    //draw hover arrows
+    if(hovering_valid || chosen_valid)
+    {
       var a = {x:e.start_x,y:e.start_y};
       var b = {x:e.end_x,y:e.end_y};
       var d = {x:b.x-a.x,y:b.y-a.y};
@@ -496,23 +520,6 @@ var GamePlayScene = function(game, stage)
         ctx.drawImage(arrow_icon,-len/2,-10,len,20);
         ctx.restore();
       }
-    }
-
-    //nodes
-    for(var i = 0; i < g.nodes.length; i++)
-    {
-      var n = g.nodes[i];
-      ctx.drawImage(n.img,n.x,n.y,n.w,n.h);
-      ctx.textAlign = "center";
-      ctx.fillText(n.title,n.x+n.w/2,n.y+20);
-      ctx.textAlign = "left";
-      ctx.drawImage(ghost_circle_icon,n.x-12,n.y-10,10,10);
-      ctx.fillStyle = g.players[0].color;
-      ctx.fillText(n.disp_p1_tokens,n.x-10,n.y);
-      ctx.drawImage(ghost_circle_icon,n.x-12,n.y,10,10);
-      ctx.fillStyle = g.players[1].color;
-      ctx.fillText(n.disp_p2_tokens,n.x-10,n.y+10);
-      ctx.fillStyle = "#000000";
     }
 
     //transition

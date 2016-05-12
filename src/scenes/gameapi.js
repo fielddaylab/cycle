@@ -33,7 +33,7 @@ var constructGame = function(game_data,sr)
     node.ww = game_data.nodes[i].w;
     node.wh = game_data.nodes[i].h;
 
-    node.img = circle_icon;
+    node.img = hex_icon;
 
     //inject id into event data
     for(var j = 0; j < game_data.events.length; j++)
