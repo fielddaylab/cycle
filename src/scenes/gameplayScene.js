@@ -31,11 +31,9 @@ var GamePlayScene = function(game, stage)
   var g;
 
   var chosen_card_i;
-  var chosen_card_t;
   var chosen_target_p;
   var hovering_card_i;
   var hovering_card_p;
-  var hovering_card_t;
 
   var transition_t;
   var TRANSITION_KEY_SHUFFLE   = 50;
@@ -200,7 +198,6 @@ var GamePlayScene = function(game, stage)
             else
             {
               var new_chosen_card_i = randIntBelow(g.players[1].hand.length);
-              if(chosen_card_i != new_chosen_card_i) chosen_card_t = 0;
               chosen_card_i = new_chosen_card_i;
               chosen_target_p = 1+randIntBelow(2);
 
@@ -259,11 +256,9 @@ var GamePlayScene = function(game, stage)
     input_state = INPUT_RESUME;
 
     chosen_card_i = -1;
-    chosen_card_t = 0;
     chosen_target_p = 0;
     hovering_card_i = -1;
     hovering_card_p = 0;
-    hovering_card_t = 0;
 
     n_ticks = 0;
 
@@ -300,8 +295,6 @@ var GamePlayScene = function(game, stage)
   self.tick = function()
   {
     n_ticks++;
-    chosen_card_t++;
-    hovering_card_t++;
     hover_pulse_t += 0.05;
     hover_pulse = Math.sin(hover_pulse_t);
 
@@ -340,8 +333,6 @@ var GamePlayScene = function(game, stage)
           {
             if(cli.database[i].user == game.opponent && cli.database[i].event == "MOVE")
             {
-              if(chosen_card_i != cli.database[i].args[0])
-                chosen_card_t = 0;
               chosen_card_i = cli.database[i].args[0];
               chosen_target_p = cli.database[i].args[1];
 
@@ -433,21 +424,27 @@ var GamePlayScene = function(game, stage)
 
   self.draw = function()
   {
+    //yard bar
     ctx.fillStyle = gray;
     ctx.fillRect(0,0,dc.width,topmost_bar_y);
 
     ctx.font = "18px Arial";
     ctx.textAlign = "left";
+
+    //red section body
     ctx.fillStyle = red;
     ctx.fillRect(0,topmost_bar_y,sidebar_w,dc.height);
+    //header
     ctx.fillStyle = lred;
     ctx.fillRect(0,topmost_bar_y,sidebar_w,score_header_y-topmost_bar_y);
     ctx.fillStyle = dred;
     ctx.fillText("RED TEAM",10,score_header_y-6);
     ctx.drawImage(red_token_icon,sidebar_w-40,score_header_y-18,20,15);
 
+    //blue section body
     ctx.fillStyle = blue;
     ctx.fillRect(dc.width-sidebar_w,topmost_bar_y,sidebar_w,dc.height);
+    //header
     ctx.fillStyle = lblue;
     ctx.fillRect(dc.width-sidebar_w,topmost_bar_y,sidebar_w,score_header_y-topmost_bar_y);
     ctx.fillStyle = dblue;
@@ -468,39 +465,36 @@ var GamePlayScene = function(game, stage)
       if(hovering_valid)    e_id = g.players[hovering_card_p-1].hand[hovering_card_i];
       else if(chosen_valid) e_id = g.players[g.player_turn-1].hand[chosen_card_i];
       var e = g.events[e_id-1];
-      ctx.strokeStyle = "#FFFF00";
-      ctx.lineWidth = 10;
-      ctx.beginPath();
-      ctx.moveTo(e.start_x,e.start_y);
-      ctx.lineTo(e.end_x,e.end_y);
-      ctx.stroke();
-      ctx.lineWidth = 2;
+      var a = {x:e.start_x,y:e.start_y};
+      var b = {x:e.end_x,y:e.end_y};
+      var d = {x:b.x-a.x,y:b.y-a.y};
+      var portion = 2;
+      a.x += d.x/(portion*2);
+      a.y += d.y/(portion*2);
+      b.x -= d.x/(portion*2);
+      b.y -= d.y/(portion*2);
+      d.x /= portion;
+      d.y /= portion;
+      var len = Math.sqrt(d.x*d.x+d.y*d.y);
+      var dir = Math.atan2(d.y,d.x);
+      var s = Math.sin(n_ticks/10);
+
       ctx.strokeStyle = "#000000";
-      if(hovering_valid &&
-        (
-          direction_viz_enabled ||
+      if(
+        (hovering_valid && direction_viz_enabled) ||
+        (chosen_valid &&
           (
-            turn_stage == TURN_SUMMARY &&
-            chosen_card_i == hovering_card_i &&
-            hovering_card_p == g.player_turn
+            direction_viz_enabled ||
+            turn_stage == TURN_SUMMARY
           )
         )
       )
       {
-        var t = (hovering_card_t%sim_t)/sim_t;
-        t *= t;
-        ctx.drawImage(circle_icon,lerp(e.start_x,e.end_x,t)-5,lerp(e.start_y,e.end_y,t)-5,10,10);
-      }
-      else if(chosen_valid &&
-        (
-          direction_viz_enabled ||
-          turn_stage == TURN_SUMMARY
-        )
-      )
-      {
-        var t = (chosen_card_t%sim_t)/sim_t;
-        t *= t;
-        ctx.drawImage(circle_icon,lerp(e.start_x,e.end_x,t)-5,lerp(e.start_y,e.end_y,t)-5,10,10);
+        ctx.save();
+        ctx.translate(a.x+d.x/2,a.y+d.y/2+s);
+        ctx.rotate(dir);
+        ctx.drawImage(arrow_icon,-len/2,-10,len,20);
+        ctx.restore();
       }
     }
 
@@ -790,13 +784,6 @@ var GamePlayScene = function(game, stage)
       }
       if(turn_stage == TURN_CHOOSE_CARD)
       {
-        if(chosen_card_i != self.index)
-        {
-          if(hovering_card_i == self.index && hovering_card_p == self.player)
-            chosen_card_t = hovering_card_t;
-          else
-            chosen_card_t = 0;
-        }
         chosen_card_i = self.index;
         hover_pulse_t = Math.PI;
         hover_card.x = self.x;
@@ -812,12 +799,6 @@ var GamePlayScene = function(game, stage)
     self.hover = function(evt)
     {
       if(hovhit_ui) return;
-      if(hovering_card_i == -1)
-      {
-        if(chosen_card_i == self.index && g.player_turn == self.player)
-          hovering_card_t = chosen_card_t;
-        else hovering_card_t = 0;
-      }
       hovering_card_i = self.index;
       hovering_card_p = self.player;
     }
@@ -825,8 +806,6 @@ var GamePlayScene = function(game, stage)
     {
       hovering_card_i = -1;
       hovering_card_p = 0;
-      if(chosen_card_i != self.index || g.player_turn != self.player)
-        chosen_card_t = 0;
     }
   }
 

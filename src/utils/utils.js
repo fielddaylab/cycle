@@ -262,6 +262,12 @@ var screenSpace = function(cam, canv, obj)
   obj.y = ((((-obj.wy-obj.wh/2)+cam.wy)+(cam.wh/2))/cam.wh)*canv.height;
 }
 
+function dist(sx,sy,ex,ey)
+{
+  var x = ex-sx;
+  var y = ey-sy;
+  return Math.sqrt(x*x+y*y);
+}
 function wdist(a,b)
 {
   var x = b.wx-a.wx;
