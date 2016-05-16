@@ -672,8 +672,6 @@ var GamePlayScene = function(game, stage)
     ctx.textAlign = "center";
     ctx.fillText("Turn: "+g.turn,dc.width/2,20);
     player = g.players[g.player_turn-1];
-    ctx.fillStyle = player.color;
-    ctx.fillText(player.title,dc.width/2,35);
 
     switch(turn_stage)
     {
@@ -688,7 +686,6 @@ var GamePlayScene = function(game, stage)
         ctx.strokeStyle = "#000000";
         dc.strokeRoundRect(ready_btn.x,ready_btn.y,ready_btn.w,ready_btn.h,5);
 
-        var player = g.players[g.player_turn-1];
         ctx.fillText(player.title+" played "+g.events[player.hand[chosen_card_i]-1].title+" on "+g.players[chosen_target_p-1].title+"'s carbon",ready_btn.x+10,ready_btn.y+20);
         ctx.fillText("When ready, click to continue.",ready_btn.x+10,ready_btn.y+40);
         break;
@@ -698,7 +695,6 @@ var GamePlayScene = function(game, stage)
         ctx.fillStyle = "#000000";
         dc.strokeRoundRect(done_btn.x,done_btn.y,done_btn.w,done_btn.h,5);
 
-        var player = g.players[g.player_turn-1];
         ctx.fillText("Game Over!",done_btn.x+10,done_btn.y+20);
         ctx.fillText("When ready, click to continue.",done_btn.x+10,done_btn.y+40);
         break;

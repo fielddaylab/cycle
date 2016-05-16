@@ -28,10 +28,22 @@ var tokenWorldTargetEvent = function(t,e,progress)
   t.target_wx = lerp(e.start_wx,e.end_wx,(progress+1)/((e.time+1)+1)) - 0.01+Math.random()*0.02;
   t.target_wy = lerp(e.start_wy,e.end_wy,(progress+1)/((e.time+1)+1)) - 0.01+Math.random()*0.02;
 }
-var tokenWorldTargetNode = function(t,n)
+var tokenWorldTargetNode = function(t,n,tokens)
 {
-  t.target_wx = n.wx-((n.ww/2)/2)+Math.random()*(n.ww/2);
-  t.target_wy = n.wy-((n.wh/2)/2)+Math.random()*(n.wh/2);
+  var tries = 100;
+  var ok = false;
+  while(!ok && tries > 0)
+  {
+    t.target_wx = n.wx-((n.ww/2)/2)+Math.random()*(n.ww/2);
+    t.target_wy = n.wy-((n.wh/2)/2)+Math.random()*(n.wh/2);
+    ok = true;
+    for(var i = 0; ok && i < tokens.length; i++)
+    {
+      if(tokens[i] != t && dist(t.target_wx,t.target_wy,tokens[i].wx,tokens[i].wy) < 0.02)
+        ok = false;
+    }
+    tries--;
+  }
 }
 
 var transformGame = function(canv,nodes,events,tokens)

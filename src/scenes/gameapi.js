@@ -84,7 +84,7 @@ var constructGame = function(game_data,sr)
 
     token.ww = 0.02;
     token.wh = 0.02;
-    tokenWorldTargetNode(token,g.nodes[token.node_id-1]);
+    tokenWorldTargetNode(token,g.nodes[token.node_id-1],g.tokens);
     token.wx = token.target_wx;
     token.wy = token.target_wy;
 
@@ -243,7 +243,7 @@ var playCard = function(game, index, target, sr)
       token.event_id = 0;
       token.event_progress = 0;
       token.transitions++;
-      tokenWorldTargetNode(token,game.nodes[token.node_id-1]);
+      tokenWorldTargetNode(token,game.nodes[token.node_id-1],game.tokens);
     }
     else
       tokenWorldTargetEvent(token,game.events[token.event_id-1],token.event_progress);
@@ -275,7 +275,7 @@ var playCard = function(game, index, target, sr)
           token.event_id = 0;
           token.event_progress = 0;
           token.transitions++;
-          tokenWorldTargetNode(token,game.nodes[token.node_id-1]);
+          tokenWorldTargetNode(token,game.nodes[token.node_id-1],game.tokens);
         }
         else
           tokenWorldTargetEvent(token,game.events[token.event_id-1],token.event_progress);
