@@ -64,8 +64,9 @@ var GamePlayScene = function(game, stage)
   var bmwrangler;
 
   var sidebar_w = 160;
-  var topmost_bar_y = 40;
-  var score_header_y = 70;
+  var topmost_bar_y = 70;
+  var score_header_y = 100;
+  var turn_header_y = 120;
 
   self.ready = function()
   {
@@ -84,7 +85,7 @@ var GamePlayScene = function(game, stage)
     transformGame(dc,g.nodes,g.events,g.tokens)
 
     var w = sidebar_w-20;
-    var gap = score_header_y+15;
+    var gap = score_header_y+45;
     var h = (dc.height-gap)/g.players[0].hand.length;
     p1_cards_bounds = [];
     for(var i = 0; i < g.players[0].hand.length; i++)
@@ -424,9 +425,9 @@ var GamePlayScene = function(game, stage)
 
   self.draw = function()
   {
-    //yard bar
-    ctx.fillStyle = gray;
-    ctx.fillRect(0,0,dc.width,topmost_bar_y);
+    //free space to allow card height
+    //ctx.fillStyle = gray;
+    //ctx.fillRect(0,0,dc.width,topmost_bar_y);
 
     ctx.font = "18px Arial";
     ctx.textAlign = "left";
@@ -440,6 +441,22 @@ var GamePlayScene = function(game, stage)
     ctx.fillStyle = dred;
     ctx.fillText("RED TEAM",10,score_header_y-6);
     ctx.drawImage(red_token_icon,sidebar_w-40,score_header_y-18,20,15);
+    ctx.fillStyle = gray;
+    ctx.fillRect(0,score_header_y,sidebar_w,turn_header_y-score_header_y);
+    ctx.fillStyle = white;
+    ctx.font = "10px Arial";
+    switch(game.multiplayer)
+    {
+      case MULTIPLAYER_LOCAL:
+      case MULTIPLAYER_AI:
+      case MULTIPLAYER_NET_CREATE:
+        if(g.player_turn == 1) ctx.fillText("RED'S TURN (YOU)",10,turn_header_y-4);
+        else                   ctx.fillText("YOU",10,turn_header_y-4);
+        break;
+      case MULTIPLAYER_NET_JOIN:
+        if(g.player_turn == 1) ctx.fillText("RED'S TURN",10,turn_header_y-4);
+        break;
+    }
 
     //blue section body
     ctx.fillStyle = blue;
@@ -450,6 +467,22 @@ var GamePlayScene = function(game, stage)
     ctx.fillStyle = dblue;
     ctx.fillText("BLUE TEAM",dc.width-sidebar_w+10,score_header_y-6);
     ctx.drawImage(blue_token_icon,dc.width-40,score_header_y-18,20,15);
+    ctx.fillStyle = gray;
+    ctx.fillRect(dc.width-sidebar_w,score_header_y,sidebar_w,turn_header_y-score_header_y);
+    ctx.fillStyle = white;
+    ctx.font = "10px Arial";
+    switch(game.multiplayer)
+    {
+      case MULTIPLAYER_LOCAL:
+      case MULTIPLAYER_AI:
+      case MULTIPLAYER_NET_CREATE:
+        if(g.player_turn == 2) ctx.fillText("BLUE'S TURN",dc.width-sidebar_w+10,turn_header_y-4);
+        break;
+      case MULTIPLAYER_NET_JOIN:
+        if(g.player_turn == 2) ctx.fillText("BLUE'S TURN (YOU)",dc.width-sidebar_w+10,turn_header_y-4);
+        else                   ctx.fillText("YOU",dc.width-sidebar_w+10,turn_header_y-4);
+        break;
+    }
 
     ctx.font = "12px Arial";
     ctx.fillStyle = "#000000";
@@ -604,7 +637,6 @@ var GamePlayScene = function(game, stage)
     var turns_left = 3-(g.turn%g.turns_per_goal_shift);
     if(!goal_close && turns_left == 3) turns_left = 0;
     dc.strokeRoundRect(goal_bounds.x,goal_bounds.y,goal_bounds.w,goal_bounds.h,5);
-    dc.outlineText(turns_left+" turns til goal shift",goal_bounds.x,goal_bounds.y-3,"#000000","#FFFFFF");
 
     //hand
     var player;
@@ -698,7 +730,7 @@ var GamePlayScene = function(game, stage)
     ctx.fillStyle = gray;
     ctx.fillText("Current Zone: "+g.nodes[g.goal_node-1].title,sidebar_w+20,topmost_bar_y+15);
     ctx.textAlign = "right";
-    ctx.fillText("Up Next: "+g.nodes[g.next_goal_node-1].title,dc.width-sidebar_w-20,topmost_bar_y+15);
+    ctx.fillText("Up Next ("+turns_left+" turns): "+g.nodes[g.next_goal_node-1].title,dc.width-sidebar_w-20,topmost_bar_y+15);
   };
 
   self.cleanup = function()
