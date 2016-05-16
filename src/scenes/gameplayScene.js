@@ -63,6 +63,15 @@ var GamePlayScene = function(game, stage)
   var done_btn;
   var canvdom;
   var girl_disp;
+  var blurb_x;
+  var blurb_y;
+  var blurb_w;
+  var blurb_h;
+  var announce_x;
+  var announce_y;
+  var announce_w;
+  var announce_h;
+  var summary;
 
   var sidebar_w = 160;
   var topmost_bar_y = 55;
@@ -175,7 +184,7 @@ var GamePlayScene = function(game, stage)
       hoverer.register(card);
     }
 
-    ready_btn  = new ButtonBox(dc.width/2-200,dc.height-60,400,50,
+    ready_btn = new ButtonBox(0,0,dc.width,dc.height,
       function()
       {
         if(input_state == INPUT_PAUSE) return;
@@ -200,10 +209,11 @@ var GamePlayScene = function(game, stage)
             if(g.player_turn == 1) turn_stage = TURN_CHOOSE_CARD;
             else
             {
+              turn_stage = TURN_CHOOSE_CARD;
               var new_chosen_card_i = randIntBelow(g.players[1].hand.length);
               chosen_card_i = new_chosen_card_i;
               chosen_target_p = 1+randIntBelow(2);
-
+              turn_stage = TURN_ANIM_CARD;
               var card;
               if(g.player_turn == 1) card = p1_cards[chosen_card_i];
               else if(g.player_turn == 2) card = p2_cards[chosen_card_i];
@@ -214,6 +224,7 @@ var GamePlayScene = function(game, stage)
               hover_card.dy = card.y-card.h;
               hover_card.t = 0;
 
+              genSummary();
               turn_stage = TURN_SUMMARY;
             }
           }
@@ -248,6 +259,15 @@ var GamePlayScene = function(game, stage)
     canvdom = new CanvDom(dc);
     clicker.register(canvdom);
     girl_disp = 0;
+    blurb_x = sidebar_w+100;
+    blurb_y = dc.height-200;
+    blurb_w = dc.width-(sidebar_w*2)-110;
+    blurb_h = 100;
+    announce_x = sidebar_w+100;
+    announce_y = dc.height-110;
+    announce_w = dc.width-(sidebar_w*2)-110;
+    announce_h = 100;
+    summary = [];
 
     if(game.multiplayer == MULTIPLAYER_LOCAL)
       turn_stage = TURN_CHOOSE_CARD;
@@ -308,7 +328,7 @@ var GamePlayScene = function(game, stage)
       displayed_turn_3_warning = true;
 
       text = "Hey! To make things interesting, we're going to stop showing you in which direction each event affects the carbon... good luck!";
-      displayMessage(textToLines(dc, "12px Arial", dc.width-(2*sidebar_w)-100, text));
+      displayMessage(textToLines(dc, "12px Arial", blurb_w-10, text));
     }
 
     switch(turn_stage)
@@ -349,6 +369,7 @@ var GamePlayScene = function(game, stage)
               hover_card.dy = card.y-card.h;
               hover_card.t = 0;
 
+              genSummary();
               turn_stage = TURN_SUMMARY;
             }
           }
@@ -538,7 +559,8 @@ var GamePlayScene = function(game, stage)
         (chosen_valid &&
           (
             direction_viz_enabled ||
-            turn_stage == TURN_SUMMARY
+            turn_stage == TURN_SUMMARY ||
+            turn_stage == TURN_ANIM_CARD
           )
         )
       )
@@ -612,12 +634,10 @@ var GamePlayScene = function(game, stage)
     for(var i = 0; i < g.tokens.length; i++)
     {
       var t = g.tokens[i];
-      if(turn_stage == TURN_SUMMARY)
-      {
-        if(t.disp_node_id == event.from_id && t.player_id == chosen_target_p)
-          ctx.drawImage(highlit_token_icon,t.x-2,t.y-2,t.w+4,t.h+4);
-      }
-      else if(turn_stage == TURN_CHOOSE_TARGET && direction_viz_enabled)
+      if(turn_stage == TURN_ANIM_CARD ||
+         turn_stage == TURN_SUMMARY   ||
+        (turn_stage == TURN_CHOOSE_TARGET && direction_viz_enabled)
+        )
       {
         if(t.disp_node_id == event.from_id && t.player_id == chosen_target_p)
           ctx.drawImage(highlit_token_icon,t.x-2,t.y-2,t.w+4,t.h+4);
@@ -669,31 +689,19 @@ var GamePlayScene = function(game, stage)
     ctx.fillText("Turn: "+g.turn,dc.width/2,20);
     player = g.players[g.player_turn-1];
 
-    switch(turn_stage)
+    ctx.fillStyle = white;
+    dc.fillRoundRect(announce_x,announce_y,announce_w,announce_h,5);
+    ctx.strokeSytle = lblue;
+    ctx.lineWidth = 2;
+    dc.strokeRoundRect(announce_x,announce_y,announce_w,announce_h,5);
+    ctx.fillStyle = "#000000";
+    ctx.textAlign = "left";
+    if(summary.length == 0)
+      ctx.fillText("It's Red Team's turn!",announce_x+10,announce_y+20);
+    else
     {
-      case TURN_WAIT_FOR_JOIN: break;
-      case TURN_WAIT: break;
-      case TURN_CHOOSE_CARD: break;
-      case TURN_CONFIRM_CARD: break;
-      case TURN_CHOOSE_TARGET: break;
-      case TURN_SUMMARY:
-        ctx.textAlign = "left";
-        ctx.fillStyle = "#000000";
-        ctx.strokeStyle = "#000000";
-        dc.strokeRoundRect(ready_btn.x,ready_btn.y,ready_btn.w,ready_btn.h,5);
-
-        ctx.fillText(player.title+" played "+g.events[player.hand[chosen_card_i]-1].title+" on "+g.players[chosen_target_p-1].title+"'s carbon",ready_btn.x+10,ready_btn.y+20);
-        ctx.fillText("When ready, click to continue.",ready_btn.x+10,ready_btn.y+40);
-        break;
-      case TURN_ANIM_CARD: break;
-      case TURN_DONE:
-        ctx.textAlign = "left";
-        ctx.fillStyle = "#000000";
-        dc.strokeRoundRect(done_btn.x,done_btn.y,done_btn.w,done_btn.h,5);
-
-        ctx.fillText("Game Over!",done_btn.x+10,done_btn.y+20);
-        ctx.fillText("When ready, click to continue.",done_btn.x+10,done_btn.y+40);
-        break;
+      for(var i = 0; i < summary.length; i++)
+        ctx.fillText(summary[i],announce_x+10,announce_y+20*(i+1));
     }
 
     ctx.textAlign = "center";
@@ -718,7 +726,7 @@ var GamePlayScene = function(game, stage)
             ctx.textAlign = "left";
             dc.outlineText("Choose a card!",sidebar_w+10,y+7);
           }
-          if(g.player_turn == 2)
+          if(g.player_turn == 2 && (game.multiplayer == MULTIPLAYER_LOCAL || game.multiplayer == MULTIPLAYER_NET_JOIN))
           {
             ctx.fillRect(dc.width-sidebar_w-w-5,y-10,w,20);
             ctx.textAlign = "right";
@@ -732,6 +740,11 @@ var GamePlayScene = function(game, stage)
       case TURN_ANIM_CARD: break;
       case TURN_DONE:
         ctx.fillText("Game Over!",dc.width/2,50);
+        ctx.textAlign = "left";
+        ctx.fillStyle = "#000000";
+        dc.strokeRoundRect(done_btn.x,done_btn.y,done_btn.w,done_btn.h,5);
+
+        ctx.fillText("Game Over!",done_btn.x+10,done_btn.y+20);
         break;
     }
 
@@ -751,15 +764,11 @@ var GamePlayScene = function(game, stage)
 
     if(input_state == INPUT_PAUSE)
     {
-      var rx = sidebar_w+95;
-      var ry = dc.height-200;
-      var rw = dc.width-(sidebar_w*2)-105;
-      var rh = 100;
       ctx.fillStyle = white;
-      dc.fillRoundRect(rx,ry,rw,rh,5);
+      dc.fillRoundRect(blurb_x,blurb_y,blurb_w,blurb_h,5);
       ctx.strokeSytle = lblue;
       ctx.lineWidth = 2;
-      dc.strokeRoundRect(rx,ry,rw,rh,5);
+      dc.strokeRoundRect(blurb_x,blurb_y,blurb_w,blurb_h,5);
 
       ctx.fillStyle = gray;
       ctx.fillRect(dc.width/2,dc.height-80,100,60);
@@ -792,10 +801,14 @@ var GamePlayScene = function(game, stage)
   var displayMessage = function(lines)
   {
     input_state = INPUT_PAUSE;
-    var rx = sidebar_w+100;
-    var ry = dc.height-200;
-    var rw = dc.width-(sidebar_w*2)-110;
-    canvdom.popDismissableMessage(lines,rx,ry,rw,200,doneDisplay);
+    canvdom.popDismissableMessage(lines,blurb_x+5,blurb_y,blurb_w-10,200,doneDisplay);
+  }
+
+  var genSummary = function()
+  {
+    var player = g.players[g.player_turn-1];
+    var text = player.title+" played "+g.events[player.hand[chosen_card_i]-1].title+" on "+g.players[chosen_target_p-1].title+"'s carbon";
+    summary = textToLines(dc, "12px Arial", announce_w-10, text);
   }
 
   //no data- just used for interface
@@ -1153,6 +1166,7 @@ var GamePlayScene = function(game, stage)
         {
           if(game.multiplayer == MULTIPLAYER_NET_CREATE || game.multiplayer == MULTIPLAYER_NET_JOIN)
             cli.add(cli.id+" MOVE "+chosen_card_i+" "+chosen_target_p);
+          genSummary();
           turn_stage = TURN_SUMMARY;
         }
       }
