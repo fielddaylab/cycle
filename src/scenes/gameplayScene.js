@@ -65,9 +65,9 @@ var GamePlayScene = function(game, stage)
   var girl_disp;
 
   var sidebar_w = 160;
-  var topmost_bar_y = 70;
-  var score_header_y = 100;
-  var turn_header_y = 120;
+  var topmost_bar_y = 55;
+  var score_header_y = 85;
+  var turn_header_y = 105;
 
   self.ready = function()
   {
@@ -430,7 +430,6 @@ var GamePlayScene = function(game, stage)
     //ctx.fillStyle = gray;
     //ctx.fillRect(0,0,dc.width,topmost_bar_y);
 
-    ctx.font = "18px Arial";
     ctx.textAlign = "left";
 
     //red section body
@@ -440,6 +439,7 @@ var GamePlayScene = function(game, stage)
     ctx.fillStyle = lred;
     ctx.fillRect(0,topmost_bar_y,sidebar_w,score_header_y-topmost_bar_y);
     ctx.fillStyle = dred;
+    ctx.font = "18px Arial";
     ctx.fillText("RED TEAM",10,score_header_y-6);
     ctx.drawImage(red_token_icon,sidebar_w-40,score_header_y-18,20,15);
     ctx.fillStyle = gray;
@@ -466,6 +466,7 @@ var GamePlayScene = function(game, stage)
     ctx.fillStyle = lblue;
     ctx.fillRect(dc.width-sidebar_w,topmost_bar_y,sidebar_w,score_header_y-topmost_bar_y);
     ctx.fillStyle = dblue;
+    ctx.font = "18px Arial";
     ctx.fillText("BLUE TEAM",dc.width-sidebar_w+10,score_header_y-6);
     ctx.drawImage(blue_token_icon,dc.width-40,score_header_y-18,20,15);
     ctx.fillStyle = gray;
@@ -511,12 +512,6 @@ var GamePlayScene = function(game, stage)
       ctx.textAlign = "center";
       ctx.fillText(n.title,n.x+n.w/2,n.y+20);
       ctx.textAlign = "left";
-      ctx.drawImage(ghost_circle_icon,n.x-12,n.y-10,10,10);
-      ctx.fillStyle = g.players[0].color;
-      ctx.fillText(n.disp_p1_tokens,n.x-10,n.y);
-      ctx.drawImage(ghost_circle_icon,n.x-12,n.y,10,10);
-      ctx.fillStyle = g.players[1].color;
-      ctx.fillText(n.disp_p2_tokens,n.x-10,n.y+10);
       ctx.fillStyle = "#000000";
     }
 
