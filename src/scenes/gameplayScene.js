@@ -753,7 +753,31 @@ var GamePlayScene = function(game, stage)
     var h = 200;
     var w = 100;
     ctx.fillRect(sidebar_w+10,dc.height-h+(1-girl_disp)*h,w,h);
-    canvdom.draw(12,dc);
+
+    if(input_state == INPUT_PAUSE)
+    {
+      var rx = sidebar_w+95;
+      var ry = dc.height-200;
+      var rw = dc.width-(sidebar_w*2)-105;
+      var rh = 100;
+      ctx.fillStyle = white;
+      dc.fillRoundRect(rx,ry,rw,rh,5);
+      ctx.strokeSytle = lblue;
+      ctx.lineWidth = 2;
+      dc.strokeRoundRect(rx,ry,rw,rh,5);
+
+      ctx.fillStyle = gray;
+      ctx.fillRect(dc.width/2,dc.height-80,100,60);
+      ctx.fillStyle = white;
+      ctx.fillRect(dc.width/2,dc.height-90,100,60);
+      ctx.fillStyle = "#000000";
+      ctx.textAlign = "left";
+      ctx.font = "30px Arial";
+      ctx.fillText("Next",dc.width/2+10,dc.height-40,100,60);
+
+      ctx.font = "12px Arial";
+      canvdom.draw(12,dc);
+    }
   };
 
   self.cleanup = function()
@@ -773,7 +797,10 @@ var GamePlayScene = function(game, stage)
   var displayMessage = function(lines)
   {
     input_state = INPUT_PAUSE;
-    canvdom.popDismissableMessage(lines,sidebar_w+90,dc.height-200,dc.width-(sidebar_w*2)-100,200,doneDisplay);
+    var rx = sidebar_w+100;
+    var ry = dc.height-200;
+    var rw = dc.width-(sidebar_w*2)-110;
+    canvdom.popDismissableMessage(lines,rx,ry,rw,200,doneDisplay);
   }
 
   //no data- just used for interface
