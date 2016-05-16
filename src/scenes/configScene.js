@@ -15,7 +15,6 @@ var ConfigScene = function(game, stage)
   var mode;
   var hit_ui;
 
-  var mbtn_vid;
   var mbtn_tutorial;
   var mbtn_ai;
   var mbtn_local;
@@ -45,12 +44,14 @@ var ConfigScene = function(game, stage)
 
     mode = CONFIG_MULTIPLAYER;
 
-    mbtn_vid        = new ButtonBox(10,10, dc.width-20,30,function(evt){ if(hit_ui || mode != CONFIG_MULTIPLAYER) return; window.location = "vid.html"; });
-    mbtn_tutorial   = new ButtonBox(10,50, dc.width-20,30,function(evt){ if(hit_ui || mode != CONFIG_MULTIPLAYER) return; game.setScene(3); });
-    mbtn_ai         = new ButtonBox(10,90, dc.width-20,30,function(evt){ if(hit_ui || mode != CONFIG_MULTIPLAYER) return; hit_ui = true; multiplayer = MULTIPLAYER_AI;         mode = CONFIG_TURN; });
-    mbtn_local      = new ButtonBox(10,130,dc.width-20,30,function(evt){ if(hit_ui || mode != CONFIG_MULTIPLAYER) return; hit_ui = true; multiplayer = MULTIPLAYER_LOCAL;      mode = CONFIG_TURN; });
-    mbtn_net_create = new ButtonBox(10,170,dc.width-20,30,function(evt){ if(hit_ui || mode != CONFIG_MULTIPLAYER) return; hit_ui = true; multiplayer = MULTIPLAYER_NET_CREATE; mode = CONFIG_TURN; cli.begin(); });
-    mbtn_net_join   = new ButtonBox(10,210,dc.width-20,30,function(evt){ if(hit_ui || mode != CONFIG_MULTIPLAYER) return; hit_ui = true; multiplayer = MULTIPLAYER_NET_JOIN;   mode = CONFIG_JOIN; cli.begin(); });
+    var y = dc.height/2;
+    var w = 100;
+    var h = dc.height/2-20;
+    mbtn_tutorial   = new ButtonBox(10,10, w,h,function(evt){ if(hit_ui || mode != CONFIG_MULTIPLAYER) return; game.setScene(3); });
+    mbtn_ai         = new ButtonBox(10                 ,y,w,h,function(evt){ if(hit_ui || mode != CONFIG_MULTIPLAYER) return; hit_ui = true; multiplayer = MULTIPLAYER_AI;         mode = CONFIG_TURN; });
+    mbtn_local      = new ButtonBox(dc.width/2+(w+10)*0,y,w,h,function(evt){ if(hit_ui || mode != CONFIG_MULTIPLAYER) return; hit_ui = true; multiplayer = MULTIPLAYER_LOCAL;      mode = CONFIG_TURN; });
+    mbtn_net_create = new ButtonBox(dc.width/2+(w+10)*1,y,w,h,function(evt){ if(hit_ui || mode != CONFIG_MULTIPLAYER) return; hit_ui = true; multiplayer = MULTIPLAYER_NET_CREATE; mode = CONFIG_TURN; cli.begin(); });
+    mbtn_net_join   = new ButtonBox(dc.width/2+(w+10)*2,y,w,h,function(evt){ if(hit_ui || mode != CONFIG_MULTIPLAYER) return; hit_ui = true; multiplayer = MULTIPLAYER_NET_JOIN;   mode = CONFIG_JOIN; cli.begin(); });
 
     joins = [];
     jbtn_a = new ButtonBox(10,10, dc.width-20,30,function(evt){ if(hit_ui || mode != CONFIG_JOIN || joins.length < 1) return; hit_ui = true; join = joins[0]; turn = turns[0]; cli.add(cli.id+" JOIN "+join); mode = CONFIG_COMMIT; });
@@ -64,7 +65,6 @@ var ConfigScene = function(game, stage)
     tbtn_20 = new ButtonBox(10,50, dc.width-20,30,function(evt){ if(hit_ui || mode != CONFIG_TURN) return; hit_ui = true; turn = 20; mode = CONFIG_COMMIT; });
     tbtn_30 = new ButtonBox(10,90, dc.width-20,30,function(evt){ if(hit_ui || mode != CONFIG_TURN) return; hit_ui = true; turn = 30; mode = CONFIG_COMMIT; });
 
-    clicker.register(mbtn_vid);
     clicker.register(mbtn_tutorial);
     clicker.register(mbtn_ai);
     clicker.register(mbtn_local);
@@ -145,7 +145,6 @@ var ConfigScene = function(game, stage)
     switch(mode)
     {
       case CONFIG_MULTIPLAYER:
-        mbtn_vid.draw(dc);        dc.context.fillStyle = "#000000"; dc.context.fillText("Watch Video",                                            mbtn_vid.x+10,        mbtn_vid.y+20);
         mbtn_tutorial.draw(dc);   dc.context.fillStyle = "#000000"; dc.context.fillText("Tutorial",                                               mbtn_tutorial.x+10,   mbtn_tutorial.y+20);
         mbtn_ai.draw(dc);         dc.context.fillStyle = "#000000"; dc.context.fillText("Single Player - Play against a (bad) AI",                mbtn_ai.x+10,         mbtn_ai.y+20);
         mbtn_local.draw(dc);      dc.context.fillStyle = "#000000"; dc.context.fillText("Multiplayer - Same Screen/Device (Pass back and forth)", mbtn_local.x+10,      mbtn_local.y+20);
