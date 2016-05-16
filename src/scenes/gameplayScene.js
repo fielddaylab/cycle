@@ -696,6 +696,7 @@ var GamePlayScene = function(game, stage)
     dc.strokeRoundRect(announce_x,announce_y,announce_w,announce_h,5);
     ctx.fillStyle = "#000000";
     ctx.textAlign = "left";
+    ctx.font = "12px Arial";
     if(summary.length == 0)
       ctx.fillText("It's Red Team's turn!",announce_x+10,announce_y+20);
     else
@@ -1168,6 +1169,8 @@ var GamePlayScene = function(game, stage)
             cli.add(cli.id+" MOVE "+chosen_card_i+" "+chosen_target_p);
           genSummary();
           turn_stage = TURN_SUMMARY;
+          hit_ui = false;
+          ready_btn.hit({});
         }
       }
     }
