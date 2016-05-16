@@ -210,22 +210,25 @@ var GamePlayScene = function(game, stage)
             else
             {
               turn_stage = TURN_CHOOSE_CARD;
-              var new_chosen_card_i = randIntBelow(g.players[1].hand.length);
-              chosen_card_i = new_chosen_card_i;
-              chosen_target_p = 1+randIntBelow(2);
-              turn_stage = TURN_ANIM_CARD;
-              var card;
-              if(g.player_turn == 1) card = p1_cards[chosen_card_i];
-              else if(g.player_turn == 2) card = p2_cards[chosen_card_i];
-              hover_pulse_t = Math.PI;
-              hover_card.x = card.x;
-              hover_card.y = card.y;
-              hover_card.dx = card.x;
-              hover_card.dy = card.y-card.h;
-              hover_card.t = 0;
+              setTimeout(function() //oh god oh god...
+              {
+                var new_chosen_card_i = randIntBelow(g.players[1].hand.length);
+                chosen_card_i = new_chosen_card_i;
+                chosen_target_p = 1+randIntBelow(2);
+                turn_stage = TURN_ANIM_CARD;
+                var card;
+                if(g.player_turn == 1) card = p1_cards[chosen_card_i];
+                else if(g.player_turn == 2) card = p2_cards[chosen_card_i];
+                hover_pulse_t = Math.PI;
+                hover_card.x = card.x;
+                hover_card.y = card.y;
+                hover_card.dx = card.x;
+                hover_card.dy = card.y-card.h;
+                hover_card.t = 0;
 
-              genSummary();
-              turn_stage = TURN_SUMMARY;
+                genSummary();
+                turn_stage = TURN_SUMMARY;
+              },3000);
             }
           }
           else if(game.multiplayer == MULTIPLAYER_NET_CREATE)
@@ -756,6 +759,12 @@ var GamePlayScene = function(game, stage)
     ctx.textAlign = "right";
     ctx.fillText("Up Next ("+turns_left+" turns): "+g.nodes[g.next_goal_node-1].title,dc.width-sidebar_w-20,topmost_bar_y+15);
 
+    if(input_state == INPUT_PAUSE)
+    {
+      ctx.fillStyle = "rgba(10,10,10,0.5)";
+      ctx.fillRect(sidebar_w,blurb_y-20,dc.width-(2*sidebar_w),dc.height-(blurb_y-20));
+    }
+
     if(input_state == INPUT_PAUSE) girl_disp = lerp(girl_disp,1,0.1);
     else                           girl_disp = lerp(girl_disp,-0.1,0.1);
     ctx.fillStyle = "#FF0000";
@@ -885,6 +894,8 @@ var GamePlayScene = function(game, stage)
       if(input_state == INPUT_PAUSE) return;
       if(hit_ui) return;
       if(g.player_turn != self.player) return;
+      if(g.player_turn == 1 && game.multiplayer == MULTIPLAYER_NET_JOIN) return;
+      if(g.player_turn == 2 && (game.multiplayer == MULTIPLAYER_AI || game.multiplayer == MULTIPLAYER_NET_CREATE)) return;
       if(turn_stage == TURN_CONFIRM_CARD || turn_stage == TURN_CHOOSE_TARGET)
       {
         chosen_target_p = 0;
