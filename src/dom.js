@@ -91,15 +91,16 @@ var CanvDom = function(canv)
   }
 
   self.click = mclicked;
-  self.draw = function(canv)
+  self.draw = function(text_h,canv)
   {
-    if(m)
+    canv.context.fillStyle = "#FF0000";
+    canv.context.fillRect(self.x,self.y,self.w,self.h);
+    canv.context.fillStyle = "#000000";
+    canv.context.textAlign = "left";
+    if(!Array.isArray(m)) m = [m]; //boy I'm lazy...
+    for(var i = 0; i < m.length; i++)
     {
-      canv.context.fillStyle = "#FF0000";
-      canv.context.fillRect(self.x,self.y,self.w,self.h);
-      canv.context.fillStyle = "#000000";
-      canv.context.textAlign = "left";
-      canv.context.fillText(m,self.x,self.y+self.h);
+      if(m[i]) canv.context.fillText(m[i],self.x,self.y+(text_h+2)*(i+1));
     }
   }
 }
@@ -114,9 +115,14 @@ var BottomMessageWrangler = function()
     if(lines && lines.length > cur_line)
       text_el.innerHTML  = lines[cur_line];
     else
-      self.dismiss();
+    {
+      if(c) c();
+      c = undefined;
+      visa = -0.01;
+    }
   }
 
+  var fade = document.getElementById("fade");
   var el = document.getElementById("bottom_display");
   var text_el = document.getElementById("bottom_text");
   var button_el = document.getElementById("bottom_button")
@@ -148,6 +154,9 @@ var BottomMessageWrangler = function()
       visd = 0;
     }
     el.style.bottom = ((vis-1)*height)+"px";
+    fade.style.backgroundColor = "rgba(255,255,255,"+(vis/2)+")";
+    if(vis) fade.style.display = "block";
+    else    fade.style.display = "none";
   }
 
   self.popMessage = function(newlines,callback)

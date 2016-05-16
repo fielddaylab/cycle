@@ -38,7 +38,6 @@ var ConfigScene = function(game, stage)
   var turns;
   var join;
 
-  var bmwrangler;
   self.ready = function()
   {
     dc.context.font = "12px Arial";
@@ -80,9 +79,6 @@ var ConfigScene = function(game, stage)
     clicker.register(tbtn_10);
     clicker.register(tbtn_20);
     clicker.register(tbtn_30);
-
-    bmwrangler = new BottomMessageWrangler();
-    bmwrangler.immediateDismiss();
   };
 
   self.tick = function()
@@ -142,7 +138,6 @@ var ConfigScene = function(game, stage)
         game.setScene(4);
         break;
     }
-    bmwrangler.tick();
   };
 
   self.draw = function()

@@ -61,7 +61,8 @@ var GamePlayScene = function(game, stage)
 
   var ready_btn;
   var done_btn;
-  var bmwrangler;
+  var canvdom;
+  var girl_disp;
 
   var sidebar_w = 160;
   var topmost_bar_y = 70;
@@ -177,6 +178,7 @@ var GamePlayScene = function(game, stage)
     ready_btn  = new ButtonBox(dc.width/2-200,dc.height-60,400,50,
       function()
       {
+        if(input_state == INPUT_PAUSE) return;
         if(hit_ui || turn_stage != TURN_SUMMARY) return;
 
         turn_stage = TURN_ANIM_CARD;
@@ -232,6 +234,7 @@ var GamePlayScene = function(game, stage)
     done_btn  = new ButtonBox(dc.width/2-200,dc.height-60,400,50,
       function()
       {
+        if(input_state == INPUT_PAUSE) return;
         if(hit_ui || turn_stage != TURN_DONE) return;
         cli.stop();
         game.setScene(2);
@@ -242,8 +245,9 @@ var GamePlayScene = function(game, stage)
     clicker.register(ready_btn);
     clicker.register(done_btn);
 
-    bmwrangler = new BottomMessageWrangler();
-    bmwrangler.immediateDismiss();
+    canvdom = new CanvDom(dc);
+    clicker.register(canvdom);
+    girl_disp = 0;
 
     if(game.multiplayer == MULTIPLAYER_LOCAL)
       turn_stage = TURN_CHOOSE_CARD;
@@ -302,11 +306,9 @@ var GamePlayScene = function(game, stage)
     if(g.turn >= 3 && !displayed_turn_3_warning)
     {
       displayed_turn_3_warning = true;
-      displayMessage([
-        "WARNING! See how when you hover over an event card, you get a nice visualization of where the carbon atoms will move? Well, we're going to remove that visualization for you.",
-        "Don't worry! We'll still keep the visualization highlighting which two reservoirs are affected- but you will now have to figure out <b>in which direction</b> it will affect the carbon atoms, yourself.",
-        "Good luck! :)",
-      ]);
+
+      text = "Hey! To make things interesting, we're going to stop showing you in which direction each event affects the carbon... good luck!";
+      displayMessage(textToLines(dc, "12px Arial", dc.width-(2*sidebar_w)-100, text));
     }
 
     switch(turn_stage)
@@ -420,7 +422,6 @@ var GamePlayScene = function(game, stage)
       else if(transition_t >= TRANSITION_KEY_MOVE_GOAL)
         transition_t = 0;
     }
-    bmwrangler.tick();
   };
 
   self.draw = function()
@@ -745,6 +746,14 @@ var GamePlayScene = function(game, stage)
     ctx.fillText("Current Zone: "+g.nodes[g.goal_node-1].title,sidebar_w+20,topmost_bar_y+15);
     ctx.textAlign = "right";
     ctx.fillText("Up Next ("+turns_left+" turns): "+g.nodes[g.next_goal_node-1].title,dc.width-sidebar_w-20,topmost_bar_y+15);
+
+    if(input_state == INPUT_PAUSE) girl_disp = lerp(girl_disp,1,0.1);
+    else                           girl_disp = lerp(girl_disp,-0.1,0.1);
+    ctx.fillStyle = "#FF0000";
+    var h = 200;
+    var w = 100;
+    ctx.fillRect(sidebar_w+10,dc.height-h+(1-girl_disp)*h,w,h);
+    canvdom.draw(12,dc);
   };
 
   self.cleanup = function()
@@ -764,7 +773,7 @@ var GamePlayScene = function(game, stage)
   var displayMessage = function(lines)
   {
     input_state = INPUT_PAUSE;
-    bmwrangler.popMessage(lines,doneDisplay);
+    canvdom.popDismissableMessage(lines,sidebar_w+90,dc.height-200,dc.width-(sidebar_w*2)-100,200,doneDisplay);
   }
 
   //no data- just used for interface
@@ -828,6 +837,7 @@ var GamePlayScene = function(game, stage)
 
     self.click = function(evt)
     {
+      if(input_state == INPUT_PAUSE) return;
       if(hit_ui) return;
       if(g.player_turn != self.player) return;
       if(turn_stage == TURN_CONFIRM_CARD || turn_stage == TURN_CHOOSE_TARGET)
@@ -1068,6 +1078,7 @@ var GamePlayScene = function(game, stage)
 
     self.click = function(evt)
     {
+      if(input_state == INPUT_PAUSE) return;
       if(hit_ui) return;
       if(
         turn_stage != TURN_CONFIRM_CARD &&
