@@ -86,7 +86,7 @@ var GamePlayScene = function(game, stage)
     transformGame(dc,g.nodes,g.events,g.tokens)
 
     var w = sidebar_w-20;
-    var gap = score_header_y+45;
+    var gap = score_header_y+25;
     var h = (dc.height-gap)/g.players[0].hand.length;
     p1_cards_bounds = [];
     for(var i = 0; i < g.players[0].hand.length; i++)
@@ -823,9 +823,18 @@ var GamePlayScene = function(game, stage)
       dc.strokeRoundRect(self.x,self.y,self.w,self.h+20,5);
 
       var icon_s = 35;
-      ctx.drawImage(circle_icon,self.x+20,self.y+20,icon_s,icon_s);
-      ctx.drawImage(circle_icon,self.x+self.w-20-icon_s,self.y+20,icon_s,icon_s);
-      ctx.drawImage(arrow_icon,self.x+self.w/2-(icon_s/4),self.y+20+icon_s/4,icon_s/2,icon_s/2);
+      if(g.turn < 3 || (g.turn == 3 && input_state == INPUT_PAUSE))
+      {
+        ctx.drawImage(circle_icon,self.x+20,self.y+20,icon_s,icon_s);
+        ctx.drawImage(circle_icon,self.x+self.w-20-icon_s,self.y+20,icon_s,icon_s);
+        ctx.drawImage(arrow_icon,self.x+self.w/2-(icon_s/4),self.y+20+icon_s/4,icon_s/2,icon_s/2);
+      }
+      else
+      {
+        var t = (n_ticks+self.index*100)/100;
+        ctx.drawImage(circle_icon,self.x+self.w/2-icon_s/2+Math.cos(t+Math.PI)*icon_s/2,self.y+20+Math.sin(t+Math.PI)*icon_s/2,icon_s,icon_s);
+        ctx.drawImage(circle_icon,self.x+self.w/2-icon_s/2+Math.cos(t)        *icon_s/2,self.y+20+Math.sin(t)        *icon_s/2,icon_s,icon_s);
+      }
 
       ctx.fillStyle = "#000000";
       ctx.font = "10px Arial";
@@ -948,9 +957,19 @@ var GamePlayScene = function(game, stage)
 
       //element icons
       var icon_s = 35;
-      ctx.drawImage(circle_icon,self.x+20,self.y+20,icon_s,icon_s);
-      ctx.drawImage(circle_icon,self.x+self.w-20-icon_s,self.y+20,icon_s,icon_s);
-      ctx.drawImage(arrow_icon,self.x+self.w/2-(icon_s/4),self.y+20+icon_s/4,icon_s/2,icon_s/2);
+      if(g.turn < 3 || (g.turn == 3 && input_state == INPUT_PAUSE))
+      {
+        ctx.drawImage(circle_icon,self.x+20,self.y+20,icon_s,icon_s);
+        ctx.drawImage(circle_icon,self.x+self.w-20-icon_s,self.y+20,icon_s,icon_s);
+        ctx.drawImage(arrow_icon,self.x+self.w/2-(icon_s/4),self.y+20+icon_s/4,icon_s/2,icon_s/2);
+      }
+      else
+      {
+        var t = (n_ticks)/100;
+        ctx.drawImage(circle_icon,self.x+self.w/2-icon_s/2+Math.cos(t+Math.PI)*icon_s/2,self.y+20+Math.sin(t+Math.PI)*icon_s/2,icon_s,icon_s);
+        ctx.drawImage(circle_icon,self.x+self.w/2-icon_s/2+Math.cos(t)        *icon_s/2,self.y+20+Math.sin(t)        *icon_s/2,icon_s,icon_s);
+      }
+
 
       //text (title/info/description)
       ctx.fillStyle = "#000000";
