@@ -711,7 +711,25 @@ var GamePlayScene = function(game, stage)
       case TURN_WAIT:
         ctx.fillText("waiting for opponent's turn...",dc.width/2,50);
       break;
-      case TURN_CHOOSE_CARD: break;
+      case TURN_CHOOSE_CARD:
+        if(g.turn == 0)
+        {
+          var y = dc.height-100 + Math.sin(n_ticks/10)*10;
+          var w = 200;
+          if(g.player_turn == 1)
+          {
+            ctx.fillRect(sidebar_w+5,y-10,w,20);
+            ctx.textAlign = "left";
+            dc.outlineText("Choose a card!",sidebar_w+10,y+7);
+          }
+          if(g.player_turn == 2)
+          {
+            ctx.fillRect(dc.width-sidebar_w-w-5,y-10,w,20);
+            ctx.textAlign = "right";
+            dc.outlineText("Choose a card!",dc.width-sidebar_w-10,y+7);
+          }
+        }
+        break;
       case TURN_CONFIRM_CARD: break;
       case TURN_CHOOSE_TARGET: break;
       case TURN_SUMMARY: break;
