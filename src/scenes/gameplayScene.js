@@ -192,7 +192,7 @@ var GamePlayScene = function(game, stage)
 
         turn_stage = TURN_ANIM_CARD;
         hover_card.dx = dc.width/2-hover_card.w/2;
-        hover_card.dy = dc.height+10;
+        hover_card.dy = dc.height-50;
 
         setTimeout(function() //oh god...
         {
@@ -271,6 +271,16 @@ var GamePlayScene = function(game, stage)
     announce_w = dc.width-(sidebar_w*2)-110;
     announce_h = 100;
     summary = [];
+    var text;
+    if(game.multiplayer == MULTIPLAYER_AI) text = "You are Red Team, and it's Red Team's turn!";
+    if(game.multiplayer == MULTIPLAYER_LOCAL) text = "It's Red Team's turn!";
+    if(game.multiplayer == MULTIPLAYER_NET_CREATE)
+    {
+      if(turn_stage == TURN_WAIT_FOR_JOIN) text = "You are Red Team! Hold tight while we wait for your opponent... (Your Room #:"+game.join+")";
+      else text = "You are Red Team, and it's Red Team's turn!";
+    }
+    if(game.multiplayer == MULTIPLAYER_NET_JOIN) text = "You are Blue Team. It's Red Team's turn! (Waiting on your opponent...)";
+    summary = textToLines(dc, "12px Open Sans", announce_w-10, text);
 
     if(game.multiplayer == MULTIPLAYER_LOCAL)
       turn_stage = TURN_CHOOSE_CARD;
@@ -344,6 +354,7 @@ var GamePlayScene = function(game, stage)
             if(cli.database[i].event == "JOIN" && cli.database[i].args[0] == cli.id)
             {
               game.opponent = cli.database[i].user;
+              summary = textToLines(dc, "12px Open Sans", announce_w-10, "You are Red Team, and it's Red Team's turn!");
               turn_stage = TURN_CHOOSE_CARD;
             }
           }
@@ -694,37 +705,26 @@ var GamePlayScene = function(game, stage)
     ctx.fillText("Turn: "+g.turn,dc.width/2,20);
     player = g.players[g.player_turn-1];
 
+    ctx.fillStyle = lblue;
+    ctx.fillRect(sidebar_w,announce_y-30,dc.width-(sidebar_w*2),dc.height-(announce_y-30));
     ctx.fillStyle = white;
     dc.fillRoundRect(announce_x,announce_y,announce_w,announce_h,5);
-    ctx.strokeSytle = lblue;
-    ctx.lineWidth = 2;
-    dc.strokeRoundRect(announce_x,announce_y,announce_w,announce_h,5);
     ctx.fillStyle = "#000000";
     ctx.textAlign = "left";
     ctx.font = "12px Open Sans";
-    if(summary.length == 0)
-      ctx.fillText("It's Red Team's turn!",announce_x+10,announce_y+20);
-    else
-    {
-      for(var i = 0; i < summary.length; i++)
-        ctx.fillText(summary[i],announce_x+10,announce_y+20*(i+1));
-    }
+    for(var i = 0; i < summary.length; i++)
+      ctx.fillText(summary[i],announce_x+10,announce_y+20*(i+1));
 
     ctx.textAlign = "center";
     ctx.font = "20px Open Sans";
     switch(turn_stage)
     {
-      case TURN_WAIT_FOR_JOIN:
-        ctx.fillText("waiting for opponent...",dc.width/2,50);
-        ctx.fillText("(Room #"+game.join+")",dc.width/2,70);
-        break;
-      case TURN_WAIT:
-        ctx.fillText("waiting for opponent's turn...",dc.width/2,50);
-      break;
+      case TURN_WAIT_FOR_JOIN: break;
+      case TURN_WAIT: break;
       case TURN_CHOOSE_CARD:
         if(g.turn == 0)
         {
-          var y = dc.height-100 + Math.sin(n_ticks/10)*10;
+          var y = dc.height-140 + Math.sin(n_ticks/10)*10;
           var w = 200;
           if(g.player_turn == 1)
           {
@@ -783,13 +783,13 @@ var GamePlayScene = function(game, stage)
       dc.strokeRoundRect(blurb_x,blurb_y,blurb_w,blurb_h,5);
 
       ctx.fillStyle = gray;
-      ctx.fillRect(dc.width/2,dc.height-80,100,60);
+      ctx.fillRect(dc.width/2+90,dc.height-70,100,40);
       ctx.fillStyle = white;
-      ctx.fillRect(dc.width/2,dc.height-90,100,60);
+      ctx.fillRect(dc.width/2+90,dc.height-80,100,40);
       ctx.fillStyle = "#000000";
       ctx.textAlign = "left";
       ctx.font = "30px Open Sans";
-      ctx.fillText("Next",dc.width/2+10,dc.height-40,100,60);
+      ctx.fillText("Next",dc.width/2+100,dc.height-50);
 
       ctx.font = "12px Open Sans";
       canvdom.draw(12,dc);
