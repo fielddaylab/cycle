@@ -88,7 +88,7 @@ var ConfigScene = function(game, stage)
     mbtn_net_create = new ButtonBox(btn_3_x,btn_y,btn_s,btn_s-20,function(evt){ if(hit_ui || mode != CONFIG_MULTIPLAYER) return; hit_ui = true; multiplayer = MULTIPLAYER_NET_CREATE; mode = CONFIG_TURN; cli.begin(); });
     mbtn_net_join   = new ButtonBox(btn_4_x,btn_y,btn_s,btn_s-20,function(evt){ if(hit_ui || mode != CONFIG_MULTIPLAYER) return; hit_ui = true; multiplayer = MULTIPLAYER_NET_JOIN;   mode = CONFIG_JOIN; cli.begin(); });
 
-    btn_back = new ButtonBox(20,section_line_0_y,btn_s,section_line_1_y-section_line_0_y,function(evt){ if(hit_ui || mode == CONFIG_MULTIPLAYER) return; mode = CONFIG_MULTIPLAYER; multiplayer = undefined; });
+    btn_back = new ButtonBox(20,section_line_0_y,btn_s,section_line_1_y-section_line_0_y,function(evt){ if(hit_ui || mode == CONFIG_MULTIPLAYER) return; cli.stop(); mode = CONFIG_MULTIPLAYER; multiplayer = undefined; });
 
     joins = [];
     jbtn_a = new ButtonBox(btn_1_x,btn_y,        btn_s,btn_s/2-10,function(evt){ if(hit_ui || mode != CONFIG_JOIN || joins.length < 1) return; hit_ui = true; join = joins[0]; turn = turns[0]; cli.add(cli.id+" JOIN "+join); mode = CONFIG_COMMIT; });
@@ -202,12 +202,15 @@ var ConfigScene = function(game, stage)
     dc.context.fillStyle = blue;
     dc.roundRectOptions(btn_tutorial.x,btn_tutorial.y,btn_tutorial.w,btn_tutorial.h,5,1,1,0,0,0,1)
     dc.context.drawImage(crystal_img,dc.width-section_line_0_y,0,section_line_0_y,section_line_0_y);
-    dc.context.drawImage(tassle_img,dc.width/3-100,50,section_line_0_y-80,section_line_0_y-100);
+    dc.context.drawImage(tassle_img,dc.width/3-120,50,section_line_0_y-80,section_line_0_y-100);
 
     dc.context.fillStyle = "#000000";
-    dc.context.fillText("First Time Playing?",dc.width/2-70,100);
-    dc.context.fillText("Play the Carbon Cycle Tutorial",dc.width/2-70,120);
-    dc.context.drawImage(arrow_img,dc.width/2+100,120-20,40,20);
+    dc.context.font = "Bold 12px Open Sans";
+    dc.context.fillText("First Time Playing?",dc.width/2-100,100);
+    dc.context.font = "Bold 18px Open Sans";
+    dc.context.fillText("Play the Carbon Cycle Tutorial",dc.width/2-100,120);
+    dc.context.drawImage(arrow_img,dc.width/2+155,105,30,15);
+    dc.context.font = "12px Open Sans";
 
     dc.context.lineWidth = 0.5;
     dc.context.strokeStyle = "#666666";
@@ -224,10 +227,11 @@ var ConfigScene = function(game, stage)
         dc.drawLine(btn_1_x+btn_s/2,section_line_1_y,btn_1_x+btn_s/2,dc.height);
         dc.context.font = "40px Open Sans";
         dc.context.fillText("CREATE A GAME!",dc.width/2,title_y);
-        dc.context.font = "12px Open Sans";
+        dc.context.font = "Bold 12px Open Sans";
         dc.context.textAlign = "left";
         dc.context.fillText("Single Player",btn_0_x, subtitle_y);
         dc.context.fillText("Multiplayer",btn_2_x, subtitle_y);
+        dc.context.font = "12px Open Sans";
         break;
       case CONFIG_JOIN:
         dc.context.save();
@@ -263,9 +267,10 @@ var ConfigScene = function(game, stage)
         dc.context.textAlign = "center";
         dc.context.font = "40px Open Sans";
         dc.context.fillText("CREATE A GAME!",dc.width/2,title_y);
-        dc.context.font = "12px Open Sans";
         dc.context.textAlign = "left";
+        dc.context.font = "Bold 12px Open Sans";
         dc.context.fillText("How many turns?",btn_1_x, subtitle_y);
+        dc.context.font = "12px Open Sans";
         break;
       case CONFIG_COMMIT:
         break;
