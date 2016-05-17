@@ -123,3 +123,6 @@ arrow_icon.src = "assets/arrow.png";
 var biarrow_icon = new Image();
 biarrow_icon.src = "assets/biarrow.png";
 
+var tall_img = new Image();
+tall_img.src = "assets/scout.png";
+

@@ -34,6 +34,7 @@ var LoadingScene = function(game, stage)
     img_srcs.push("assets/tassle.png");
     img_srcs.push("assets/net_add.png");
     img_srcs.push("assets/net_check.png");
+    img_srcs.push("assets/scout.png");
     img_srcs.push("assets/bg.jpg");
     for(var i = 0; i < img_srcs.length; i++)
     {

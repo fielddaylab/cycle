@@ -266,9 +266,9 @@ var GamePlayScene = function(game, stage)
     blurb_y = dc.height-200;
     blurb_w = dc.width-(sidebar_w*2)-110;
     blurb_h = 100;
-    announce_x = sidebar_w+100;
+    announce_x = sidebar_w+110;
     announce_y = dc.height-110;
-    announce_w = dc.width-(sidebar_w*2)-110;
+    announce_w = dc.width-(sidebar_w*2)-120;
     announce_h = 100;
     summary = [];
     var text;
@@ -707,6 +707,7 @@ var GamePlayScene = function(game, stage)
 
     ctx.fillStyle = lblue;
     ctx.fillRect(sidebar_w,announce_y-30,dc.width-(sidebar_w*2),dc.height-(announce_y-30));
+    ctx.drawImage(tall_img,sidebar_w+20,dc.height-100,75,200);
     ctx.fillStyle = white;
     dc.fillRoundRect(announce_x,announce_y,announce_w,announce_h,5);
     ctx.fillStyle = "#000000";
@@ -725,16 +726,27 @@ var GamePlayScene = function(game, stage)
         if(g.turn == 0)
         {
           var y = dc.height-140 + Math.sin(n_ticks/10)*10;
-          var w = 200;
+          var w = 160;
           if(g.player_turn == 1)
           {
-            ctx.fillRect(sidebar_w+5,y-10,w,20);
+            dc.fillRoundRect(sidebar_w+5,y-10,w,20,5);
+            ctx.beginPath();
+            ctx.moveTo(sidebar_w+5+1,y-10+5);
+            ctx.lineTo(sidebar_w+5-5,y);
+            ctx.lineTo(sidebar_w+5+1,y+10-5);
+            ctx.closePath();
+            ctx.fill();
             ctx.textAlign = "left";
             dc.outlineText("Choose a card!",sidebar_w+10,y+7);
           }
           if(g.player_turn == 2 && (game.multiplayer == MULTIPLAYER_LOCAL || game.multiplayer == MULTIPLAYER_NET_JOIN))
           {
-            ctx.fillRect(dc.width-sidebar_w-w-5,y-10,w,20);
+            dc.fillRoundRect(dc.width-sidebar_w-w-5,y-10,w,20,5);
+            ctx.moveTo(dc.width-sidebar_w-w-5+w-1,y-10+5);
+            ctx.lineTo(dc.width-sidebar_w-w-5+w+5,y);
+            ctx.lineTo(dc.width-sidebar_w-w-5+w-1,y+10-5);
+            ctx.closePath();
+            ctx.fill();
             ctx.textAlign = "right";
             dc.outlineText("Choose a card!",dc.width-sidebar_w-10,y+7);
           }
@@ -819,7 +831,7 @@ var GamePlayScene = function(game, stage)
   var genSummary = function()
   {
     var player = g.players[g.player_turn-1];
-    var text = player.title+" played "+g.events[player.hand[chosen_card_i]-1].title+" on "+g.players[chosen_target_p-1].title+"'s carbon";
+    var text = player.title+" played "+g.events[player.hand[chosen_card_i]-1].title+" on "+g.players[chosen_target_p-1].title+"'s carbon!";
     summary = textToLines(dc, "12px Open Sans", announce_w-10, text);
   }
 
@@ -984,7 +996,7 @@ var GamePlayScene = function(game, stage)
     self.tick = function()
     {
       self.t++;
-      self.x = lerp(self.x,self.dx,0.2);
+      self.x = lerp(self.x,self.dx,0.1);
       self.y = lerp(self.y,self.dy+hover_pulse*5,0.1);
       self.w = lerp(self.w,self.dw,0.1);
       self.h = lerp(self.h,self.dh,0.1);
