@@ -62,7 +62,7 @@ var ConfigScene = function(game, stage)
   var net_check_img;
   self.ready = function()
   {
-    dc.context.font = "12px Arial";
+    dc.context.font = "12px Open Sans";
     clicker = new Clicker({source:stage.dispCanv.canvas});
 
     mode = CONFIG_MULTIPLAYER;
@@ -222,9 +222,9 @@ var ConfigScene = function(game, stage)
         imgBtn(mbtn_net_create,multi_img); dc.context.drawImage(net_add_img,mbtn_net_create.x+mbtn_net_create.w-30,mbtn_net_create.y-10,40,40); dc.context.fillText("Web: Create Room",        mbtn_net_create.x+mbtn_net_create.w/2, mbtn_net_create.y+mbtn_net_create.h+20);
         imgBtn(mbtn_net_join,multi_img);   dc.context.drawImage(net_check_img,mbtn_net_join.x+mbtn_net_join.w-30,mbtn_net_join.y-10,40,40); dc.context.fillText("Web: Join Room",          mbtn_net_join.x+mbtn_net_join.w/2,   mbtn_net_join.y+mbtn_net_join.h+20);
         dc.drawLine(btn_1_x+btn_s/2,section_line_1_y,btn_1_x+btn_s/2,dc.height);
-        dc.context.font = "40px Arial";
+        dc.context.font = "40px Open Sans";
         dc.context.fillText("CREATE A GAME!",dc.width/2,title_y);
-        dc.context.font = "12px Arial";
+        dc.context.font = "12px Open Sans";
         dc.context.textAlign = "left";
         dc.context.fillText("Single Player",btn_0_x, subtitle_y);
         dc.context.fillText("Multiplayer",btn_2_x, subtitle_y);
@@ -243,9 +243,9 @@ var ConfigScene = function(game, stage)
         if(joins.length > 4) { rectBtn(jbtn_e); dc.context.fillText("Join "+joins[4], jbtn_e.x+10, jbtn_e.y+20); }
         if(joins.length > 5) { rectBtn(jbtn_f); dc.context.fillText("Join "+joins[5], jbtn_f.x+10, jbtn_f.y+20); }
         dc.context.textAlign = "center";
-        dc.context.font = "40px Arial";
+        dc.context.font = "40px Open Sans";
         dc.context.fillText("Waiting for Web Game...",dc.width/2,title_y);
-        dc.context.font = "12px Arial";
+        dc.context.font = "12px Open Sans";
         dc.context.textAlign = "left";
         break;
       case CONFIG_TURN:
@@ -259,9 +259,9 @@ var ConfigScene = function(game, stage)
         rectBtn(tbtn_20); dc.context.fillText("20 Turns", tbtn_20.x+btn_s/2, tbtn_20.y+btn_s/2);
         rectBtn(tbtn_30); dc.context.fillText("30 Turns", tbtn_30.x+btn_s/2, tbtn_30.y+btn_s/2);
         dc.context.textAlign = "center";
-        dc.context.font = "40px Arial";
+        dc.context.font = "40px Open Sans";
         dc.context.fillText("CREATE A GAME!",dc.width/2,title_y);
-        dc.context.font = "12px Arial";
+        dc.context.font = "12px Open Sans";
         dc.context.textAlign = "left";
         dc.context.fillText("How many turns?",btn_1_x, subtitle_y);
         break;

@@ -80,7 +80,7 @@ var GamePlayScene = function(game, stage)
 
   self.ready = function()
   {
-    ctx.font = "12px Arial";
+    ctx.font = "12px Open Sans";
     clicker = new Clicker({source:stage.dispCanv.canvas});
     hoverer = new PersistentHoverer({source:stage.dispCanv.canvas});
 
@@ -331,7 +331,7 @@ var GamePlayScene = function(game, stage)
       displayed_turn_3_warning = true;
 
       text = "Hey! To make things interesting, we're going to stop showing you in which direction each event affects the carbon... good luck!";
-      displayMessage(textToLines(dc, "12px Arial", blurb_w-10, text));
+      displayMessage(textToLines(dc, "12px Open Sans", blurb_w-10, text));
     }
 
     switch(turn_stage)
@@ -463,13 +463,13 @@ var GamePlayScene = function(game, stage)
     ctx.fillStyle = lred;
     ctx.fillRect(0,topmost_bar_y,sidebar_w,score_header_y-topmost_bar_y);
     ctx.fillStyle = dred;
-    ctx.font = "18px Arial";
+    ctx.font = "18px Open Sans";
     ctx.fillText("RED TEAM",10,score_header_y-6);
     ctx.drawImage(red_token_icon,sidebar_w-40,score_header_y-18,20,15);
     ctx.fillStyle = gray;
     ctx.fillRect(0,score_header_y,sidebar_w,turn_header_y-score_header_y);
     ctx.fillStyle = white;
-    ctx.font = "10px Arial";
+    ctx.font = "10px Open Sans";
     switch(game.multiplayer)
     {
       case MULTIPLAYER_LOCAL:
@@ -490,13 +490,13 @@ var GamePlayScene = function(game, stage)
     ctx.fillStyle = lblue;
     ctx.fillRect(dc.width-sidebar_w,topmost_bar_y,sidebar_w,score_header_y-topmost_bar_y);
     ctx.fillStyle = dblue;
-    ctx.font = "18px Arial";
+    ctx.font = "18px Open Sans";
     ctx.fillText("BLUE TEAM",dc.width-sidebar_w+10,score_header_y-6);
     ctx.drawImage(blue_token_icon,dc.width-40,score_header_y-18,20,15);
     ctx.fillStyle = gray;
     ctx.fillRect(dc.width-sidebar_w,score_header_y,sidebar_w,turn_header_y-score_header_y);
     ctx.fillStyle = white;
-    ctx.font = "10px Arial";
+    ctx.font = "10px Open Sans";
     switch(game.multiplayer)
     {
       case MULTIPLAYER_LOCAL:
@@ -510,7 +510,7 @@ var GamePlayScene = function(game, stage)
         break;
     }
 
-    ctx.font = "12px Arial";
+    ctx.font = "12px Open Sans";
     ctx.fillStyle = "#000000";
     ctx.strokeStyle = "#000000";
 
@@ -662,7 +662,7 @@ var GamePlayScene = function(game, stage)
     player = g.players[0];
     ctx.fillStyle = dred;
     ctx.textAlign = "left";
-    ctx.font = "10px Arial";
+    ctx.font = "10px Open Sans";
     ctx.fillText("X"+player.disp_pts,sidebar_w-20,score_header_y-7);
     ctx.fillStyle = "#000000";
     for(var i = 0; i < player.hand.length; i++)
@@ -675,7 +675,7 @@ var GamePlayScene = function(game, stage)
     player = g.players[1];
     ctx.fillStyle = dblue;
     ctx.textAlign = "left";
-    ctx.font = "10px Arial";
+    ctx.font = "10px Open Sans";
     ctx.fillText("X"+player.disp_pts,dc.width-20,score_header_y-7);
     ctx.fillStyle = "#000000";
     for(var i = 0; i < player.hand.length; i++)
@@ -699,7 +699,7 @@ var GamePlayScene = function(game, stage)
     dc.strokeRoundRect(announce_x,announce_y,announce_w,announce_h,5);
     ctx.fillStyle = "#000000";
     ctx.textAlign = "left";
-    ctx.font = "12px Arial";
+    ctx.font = "12px Open Sans";
     if(summary.length == 0)
       ctx.fillText("It's Red Team's turn!",announce_x+10,announce_y+20);
     else
@@ -709,7 +709,7 @@ var GamePlayScene = function(game, stage)
     }
 
     ctx.textAlign = "center";
-    ctx.font = "20px Arial";
+    ctx.font = "20px Open Sans";
     switch(turn_stage)
     {
       case TURN_WAIT_FOR_JOIN:
@@ -753,7 +753,7 @@ var GamePlayScene = function(game, stage)
     }
 
     ctx.textAlign = "left";
-    ctx.font = "12px Arial";
+    ctx.font = "12px Open Sans";
     ctx.fillStyle = gray;
     ctx.fillText("Current Zone: "+g.nodes[g.goal_node-1].title,sidebar_w+20,topmost_bar_y+15);
     ctx.textAlign = "right";
@@ -786,10 +786,10 @@ var GamePlayScene = function(game, stage)
       ctx.fillRect(dc.width/2,dc.height-90,100,60);
       ctx.fillStyle = "#000000";
       ctx.textAlign = "left";
-      ctx.font = "30px Arial";
+      ctx.font = "30px Open Sans";
       ctx.fillText("Next",dc.width/2+10,dc.height-40,100,60);
 
-      ctx.font = "12px Arial";
+      ctx.font = "12px Open Sans";
       canvdom.draw(12,dc);
     }
   };
@@ -818,7 +818,7 @@ var GamePlayScene = function(game, stage)
   {
     var player = g.players[g.player_turn-1];
     var text = player.title+" played "+g.events[player.hand[chosen_card_i]-1].title+" on "+g.players[chosen_target_p-1].title+"'s carbon";
-    summary = textToLines(dc, "12px Arial", announce_w-10, text);
+    summary = textToLines(dc, "12px Open Sans", announce_w-10, text);
   }
 
   //no data- just used for interface
@@ -882,10 +882,10 @@ var GamePlayScene = function(game, stage)
       }
 
       ctx.fillStyle = "#000000";
-      ctx.font = "10px Arial";
+      ctx.font = "10px Open Sans";
       ctx.fillText(event.title,self.x+self.w/2,self.y+70);
       ctx.fillText(event.info,self.x+self.w/2,self.y+95);
-      ctx.font = "italic 10px Arial";
+      ctx.font = "italic 10px Open Sans";
       ctx.fillText(event.description,self.x+self.w/2,self.y+85);
     }
 
@@ -1020,12 +1020,12 @@ var GamePlayScene = function(game, stage)
 
       //text (title/info/description)
       ctx.fillStyle = "#000000";
-      ctx.font = "10px Arial";
+      ctx.font = "10px Open Sans";
       ctx.fillText(event.title,self.x+self.w/2,self.y+70);
       ctx.fillText(event.info,self.x+self.w/2,self.y+95);
-      ctx.font = "italic 10px Arial";
+      ctx.font = "italic 10px Open Sans";
       ctx.fillText(event.description,self.x+self.w/2,self.y+85);
-      ctx.font = "10px Arial";
+      ctx.font = "10px Open Sans";
 
       if(turn_stage == TURN_CONFIRM_CARD || turn_stage == TURN_SUMMARY || turn_stage == TURN_ANIM_CARD)
       {
@@ -1069,7 +1069,7 @@ var GamePlayScene = function(game, stage)
         }
         else ctx.fillStyle = red; //text (deselected)
           //text
-        ctx.font = "10px Arial";
+        ctx.font = "10px Open Sans";
         ctx.fillText("RED",self.x+self.target_1_x+self.target_1_w/2,self.y+self.target_1_y+self.target_1_h-3);
           //icon
         ctx.drawImage(red_token_icon,self.x+self.target_1_x+self.target_1_w/2-8,self.y+self.target_1_y+8,16,12);
@@ -1088,7 +1088,7 @@ var GamePlayScene = function(game, stage)
         }
         else ctx.fillStyle = blue; //text (deselected)
           //text
-        ctx.font = "10px Arial";
+        ctx.font = "10px Open Sans";
         ctx.fillText("BLUE",self.x+self.target_2_x+self.target_2_w/2,self.y+self.target_2_y+self.target_2_h-3);
           //icon
         ctx.drawImage(blue_token_icon,self.x+self.target_2_x+self.target_2_w/2-8,self.y+self.target_2_y+8,16,12);

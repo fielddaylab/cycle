@@ -57,7 +57,7 @@ var TutorialScene = function(game, stage)
 
   self.ready = function()
   {
-    dc.context.font = "12px Arial";
+    dc.context.font = "12px Open Sans";
     clicker = new Clicker({source:stage.dispCanv.canvas});
 
     //tut stuff
@@ -78,36 +78,36 @@ var TutorialScene = function(game, stage)
     cur_prompt = 0;
     var i = 0;
 
-    /*0*/prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "Hi!"),dc.width/4,dc.height-50); i++;
-    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "Cycle Game is a 2 Player Game"),dc.width/4,dc.height-50); i++;
-    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "Here's Player 1 (Red)"),dc.width/4,dc.height-50); i++;
-    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "And Here's Player 2 (Blue)"),dc.width/4,dc.height-50); i++;
-    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "Both Players begin with 0 points..."),dc.width/4,dc.height-50); i++;
-    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "and carbon spread around the board."),dc.width/4,dc.height-50); i++;
-    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "The game takes place over 10 turns."),dc.width/4,dc.height-50); i++;
-    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "Each turn has a few steps:"),dc.width/4,dc.height-50); i++;
-    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "First, player 1 plays an event card."),dc.width/4,dc.height-50); i++;
-    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "Then, player 2 plays an event card."),dc.width/4,dc.height-50); i++;
-    /*10*/prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "Playing an event card moves carbon from one reservoir to another."),dc.width/4,dc.height-50); i++;
-    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "After both cards have been played,"),dc.width/4,dc.height-50); i++;
-    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "all the carbon at the \"goal reservoir\" are added"),dc.width/4,dc.height-50); i++;
-    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "as points to each player."),dc.width/4,dc.height-50); i++;
-    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "The player with the most points at the end of 10 turns, wins."),dc.width/4,dc.height-50); i++;
-    /*15*/prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "Ok. Let's go through a turn."),dc.width/4,dc.height-50); i++;
-    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "Player 1 selects an event card to play by clicking on it."),dc.width/4,dc.height-50); i++;
-    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/3, "Then, they choose who to target with this card."),(dc.width/4)*3-50,dc.height-40); i++;
-    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/3, "After a quick confirmation..."),(dc.width/4)*3-50,dc.height-50); i++;
-    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "Player 2 goes through the same motions."),dc.width/4,dc.height-50); i++;
-    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "Choose an event card..."),dc.width/4,dc.height-50); i++;
-    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/3, "Choose a target..."),(dc.width/4)*3-50,dc.height-40); i++;
-    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/3, "Quick confirmation..."),(dc.width/4)*3-50,dc.height-50); i++;
-    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "(Watch the goal reservoir after we click confirm...)"),dc.width/4,dc.height-100); i++;
-    /*0*/prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "Some other things to look out for:"),dc.width/4,dc.height-50); i++;
-    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "1. Every 3 turns, the goal reservoir will make a move through the cycle."),dc.width/4,dc.height-50); i++;
-    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "2. Some cards move more than one carbon."),dc.width/4,dc.height-50); i++;
-    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "3. Some cards take more than one turn to move carbon."),dc.width/4,dc.height-50); i++;
-    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "Ok. You should be able to figure it out from here."),dc.width/4,dc.height-50); i++;
-    prompts[i] = new Prompt(textToLines(dc, "20px Arial", dc.width/2, "Good luck!"),dc.width/4,dc.height-50); i++;
+    /*0*/prompts[i] = new Prompt(textToLines(dc, "20px Open Sans", dc.width/2, "Hi!"),dc.width/4,dc.height-50); i++;
+    prompts[i] = new Prompt(textToLines(dc, "20px Open Sans", dc.width/2, "Cycle Game is a 2 Player Game"),dc.width/4,dc.height-50); i++;
+    prompts[i] = new Prompt(textToLines(dc, "20px Open Sans", dc.width/2, "Here's Player 1 (Red)"),dc.width/4,dc.height-50); i++;
+    prompts[i] = new Prompt(textToLines(dc, "20px Open Sans", dc.width/2, "And Here's Player 2 (Blue)"),dc.width/4,dc.height-50); i++;
+    prompts[i] = new Prompt(textToLines(dc, "20px Open Sans", dc.width/2, "Both Players begin with 0 points..."),dc.width/4,dc.height-50); i++;
+    prompts[i] = new Prompt(textToLines(dc, "20px Open Sans", dc.width/2, "and carbon spread around the board."),dc.width/4,dc.height-50); i++;
+    prompts[i] = new Prompt(textToLines(dc, "20px Open Sans", dc.width/2, "The game takes place over 10 turns."),dc.width/4,dc.height-50); i++;
+    prompts[i] = new Prompt(textToLines(dc, "20px Open Sans", dc.width/2, "Each turn has a few steps:"),dc.width/4,dc.height-50); i++;
+    prompts[i] = new Prompt(textToLines(dc, "20px Open Sans", dc.width/2, "First, player 1 plays an event card."),dc.width/4,dc.height-50); i++;
+    prompts[i] = new Prompt(textToLines(dc, "20px Open Sans", dc.width/2, "Then, player 2 plays an event card."),dc.width/4,dc.height-50); i++;
+    /*10*/prompts[i] = new Prompt(textToLines(dc, "20px Open Sans", dc.width/2, "Playing an event card moves carbon from one reservoir to another."),dc.width/4,dc.height-50); i++;
+    prompts[i] = new Prompt(textToLines(dc, "20px Open Sans", dc.width/2, "After both cards have been played,"),dc.width/4,dc.height-50); i++;
+    prompts[i] = new Prompt(textToLines(dc, "20px Open Sans", dc.width/2, "all the carbon at the \"goal reservoir\" are added"),dc.width/4,dc.height-50); i++;
+    prompts[i] = new Prompt(textToLines(dc, "20px Open Sans", dc.width/2, "as points to each player."),dc.width/4,dc.height-50); i++;
+    prompts[i] = new Prompt(textToLines(dc, "20px Open Sans", dc.width/2, "The player with the most points at the end of 10 turns, wins."),dc.width/4,dc.height-50); i++;
+    /*15*/prompts[i] = new Prompt(textToLines(dc, "20px Open Sans", dc.width/2, "Ok. Let's go through a turn."),dc.width/4,dc.height-50); i++;
+    prompts[i] = new Prompt(textToLines(dc, "20px Open Sans", dc.width/2, "Player 1 selects an event card to play by clicking on it."),dc.width/4,dc.height-50); i++;
+    prompts[i] = new Prompt(textToLines(dc, "20px Open Sans", dc.width/3, "Then, they choose who to target with this card."),(dc.width/4)*3-50,dc.height-40); i++;
+    prompts[i] = new Prompt(textToLines(dc, "20px Open Sans", dc.width/3, "After a quick confirmation..."),(dc.width/4)*3-50,dc.height-50); i++;
+    prompts[i] = new Prompt(textToLines(dc, "20px Open Sans", dc.width/2, "Player 2 goes through the same motions."),dc.width/4,dc.height-50); i++;
+    prompts[i] = new Prompt(textToLines(dc, "20px Open Sans", dc.width/2, "Choose an event card..."),dc.width/4,dc.height-50); i++;
+    prompts[i] = new Prompt(textToLines(dc, "20px Open Sans", dc.width/3, "Choose a target..."),(dc.width/4)*3-50,dc.height-40); i++;
+    prompts[i] = new Prompt(textToLines(dc, "20px Open Sans", dc.width/3, "Quick confirmation..."),(dc.width/4)*3-50,dc.height-50); i++;
+    prompts[i] = new Prompt(textToLines(dc, "20px Open Sans", dc.width/2, "(Watch the goal reservoir after we click confirm...)"),dc.width/4,dc.height-100); i++;
+    /*0*/prompts[i] = new Prompt(textToLines(dc, "20px Open Sans", dc.width/2, "Some other things to look out for:"),dc.width/4,dc.height-50); i++;
+    prompts[i] = new Prompt(textToLines(dc, "20px Open Sans", dc.width/2, "1. Every 3 turns, the goal reservoir will make a move through the cycle."),dc.width/4,dc.height-50); i++;
+    prompts[i] = new Prompt(textToLines(dc, "20px Open Sans", dc.width/2, "2. Some cards move more than one carbon."),dc.width/4,dc.height-50); i++;
+    prompts[i] = new Prompt(textToLines(dc, "20px Open Sans", dc.width/2, "3. Some cards take more than one turn to move carbon."),dc.width/4,dc.height-50); i++;
+    prompts[i] = new Prompt(textToLines(dc, "20px Open Sans", dc.width/2, "Ok. You should be able to figure it out from here."),dc.width/4,dc.height-50); i++;
+    prompts[i] = new Prompt(textToLines(dc, "20px Open Sans", dc.width/2, "Good luck!"),dc.width/4,dc.height-50); i++;
     clicker.register(next_btn);
 
     if(game.join) sr = new SeededRand(game.join);
@@ -535,9 +535,9 @@ var TutorialScene = function(game, stage)
       if(cur_prompt == 2) dc.context.strokeStyle = "#00FF00";
       dc.context.strokeRect(p1_cards[i].x,p1_cards[i].y,p1_cards[i].w,p1_cards[i].h);
       dc.context.fillText(event.title,p1_cards[i].x+10,p1_cards[i].y+20);
-      dc.context.font = "italic 10px Arial";
+      dc.context.font = "italic 10px Open Sans";
       dc.context.fillText(event.description,p1_cards[i].x+10,p1_cards[i].y+30);
-      dc.context.font = "12px Arial";
+      dc.context.font = "12px Open Sans";
       dc.context.fillText(event.info,p1_cards[i].x+10,p1_cards[i].y+40);
     }
     player = g.players[1];
@@ -554,9 +554,9 @@ var TutorialScene = function(game, stage)
       if(cur_prompt == 3) dc.context.strokeStyle = "#00FF00";
       dc.context.strokeRect(p2_cards[i].x,p2_cards[i].y,p2_cards[i].w,p2_cards[i].h);
       dc.context.fillText(event.title,p2_cards[i].x+p2_cards[i].w-10,p2_cards[i].y+20);
-      dc.context.font = "italic 10px Arial";
+      dc.context.font = "italic 10px Open Sans";
       dc.context.fillText(event.description,p2_cards[i].x+p2_cards[i].w-10,p2_cards[i].y+30);
-      dc.context.font = "12px Arial";
+      dc.context.font = "12px Open Sans";
       dc.context.fillText(event.info,p2_cards[i].x+p2_cards[i].w-10,p2_cards[i].y+40);
     }
 
@@ -608,7 +608,7 @@ var TutorialScene = function(game, stage)
     }
 
     dc.context.textAlign = "center";
-    dc.context.font = "20px Arial";
+    dc.context.font = "20px Open Sans";
     switch(turn_stage)
     {
       case TURN_WAIT_FOR_JOIN:
@@ -636,16 +636,16 @@ var TutorialScene = function(game, stage)
     var p = prompts[cur_prompt];
     dc.context.fillStyle = "#000000";
     dc.context.textAlign = "left";
-    dc.context.font = "20px Arial";
+    dc.context.font = "20px Open Sans";
     for(var i = 0; i < p.lines.length; i++)
       dc.outlineText(p.lines[i],p.x,p.y+i*20,"#000000","#FFFFFF");
 
     dc.context.textAlign = "center";
-    dc.context.font = "12px Arial";
+    dc.context.font = "12px Open Sans";
     dc.outlineText("(click to continue)",dc.width/2,dc.height-12,"#000000","#FFFFFF");
 
     dc.context.textAlign = "left";
-    dc.context.font = "12px Arial";
+    dc.context.font = "12px Open Sans";
   };
 
   self.cleanup = function()
