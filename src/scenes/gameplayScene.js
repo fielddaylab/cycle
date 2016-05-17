@@ -557,20 +557,6 @@ var GamePlayScene = function(game, stage)
     //draw hover arrows
     if(hovering_valid || chosen_valid)
     {
-      var a = {x:e.start_x,y:e.start_y};
-      var b = {x:e.end_x,y:e.end_y};
-      var d = {x:b.x-a.x,y:b.y-a.y};
-      var portion = 2;
-      a.x += d.x/(portion*2);
-      a.y += d.y/(portion*2);
-      b.x -= d.x/(portion*2);
-      b.y -= d.y/(portion*2);
-      d.x /= portion;
-      d.y /= portion;
-      var len = Math.sqrt(d.x*d.x+d.y*d.y);
-      var dir = Math.atan2(d.y,d.x);
-      var s = Math.sin(n_ticks/10);
-
       ctx.strokeStyle = "#000000";
       if(
         (hovering_valid && direction_viz_enabled) ||
@@ -583,11 +569,28 @@ var GamePlayScene = function(game, stage)
         )
       )
       {
+        var a = {x:e.start_x,y:e.start_y};
+        var b = {x:e.end_x,y:e.end_y};
+        var d = {x:b.x-a.x,y:b.y-a.y};
+        var portion = 2;
+        a.x += d.x/(portion*2);
+        a.y += d.y/(portion*2);
+        b.x -= d.x/(portion*2);
+        b.y -= d.y/(portion*2);
+        d.x /= portion;
+        d.y /= portion;
+        var len = Math.sqrt(d.x*d.x+d.y*d.y);
+        var dir = Math.atan2(d.y,d.x);
+        var s = Math.sin(n_ticks/10);
+
+        drawArrow(dc,a.x,a.y,b.x,b.y,10,15)
+        /*
         ctx.save();
         ctx.translate(a.x+d.x/2,a.y+d.y/2+s);
         ctx.rotate(dir);
         ctx.drawImage(arrow_icon,-len/2,-10,len,20);
         ctx.restore();
+        */
       }
     }
 

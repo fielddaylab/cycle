@@ -338,3 +338,32 @@ var textToLines = function(canv, font, width, text)
   return lines;
 }
 
+function drawArrow(canv,sx,sy,ex,ey,lw,aw)
+{
+  var dx = ex-sx;
+  var dy = ey-sy;
+  var dd = Math.sqrt(dx*dx+dy*dy);
+  var ox = -dy;
+  var oy = dx;
+  var od = Math.sqrt(ox*ox+oy*oy);
+  var ox = (ox/od)*aw;
+  var oy = (oy/od)*aw;
+  canv.context.beginPath();
+  canv.context.moveTo(sx,sy);
+  canv.context.lineTo(ex,ey);
+  canv.context.moveTo(sx+(dx/dd*(dd-aw))+ox,sy+(dy/dd*(dd-aw))+oy);
+  canv.context.lineTo(ex,ey);
+  canv.context.lineTo(sx+(dx/dd*(dd-aw))-ox,sy+(dy/dd*(dd-aw))-oy);
+  canv.context.stroke();
+  canv.context.fillStyle = "#000000";
+  canv.context.beginPath();
+  canv.context.arc(sx+(dx/dd*(dd-aw))+ox,sy+(dy/dd*(dd-aw))+oy,lw/2,0,2*Math.PI);
+  canv.context.fill();
+  canv.context.beginPath();
+  canv.context.arc(sx+(dx/dd*(dd-aw))-ox,sy+(dy/dd*(dd-aw))-oy,lw/2,0,2*Math.PI);
+  canv.context.fill();
+  canv.context.beginPath();
+  canv.context.arc(sx,sy,lw/2,0,2*Math.PI);
+  canv.context.fill();
+}
+
