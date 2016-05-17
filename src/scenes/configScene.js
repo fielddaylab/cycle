@@ -86,12 +86,12 @@ var ConfigScene = function(game, stage)
     btn_back = new ButtonBox(20,section_line_0_y,btn_s,section_line_1_y-section_line_0_y,function(evt){ if(hit_ui || mode == CONFIG_MULTIPLAYER) return; mode = CONFIG_MULTIPLAYER; multiplayer = undefined; });
 
     joins = [];
-    jbtn_a = new ButtonBox(10,10, dc.width-20,30,function(evt){ if(hit_ui || mode != CONFIG_JOIN || joins.length < 1) return; hit_ui = true; join = joins[0]; turn = turns[0]; cli.add(cli.id+" JOIN "+join); mode = CONFIG_COMMIT; });
-    jbtn_b = new ButtonBox(10,50, dc.width-20,30,function(evt){ if(hit_ui || mode != CONFIG_JOIN || joins.length < 2) return; hit_ui = true; join = joins[1]; turn = turns[1]; cli.add(cli.id+" JOIN "+join); mode = CONFIG_COMMIT; });
-    jbtn_c = new ButtonBox(10,90, dc.width-20,30,function(evt){ if(hit_ui || mode != CONFIG_JOIN || joins.length < 3) return; hit_ui = true; join = joins[2]; turn = turns[2]; cli.add(cli.id+" JOIN "+join); mode = CONFIG_COMMIT; });
-    jbtn_d = new ButtonBox(10,130,dc.width-20,30,function(evt){ if(hit_ui || mode != CONFIG_JOIN || joins.length < 4) return; hit_ui = true; join = joins[3]; turn = turns[3]; cli.add(cli.id+" JOIN "+join); mode = CONFIG_COMMIT; });
-    jbtn_e = new ButtonBox(10,170,dc.width-20,30,function(evt){ if(hit_ui || mode != CONFIG_JOIN || joins.length < 5) return; hit_ui = true; join = joins[4]; turn = turns[4]; cli.add(cli.id+" JOIN "+join); mode = CONFIG_COMMIT; });
-    jbtn_f = new ButtonBox(10,210,dc.width-20,30,function(evt){ if(hit_ui || mode != CONFIG_JOIN || joins.length < 6) return; hit_ui = true; join = joins[5]; turn = turns[5]; cli.add(cli.id+" JOIN "+join); mode = CONFIG_COMMIT; });
+    jbtn_a = new ButtonBox(btn_1_x,btn_y,        btn_s,btn_s/2-10,function(evt){ if(hit_ui || mode != CONFIG_JOIN || joins.length < 1) return; hit_ui = true; join = joins[0]; turn = turns[0]; cli.add(cli.id+" JOIN "+join); mode = CONFIG_COMMIT; });
+    jbtn_b = new ButtonBox(btn_2_x,btn_y,        btn_s,btn_s/2-10,function(evt){ if(hit_ui || mode != CONFIG_JOIN || joins.length < 2) return; hit_ui = true; join = joins[1]; turn = turns[1]; cli.add(cli.id+" JOIN "+join); mode = CONFIG_COMMIT; });
+    jbtn_c = new ButtonBox(btn_3_x,btn_y,        btn_s,btn_s/2-10,function(evt){ if(hit_ui || mode != CONFIG_JOIN || joins.length < 3) return; hit_ui = true; join = joins[2]; turn = turns[2]; cli.add(cli.id+" JOIN "+join); mode = CONFIG_COMMIT; });
+    jbtn_d = new ButtonBox(btn_1_x,btn_y+btn_s/2,btn_s,btn_s/2-10,function(evt){ if(hit_ui || mode != CONFIG_JOIN || joins.length < 4) return; hit_ui = true; join = joins[3]; turn = turns[3]; cli.add(cli.id+" JOIN "+join); mode = CONFIG_COMMIT; });
+    jbtn_e = new ButtonBox(btn_2_x,btn_y+btn_s/2,btn_s,btn_s/2-10,function(evt){ if(hit_ui || mode != CONFIG_JOIN || joins.length < 5) return; hit_ui = true; join = joins[4]; turn = turns[4]; cli.add(cli.id+" JOIN "+join); mode = CONFIG_COMMIT; });
+    jbtn_f = new ButtonBox(btn_3_x,btn_y+btn_s/2,btn_s,btn_s/2-10,function(evt){ if(hit_ui || mode != CONFIG_JOIN || joins.length < 6) return; hit_ui = true; join = joins[5]; turn = turns[5]; cli.add(cli.id+" JOIN "+join); mode = CONFIG_COMMIT; });
 
     tbtn_10 = new ButtonBox(1*(btn_s+20)+10,btn_y,btn_s,btn_s,function(evt){ if(hit_ui || mode != CONFIG_TURN) return; hit_ui = true; turn = 10; mode = CONFIG_COMMIT; });
     tbtn_20 = new ButtonBox(2*(btn_s+20)+10,btn_y,btn_s,btn_s,function(evt){ if(hit_ui || mode != CONFIG_TURN) return; hit_ui = true; turn = 20; mode = CONFIG_COMMIT; });
@@ -202,6 +202,9 @@ var ConfigScene = function(game, stage)
     dc.context.drawImage(tassle_img,dc.width/3-100,20,section_line_0_y-40,section_line_0_y-60);
 
     dc.context.fillStyle = "#000000";
+    dc.context.fillText("First Time Playing?",dc.width/2,dc.height/4);
+    dc.context.fillText("Play the Carbon Cycle Tutorial",dc.width/2,dc.height/4+20);
+    dc.context.drawImage(arrow_img,dc.width/3*2+30,dc.height/4,60,20);
 
     dc.context.lineWidth = 0.5;
     dc.context.strokeStyle = "#666666";
@@ -232,6 +235,11 @@ var ConfigScene = function(game, stage)
         if(joins.length > 3) { rectBtn(jbtn_d); dc.context.fillText("Join "+joins[3], jbtn_d.x+10, jbtn_d.y+20); }
         if(joins.length > 4) { rectBtn(jbtn_e); dc.context.fillText("Join "+joins[4], jbtn_e.x+10, jbtn_e.y+20); }
         if(joins.length > 5) { rectBtn(jbtn_f); dc.context.fillText("Join "+joins[5], jbtn_f.x+10, jbtn_f.y+20); }
+        dc.context.textAlign = "center";
+        dc.context.font = "40px Arial";
+        dc.context.fillText("Waiting for Web Game...",dc.width/2,dc.height/2-20);
+        dc.context.font = "12px Arial";
+        dc.context.textAlign = "left";
         break;
       case CONFIG_TURN:
         dc.context.textAlign = "center";
