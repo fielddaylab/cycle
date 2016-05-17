@@ -21,12 +21,20 @@ var LoadingScene = function(game, stage)
     barw = (canv.width-(2*pad));
     progress = 0;
     canv.context.fillStyle = "#000000";
+    canv.context.font = "12px Open Sans";
     canv.context.fillText(".",0,0);// funky way to encourage any custom font to load
 
     //put strings in 'img_srcs' as separate array to get "static" count
-    /*
-    img_srcs.push("assets/man.png");
-    */
+    img_srcs.push("assets/red_token.png");
+    img_srcs.push("assets/blue_token.png");
+    img_srcs.push("assets/arrow.png");
+    img_srcs.push("assets/crystal.png");
+    img_srcs.push("assets/multi_play.png");
+    img_srcs.push("assets/single_play.png");
+    img_srcs.push("assets/tassle.png");
+    img_srcs.push("assets/net_add.png");
+    img_srcs.push("assets/net_check.png");
+    img_srcs.push("assets/bg.jpg");
     for(var i = 0; i < img_srcs.length; i++)
     {
       images[i] = new Image();
