@@ -1,3 +1,12 @@
+immediate todo as of Tues night
+- Tokens on borders
+- Announcer more expressive
+- Tutorial
+- New Assets (?)
+- End Game
+- figure out 3rd turn popup
+- keep spinning?
+
 mockup notes
 
 - What does intro screen look like (choose gametype, etc...)
@@ -19,7 +28,7 @@ mockup notes
 
 needs
 
-- icons to go on cards - waiting on illustrations from artist. 
+- icons to go on cards - waiting on illustrations from artist.
 - main map/node assets
 - corresponding 'node selected' assets to go with new assets
 - blue arrow asset (arrow@2x in zip) has drop shadow; assets that will be rotated can't have drop shadow baked in. (also, if an asset is going to be rotated, it's easiest for me if the asset is pointing to the right (cos(0),sin(0)) )

@@ -348,6 +348,7 @@ function drawArrow(canv,sx,sy,ex,ey,lw,aw)
   var od = Math.sqrt(ox*ox+oy*oy);
   var ox = (ox/od)*aw;
   var oy = (oy/od)*aw;
+  canv.context.lineWidth = lw;
   canv.context.beginPath();
   canv.context.moveTo(sx,sy);
   canv.context.lineTo(ex,ey);
