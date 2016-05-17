@@ -420,15 +420,6 @@ var CarbonCycleGameTemplate =
         common:1,
       },
       {
-        title:"Fire",
-        description:"Mass plant eradication",
-        from:"Plants",
-        to:"Atmosphere",
-        time:0,
-        amt:3,
-        common:0.25,
-      },
-      {
         title:"Soil Respiration",
         description:"Constant flow",
         from:"Earth (Surface)",
@@ -442,7 +433,7 @@ var CarbonCycleGameTemplate =
         description:"From Coal to Petroleum",
         from:"Earth (Surface)",
         to:"Earth (Deep)",
-        time:1,
+        time:0,
         amt:1,
         common:0.5,
       },
@@ -461,7 +452,7 @@ var CarbonCycleGameTemplate =
         from:"Fuel",
         to:"Atmosphere",
         time:0,
-        amt:2,
+        amt:1,
         common:1,
       },
       {
