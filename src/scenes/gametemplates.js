@@ -308,7 +308,7 @@ var CarbonCycleGameTemplate =
     [
       {
         title:"Atmosphere",
-        img:"circle",
+        img:"atmosphere",
         x:0.5,
         y:0.75,
         w:0.2,
@@ -316,7 +316,7 @@ var CarbonCycleGameTemplate =
       },
       {
         title:"Animals",
-        img:"circle",
+        img:"animal",
         x:0.35,
         y:0.65,
         w:0.2,
@@ -324,7 +324,7 @@ var CarbonCycleGameTemplate =
       },
       {
         title:"Plants",
-        img:"circle",
+        img:"plants",
         x:0.5,
         y:0.55,
         w:0.2,
@@ -332,7 +332,7 @@ var CarbonCycleGameTemplate =
       },
       {
         title:"Earth (Surface)",
-        img:"circle",
+        img:"earth_surface",
         x:0.35,
         y:0.45,
         w:0.2,
@@ -340,7 +340,7 @@ var CarbonCycleGameTemplate =
       },
       {
         title:"Earth (Deep)",
-        img:"circle",
+        img:"earth_deep",
         x:0.5,
         y:0.35,
         w:0.2,
@@ -348,7 +348,7 @@ var CarbonCycleGameTemplate =
       },
       {
         title:"Fuel",
-        img:"circle",
+        img:"fuel",
         x:0.65,
         y:0.65,
         w:0.2,
@@ -356,7 +356,7 @@ var CarbonCycleGameTemplate =
       },
       {
         title:"Ocean",
-        img:"circle",
+        img:"ocean",
         x:0.65,
         y:0.45,
         w:0.2,

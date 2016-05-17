@@ -446,13 +446,6 @@ var GamePlayScene = function(game, stage)
           if(g.players[i].pts > g.players[i].disp_pts)
             g.players[i].disp_pts++;
         }
-
-        //update goal pos
-        var n = g.nodes[g.goal_node-1];
-        goal_bounds.x = lerp(goal_bounds.x,n.x,0.1);
-        goal_bounds.y = lerp(goal_bounds.y,n.y,0.1);
-        goal_bounds.w = lerp(goal_bounds.w,n.w,0.1);
-        goal_bounds.h = lerp(goal_bounds.h,n.h,0.1);
       }
       else if(transition_t >= TRANSITION_KEY_MOVE_GOAL)
         transition_t = 0;
@@ -540,12 +533,21 @@ var GamePlayScene = function(game, stage)
     }
 
     //nodes
+    var goal_node = g.nodes[g.goal_node-1];
     for(var i = 0; i < g.nodes.length; i++)
     {
       var n = g.nodes[i];
-      ctx.drawImage(n.img,n.x,n.y,n.w,n.h);
       if(e && (e.from_id == n.id || e.to_id == n.id))
-        ctx.drawImage(highlit_hex_icon,n.x,n.y,n.w,n.h);
+      {
+        if(n == goal_node) ctx.drawImage(hex_g_img,n.x,n.y,n.w,n.h);
+        else               ctx.drawImage(hex_y_img,n.x,n.y,n.w,n.h);
+      }
+      else
+      {
+        if(n == goal_node) ctx.drawImage(hex_b_img,n.x,n.y,n.w,n.h);
+        else               ctx.drawImage(hex_img,n.x,n.y,n.w,n.h);
+      }
+      ctx.drawImage(n.img,n.x,n.y,n.w,n.h);
       ctx.textAlign = "center";
       ctx.fillText(n.title,n.x+n.w/2,n.y+20);
       ctx.textAlign = "left";
@@ -661,15 +663,6 @@ var GamePlayScene = function(game, stage)
       ctx.drawImage(g.players[t.player_id-1].token_img,t.x,t.y,t.w,t.h);
     }
 
-    //goal
-    var goal_node = g.nodes[g.goal_node-1];
-    var goal_close = false;
-    if(Math.abs(goal_bounds.x-goal_node.x)+Math.abs(goal_bounds.y-goal_node.y) < 10)
-      goal_close = true;
-    var turns_left = 3-(g.turn%g.turns_per_goal_shift);
-    if(!goal_close && turns_left == 3) turns_left = 0;
-    dc.strokeRoundRect(goal_bounds.x,goal_bounds.y,goal_bounds.w,goal_bounds.h,5);
-
     //hand
     var player;
     player = g.players[0];
@@ -771,6 +764,7 @@ var GamePlayScene = function(game, stage)
     ctx.fillStyle = gray;
     ctx.fillText("Current Zone: "+g.nodes[g.goal_node-1].title,sidebar_w+20,topmost_bar_y+15);
     ctx.textAlign = "right";
+    var turns_left = 3-(g.turn%g.turns_per_goal_shift);
     ctx.fillText("Up Next ("+turns_left+" turns): "+g.nodes[g.next_goal_node-1].title,dc.width-sidebar_w-20,topmost_bar_y+15);
 
     if(input_state == INPUT_PAUSE)

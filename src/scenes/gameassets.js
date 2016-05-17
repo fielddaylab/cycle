@@ -126,3 +126,36 @@ biarrow_icon.src = "assets/biarrow.png";
 var tall_img = new Image();
 tall_img.src = "assets/scout.png";
 
+var atmosphere_img = new Image();
+atmosphere_img.src = "assets/atmosphere.png";
+
+var animal_img = new Image();
+animal_img.src = "assets/animal.png";
+
+var earth_deep_img = new Image();
+earth_deep_img.src = "assets/earth_deep.png";
+
+var earth_surface_img = new Image();
+earth_surface_img.src = "assets/earth_surface.png";
+
+var fuel_img = new Image();
+fuel_img.src = "assets/fuel.png";
+
+var ocean_img = new Image();
+ocean_img.src = "assets/ocean.png";
+
+var plants_img = new Image();
+plants_img.src = "assets/plants.png";
+
+var hex_img = new Image();
+hex_img.src = "assets/hex.png";
+
+var hex_b_img = new Image();
+hex_b_img.src = "assets/hex_b.png";
+
+var hex_g_img = new Image();
+hex_g_img.src = "assets/hex_g.png";
+
+var hex_y_img = new Image();
+hex_y_img.src = "assets/hex_y.png";
+

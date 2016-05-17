@@ -35,6 +35,18 @@ var LoadingScene = function(game, stage)
     img_srcs.push("assets/net_add.png");
     img_srcs.push("assets/net_check.png");
     img_srcs.push("assets/scout.png");
+    img_srcs.push("assets/atmosphere.png");
+    img_srcs.push("assets/animal.png");
+    img_srcs.push("assets/earth_deep.png");
+    img_srcs.push("assets/earth_surface.png");
+    img_srcs.push("assets/fuel.png");
+    img_srcs.push("assets/ocean.png");
+    img_srcs.push("assets/plants.png");
+    img_srcs.push("assets/hex.png");
+    img_srcs.push("assets/hex_b.png");
+    img_srcs.push("assets/hex_g.png");
+    img_srcs.push("assets/hex_y.png");
+
     img_srcs.push("assets/bg.jpg");
     for(var i = 0; i < img_srcs.length; i++)
     {
