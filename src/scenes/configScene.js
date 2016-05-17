@@ -51,6 +51,13 @@ var ConfigScene = function(game, stage)
   var section_line_0_y;
   var section_line_1_y;
 
+  var arrow_img;
+  var single_img;
+  var multi_img;
+  var crystal_img;
+  var tassle_img;
+  var net_add_img;
+  var net_check_img;
   self.ready = function()
   {
     dc.context.font = "12px Arial";
@@ -105,6 +112,21 @@ var ConfigScene = function(game, stage)
     clicker.register(tbtn_10);
     clicker.register(tbtn_20);
     clicker.register(tbtn_30);
+
+    arrow_img = new Image();
+    arrow_img.src = "assets/arrow.png";
+    single_img = new Image();
+    single_img.src = "assets/single_play.png";
+    multi_img = new Image();
+    multi_img.src = "assets/multi_play.png";
+    crystal_img = new Image();
+    crystal_img.src = "assets/crystal.png";
+    tassle_img = new Image();
+    tassle_img.src = "assets/tassle.png";
+    net_add_img = new Image();
+    net_add_img.src = "assets/net_add.png";
+    net_check_img = new Image();
+    net_check_img.src = "assets/net_check.png";
   };
 
   self.tick = function()
@@ -174,7 +196,13 @@ var ConfigScene = function(game, stage)
     dc.strokeRoundRect(0,0,dc.width,dc.height,5);
     dc.context.fillStyle = "#000000";
 
-    rectBtn(btn_tutorial);   dc.context.fillText("Tutorial", btn_tutorial.x+10, btn_tutorial.y+20);
+    dc.context.fillStyle = "#00FFFF";
+    dc.roundRectOptions(btn_tutorial.x,btn_tutorial.y,btn_tutorial.w,btn_tutorial.h,5,1,1,0,0,1,1)
+    dc.context.drawImage(crystal_img,dc.width-section_line_0_y,0,section_line_0_y,section_line_0_y);
+    dc.context.drawImage(tassle_img,dc.width/3-100,20,section_line_0_y-40,section_line_0_y-60);
+
+    dc.context.fillStyle = "#000000";
+
     dc.context.lineWidth = 0.5;
     dc.context.strokeStyle = "#666666";
     dc.drawLine(0,section_line_0_y,dc.width,section_line_0_y);
@@ -182,10 +210,10 @@ var ConfigScene = function(game, stage)
     switch(mode)
     {
       case CONFIG_MULTIPLAYER:
-        rectBtn(mbtn_ai);         dc.context.fillText("Single Player - Play against a (bad) AI",                mbtn_ai.x+10,         mbtn_ai.y+20);
-        rectBtn(mbtn_local);      dc.context.fillText("Multiplayer - Same Screen/Device (Pass back and forth)", mbtn_local.x+10,      mbtn_local.y+20);
-        rectBtn(mbtn_net_create); dc.context.fillText("Multiplayer - Internet (Create Room)",                   mbtn_net_create.x+10, mbtn_net_create.y+20);
-        rectBtn(mbtn_net_join);   dc.context.fillText("Multiplayer - Internet (Join Room)",                     mbtn_net_join.x+10,   mbtn_net_join.y+20);
+        imgBtn(mbtn_ai,single_img);        dc.context.fillText("Play against a (bad) AI", mbtn_ai.x+10,         mbtn_ai.y+mbtn_ai.h+20);
+        imgBtn(mbtn_local,multi_img);      dc.context.fillText("Same Screen",             mbtn_local.x+10,      mbtn_local.y+mbtn_local.h+20);
+        imgBtn(mbtn_net_create,multi_img); dc.context.drawImage(net_add_img,mbtn_net_create.x+mbtn_net_create.w-30,mbtn_net_create.y-10,40,40); dc.context.fillText("Web: Create Room",        mbtn_net_create.x+10, mbtn_net_create.y+mbtn_net_create.h+20);
+        imgBtn(mbtn_net_join,multi_img);   dc.context.drawImage(net_check_img,mbtn_net_join.x+mbtn_net_join.w-30,mbtn_net_join.y-10,40,40); dc.context.fillText("Web: Join Room",          mbtn_net_join.x+10,   mbtn_net_join.y+mbtn_net_join.h+20);
         dc.drawLine(btn_1_x+btn_s/2,section_line_1_y,btn_1_x+btn_s/2,dc.height);
         dc.context.textAlign = "center";
         dc.context.font = "40px Arial";
@@ -196,7 +224,7 @@ var ConfigScene = function(game, stage)
         dc.context.fillText("Multiplayer",btn_2_x, btn_y-20);
         break;
       case CONFIG_JOIN:
-        rectBtn(btn_back);
+        dc.context.drawImage(arrow_img,btn_back.x+btn_back.w/2-50,btn_back.y+btn_back.h/2-30,100,60);
         if(!joins.length)    {                  dc.context.fillStyle = "#000000"; dc.context.fillText("Waiting For Room...", jbtn_a.x+10, jbtn_a.y+20); };
         if(joins.length > 0) { rectBtn(jbtn_a); dc.context.fillText("Join "+joins[0], jbtn_a.x+10, jbtn_a.y+20); }
         if(joins.length > 1) { rectBtn(jbtn_b); dc.context.fillText("Join "+joins[1], jbtn_b.x+10, jbtn_b.y+20); }
@@ -207,7 +235,7 @@ var ConfigScene = function(game, stage)
         break;
       case CONFIG_TURN:
         dc.context.textAlign = "center";
-        rectBtn(btn_back);
+        dc.context.drawImage(arrow_img,btn_back.x+btn_back.w/2-50,btn_back.y+btn_back.h/2-30,100,60);
         rectBtn(tbtn_10); dc.context.fillText("10 Turns", tbtn_10.x+btn_s/2, tbtn_10.y+btn_s/2);
         rectBtn(tbtn_20); dc.context.fillText("20 Turns", tbtn_20.x+btn_s/2, tbtn_20.y+btn_s/2);
         rectBtn(tbtn_30); dc.context.fillText("30 Turns", tbtn_30.x+btn_s/2, tbtn_30.y+btn_s/2);
@@ -223,6 +251,10 @@ var ConfigScene = function(game, stage)
     }
   };
 
+  var imgBtn = function(btn,img)
+  {
+    dc.context.drawImage(img,btn.x,btn.y,btn.w,btn.h);
+  }
   var rectBtn = function(btn)
   {
     dc.context.fillStyle = "#FFFFFF";
