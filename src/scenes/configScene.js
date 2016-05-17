@@ -50,6 +50,8 @@ var ConfigScene = function(game, stage)
   var btn_4_x;
   var section_line_0_y;
   var section_line_1_y;
+  var title_y;
+  var subtitle_y;
 
   var arrow_img;
   var single_img;
@@ -65,23 +67,26 @@ var ConfigScene = function(game, stage)
 
     mode = CONFIG_MULTIPLAYER;
 
-    btn_s = (dc.width/5)-20;
+    btn_s = (dc.width/6)-20;
     btn_y = (3*dc.height/4)-btn_s/2;
-    btn_0_x = 0*(btn_s+20)+10;
-    btn_1_x = 1*(btn_s+20)+10;
-    btn_2_x = 2*(btn_s+20)+10;
-    btn_3_x = 3*(btn_s+20)+10;
-    btn_4_x = 4*(btn_s+20)+10;
+    btn_0_x = btn_s/2+0*(btn_s+20)+10;
+    btn_1_x = btn_s/2+1*(btn_s+20)+10;
+    btn_2_x = btn_s/2+2*(btn_s+20)+10;
+    btn_3_x = btn_s/2+3*(btn_s+20)+10;
+    btn_4_x = btn_s/2+4*(btn_s+20)+10;
 
     section_line_0_y = dc.height/3;
     section_line_1_y = dc.height/3+btn_s;
 
+    title_y = dc.height/2-30;
+    subtitle_y = btn_y-40;
+
     btn_tutorial   = new ButtonBox(0,0,dc.width,section_line_0_y,function(evt){ if(hit_ui) return; game.setScene(3); });
 
-    mbtn_ai         = new ButtonBox(btn_0_x,btn_y,btn_s,btn_s,function(evt){ if(hit_ui || mode != CONFIG_MULTIPLAYER) return; hit_ui = true; multiplayer = MULTIPLAYER_AI;         mode = CONFIG_TURN; });
-    mbtn_local      = new ButtonBox(btn_2_x,btn_y,btn_s,btn_s,function(evt){ if(hit_ui || mode != CONFIG_MULTIPLAYER) return; hit_ui = true; multiplayer = MULTIPLAYER_LOCAL;      mode = CONFIG_TURN; });
-    mbtn_net_create = new ButtonBox(btn_3_x,btn_y,btn_s,btn_s,function(evt){ if(hit_ui || mode != CONFIG_MULTIPLAYER) return; hit_ui = true; multiplayer = MULTIPLAYER_NET_CREATE; mode = CONFIG_TURN; cli.begin(); });
-    mbtn_net_join   = new ButtonBox(btn_4_x,btn_y,btn_s,btn_s,function(evt){ if(hit_ui || mode != CONFIG_MULTIPLAYER) return; hit_ui = true; multiplayer = MULTIPLAYER_NET_JOIN;   mode = CONFIG_JOIN; cli.begin(); });
+    mbtn_ai         = new ButtonBox(btn_0_x,btn_y,btn_s,btn_s-20,function(evt){ if(hit_ui || mode != CONFIG_MULTIPLAYER) return; hit_ui = true; multiplayer = MULTIPLAYER_AI;         mode = CONFIG_TURN; });
+    mbtn_local      = new ButtonBox(btn_2_x,btn_y,btn_s,btn_s-20,function(evt){ if(hit_ui || mode != CONFIG_MULTIPLAYER) return; hit_ui = true; multiplayer = MULTIPLAYER_LOCAL;      mode = CONFIG_TURN; });
+    mbtn_net_create = new ButtonBox(btn_3_x,btn_y,btn_s,btn_s-20,function(evt){ if(hit_ui || mode != CONFIG_MULTIPLAYER) return; hit_ui = true; multiplayer = MULTIPLAYER_NET_CREATE; mode = CONFIG_TURN; cli.begin(); });
+    mbtn_net_join   = new ButtonBox(btn_4_x,btn_y,btn_s,btn_s-20,function(evt){ if(hit_ui || mode != CONFIG_MULTIPLAYER) return; hit_ui = true; multiplayer = MULTIPLAYER_NET_JOIN;   mode = CONFIG_JOIN; cli.begin(); });
 
     btn_back = new ButtonBox(20,section_line_0_y,btn_s,section_line_1_y-section_line_0_y,function(evt){ if(hit_ui || mode == CONFIG_MULTIPLAYER) return; mode = CONFIG_MULTIPLAYER; multiplayer = undefined; });
 
@@ -93,9 +98,9 @@ var ConfigScene = function(game, stage)
     jbtn_e = new ButtonBox(btn_2_x,btn_y+btn_s/2,btn_s,btn_s/2-10,function(evt){ if(hit_ui || mode != CONFIG_JOIN || joins.length < 5) return; hit_ui = true; join = joins[4]; turn = turns[4]; cli.add(cli.id+" JOIN "+join); mode = CONFIG_COMMIT; });
     jbtn_f = new ButtonBox(btn_3_x,btn_y+btn_s/2,btn_s,btn_s/2-10,function(evt){ if(hit_ui || mode != CONFIG_JOIN || joins.length < 6) return; hit_ui = true; join = joins[5]; turn = turns[5]; cli.add(cli.id+" JOIN "+join); mode = CONFIG_COMMIT; });
 
-    tbtn_10 = new ButtonBox(1*(btn_s+20)+10,btn_y,btn_s,btn_s,function(evt){ if(hit_ui || mode != CONFIG_TURN) return; hit_ui = true; turn = 10; mode = CONFIG_COMMIT; });
-    tbtn_20 = new ButtonBox(2*(btn_s+20)+10,btn_y,btn_s,btn_s,function(evt){ if(hit_ui || mode != CONFIG_TURN) return; hit_ui = true; turn = 20; mode = CONFIG_COMMIT; });
-    tbtn_30 = new ButtonBox(3*(btn_s+20)+10,btn_y,btn_s,btn_s,function(evt){ if(hit_ui || mode != CONFIG_TURN) return; hit_ui = true; turn = 30; mode = CONFIG_COMMIT; });
+    tbtn_10 = new ButtonBox(btn_1_x,btn_y,btn_s,btn_s,function(evt){ if(hit_ui || mode != CONFIG_TURN) return; hit_ui = true; turn = 10; mode = CONFIG_COMMIT; });
+    tbtn_20 = new ButtonBox(btn_2_x,btn_y,btn_s,btn_s,function(evt){ if(hit_ui || mode != CONFIG_TURN) return; hit_ui = true; turn = 20; mode = CONFIG_COMMIT; });
+    tbtn_30 = new ButtonBox(btn_3_x,btn_y,btn_s,btn_s,function(evt){ if(hit_ui || mode != CONFIG_TURN) return; hit_ui = true; turn = 30; mode = CONFIG_COMMIT; });
 
     clicker.register(btn_back);
     clicker.register(btn_tutorial);
@@ -192,19 +197,17 @@ var ConfigScene = function(game, stage)
   {
     dc.context.fillStyle = "#FFFFFF";
     dc.fillRoundRect(0,0,dc.width,dc.height,5);
-    dc.context.strokeStyle = "#000000";
-    dc.strokeRoundRect(0,0,dc.width,dc.height,5);
     dc.context.fillStyle = "#000000";
 
-    dc.context.fillStyle = "#00FFFF";
-    dc.roundRectOptions(btn_tutorial.x,btn_tutorial.y,btn_tutorial.w,btn_tutorial.h,5,1,1,0,0,1,1)
+    dc.context.fillStyle = blue;
+    dc.roundRectOptions(btn_tutorial.x,btn_tutorial.y,btn_tutorial.w,btn_tutorial.h,5,1,1,0,0,0,1)
     dc.context.drawImage(crystal_img,dc.width-section_line_0_y,0,section_line_0_y,section_line_0_y);
-    dc.context.drawImage(tassle_img,dc.width/3-100,20,section_line_0_y-40,section_line_0_y-60);
+    dc.context.drawImage(tassle_img,dc.width/3-100,50,section_line_0_y-80,section_line_0_y-100);
 
     dc.context.fillStyle = "#000000";
-    dc.context.fillText("First Time Playing?",dc.width/2,dc.height/4);
-    dc.context.fillText("Play the Carbon Cycle Tutorial",dc.width/2,dc.height/4+20);
-    dc.context.drawImage(arrow_img,dc.width/3*2+30,dc.height/4,60,20);
+    dc.context.fillText("First Time Playing?",dc.width/2-70,100);
+    dc.context.fillText("Play the Carbon Cycle Tutorial",dc.width/2-70,120);
+    dc.context.drawImage(arrow_img,dc.width/2+100,120-20,40,20);
 
     dc.context.lineWidth = 0.5;
     dc.context.strokeStyle = "#666666";
@@ -213,21 +216,25 @@ var ConfigScene = function(game, stage)
     switch(mode)
     {
       case CONFIG_MULTIPLAYER:
-        imgBtn(mbtn_ai,single_img);        dc.context.fillText("Play against a (bad) AI", mbtn_ai.x+10,         mbtn_ai.y+mbtn_ai.h+20);
-        imgBtn(mbtn_local,multi_img);      dc.context.fillText("Same Screen",             mbtn_local.x+10,      mbtn_local.y+mbtn_local.h+20);
-        imgBtn(mbtn_net_create,multi_img); dc.context.drawImage(net_add_img,mbtn_net_create.x+mbtn_net_create.w-30,mbtn_net_create.y-10,40,40); dc.context.fillText("Web: Create Room",        mbtn_net_create.x+10, mbtn_net_create.y+mbtn_net_create.h+20);
-        imgBtn(mbtn_net_join,multi_img);   dc.context.drawImage(net_check_img,mbtn_net_join.x+mbtn_net_join.w-30,mbtn_net_join.y-10,40,40); dc.context.fillText("Web: Join Room",          mbtn_net_join.x+10,   mbtn_net_join.y+mbtn_net_join.h+20);
-        dc.drawLine(btn_1_x+btn_s/2,section_line_1_y,btn_1_x+btn_s/2,dc.height);
         dc.context.textAlign = "center";
+        imgBtn(mbtn_ai,single_img);
+        imgBtn(mbtn_local,multi_img);      dc.context.fillText("Same Screen",             mbtn_local.x+mbtn_local.w/2,      mbtn_local.y+mbtn_local.h+20);
+        imgBtn(mbtn_net_create,multi_img); dc.context.drawImage(net_add_img,mbtn_net_create.x+mbtn_net_create.w-30,mbtn_net_create.y-10,40,40); dc.context.fillText("Web: Create Room",        mbtn_net_create.x+mbtn_net_create.w/2, mbtn_net_create.y+mbtn_net_create.h+20);
+        imgBtn(mbtn_net_join,multi_img);   dc.context.drawImage(net_check_img,mbtn_net_join.x+mbtn_net_join.w-30,mbtn_net_join.y-10,40,40); dc.context.fillText("Web: Join Room",          mbtn_net_join.x+mbtn_net_join.w/2,   mbtn_net_join.y+mbtn_net_join.h+20);
+        dc.drawLine(btn_1_x+btn_s/2,section_line_1_y,btn_1_x+btn_s/2,dc.height);
         dc.context.font = "40px Arial";
-        dc.context.fillText("CREATE A GAME!",dc.width/2,dc.height/2-20);
+        dc.context.fillText("CREATE A GAME!",dc.width/2,title_y);
         dc.context.font = "12px Arial";
         dc.context.textAlign = "left";
-        dc.context.fillText("Single Player",btn_0_x, btn_y-20);
-        dc.context.fillText("Multiplayer",btn_2_x, btn_y-20);
+        dc.context.fillText("Single Player",btn_0_x, subtitle_y);
+        dc.context.fillText("Multiplayer",btn_2_x, subtitle_y);
         break;
       case CONFIG_JOIN:
-        dc.context.drawImage(arrow_img,btn_back.x+btn_back.w/2-50,btn_back.y+btn_back.h/2-30,100,60);
+        dc.context.save();
+        dc.context.translate(btn_back.x+btn_back.w/2,btn_back.y+btn_back.h/2);
+        dc.context.rotate(Math.PI);
+        dc.context.drawImage(arrow_img,-30,-15,60,30);
+        dc.context.restore();
         if(!joins.length)    {                  dc.context.fillStyle = "#000000"; dc.context.fillText("Waiting For Room...", jbtn_a.x+10, jbtn_a.y+20); };
         if(joins.length > 0) { rectBtn(jbtn_a); dc.context.fillText("Join "+joins[0], jbtn_a.x+10, jbtn_a.y+20); }
         if(joins.length > 1) { rectBtn(jbtn_b); dc.context.fillText("Join "+joins[1], jbtn_b.x+10, jbtn_b.y+20); }
@@ -237,22 +244,26 @@ var ConfigScene = function(game, stage)
         if(joins.length > 5) { rectBtn(jbtn_f); dc.context.fillText("Join "+joins[5], jbtn_f.x+10, jbtn_f.y+20); }
         dc.context.textAlign = "center";
         dc.context.font = "40px Arial";
-        dc.context.fillText("Waiting for Web Game...",dc.width/2,dc.height/2-20);
+        dc.context.fillText("Waiting for Web Game...",dc.width/2,title_y);
         dc.context.font = "12px Arial";
         dc.context.textAlign = "left";
         break;
       case CONFIG_TURN:
+        dc.context.save();
+        dc.context.translate(btn_back.x+btn_back.w/2,btn_back.y+btn_back.h/2);
+        dc.context.rotate(Math.PI);
+        dc.context.drawImage(arrow_img,-30,-15,60,30);
+        dc.context.restore();
         dc.context.textAlign = "center";
-        dc.context.drawImage(arrow_img,btn_back.x+btn_back.w/2-50,btn_back.y+btn_back.h/2-30,100,60);
         rectBtn(tbtn_10); dc.context.fillText("10 Turns", tbtn_10.x+btn_s/2, tbtn_10.y+btn_s/2);
         rectBtn(tbtn_20); dc.context.fillText("20 Turns", tbtn_20.x+btn_s/2, tbtn_20.y+btn_s/2);
         rectBtn(tbtn_30); dc.context.fillText("30 Turns", tbtn_30.x+btn_s/2, tbtn_30.y+btn_s/2);
         dc.context.textAlign = "center";
         dc.context.font = "40px Arial";
-        dc.context.fillText("CREATE A GAME!",dc.width/2,dc.height/2-20);
+        dc.context.fillText("CREATE A GAME!",dc.width/2,title_y);
         dc.context.font = "12px Arial";
         dc.context.textAlign = "left";
-        dc.context.fillText("How many turns?",btn_1_x, btn_y-20);
+        dc.context.fillText("How many turns?",btn_1_x, subtitle_y);
         break;
       case CONFIG_COMMIT:
         break;
