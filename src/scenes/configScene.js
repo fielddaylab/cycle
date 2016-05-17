@@ -98,9 +98,9 @@ var ConfigScene = function(game, stage)
     jbtn_e = new ButtonBox(btn_2_x,btn_y+btn_s/2,btn_s,btn_s/2-10,function(evt){ if(hit_ui || mode != CONFIG_JOIN || joins.length < 5) return; hit_ui = true; join = joins[4]; turn = turns[4]; cli.add(cli.id+" JOIN "+join); mode = CONFIG_COMMIT; });
     jbtn_f = new ButtonBox(btn_3_x,btn_y+btn_s/2,btn_s,btn_s/2-10,function(evt){ if(hit_ui || mode != CONFIG_JOIN || joins.length < 6) return; hit_ui = true; join = joins[5]; turn = turns[5]; cli.add(cli.id+" JOIN "+join); mode = CONFIG_COMMIT; });
 
-    tbtn_10 = new ButtonBox(btn_1_x,btn_y,btn_s,btn_s,function(evt){ if(hit_ui || mode != CONFIG_TURN) return; hit_ui = true; turn = 10; mode = CONFIG_COMMIT; });
-    tbtn_20 = new ButtonBox(btn_2_x,btn_y,btn_s,btn_s,function(evt){ if(hit_ui || mode != CONFIG_TURN) return; hit_ui = true; turn = 20; mode = CONFIG_COMMIT; });
-    tbtn_30 = new ButtonBox(btn_3_x,btn_y,btn_s,btn_s,function(evt){ if(hit_ui || mode != CONFIG_TURN) return; hit_ui = true; turn = 30; mode = CONFIG_COMMIT; });
+    tbtn_10 = new ButtonBox(btn_1_x,btn_y,btn_s,btn_s-20,function(evt){ if(hit_ui || mode != CONFIG_TURN) return; hit_ui = true; turn = 10; mode = CONFIG_COMMIT; });
+    tbtn_20 = new ButtonBox(btn_2_x,btn_y,btn_s,btn_s-20,function(evt){ if(hit_ui || mode != CONFIG_TURN) return; hit_ui = true; turn = 20; mode = CONFIG_COMMIT; });
+    tbtn_30 = new ButtonBox(btn_3_x,btn_y,btn_s,btn_s-20,function(evt){ if(hit_ui || mode != CONFIG_TURN) return; hit_ui = true; turn = 30; mode = CONFIG_COMMIT; });
 
     clicker.register(btn_back);
     clicker.register(btn_tutorial);
@@ -255,9 +255,11 @@ var ConfigScene = function(game, stage)
         dc.context.drawImage(arrow_img,-30,-15,60,30);
         dc.context.restore();
         dc.context.textAlign = "center";
-        rectBtn(tbtn_10); dc.context.fillText("10 Turns", tbtn_10.x+btn_s/2, tbtn_10.y+btn_s/2);
-        rectBtn(tbtn_20); dc.context.fillText("20 Turns", tbtn_20.x+btn_s/2, tbtn_20.y+btn_s/2);
-        rectBtn(tbtn_30); dc.context.fillText("30 Turns", tbtn_30.x+btn_s/2, tbtn_30.y+btn_s/2);
+        dc.context.font = "40px Open Sans";
+        fillRectBtn(tbtn_10); dc.context.fillStyle = "#FFFFFF"; dc.context.fillText("10", tbtn_10.x+btn_s/2, tbtn_10.y+btn_s/2);
+        fillRectBtn(tbtn_20); dc.context.fillStyle = "#FFFFFF"; dc.context.fillText("20", tbtn_20.x+btn_s/2, tbtn_20.y+btn_s/2);
+        fillRectBtn(tbtn_30); dc.context.fillStyle = "#FFFFFF"; dc.context.fillText("30", tbtn_30.x+btn_s/2, tbtn_30.y+btn_s/2);
+        dc.context.fillStyle = "#000000";
         dc.context.textAlign = "center";
         dc.context.font = "40px Open Sans";
         dc.context.fillText("CREATE A GAME!",dc.width/2,title_y);
@@ -280,6 +282,12 @@ var ConfigScene = function(game, stage)
     dc.fillRoundRect(btn.x,btn.y,btn.w,btn.h,5);
     dc.context.strokeStyle = "#000000";
     dc.strokeRoundRect(btn.x,btn.y,btn.w,btn.h,5);
+    dc.context.fillStyle = "#000000";
+  }
+  var fillRectBtn = function(btn)
+  {
+    dc.context.fillStyle = blue;
+    dc.fillRoundRect(btn.x,btn.y,btn.w,btn.h,5);
     dc.context.fillStyle = "#000000";
   }
 

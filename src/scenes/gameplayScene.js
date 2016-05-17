@@ -453,15 +453,17 @@ var GamePlayScene = function(game, stage)
     //free space to allow card height
     //ctx.fillStyle = gray;
     //ctx.fillRect(0,0,dc.width,topmost_bar_y);
+    ctx.fillStyle = white;
+    dc.roundRectOptions(0,topmost_bar_y,dc.width,dc.height-topmost_bar_y,5,1,1,1,1,0,1);
 
     ctx.textAlign = "left";
 
     //red section body
     ctx.fillStyle = red;
-    ctx.fillRect(0,topmost_bar_y,sidebar_w,dc.height);
+    dc.roundRectOptions(0,topmost_bar_y,sidebar_w,dc.height-topmost_bar_y,5,1,0,1,0,0,1);
     //header
     ctx.fillStyle = lred;
-    ctx.fillRect(0,topmost_bar_y,sidebar_w,score_header_y-topmost_bar_y);
+    dc.roundRectOptions(0,topmost_bar_y,sidebar_w,score_header_y-topmost_bar_y,5,1,0,0,0,0,1);
     ctx.fillStyle = dred;
     ctx.font = "18px Open Sans";
     ctx.fillText("RED TEAM",10,score_header_y-6);
@@ -485,10 +487,10 @@ var GamePlayScene = function(game, stage)
 
     //blue section body
     ctx.fillStyle = blue;
-    ctx.fillRect(dc.width-sidebar_w,topmost_bar_y,sidebar_w,dc.height);
+    dc.roundRectOptions(dc.width-sidebar_w,topmost_bar_y,sidebar_w,dc.height-topmost_bar_y,5,0,1,0,1,0,1);
     //header
     ctx.fillStyle = lblue;
-    ctx.fillRect(dc.width-sidebar_w,topmost_bar_y,sidebar_w,score_header_y-topmost_bar_y);
+    dc.roundRectOptions(dc.width-sidebar_w,topmost_bar_y,sidebar_w,score_header_y-topmost_bar_y,5,0,1,0,0,0,1);
     ctx.fillStyle = dblue;
     ctx.font = "18px Open Sans";
     ctx.fillText("BLUE TEAM",dc.width-sidebar_w+10,score_header_y-6);
