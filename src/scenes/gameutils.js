@@ -44,6 +44,7 @@ var tokenWorldTargetNode = function(t,n,tokens)
     }
     tries--;
   }
+  if(tries <= 0) console.log("gave up!");
 }
 
 var transformGame = function(canv,nodes,events,tokens)

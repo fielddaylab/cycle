@@ -287,7 +287,7 @@ var WaterCycleGameTemplate =
 
 var CarbonCycleGameTemplate =
 {
-  tokens:10,
+  tokens:14,
   deck:100,
   hand:5,
   goal_shift_turns:3,
