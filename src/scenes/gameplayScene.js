@@ -280,7 +280,7 @@ var GamePlayScene = function(game, stage)
       else text = "You are Red Team, and it's Red Team's turn!";
     }
     if(game.multiplayer == MULTIPLAYER_NET_JOIN) text = "You are Blue Team. It's Red Team's turn! (Waiting on your opponent...)";
-    summary = textToLines(dc, "12px Open Sans", announce_w-10, text);
+    summary = [textToLines(dc, "12px Open Sans", announce_w-10, text)];
 
     if(game.multiplayer == MULTIPLAYER_LOCAL)
       turn_stage = TURN_CHOOSE_CARD;
@@ -354,7 +354,7 @@ var GamePlayScene = function(game, stage)
             if(cli.database[i].event == "JOIN" && cli.database[i].args[0] == cli.id)
             {
               game.opponent = cli.database[i].user;
-              summary = textToLines(dc, "12px Open Sans", announce_w-10, "You are Red Team, and it's Red Team's turn!");
+              summary = [textToLines(dc, "12px Open Sans", announce_w-10, "You are Red Team, and it's Red Team's turn!")];
               turn_stage = TURN_CHOOSE_CARD;
             }
           }
@@ -700,7 +700,12 @@ var GamePlayScene = function(game, stage)
     ctx.textAlign = "left";
     ctx.font = "12px Open Sans";
     for(var i = 0; i < summary.length; i++)
-      ctx.fillText(summary[i],announce_x+10,announce_y+20*(i+1));
+    {
+      for(var j = 0; j < summary[i].length; j++)
+      {
+        ctx.fillText(summary[i][j],announce_x+10,announce_y+20*(j+1));
+      }
+    }
 
     ctx.textAlign = "center";
     ctx.font = "20px Open Sans";
@@ -818,8 +823,14 @@ var GamePlayScene = function(game, stage)
   var genSummary = function()
   {
     var player = g.players[g.player_turn-1];
-    var text = player.title+" played "+g.events[player.hand[chosen_card_i]-1].title+" on "+g.players[chosen_target_p-1].title+"'s carbon!";
-    summary = textToLines(dc, "12px Open Sans", announce_w-10, text);
+    var target = g.players[chosen_target_p-1];
+    var text;
+    if(g.player_turn == chosen_target_p)
+      text = player.title+" played "+g.events[player.hand[chosen_card_i]-1].title+" on their own carbon!";
+    else
+      text = player.title+" played "+g.events[player.hand[chosen_card_i]-1].title+" on their opponent's carbon!";
+
+    summary = [textToLines(dc, "12px Open Sans", announce_w-10, text)];
   }
 
   //no data- just used for interface
