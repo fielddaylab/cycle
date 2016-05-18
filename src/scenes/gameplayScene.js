@@ -201,10 +201,10 @@ var GamePlayScene = function(game, stage)
           chosen_target_p = 0;
           transition_t = 1;
 
-          if(g.turn == 1/*game.turns*/) turn_stage = TURN_DONE;
+          if(g.turn == game.turns) turn_stage = TURN_DONE;
           else if(game.multiplayer == MULTIPLAYER_LOCAL)
             turn_stage = TURN_CHOOSE_CARD;
-          else if(game.multiplayer == MULTIPLAYER_AI)
+          else if(game.multiplayer == MULTIPLAYER_AI || game.multiplayer == MULTIPLAYER_TUT)
           {
             if(g.player_turn == 1) turn_stage = TURN_CHOOSE_CARD;
             else
@@ -273,7 +273,7 @@ var GamePlayScene = function(game, stage)
     summary = [];
     var text;
     var team = g.players[0].title;
-    if(game.multiplayer == MULTIPLAYER_AI) text = "You are "+team+", and it's "+team+"'s turn!";
+    if(game.multiplayer == MULTIPLAYER_AI || game.multiplayer == MULTIPLAYER_TUT) text = "You are "+team+", and it's "+team+"'s turn!";
     if(game.multiplayer == MULTIPLAYER_LOCAL) text = "It's "+team+"'s turn!";
     if(game.multiplayer == MULTIPLAYER_NET_CREATE)
     {
@@ -283,14 +283,20 @@ var GamePlayScene = function(game, stage)
     if(game.multiplayer == MULTIPLAYER_NET_JOIN) text = "You are Blue Team. It's "+team+"'s turn! (Waiting on your opponent...)";
     summary = [textToLines(dc, "12px Open Sans", announce_w-10, text)];
 
-    if(game.multiplayer == MULTIPLAYER_LOCAL)
-      turn_stage = TURN_CHOOSE_CARD;
-    else if(game.multiplayer == MULTIPLAYER_AI)
-      turn_stage = TURN_CHOOSE_CARD;
-    else if(game.multiplayer == MULTIPLAYER_NET_CREATE)
-      turn_stage = TURN_WAIT_FOR_JOIN;
-    else if(game.multiplayer == MULTIPLAYER_NET_JOIN)
-      turn_stage = TURN_WAIT;
+    switch(game.multiplayer)
+    {
+      case MULTIPLAYER_LOCAL:
+      case MULTIPLAYER_AI:
+      case MULTIPLAYER_TUT:
+        turn_stage = TURN_CHOOSE_CARD;
+        break;
+      case MULTIPLAYER_NET_CREATE:
+        turn_stage = TURN_WAIT_FOR_JOIN;
+        break;
+      case MULTIPLAYER_NET_JOIN:
+        turn_stage = TURN_WAIT;
+        break;
+    }
 
     input_state = INPUT_RESUME;
 
@@ -484,6 +490,7 @@ var GamePlayScene = function(game, stage)
         if(g.player_turn == 1) ctx.fillText("RED'S TURN",10,turn_header_y-4);
         break;
       case MULTIPLAYER_AI:
+      case MULTIPLAYER_TUT:
       case MULTIPLAYER_NET_CREATE:
         if(g.player_turn == 1) ctx.fillText("RED'S TURN (YOU)",10,turn_header_y-4);
         else                   ctx.fillText("YOU",10,turn_header_y-4);
@@ -513,6 +520,7 @@ var GamePlayScene = function(game, stage)
         if(g.player_turn == 2) ctx.fillText("BLUE'S TURN",dc.width-sidebar_w+10,turn_header_y-4);
         break;
       case MULTIPLAYER_AI:
+      case MULTIPLAYER_TUT:
       case MULTIPLAYER_NET_CREATE:
         if(g.player_turn == 2) ctx.fillText("BLUE'S TURN",dc.width-sidebar_w+10,turn_header_y-4);
         break;
@@ -952,7 +960,7 @@ var GamePlayScene = function(game, stage)
       if(hit_ui) return;
       if(g.player_turn != self.player) return;
       if(g.player_turn == 1 && game.multiplayer == MULTIPLAYER_NET_JOIN) return;
-      if(g.player_turn == 2 && (game.multiplayer == MULTIPLAYER_AI || game.multiplayer == MULTIPLAYER_NET_CREATE)) return;
+      if(g.player_turn == 2 && (game.multiplayer == MULTIPLAYER_AI || game.multiplayer == MULTIPLAYER_TUT || game.multiplayer == MULTIPLAYER_NET_CREATE)) return;
       if(turn_stage == TURN_CONFIRM_CARD || turn_stage == TURN_CHOOSE_TARGET)
       {
         chosen_target_p = 0;

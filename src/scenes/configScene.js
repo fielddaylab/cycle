@@ -81,7 +81,7 @@ var ConfigScene = function(game, stage)
     title_y = dc.height/2-30;
     subtitle_y = btn_y-40;
 
-    btn_tutorial   = new ButtonBox(0,0,dc.width,section_line_0_y,function(evt){ if(hit_ui) return; game.setScene(3); });
+    btn_tutorial   = new ButtonBox(0,0,dc.width,section_line_0_y,function(evt){ if(hit_ui) return; hit_ui = true; multiplayer = MULTIPLAYER_TUT; turn = 10; mode = CONFIG_COMMIT; });
 
     mbtn_ai         = new ButtonBox(btn_0_x,btn_y,btn_s,btn_s-20,function(evt){ if(hit_ui || mode != CONFIG_MULTIPLAYER) return; hit_ui = true; multiplayer = MULTIPLAYER_AI;         mode = CONFIG_TURN; });
     mbtn_local      = new ButtonBox(btn_2_x,btn_y,btn_s,btn_s-20,function(evt){ if(hit_ui || mode != CONFIG_MULTIPLAYER) return; hit_ui = true; multiplayer = MULTIPLAYER_LOCAL;      mode = CONFIG_TURN; });
