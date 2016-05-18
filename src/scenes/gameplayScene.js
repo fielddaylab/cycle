@@ -201,7 +201,7 @@ var GamePlayScene = function(game, stage)
           chosen_target_p = 0;
           transition_t = 1;
 
-          if(g.turn == game.turns) turn_stage = TURN_DONE;
+          if(g.turn == 1/*game.turns*/) turn_stage = TURN_DONE;
           else if(game.multiplayer == MULTIPLAYER_LOCAL)
             turn_stage = TURN_CHOOSE_CARD;
           else if(game.multiplayer == MULTIPLAYER_AI)
@@ -711,56 +711,6 @@ var GamePlayScene = function(game, stage)
       }
     }
 
-    ctx.textAlign = "center";
-    ctx.font = "20px Open Sans";
-    switch(turn_stage)
-    {
-      case TURN_WAIT_FOR_JOIN: break;
-      case TURN_WAIT: break;
-      case TURN_CHOOSE_CARD:
-        if(g.turn == 0)
-        {
-          var y = dc.height-140 + Math.sin(n_ticks/10)*10;
-          var w = 160;
-          if(g.player_turn == 1)
-          {
-            dc.fillRoundRect(sidebar_w+5,y-10,w,20,5);
-            ctx.beginPath();
-            ctx.moveTo(sidebar_w+5+1,y-10+5);
-            ctx.lineTo(sidebar_w+5-5,y);
-            ctx.lineTo(sidebar_w+5+1,y+10-5);
-            ctx.closePath();
-            ctx.fill();
-            ctx.textAlign = "left";
-            dc.outlineText("Choose a card!",sidebar_w+10,y+7);
-          }
-          if(g.player_turn == 2 && (game.multiplayer == MULTIPLAYER_LOCAL || game.multiplayer == MULTIPLAYER_NET_JOIN))
-          {
-            dc.fillRoundRect(dc.width-sidebar_w-w-5,y-10,w,20,5);
-            ctx.moveTo(dc.width-sidebar_w-w-5+w-1,y-10+5);
-            ctx.lineTo(dc.width-sidebar_w-w-5+w+5,y);
-            ctx.lineTo(dc.width-sidebar_w-w-5+w-1,y+10-5);
-            ctx.closePath();
-            ctx.fill();
-            ctx.textAlign = "right";
-            dc.outlineText("Choose a card!",dc.width-sidebar_w-10,y+7);
-          }
-        }
-        break;
-      case TURN_CONFIRM_CARD: break;
-      case TURN_CHOOSE_TARGET: break;
-      case TURN_SUMMARY: break;
-      case TURN_ANIM_CARD: break;
-      case TURN_DONE:
-        var w = 200;
-        var h = 200;
-        var offy = Math.sin(n_ticks/10);
-             if(g.players[0].pts > g.players[1].pts) ctx.drawImage(red_win_img, dc.width/2-w/2,dc.height/2-h/2+offy,w,h);
-        else if(g.players[1].pts > g.players[0].pts) ctx.drawImage(blue_win_img,dc.width/2-w/2,dc.height/2-h/2+offy,w,h);
-        else                                         ctx.drawImage(tie_win_img, dc.width/2-w/2,dc.height/2-h/2+offy,w,h);
-        break;
-    }
-
     ctx.textAlign = "left";
     ctx.font = "12px Open Sans";
     ctx.fillStyle = gray;
@@ -801,6 +751,77 @@ var GamePlayScene = function(game, stage)
       ctx.font = "12px Open Sans";
       canvdom.draw(12,dc);
     }
+
+    switch(turn_stage)
+    {
+      case TURN_WAIT_FOR_JOIN: break;
+      case TURN_WAIT: break;
+      case TURN_CHOOSE_CARD:
+        if(g.turn == 0)
+        {
+          var y = dc.height-140 + Math.sin(n_ticks/10)*10;
+          var w = 150;
+          if(g.player_turn == 1)
+          {
+            dc.fillRoundRect(sidebar_w+5,y-10,w,20,5);
+            ctx.beginPath();
+            ctx.moveTo(sidebar_w+5+1,y-10+5);
+            ctx.lineTo(sidebar_w+5-5,y);
+            ctx.lineTo(sidebar_w+5+1,y+10-5);
+            ctx.closePath();
+            ctx.fill();
+            ctx.textAlign = "left";
+            ctx.font = "20px Open Sans";
+            dc.outlineText("Choose a card!",sidebar_w+10,y+7);
+          }
+          if(g.player_turn == 2 && (game.multiplayer == MULTIPLAYER_LOCAL || game.multiplayer == MULTIPLAYER_NET_JOIN))
+          {
+            dc.fillRoundRect(dc.width-sidebar_w-w-5,y-10,w,20,5);
+            ctx.moveTo(dc.width-sidebar_w-w-5+w-1,y-10+5);
+            ctx.lineTo(dc.width-sidebar_w-w-5+w+5,y);
+            ctx.lineTo(dc.width-sidebar_w-w-5+w-1,y+10-5);
+            ctx.closePath();
+            ctx.fill();
+            ctx.textAlign = "right";
+            ctx.font = "20px Open Sans";
+            dc.outlineText("Choose a card!",dc.width-sidebar_w-10,y+7);
+          }
+        }
+        break;
+      case TURN_CONFIRM_CARD: break;
+      case TURN_CHOOSE_TARGET: break;
+      case TURN_SUMMARY: break;
+      case TURN_ANIM_CARD: break;
+      case TURN_DONE:
+        var w = 220;
+        var h = 200;
+        var offy = Math.sin(n_ticks/10);
+        ctx.fillStyle = "rgba(0,0,0,0.5)";
+        dc.fillRoundRect(0,topmost_bar_y,dc.width,dc.height-topmost_bar_y,5);
+        ctx.fillStyle = white;
+        dc.fillRoundRect(dc.width/2-(3*w/4),dc.height/2+offy,6*w/4,h+20,5);
+             if(g.players[0].pts > g.players[1].pts) ctx.drawImage(red_win_img, dc.width/2-w/2,dc.height/2-h/2+offy,w,h);
+        else if(g.players[1].pts > g.players[0].pts) ctx.drawImage(blue_win_img,dc.width/2-w/2,dc.height/2-h/2+offy,w,h);
+        else                                         ctx.drawImage(tie_win_img, dc.width/2-w/2,dc.height/2-h/2+offy,w,h);
+        ctx.fillStyle = black;
+        ctx.font = "20px Open Sans";
+        ctx.textAlign = "center";
+        ctx.fillText("Final Score:",dc.width/2,dc.height/2+h/2+30+offy);
+        ctx.textAlign = "right";
+        ctx.fillText("RED TEAM: "+g.players[0].pts,dc.width/2-10,dc.height/2+h/2+55+offy);
+        ctx.textAlign = "left";
+        ctx.fillText("BLUE TEAM: "+g.players[1].pts,dc.width/2+10,dc.height/2+h/2+55+offy);
+
+        ctx.fillStyle = dblue;
+        ctx.fillRect(dc.width/2-w/2,dc.height/2+h-20+offy,w,30);
+        ctx.fillStyle = lblue;
+        ctx.fillRect(dc.width/2-w/2,dc.height/2+h-25+offy,w,30);
+        ctx.fillStyle = white;
+        ctx.textAlign = "center";
+        ctx.fillText("Back to Games!",dc.width/2,dc.height/2+h-5+offy);
+        break;
+    }
+
   };
 
   self.cleanup = function()
