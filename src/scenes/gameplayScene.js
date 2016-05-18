@@ -314,6 +314,7 @@ var GamePlayScene = function(game, stage)
     abyss.click = function(evt)
     {
       if(hit_ui) return;
+      hit_ui = true;
       switch(turn_stage)
       {
 
@@ -553,10 +554,6 @@ var GamePlayScene = function(game, stage)
         else               ctx.drawImage(hex_img,n.x,n.y,n.w,n.h);
       }
       ctx.drawImage(n.img,n.x,n.y,n.w,n.h);
-      ctx.textAlign = "center";
-      ctx.fillText(n.title,n.x+n.w/2,n.y+20);
-      ctx.textAlign = "left";
-      ctx.fillStyle = "#000000";
     }
 
     //draw hover arrow
@@ -1216,25 +1213,22 @@ var GamePlayScene = function(game, stage)
       if(turn_stage == TURN_CONFIRM_CARD)
       {
         if(ptWithin(evt.doX,evt.doY,self.x+self.play_x,self.y+self.play_y,self.play_w,self.play_h))
-        {
           turn_stage = TURN_CHOOSE_TARGET;
+        else
+        {
+          hit_ui = false;
+          abyss.click(evt);
         }
+        return;
       }
 
       if(turn_stage == TURN_CHOOSE_TARGET)
       {
         if(ptWithin(evt.doX,evt.doY,self.x+self.target_1_x,self.y+self.target_1_y,self.target_1_w,self.target_1_h))
-        {
           chosen_target_p = 1;
-        }
-
-        //p2 hit
-        if(ptWithin(evt.doX,evt.doY,self.x+self.target_2_x,self.y+self.target_2_y,self.target_2_w,self.target_2_h))
-        {
+        else if(ptWithin(evt.doX,evt.doY,self.x+self.target_2_x,self.y+self.target_2_y,self.target_2_w,self.target_2_h))
           chosen_target_p = 2;
-        }
-
-        if(chosen_target_p > 0 && ptWithin(evt.doX,evt.doY,self.x+self.play_x,self.y+self.play_y,self.play_w,self.play_h))
+        else if(chosen_target_p > 0 && ptWithin(evt.doX,evt.doY,self.x+self.play_x,self.y+self.play_y,self.play_w,self.play_h))
         {
           if(game.multiplayer == MULTIPLAYER_NET_CREATE || game.multiplayer == MULTIPLAYER_NET_JOIN)
             cli.add(cli.id+" MOVE "+chosen_card_i+" "+chosen_target_p);
@@ -1243,6 +1237,12 @@ var GamePlayScene = function(game, stage)
           hit_ui = false;
           ready_btn.hit({});
         }
+        else
+        {
+          hit_ui = false;
+          abyss.click(evt);
+        }
+        return;
       }
     }
 
