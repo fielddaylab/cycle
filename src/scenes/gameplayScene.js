@@ -736,7 +736,7 @@ var GamePlayScene = function(game, stage)
     if(input_state == INPUT_PAUSE) girl_disp = lerp(girl_disp,1,0.1);
     else                           girl_disp = lerp(girl_disp,-0.1,0.1);
     var h = 200;
-    var w = 130;
+    var w = 150;
     ctx.drawImage(short_img,sidebar_w+10,dc.height-h/2+(1-girl_disp)*h/2,w,h);
 
     if(input_state == INPUT_PAUSE)
