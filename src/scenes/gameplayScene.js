@@ -272,14 +272,15 @@ var GamePlayScene = function(game, stage)
     announce_h = 100;
     summary = [];
     var text;
-    if(game.multiplayer == MULTIPLAYER_AI) text = "You are Red Team, and it's Red Team's turn!";
-    if(game.multiplayer == MULTIPLAYER_LOCAL) text = "It's Red Team's turn!";
+    var team = g.players[0].title;
+    if(game.multiplayer == MULTIPLAYER_AI) text = "You are "+team+", and it's "+team+"'s turn!";
+    if(game.multiplayer == MULTIPLAYER_LOCAL) text = "It's "+team+"'s turn!";
     if(game.multiplayer == MULTIPLAYER_NET_CREATE)
     {
-      if(turn_stage == TURN_WAIT_FOR_JOIN) text = "You are Red Team! Hold tight while we wait for your opponent... (Your Room #:"+game.join+")";
-      else text = "You are Red Team, and it's Red Team's turn!";
+      if(turn_stage == TURN_WAIT_FOR_JOIN) text = "You are "+team+"! Hold tight while we wait for your opponent... (Your Room #:"+game.join+")";
+      else text = "You are "+team+", and it's "+team+"'s turn!";
     }
-    if(game.multiplayer == MULTIPLAYER_NET_JOIN) text = "You are Blue Team. It's Red Team's turn! (Waiting on your opponent...)";
+    if(game.multiplayer == MULTIPLAYER_NET_JOIN) text = "You are Blue Team. It's "+team+"'s turn! (Waiting on your opponent...)";
     summary = [textToLines(dc, "12px Open Sans", announce_w-10, text)];
 
     if(game.multiplayer == MULTIPLAYER_LOCAL)
@@ -479,6 +480,8 @@ var GamePlayScene = function(game, stage)
     switch(game.multiplayer)
     {
       case MULTIPLAYER_LOCAL:
+        if(g.player_turn == 1) ctx.fillText("RED'S TURN",10,turn_header_y-4);
+        break;
       case MULTIPLAYER_AI:
       case MULTIPLAYER_NET_CREATE:
         if(g.player_turn == 1) ctx.fillText("RED'S TURN (YOU)",10,turn_header_y-4);
@@ -506,6 +509,8 @@ var GamePlayScene = function(game, stage)
     switch(game.multiplayer)
     {
       case MULTIPLAYER_LOCAL:
+        if(g.player_turn == 2) ctx.fillText("BLUE'S TURN",dc.width-sidebar_w+10,turn_header_y-4);
+        break;
       case MULTIPLAYER_AI:
       case MULTIPLAYER_NET_CREATE:
         if(g.player_turn == 2) ctx.fillText("BLUE'S TURN",dc.width-sidebar_w+10,turn_header_y-4);
@@ -699,11 +704,13 @@ var GamePlayScene = function(game, stage)
     ctx.fillStyle = "#000000";
     ctx.textAlign = "left";
     ctx.font = "12px Open Sans";
+    var yoff = 0;
     for(var i = 0; i < summary.length; i++)
     {
       for(var j = 0; j < summary[i].length; j++)
       {
-        ctx.fillText(summary[i][j],announce_x+10,announce_y+20*(j+1));
+        yoff += 20;
+        ctx.fillText(summary[i][j],announce_x+10,announce_y+yoff);
       }
     }
 
@@ -831,6 +838,7 @@ var GamePlayScene = function(game, stage)
       text = player.title+" played "+g.events[player.hand[chosen_card_i]-1].title+" on their opponent's carbon!";
 
     summary = [textToLines(dc, "12px Open Sans", announce_w-10, text)];
+    summary.push(textToLines(dc, "12px Open Sans", announce_w-10, "It's now "+g.players[g.player_turn%2].title+"'s turn!"));
   }
 
   //no data- just used for interface
