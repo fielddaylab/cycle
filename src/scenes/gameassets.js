@@ -162,3 +162,12 @@ hex_g_img.src = "assets/hex_g.png";
 var hex_y_img = new Image();
 hex_y_img.src = "assets/hex_y.png";
 
+var red_win_img = new Image();
+red_win_img.src = "assets/red_win.png";
+
+var blue_win_img = new Image();
+blue_win_img.src = "assets/blue_win.png";
+
+var tie_win_img = new Image();
+tie_win_img.src = "assets/tie_win.png";
+

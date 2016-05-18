@@ -47,7 +47,9 @@ var LoadingScene = function(game, stage)
     img_srcs.push("assets/hex_b.png");
     img_srcs.push("assets/hex_g.png");
     img_srcs.push("assets/hex_y.png");
-
+    img_srcs.push("assets/red_win.png");
+    img_srcs.push("assets/blue_win.png");
+    img_srcs.push("assets/tie_win.png");
     img_srcs.push("assets/bg.jpg");
     for(var i = 0; i < img_srcs.length; i++)
     {

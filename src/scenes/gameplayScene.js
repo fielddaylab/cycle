@@ -245,7 +245,7 @@ var GamePlayScene = function(game, stage)
         }, 800);
       }
     );
-    done_btn  = new ButtonBox(dc.width/2-200,dc.height-60,400,50,
+    done_btn  = new ButtonBox(0,0,dc.width,dc.height,
       function()
       {
         if(input_state == INPUT_PAUSE) return;
@@ -752,12 +752,12 @@ var GamePlayScene = function(game, stage)
       case TURN_SUMMARY: break;
       case TURN_ANIM_CARD: break;
       case TURN_DONE:
-        ctx.fillText("Game Over!",dc.width/2,50);
-        ctx.textAlign = "left";
-        ctx.fillStyle = "#000000";
-        dc.strokeRoundRect(done_btn.x,done_btn.y,done_btn.w,done_btn.h,5);
-
-        ctx.fillText("Game Over!",done_btn.x+10,done_btn.y+20);
+        var w = 200;
+        var h = 200;
+        var offy = Math.sin(n_ticks/10);
+             if(g.players[0].pts > g.players[1].pts) ctx.drawImage(red_win_img, dc.width/2-w/2,dc.height/2-h/2+offy,w,h);
+        else if(g.players[1].pts > g.players[0].pts) ctx.drawImage(blue_win_img,dc.width/2-w/2,dc.height/2-h/2+offy,w,h);
+        else                                         ctx.drawImage(tie_win_img, dc.width/2-w/2,dc.height/2-h/2+offy,w,h);
         break;
     }
 
