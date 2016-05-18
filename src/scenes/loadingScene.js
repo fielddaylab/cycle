@@ -35,6 +35,7 @@ var LoadingScene = function(game, stage)
     img_srcs.push("assets/net_add.png");
     img_srcs.push("assets/net_check.png");
     img_srcs.push("assets/scout.png");
+    img_srcs.push("assets/jack.png");
     img_srcs.push("assets/atmosphere.png");
     img_srcs.push("assets/animal.png");
     img_srcs.push("assets/earth_deep.png");

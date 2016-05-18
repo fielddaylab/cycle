@@ -126,6 +126,9 @@ biarrow_icon.src = "assets/biarrow.png";
 var tall_img = new Image();
 tall_img.src = "assets/scout.png";
 
+var short_img = new Image();
+short_img.src = "assets/jack.png";
+
 var atmosphere_img = new Image();
 atmosphere_img.src = "assets/atmosphere.png";
 
