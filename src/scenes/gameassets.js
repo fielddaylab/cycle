@@ -123,11 +123,17 @@ arrow_icon.src = "assets/arrow.png";
 var biarrow_icon = new Image();
 biarrow_icon.src = "assets/biarrow.png";
 
-var tall_img = new Image();
-tall_img.src = "assets/scout.png";
+var p_0_img = new Image();
+p_0_img.src = "assets/scout.png";
 
-var short_img = new Image();
-short_img.src = "assets/jack.png";
+var p_1_img = new Image();
+p_1_img.src = "assets/francis.png";
+
+var p_2_img = new Image();
+p_2_img.src = "assets/honey.png";
+
+var p_3_img = new Image();
+p_3_img.src = "assets/jack.png";
 
 var atmosphere_img = new Image();
 atmosphere_img.src = "assets/atmosphere.png";

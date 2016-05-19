@@ -64,7 +64,10 @@ var GamePlayScene = function(game, stage)
   var done_btn;
   var interrupt_canvdom;
   var tutorial_canvdom;
-  var girl_disp;
+  var disp_0; var dest_0; var w_0 = 100; var h_0 = 220;
+  var disp_1; var dest_1; var w_1 = 140; var h_1 = 200;
+  var disp_2; var dest_2; var w_2 = 150; var h_2 = 200;
+  var disp_3; var dest_3; var w_3 = 150; var h_3 = 200;
   var blurb_x;
   var blurb_y;
   var blurb_w;
@@ -77,6 +80,7 @@ var GamePlayScene = function(game, stage)
 
   var tutorial_lines;
   var tutorial_events;
+  var tutorial_char;
   var tutorial_n;
 
   var sidebar_w = 160;
@@ -269,7 +273,10 @@ var GamePlayScene = function(game, stage)
     clicker.register(interrupt_canvdom);
     tutorial_canvdom = new CanvDom(dc);
     clicker.register(tutorial_canvdom);
-    girl_disp = 0;
+    disp_0 = 0; dest_0 = 0;
+    disp_1 = 0; dest_1 = 0;
+    disp_2 = 0; dest_2 = 0;
+    disp_3 = 0; dest_3 = 0;
     blurb_x = sidebar_w+100;
     blurb_y = dc.height-200;
     blurb_w = dc.width-(sidebar_w*2)-110;
@@ -347,52 +354,75 @@ var GamePlayScene = function(game, stage)
 
     tutorial_lines = [];
     tutorial_events = [];
+    tutorial_char = [];
     tutorial_n = 0;
 
     tutorial_lines.push("The carbon cycle is all about how carbon moves through our environment. It's also a cool card game we found underneath a rusty old boat.");
     tutorial_events.push(false);
+    tutorial_char.push(0);
     tutorial_lines.push("What's a carbon?");
     tutorial_events.push(false);
+    tutorial_char.push(1);
     tutorial_lines.push("It's an atom, and sometimes part of a molecule, and it's pretty much everywhere. It changes forms as it moves through our environment.");
     tutorial_events.push(false);
+    tutorial_char.push(2);
     tutorial_lines.push("It's in everything?");
     tutorial_events.push(false);
+    tutorial_char.push(3);
     tutorial_lines.push("Well, not everything, but a lot of things, in the air we breathe, in our oceans, plants, animals, the atmosphere! It's all over! And we're going to learn about how it moves through our environment by playing a card game!");
     tutorial_events.push(false);
+    tutorial_char.push(0);
     tutorial_lines.push("It's a two person game, between the red team, and the blue team");
     tutorial_events.push(false);
+    tutorial_char.push(1);
     tutorial_lines.push("Here's Red");
     tutorial_events.push(false);
+    tutorial_char.push(2);
     tutorial_lines.push("And here's blue");
     tutorial_events.push(false);
+    tutorial_char.push(3);
     tutorial_lines.push("There are carbons on the different parts of our environment, represented by the red and blue jewels. You play cards to move the carbons around the gameboard (environment)");
     tutorial_events.push(false);
+    tutorial_char.push(0);
     tutorial_lines.push("Ooh, so the cards represent how carbon moves through our environment,");
     tutorial_events.push(false);
+    tutorial_char.push(0);
     tutorial_lines.push("Exactly.");
     tutorial_events.push(false);
+    tutorial_char.push(0);
     tutorial_lines.push("The goal is to get your carbons into the goal zone (the blue tile), after both players have played their cards, each player is awarded points corresponding the amount of carbons in the goal zone.");
     tutorial_events.push(false);
+    tutorial_char.push(0);
     tutorial_lines.push("When you play a card, you can choose to effect either team's carbon, maybe you would like to move your carbon into the goal zone, or move your opponent's out of it.");
     tutorial_events.push(false);
+    tutorial_char.push(0);
     tutorial_lines.push("cool! Lets try it out!");
     tutorial_events.push(false);
+    tutorial_char.push(0);
     tutorial_lines.push("Ok, I'll be blue and you can be red, why don't you try selecting a card and seeing what happens?");
     tutorial_events.push(false);
+    tutorial_char.push(0);
     tutorial_lines.push("It's your turn Red, pick a card");
     tutorial_events.push(false);
+    tutorial_char.push(0);
     tutorial_lines.push("Cool, so you played card name to move your carbon to tile name");
     tutorial_events.push(false);
+    tutorial_char.push(0);
     tutorial_lines.push("Now I'll go");
     tutorial_events.push(false);
+    tutorial_char.push(0);
     tutorial_lines.push("Ok, I played card name to move on of my carbons to tile name.");
     tutorial_events.push(false);
+    tutorial_char.push(0);
     tutorial_lines.push("See how different actions make carbon move throughout our environment? Carbon affects just about every part of our planet!");
     tutorial_events.push(false);
+    tutorial_char.push(0);
     tutorial_lines.push("Wow! Cool!");
     tutorial_events.push(false);
+    tutorial_char.push(0);
     tutorial_lines.push("Yeah! In this game, the goal zone moves every three turns, so plan ahead! If you want to keep playing, It's your turn!");
     tutorial_events.push(false);
+    tutorial_char.push(0);
 
     if(game.multiplayer == MULTIPLAYER_TUT)
       tutorialDisplayMessage();
@@ -763,7 +793,7 @@ var GamePlayScene = function(game, stage)
 
     ctx.fillStyle = lblue;
     ctx.fillRect(sidebar_w,announce_y-30,dc.width-(sidebar_w*2),dc.height-(announce_y-30));
-    ctx.drawImage(tall_img,sidebar_w+20,dc.height-100,75,200);
+    ctx.drawImage(p_0_img,sidebar_w+20,dc.height-100,75,200);
     ctx.fillStyle = white;
     dc.fillRoundRect(announce_x,announce_y,announce_w,announce_h,5);
     ctx.fillStyle = "#000000";
@@ -835,12 +865,60 @@ var GamePlayScene = function(game, stage)
       tutorial_canvdom.draw(12,dc);
     }
 
-    if(input_state == INPUT_INTERRUPT || input_state == INPUT_TUTORIAL) girl_disp = lerp(girl_disp,1,0.1);
-    else                                                                girl_disp = lerp(girl_disp,-0.1,0.1);
-    var h = 200;
-    var w = 150;
-    ctx.drawImage(short_img,sidebar_w+10,dc.height-h/2+(1-girl_disp)*h/2,w,h);
-
+    disp_0 = lerp(disp_0,dest_0,0.1);
+    disp_1 = lerp(disp_1,dest_1,0.1);
+    disp_2 = lerp(disp_2,dest_2,0.1);
+    disp_3 = lerp(disp_3,dest_3,0.1);
+    if(input_state == INPUT_INTERRUPT)
+    {
+      dest_0 = 1;
+      dest_1 = -.1;
+      dest_2 = -.1;
+      dest_3 = -.1;
+    }
+    else if(input_state == INPUT_TUTORIAL)
+    {
+      var c = tutorial_char[tutorial_n];
+      if(c == 0)
+      {
+        dest_0 = 1;
+        dest_1 = -.1;
+        dest_2 = -.1;
+        dest_3 = -.1;
+      }
+      if(c == 1)
+      {
+        dest_0 = -.1;
+        dest_1 = 1;
+        dest_2 = -.1;
+        dest_3 = -.1;
+      }
+      if(c == 2)
+      {
+        dest_0 = -.1;
+        dest_1 = -.1;
+        dest_2 = 1;
+        dest_3 = -.1;
+      }
+      if(c == 3)
+      {
+        dest_0 = -.1;
+        dest_1 = -.1;
+        dest_2 = -.1;
+        dest_3 = 1;
+      }
+    }
+    else
+    {
+      dest_0 = -.1;
+      dest_1 = -.1;
+      dest_2 = -.1;
+      dest_3 = -.1;
+    }
+    ctx.drawImage(p_0_img,sidebar_w+10,dc.height-h_0/2+(1-disp_0)*h_0/2,w_0,h_0);
+    ctx.drawImage(p_1_img,sidebar_w+10,dc.height-h_1/2+(1-disp_1)*h_1/2,w_1,h_1);
+    ctx.drawImage(p_2_img,sidebar_w+10,dc.height-h_2/2+(1-disp_2)*h_2/2,w_2,h_2);
+    ctx.drawImage(p_3_img,sidebar_w+10,dc.height-h_3/2+(1-disp_3)*h_3/2,w_3,h_3);
 
     switch(turn_stage)
     {
