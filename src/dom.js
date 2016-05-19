@@ -60,6 +60,7 @@ var CanvDom = function(canv)
   var m;
   var c;
 
+  self.dismissing = false;
   self.x = 0;
   self.y = 0;
   self.w = 0;
@@ -67,18 +68,24 @@ var CanvDom = function(canv)
 
   var mclicked = function(evt)
   {
+    self.dismissing = true;
     m = undefined;
     if(c) c();
-    c = undefined;
+    if(self.dismissing) //if still dismissing (callback didn't pop another...)
+    {
+      c = undefined;
 
-    self.x = 0;
-    self.y = 0;
-    self.w = 0;
-    self.h = 0;
+      self.x = 0;
+      self.y = 0;
+      self.w = 0;
+      self.h = 0;
+    }
+    self.dismissing = false;
   }
 
   self.popDismissableMessage = function(text,x,y,w,h,callback)
   {
+    self.dismissing = false;
     if(m) mclicked();
     m = text;
     c = callback;

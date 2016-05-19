@@ -20,8 +20,9 @@ var GamePlayScene = function(game, stage)
   var turn_stage;
 
   ENUM = 0;
-  var INPUT_RESUME = ENUM; ENUM++;
-  var INPUT_PAUSE = ENUM; ENUM++;
+  var INPUT_RESUME    = ENUM; ENUM++;
+  var INPUT_INTERRUPT = ENUM; ENUM++;
+  var INPUT_TUTORIAL  = ENUM; ENUM++;
   var input_state;
 
   //seeded rand!
@@ -61,7 +62,8 @@ var GamePlayScene = function(game, stage)
 
   var ready_btn;
   var done_btn;
-  var canvdom;
+  var interrupt_canvdom;
+  var tutorial_canvdom;
   var girl_disp;
   var blurb_x;
   var blurb_y;
@@ -72,6 +74,10 @@ var GamePlayScene = function(game, stage)
   var announce_w;
   var announce_h;
   var summary;
+
+  var tutorial_lines;
+  var tutorial_events;
+  var tutorial_n;
 
   var sidebar_w = 160;
   var topmost_bar_y = 55;
@@ -187,7 +193,7 @@ var GamePlayScene = function(game, stage)
     ready_btn = new ButtonBox(0,0,dc.width,dc.height,
       function()
       {
-        if(input_state == INPUT_PAUSE) return;
+        if(input_state != INPUT_RESUME) return;
         if(hit_ui || turn_stage != TURN_SUMMARY) return;
 
         turn_stage = TURN_ANIM_CARD;
@@ -248,7 +254,7 @@ var GamePlayScene = function(game, stage)
     done_btn  = new ButtonBox(0,0,dc.width,dc.height,
       function()
       {
-        if(input_state == INPUT_PAUSE) return;
+        if(input_state != INPUT_RESUME) return;
         if(hit_ui || turn_stage != TURN_DONE) return;
         cli.stop();
         game.setScene(2);
@@ -259,8 +265,10 @@ var GamePlayScene = function(game, stage)
     clicker.register(ready_btn);
     clicker.register(done_btn);
 
-    canvdom = new CanvDom(dc);
-    clicker.register(canvdom);
+    interrupt_canvdom = new CanvDom(dc);
+    clicker.register(interrupt_canvdom);
+    tutorial_canvdom = new CanvDom(dc);
+    clicker.register(tutorial_canvdom);
     girl_disp = 0;
     blurb_x = sidebar_w+100;
     blurb_y = dc.height-200;
@@ -336,6 +344,58 @@ var GamePlayScene = function(game, stage)
 
     hover_pulse_t = 0;
     hover_pulse = Math.sin(hover_pulse_t);
+
+    tutorial_lines = [];
+    tutorial_events = [];
+    tutorial_n = 0;
+
+    tutorial_lines.push("The carbon cycle is all about how carbon moves through our environment. It's also a cool card game we found underneath a rusty old boat.");
+    tutorial_events.push(false);
+    tutorial_lines.push("What's a carbon?");
+    tutorial_events.push(false);
+    tutorial_lines.push("It's an atom, and sometimes part of a molecule, and it's pretty much everywhere. It changes forms as it moves through our environment.");
+    tutorial_events.push(false);
+    tutorial_lines.push("It's in everything?");
+    tutorial_events.push(false);
+    tutorial_lines.push("Well, not everything, but a lot of things, in the air we breathe, in our oceans, plants, animals, the atmosphere! It's all over! And we're going to learn about how it moves through our environment by playing a card game!");
+    tutorial_events.push(false);
+    tutorial_lines.push("It's a two person game, between the red team, and the blue team");
+    tutorial_events.push(false);
+    tutorial_lines.push("Here's Red");
+    tutorial_events.push(false);
+    tutorial_lines.push("And here's blue");
+    tutorial_events.push(false);
+    tutorial_lines.push("There are carbons on the different parts of our environment, represented by the red and blue jewels. You play cards to move the carbons around the gameboard (environment)");
+    tutorial_events.push(false);
+    tutorial_lines.push("Ooh, so the cards represent how carbon moves through our environment,");
+    tutorial_events.push(false);
+    tutorial_lines.push("Exactly.");
+    tutorial_events.push(false);
+    tutorial_lines.push("The goal is to get your carbons into the goal zone (the blue tile), after both players have played their cards, each player is awarded points corresponding the amount of carbons in the goal zone.");
+    tutorial_events.push(false);
+    tutorial_lines.push("When you play a card, you can choose to effect either team's carbon, maybe you would like to move your carbon into the goal zone, or move your opponent's out of it.");
+    tutorial_events.push(false);
+    tutorial_lines.push("cool! Lets try it out!");
+    tutorial_events.push(false);
+    tutorial_lines.push("Ok, I'll be blue and you can be red, why don't you try selecting a card and seeing what happens?");
+    tutorial_events.push(false);
+    tutorial_lines.push("It's your turn Red, pick a card");
+    tutorial_events.push(false);
+    tutorial_lines.push("Cool, so you played card name to move your carbon to tile name");
+    tutorial_events.push(false);
+    tutorial_lines.push("Now I'll go");
+    tutorial_events.push(false);
+    tutorial_lines.push("Ok, I played card name to move on of my carbons to tile name.");
+    tutorial_events.push(false);
+    tutorial_lines.push("See how different actions make carbon move throughout our environment? Carbon affects just about every part of our planet!");
+    tutorial_events.push(false);
+    tutorial_lines.push("Wow! Cool!");
+    tutorial_events.push(false);
+    tutorial_lines.push("Yeah! In this game, the goal zone moves every three turns, so plan ahead! If you want to keep playing, It's your turn!");
+    tutorial_events.push(false);
+
+    if(game.multiplayer == MULTIPLAYER_TUT)
+      tutorialDisplayMessage();
   };
 
   self.tick = function()
@@ -349,7 +409,7 @@ var GamePlayScene = function(game, stage)
       displayed_turn_3_warning = true;
 
       text = "Hey! To make things interesting, we're going to stop showing you in which direction each event affects the carbon... good luck!";
-      displayMessage(textToLines(dc, "12px Open Sans", blurb_w-10, text));
+      interruptDisplayMessage(textToLines(dc, "12px Open Sans", blurb_w-20, text));
     }
 
     switch(turn_stage)
@@ -727,20 +787,11 @@ var GamePlayScene = function(game, stage)
     var turns_left = 3-(g.turn%g.turns_per_goal_shift);
     ctx.fillText("Up Next ("+turns_left+" turns): "+g.nodes[g.next_goal_node-1].title,dc.width-sidebar_w-20,topmost_bar_y+15);
 
-    if(input_state == INPUT_PAUSE)
+    if(input_state == INPUT_INTERRUPT)
     {
       ctx.fillStyle = "rgba(10,10,10,0.5)";
       ctx.fillRect(sidebar_w,blurb_y-20,dc.width-(2*sidebar_w),dc.height-(blurb_y-20));
-    }
 
-    if(input_state == INPUT_PAUSE) girl_disp = lerp(girl_disp,1,0.1);
-    else                           girl_disp = lerp(girl_disp,-0.1,0.1);
-    var h = 200;
-    var w = 150;
-    ctx.drawImage(short_img,sidebar_w+10,dc.height-h/2+(1-girl_disp)*h/2,w,h);
-
-    if(input_state == INPUT_PAUSE)
-    {
       ctx.fillStyle = white;
       dc.fillRoundRect(blurb_x,blurb_y,blurb_w,blurb_h,5);
       ctx.strokeSytle = lblue;
@@ -757,15 +808,46 @@ var GamePlayScene = function(game, stage)
       ctx.fillText("Next",dc.width/2+100,dc.height-50);
 
       ctx.font = "12px Open Sans";
-      canvdom.draw(12,dc);
+      interrupt_canvdom.draw(12,dc);
     }
+
+    if(input_state == INPUT_TUTORIAL)
+    {
+      ctx.fillStyle = "rgba(10,10,10,0.5)";
+      ctx.fillRect(sidebar_w,blurb_y-20,dc.width-(2*sidebar_w),dc.height-(blurb_y-20));
+
+      ctx.fillStyle = white;
+      dc.fillRoundRect(blurb_x,blurb_y,blurb_w,blurb_h,5);
+      ctx.strokeSytle = lblue;
+      ctx.lineWidth = 2;
+      dc.strokeRoundRect(blurb_x,blurb_y,blurb_w,blurb_h,5);
+
+      ctx.fillStyle = gray;
+      ctx.fillRect(dc.width/2+90,dc.height-70,100,40);
+      ctx.fillStyle = white;
+      ctx.fillRect(dc.width/2+90,dc.height-80,100,40);
+      ctx.fillStyle = "#000000";
+      ctx.textAlign = "left";
+      ctx.font = "30px Open Sans";
+      ctx.fillText("Next",dc.width/2+100,dc.height-50);
+
+      ctx.font = "12px Open Sans";
+      tutorial_canvdom.draw(12,dc);
+    }
+
+    if(input_state == INPUT_INTERRUPT || input_state == INPUT_TUTORIAL) girl_disp = lerp(girl_disp,1,0.1);
+    else                                                                girl_disp = lerp(girl_disp,-0.1,0.1);
+    var h = 200;
+    var w = 150;
+    ctx.drawImage(short_img,sidebar_w+10,dc.height-h/2+(1-girl_disp)*h/2,w,h);
+
 
     switch(turn_stage)
     {
       case TURN_WAIT_FOR_JOIN: break;
       case TURN_WAIT: break;
       case TURN_CHOOSE_CARD:
-        if(g.turn == 0)
+        if(g.turn == 0 && game.multiplayer != MULTIPLAYER_TUT)
         {
           var y = dc.height-140 + Math.sin(n_ticks/10)*10;
           var w = 150;
@@ -840,16 +922,29 @@ var GamePlayScene = function(game, stage)
     hoverer = undefined;
   };
 
-  var doneDisplay = function ()
+  var interruptDoneDisplay = function ()
   {
     input_state = INPUT_RESUME;
     direction_viz_enabled = false;
   }
-
-  var displayMessage = function(lines)
+  var interruptDisplayMessage = function(lines)
   {
-    input_state = INPUT_PAUSE;
-    canvdom.popDismissableMessage(lines,blurb_x+5,blurb_y,blurb_w-10,200,doneDisplay);
+    input_state = INPUT_INTERRUPT;
+    interrupt_canvdom.popDismissableMessage(lines,blurb_x+5,blurb_y,blurb_w-10,200,interruptDoneDisplay);
+  }
+
+  var tutorialDoneDisplay = function ()
+  {
+    tutorial_n++;
+    if(!tutorial_events[tutorial_n-1] && tutorial_events.length > tutorial_n)
+      tutorialDisplayMessage();
+    else
+      input_state = INPUT_RESUME;
+  }
+  var tutorialDisplayMessage = function()
+  {
+    input_state = INPUT_TUTORIAL;
+    tutorial_canvdom.popDismissableMessage(textToLines(dc, "12px Open Sans", blurb_w-20, tutorial_lines[tutorial_n]),blurb_x+5,blurb_y,blurb_w-10,200,tutorialDoneDisplay);
   }
 
   var genSummary = function()
@@ -915,7 +1010,7 @@ var GamePlayScene = function(game, stage)
       var icon_s = 35;
       var from_node = g.nodes[event.from_id-1];
       var to_node = g.nodes[event.to_id-1];
-      if(g.turn < 3 || (g.turn == 3 && input_state == INPUT_PAUSE))
+      if(g.turn < 3 || (g.turn == 3 && input_state == INPUT_INTERRUPT))
       {
         ctx.drawImage(from_node.img,self.x+20,self.y+20,icon_s,icon_s);
         ctx.drawImage(to_node.img,self.x+self.w-20-icon_s,self.y+20,icon_s,icon_s);
@@ -956,7 +1051,7 @@ var GamePlayScene = function(game, stage)
 
     self.click = function(evt)
     {
-      if(input_state == INPUT_PAUSE) return;
+      if(input_state != INPUT_RESUME) return;
       if(hit_ui) return;
       if(g.player_turn != self.player) return;
       if(g.player_turn == 1 && game.multiplayer == MULTIPLAYER_NET_JOIN) return;
@@ -1071,7 +1166,7 @@ var GamePlayScene = function(game, stage)
       var icon_s = 35;
       var from_node = g.nodes[event.from_id-1];
       var to_node = g.nodes[event.to_id-1];
-      if(g.turn < 3 || (g.turn == 3 && input_state == INPUT_PAUSE))
+      if(g.turn < 3 || (g.turn == 3 && input_state == INPUT_INTERRUPT))
       {
         ctx.drawImage(from_node.img,self.x+20,self.y+20,icon_s,icon_s);
         ctx.drawImage(to_node.img,self.x+self.w-20-icon_s,self.y+20,icon_s,icon_s);
@@ -1229,7 +1324,7 @@ var GamePlayScene = function(game, stage)
 
     self.click = function(evt)
     {
-      if(input_state == INPUT_PAUSE) return;
+      if(input_state != INPUT_RESUME) return;
       if(hit_ui) return;
       if(
         turn_stage != TURN_CONFIRM_CARD &&
