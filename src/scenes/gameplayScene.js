@@ -362,10 +362,10 @@ var GamePlayScene = function(game, stage)
     tutorial_char.push(0);
     tutorial_lines.push("What's a carbon?");
     tutorial_events.push(false);
-    tutorial_char.push(1);
+    tutorial_char.push(3);
     tutorial_lines.push("It's an atom, and sometimes part of a molecule, and it's pretty much everywhere. It changes forms as it moves through our environment.");
     tutorial_events.push(false);
-    tutorial_char.push(2);
+    tutorial_char.push(0);
     tutorial_lines.push("It's in everything?");
     tutorial_events.push(false);
     tutorial_char.push(3);
@@ -374,19 +374,19 @@ var GamePlayScene = function(game, stage)
     tutorial_char.push(0);
     tutorial_lines.push("It's a two person game, between the red team, and the blue team");
     tutorial_events.push(false);
-    tutorial_char.push(1);
+    tutorial_char.push(0);
     tutorial_lines.push("Here's Red");
     tutorial_events.push(false);
-    tutorial_char.push(2);
+    tutorial_char.push(0);
     tutorial_lines.push("And here's blue");
     tutorial_events.push(false);
-    tutorial_char.push(3);
+    tutorial_char.push(0);
     tutorial_lines.push("There are carbons on the different parts of our environment, represented by the red and blue jewels. You play cards to move the carbons around the gameboard (environment)");
     tutorial_events.push(false);
     tutorial_char.push(0);
     tutorial_lines.push("Ooh, so the cards represent how carbon moves through our environment,");
     tutorial_events.push(false);
-    tutorial_char.push(0);
+    tutorial_char.push(3);
     tutorial_lines.push("Exactly.");
     tutorial_events.push(false);
     tutorial_char.push(0);
@@ -398,18 +398,15 @@ var GamePlayScene = function(game, stage)
     tutorial_char.push(0);
     tutorial_lines.push("cool! Lets try it out!");
     tutorial_events.push(false);
-    tutorial_char.push(0);
+    tutorial_char.push(3);
     tutorial_lines.push("Ok, I'll be blue and you can be red, why don't you try selecting a card and seeing what happens?");
-    tutorial_events.push(false);
-    tutorial_char.push(0);
-    tutorial_lines.push("It's your turn Red, pick a card");
-    tutorial_events.push(false);
+    tutorial_events.push(function(){ return g.player_turn == 2; });
     tutorial_char.push(0);
     tutorial_lines.push("Cool, so you played card name to move your carbon to tile name");
     tutorial_events.push(false);
     tutorial_char.push(0);
     tutorial_lines.push("Now I'll go");
-    tutorial_events.push(false);
+    tutorial_events.push(function(){ return g.player_turn == 1; });
     tutorial_char.push(0);
     tutorial_lines.push("Ok, I played card name to move on of my carbons to tile name.");
     tutorial_events.push(false);
@@ -419,7 +416,7 @@ var GamePlayScene = function(game, stage)
     tutorial_char.push(0);
     tutorial_lines.push("Wow! Cool!");
     tutorial_events.push(false);
-    tutorial_char.push(0);
+    tutorial_char.push(3);
     tutorial_lines.push("Yeah! In this game, the goal zone moves every three turns, so plan ahead! If you want to keep playing, It's your turn!");
     tutorial_events.push(false);
     tutorial_char.push(0);
@@ -547,6 +544,15 @@ var GamePlayScene = function(game, stage)
       }
       else if(transition_t >= TRANSITION_KEY_MOVE_GOAL)
         transition_t = 0;
+    }
+
+    if(game.multiplayer == MULTIPLAYER_TUT)
+    {
+      if(tutorial_events.length > tutorial_n && (tutorial_events[tutorial_n] && tutorial_events[tutorial_n]()))
+      {
+        tutorial_n++;
+        tutorialDisplayMessage();
+      }
     }
   };
 
@@ -1013,11 +1019,15 @@ var GamePlayScene = function(game, stage)
 
   var tutorialDoneDisplay = function ()
   {
-    tutorial_n++;
-    if(!tutorial_events[tutorial_n-1] && tutorial_events.length > tutorial_n)
+    if((!tutorial_events[tutorial_n] || tutorial_events[tutorial_n]()) && tutorial_events.length > tutorial_n)
+    {
+      tutorial_n++;
       tutorialDisplayMessage();
+    }
     else
+    {
       input_state = INPUT_RESUME;
+    }
   }
   var tutorialDisplayMessage = function()
   {
