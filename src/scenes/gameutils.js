@@ -31,6 +31,7 @@ var tokenWorldTargetEvent = function(t,e,progress)
 }
 var tokenWorldTargetNode = function(t,n,tokens)
 {
+  /*
   var tries = 100;
   var ok = false;
   while(!ok && tries > 0)
@@ -46,6 +47,40 @@ var tokenWorldTargetNode = function(t,n,tokens)
     tries--;
   }
   if(tries <= 0) console.log("gave up!");
+  */
+
+  var sx;
+  var sy;
+  var dx = 1;
+  var dy = 1.7;
+  if(t.player_id == 1)
+  {
+    sx = n.wx-n.ww/2 + n.ww*2/3+t.ww/2;
+    sy = n.wy-n.wh/2+t.wh/2;
+  }
+  if(t.player_id == 2)
+  {
+    sx = n.wx-n.ww/2+t.ww/2;
+    sy = n.wy;
+  }
+
+  var found = true;
+  var x;
+  var y;
+  for(var i = 0; i < tokens.length && found; i++)
+  {
+    x = sx + i*dx/2*t.ww;
+    y = sy + i*dy/2*t.wh;
+    found = false;
+    for(var j = 0; j < tokens.length && !found; j++)
+    {
+      if(Math.abs(tokens[j].wx-x)+Math.abs(tokens[j].wy-y) < 0.01)
+        found = true;
+    }
+  }
+
+  t.target_wx = x;
+  t.target_wy = y;
 }
 
 var transformGame = function(canv,nodes,events,tokens)
