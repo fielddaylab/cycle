@@ -64,9 +64,9 @@ var GamePlayScene = function(game, stage)
   var done_btn;
   var interrupt_canvdom;
   var tutorial_canvdom;
-  var disp_0; var dest_0; var w_0 = 100; var h_0 = 220;
+  var disp_0; var dest_0; var w_0 = 100; var h_0 = 260;
   var disp_1; var dest_1; var w_1 = 140; var h_1 = 200;
-  var disp_2; var dest_2; var w_2 = 150; var h_2 = 200;
+  var disp_2; var dest_2; var w_2 = 300; var h_2 = 400;
   var disp_3; var dest_3; var w_3 = 150; var h_3 = 200;
   var blurb_x;
   var blurb_y;
