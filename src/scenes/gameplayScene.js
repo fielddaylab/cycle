@@ -79,8 +79,9 @@ var GamePlayScene = function(game, stage)
   var summary;
 
   var tutorial_lines;
-  var tutorial_events;
-  var tutorial_char;
+  var tutorial_tests;
+  var tutorial_draws;
+  var tutorial_chars;
   var tutorial_n;
 
   var sidebar_w = 160;
@@ -353,73 +354,122 @@ var GamePlayScene = function(game, stage)
     hover_pulse = Math.sin(hover_pulse_t);
 
     tutorial_lines = [];
-    tutorial_events = [];
-    tutorial_char = [];
+    tutorial_tests = [];
+    tutorial_draws = [];
+    tutorial_chars = [];
     tutorial_n = 0;
 
     tutorial_lines.push("The carbon cycle is all about how carbon moves through our environment. It's also a cool card game we found underneath a rusty old boat.");
-    tutorial_events.push(false);
-    tutorial_char.push(0);
+    tutorial_tests.push(false);
+    tutorial_draws.push(false);
+    tutorial_chars.push(0);
     tutorial_lines.push("What's a carbon?");
-    tutorial_events.push(false);
-    tutorial_char.push(3);
+    tutorial_tests.push(false);
+    tutorial_draws.push(false);
+    tutorial_chars.push(3);
     tutorial_lines.push("It's an atom, and sometimes part of a molecule, and it's pretty much everywhere. It changes forms as it moves through our environment.");
-    tutorial_events.push(false);
-    tutorial_char.push(0);
+    tutorial_tests.push(false);
+    tutorial_draws.push(false);
+    tutorial_chars.push(0);
     tutorial_lines.push("It's in everything?");
-    tutorial_events.push(false);
-    tutorial_char.push(3);
+    tutorial_tests.push(false);
+    tutorial_draws.push(false);
+    tutorial_chars.push(3);
     tutorial_lines.push("Well, not everything, but a lot of things, in the air we breathe, in our oceans, plants, animals, the atmosphere! It's all over! And we're going to learn about how it moves through our environment by playing a card game!");
-    tutorial_events.push(false);
-    tutorial_char.push(0);
+    tutorial_tests.push(false);
+    tutorial_draws.push(false);
+    tutorial_chars.push(0);
     tutorial_lines.push("It's a two person game, between the red team, and the blue team");
-    tutorial_events.push(false);
-    tutorial_char.push(0);
+    tutorial_tests.push(false);
+    tutorial_draws.push(false);
+    tutorial_chars.push(0);
     tutorial_lines.push("Here's Red");
-    tutorial_events.push(false);
-    tutorial_char.push(0);
+    tutorial_tests.push(false);
+    tutorial_draws.push(function()
+    {
+      var y = 140 + Math.sin(n_ticks/10)*10;
+      var w = 105;
+      dc.fillRoundRect(sidebar_w+5,y-10,w,20,5);
+      ctx.beginPath();
+      ctx.moveTo(sidebar_w+5+1,y-10+5);
+      ctx.lineTo(sidebar_w+5-5,y);
+      ctx.lineTo(sidebar_w+5+1,y+10-5);
+      ctx.closePath();
+      ctx.fill();
+      ctx.textAlign = "left";
+      ctx.font = "20px Open Sans";
+      dc.outlineText("RED TEAM",sidebar_w+10,y+7);
+    });
+    tutorial_chars.push(0);
     tutorial_lines.push("And here's blue");
-    tutorial_events.push(false);
-    tutorial_char.push(0);
+    tutorial_tests.push(false);
+    tutorial_draws.push(function()
+    {
+      var y = 140 + Math.sin(n_ticks/10)*10;
+      var w = 115;
+      dc.fillRoundRect(dc.width-sidebar_w-w-5,y-10,w,20,5);
+      ctx.moveTo(dc.width-sidebar_w-w-5+w-1,y-10+5);
+      ctx.lineTo(dc.width-sidebar_w-w-5+w+5,y);
+      ctx.lineTo(dc.width-sidebar_w-w-5+w-1,y+10-5);
+      ctx.closePath();
+      ctx.fill();
+      ctx.textAlign = "right";
+      ctx.font = "20px Open Sans";
+      dc.outlineText("BLUE TEAM",dc.width-sidebar_w-10,y+7);
+    });
+    tutorial_chars.push(0);
     tutorial_lines.push("There are carbons on the different parts of our environment, represented by the red and blue jewels. You play cards to move the carbons around the gameboard (environment)");
-    tutorial_events.push(false);
-    tutorial_char.push(0);
+    tutorial_tests.push(false);
+    tutorial_draws.push(false);
+    tutorial_chars.push(0);
     tutorial_lines.push("Ooh, so the cards represent how carbon moves through our environment,");
-    tutorial_events.push(false);
-    tutorial_char.push(3);
+    tutorial_tests.push(false);
+    tutorial_draws.push(false);
+    tutorial_chars.push(3);
     tutorial_lines.push("Exactly.");
-    tutorial_events.push(false);
-    tutorial_char.push(0);
+    tutorial_tests.push(false);
+    tutorial_draws.push(false);
+    tutorial_chars.push(0);
     tutorial_lines.push("The goal is to get your carbons into the goal zone (the blue tile), after both players have played their cards, each player is awarded points corresponding the amount of carbons in the goal zone.");
-    tutorial_events.push(false);
-    tutorial_char.push(0);
+    tutorial_tests.push(false);
+    tutorial_draws.push(false);
+    tutorial_chars.push(0);
     tutorial_lines.push("When you play a card, you can choose to effect either team's carbon, maybe you would like to move your carbon into the goal zone, or move your opponent's out of it.");
-    tutorial_events.push(false);
-    tutorial_char.push(0);
+    tutorial_tests.push(false);
+    tutorial_draws.push(false);
+    tutorial_chars.push(0);
     tutorial_lines.push("cool! Lets try it out!");
-    tutorial_events.push(false);
-    tutorial_char.push(3);
-    tutorial_lines.push("Ok, I'll be blue and you can be red, why don't you try selecting a card and seeing what happens?");
-    tutorial_events.push(function(){ return g.player_turn == 2; });
-    tutorial_char.push(0);
-    tutorial_lines.push("Cool, so you played card name to move your carbon to tile name");
-    tutorial_events.push(false);
-    tutorial_char.push(0);
+    tutorial_tests.push(false);
+    tutorial_draws.push(false);
+    tutorial_chars.push(3);
+    tutorial_lines.push("Ok, I'll be blue and you can be red, why don't you try selecting a card and see what happens?");
+    tutorial_tests.push(function(){ return g.player_turn == 2; });
+    tutorial_draws.push(false);
+    tutorial_chars.push(0);
+    tutorial_lines.push(function() { var last_event = g.events[g.last_event-1]; return "Cool, so you played \""+last_event.title+"\" to move carbon to \""+g.nodes[last_event.to_id-1].title+"\"."; });
+    tutorial_tests.push(false);
+    tutorial_draws.push(false);
+    tutorial_chars.push(0);
     tutorial_lines.push("Now I'll go");
-    tutorial_events.push(function(){ return g.player_turn == 1; });
-    tutorial_char.push(0);
-    tutorial_lines.push("Ok, I played card name to move on of my carbons to tile name.");
-    tutorial_events.push(false);
-    tutorial_char.push(0);
+    tutorial_tests.push(function(){ return g.player_turn == 1; });
+    tutorial_draws.push(false);
+    tutorial_chars.push(0);
+    tutorial_lines.push(function() { var last_event = g.events[g.last_event-1]; return "Ok, I played \""+last_event.title+"\" to move carbon to \""+g.nodes[last_event.to_id-1].title+"\"."; });
+    tutorial_tests.push(false);
+    tutorial_draws.push(false);
+    tutorial_chars.push(0);
     tutorial_lines.push("See how different actions make carbon move throughout our environment? Carbon affects just about every part of our planet!");
-    tutorial_events.push(false);
-    tutorial_char.push(0);
+    tutorial_tests.push(false);
+    tutorial_draws.push(false);
+    tutorial_chars.push(0);
     tutorial_lines.push("Wow! Cool!");
-    tutorial_events.push(false);
-    tutorial_char.push(3);
+    tutorial_tests.push(false);
+    tutorial_draws.push(false);
+    tutorial_chars.push(3);
     tutorial_lines.push("Yeah! In this game, the goal zone moves every three turns, so plan ahead! If you want to keep playing, It's your turn!");
-    tutorial_events.push(false);
-    tutorial_char.push(0);
+    tutorial_tests.push(false);
+    tutorial_draws.push(false);
+    tutorial_chars.push(0);
 
     if(game.multiplayer == MULTIPLAYER_TUT)
       tutorialDisplayMessage();
@@ -548,7 +598,7 @@ var GamePlayScene = function(game, stage)
 
     if(game.multiplayer == MULTIPLAYER_TUT)
     {
-      if(tutorial_events.length > tutorial_n && (tutorial_events[tutorial_n] && tutorial_events[tutorial_n]()))
+      if(tutorial_tests.length > tutorial_n && (tutorial_tests[tutorial_n] && tutorial_tests[tutorial_n]()))
       {
         tutorial_n++;
         tutorialDisplayMessage();
@@ -884,7 +934,7 @@ var GamePlayScene = function(game, stage)
     }
     else if(input_state == INPUT_TUTORIAL)
     {
-      var c = tutorial_char[tutorial_n];
+      var c = tutorial_chars[tutorial_n];
       if(c == 0)
       {
         dest_0 = 1;
@@ -931,7 +981,7 @@ var GamePlayScene = function(game, stage)
       case TURN_WAIT_FOR_JOIN: break;
       case TURN_WAIT: break;
       case TURN_CHOOSE_CARD:
-        if(g.turn == 0 && game.multiplayer != MULTIPLAYER_TUT)
+        if(g.turn == 0 && (game.multiplayer != MULTIPLAYER_TUT || input_state == INPUT_RESUME))
         {
           var y = dc.height-140 + Math.sin(n_ticks/10)*10;
           var w = 150;
@@ -996,6 +1046,10 @@ var GamePlayScene = function(game, stage)
         break;
     }
 
+    if(game.multiplayer == MULTIPLAYER_TUT)
+    {
+      if(tutorial_draws[tutorial_n]) tutorial_draws[tutorial_n]();
+    }
   };
 
   self.cleanup = function()
@@ -1019,7 +1073,7 @@ var GamePlayScene = function(game, stage)
 
   var tutorialDoneDisplay = function ()
   {
-    if((!tutorial_events[tutorial_n] || tutorial_events[tutorial_n]()) && tutorial_events.length > tutorial_n)
+    if((!tutorial_tests[tutorial_n] || tutorial_tests[tutorial_n]()) && tutorial_tests.length > tutorial_n)
     {
       tutorial_n++;
       tutorialDisplayMessage();
@@ -1032,7 +1086,9 @@ var GamePlayScene = function(game, stage)
   var tutorialDisplayMessage = function()
   {
     input_state = INPUT_TUTORIAL;
-    tutorial_canvdom.popDismissableMessage(textToLines(dc, "12px Open Sans", blurb_w-20, tutorial_lines[tutorial_n]),blurb_x+5,blurb_y,blurb_w-10,200,tutorialDoneDisplay);
+    var line = tutorial_lines[tutorial_n];
+    if(typeof line == "function") line = line();
+    tutorial_canvdom.popDismissableMessage(textToLines(dc, "12px Open Sans", blurb_w-20, line),blurb_x+5,blurb_y,blurb_w-10,200,tutorialDoneDisplay);
   }
 
   var genSummary = function()
@@ -1041,9 +1097,9 @@ var GamePlayScene = function(game, stage)
     var target = g.players[chosen_target_p-1];
     var text;
     if(g.player_turn == chosen_target_p)
-      text = player.title+" played "+g.events[player.hand[chosen_card_i]-1].title+" on their own carbon!";
+      text = player.title+" played \""+g.events[player.hand[chosen_card_i]-1].title+"\" on their own carbon!";
     else
-      text = player.title+" played "+g.events[player.hand[chosen_card_i]-1].title+" on their opponent's carbon!";
+      text = player.title+" played \""+g.events[player.hand[chosen_card_i]-1].title+"\" on their opponent's carbon!";
 
     summary = [textToLines(dc, "12px Open Sans", announce_w-10, text)];
     summary.push(textToLines(dc, "12px Open Sans", announce_w-10, "It's now "+g.players[g.player_turn%2].title+"'s turn!"));
