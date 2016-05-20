@@ -121,9 +121,9 @@ var CycleGame = function()
   self.goal_shift = 0;
 
   self.next_goal_node = 0;
-  self.last_goal_node = 0;
-  self.last_event = 0;
-  self.last_target = 0;
+
+  self.history = [];
+  self.deltas = [];
 }
 
 var GameState = function()
@@ -147,5 +147,8 @@ var StateDelta = function()
 
   self.node_red_delta_n = [];
   self.node_blue_delta_n = [];
+
+  self.pts_red_delta_n = 0;
+  self.pts_blue_delta_n = 0;
 }
 

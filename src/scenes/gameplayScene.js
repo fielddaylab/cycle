@@ -743,20 +743,23 @@ var GamePlayScene = function(game, stage)
     //transition
     if(transition_t)
     {
+      var state = g.history[g.turn*2+(g.player_turn-1)-1];
+      var delta = g.deltas[g.turn*2+(g.player_turn-1)-1];
       if(transition_t < TRANSITION_KEY_SHUFFLE)
       {
         var random_highlit_tok_i;
         var toks_at_last_target;
-        var last_event = g.events[g.last_event-1];
+        var last_event = g.events[delta.event_id-1];
+        //var last_event = g.events[g.last_event-1];
         var fromnode = g.nodes[last_event.from_id-1];
-        if(g.last_target == 1) target_toks = fromnode.disp_p1_tokens;
-        else                   target_toks = fromnode.disp_p2_tokens;
+        if(delta.player_target == 1) target_toks = fromnode.disp_p1_tokens;
+        else                         target_toks = fromnode.disp_p2_tokens;
         random_highlit_tok_i = Math.floor(Math.random()*target_toks);
 
         for(var i = 0; i < g.tokens.length; i++)
         {
           var t = g.tokens[i];
-          if(t.disp_node_id == fromnode.id && t.player_id == g.last_target)
+          if(t.disp_node_id == fromnode.id && t.player_id == delta.player_target)
           {
             if(random_highlit_tok_i == 0)
               ctx.drawImage(highlit_token_icon,t.x-2,t.y-2,t.w+4,t.h+4);
@@ -783,7 +786,7 @@ var GamePlayScene = function(game, stage)
           for(var i = 0; i < g.tokens.length; i++)
           {
             var t = g.tokens[i];
-            if(t.disp_node_id == g.nodes[g.last_goal_node-1].id)
+            if(t.disp_node_id == g.nodes[state.goal_node-1].id)
             {
                    if(t.player_id == 1) ctx.drawImage(g.players[0].token_img,lerp(t.x-2,p1_pts_bounds.x,progress*progress),lerp(t.y-2,p1_pts_bounds.y,1-(1-progress)*(1-progress)),t.w+4,t.h+4);
               else if(t.player_id == 2) ctx.drawImage(g.players[1].token_img,lerp(t.x-2,p2_pts_bounds.x,progress*progress),lerp(t.y-2,p2_pts_bounds.y,1-(1-progress)*(1-progress)),t.w+4,t.h+4);

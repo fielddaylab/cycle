@@ -141,10 +141,39 @@ var constructGame = function(game_data,sr)
     g.next_goal_node = (Math.floor(sr.next()*g.nodes.length))+1;
   }
 
-  g.last_goal_node = g.goal_node;
   g.goal_shift = g.turns_per_goal_shift;
 
+  pushState(g);
+
   return g;
+}
+
+var pushState = function(g)
+{
+  var state = new GameState();
+  state.turn = g.turn;
+  state.player_turn = g.player_turn;
+  state.goal_node = g.goal_node;
+  var r = 0;
+  var b = 0;
+  var n;
+  var t;
+  for(var i = 0; i < g.nodes.length; i++)
+  {
+    n = g.nodes[i];
+    for(var j = 0; j < g.tokens.length; j++)
+    {
+      t = g.tokens[j];
+      if(n.id == t.node_id)
+      {
+             if(t.player_id == 1) r++;
+        else if(t.player_id == 2) b++;
+      }
+    }
+    state.node_red_n.push(r);
+    state.node_blue_n.push(b);
+  }
+  g.history.push(state);
 }
 
 var synthesizeEventInfo = function(event)
@@ -220,10 +249,18 @@ var discardCard = function(card,deck)
 
 var playCard = function(game, index, target, sr)
 {
+  var delta = new StateDelta();
+  delta.player_turn = game.player_turn;
+  delta.event_id = game.players[game.player_turn-1].hand[index];
+  delta.player_target = target;
+  for(var i = 0; i < game.nodes.length; i++)
+  {
+    delta.node_red_delta_n[i] = 0;
+    delta.node_blue_delta_n[i] = 0;
+  }
+
   //choose/move tokens
-  game.last_event = game.players[game.player_turn-1].hand[index];
-  game.last_target = target;
-  var event = game.events[game.last_event-1];
+  var event = game.events[delta.event_id-1];
   var token;
   var eligibletoks = [];
   for(var i = 0; i < game.tokens.length; i++)
@@ -237,6 +274,10 @@ var playCard = function(game, index, target, sr)
     token.event_id = event.id;
     token.event_progress = 0;
 
+    //delta away from node
+         if(token.player_id == 1) delta.node_red_delta_n[token.disp_node_id-1]--;
+    else if(token.player_id == 2) delta.node_blue_delta_n[token.disp_node_id-1]--;
+
     if(token.event_progress == event.time)
     {
       token.node_id = event.to_id;
@@ -244,6 +285,9 @@ var playCard = function(game, index, target, sr)
       token.event_progress = 0;
       token.transitions++;
       tokenWorldTargetNode(token,game.nodes[token.node_id-1],game.tokens);
+
+           if(token.player_id == 1) delta.node_red_delta_n[token.node_id-1]--;
+      else if(token.player_id == 2) delta.node_blue_delta_n[token.node_id-1]--;
     }
     else
       tokenWorldTargetEvent(token,game.events[token.event_id-1],token.event_progress);
@@ -283,14 +327,19 @@ var playCard = function(game, index, target, sr)
     }
 
     //score points
+    var t;
     for(var i = 0; i < game.tokens.length; i++)
     {
-      if(game.tokens[i].node_id == game.goal_node)
-        game.players[game.tokens[i].player_id-1].pts++;
+      t = game.tokens[i];
+      if(t.node_id == game.goal_node)
+      {
+        if(t.player_id == 1) delta.pts_red_delta_n++;
+        if(t.player_id == 2) delta.pts_blue_delta_n++;
+        game.players[t.player_id-1].pts++;
+      }
     }
 
     game.goal_shift--;
-    game.last_goal_node = game.goal_node;
     //move goal
     if(game.goal_shift == 0)
     {
@@ -330,5 +379,7 @@ var playCard = function(game, index, target, sr)
     }
   }
 
+  game.deltas.push(delta);
+  pushState(game);
 }
 
