@@ -287,18 +287,6 @@ var GamePlayScene = function(game, stage)
     announce_y = dc.height-110;
     announce_w = dc.width-(sidebar_w*2)-120;
     announce_h = 100;
-    summary = [];
-    var text;
-    var team = g.players[0].title;
-    if(game.multiplayer == MULTIPLAYER_AI || game.multiplayer == MULTIPLAYER_TUT) text = "You are "+team+", and it's "+team+"'s turn!";
-    if(game.multiplayer == MULTIPLAYER_LOCAL) text = "It's "+team+"'s turn!";
-    if(game.multiplayer == MULTIPLAYER_NET_CREATE)
-    {
-      if(turn_stage == TURN_WAIT_FOR_JOIN) text = "You are "+team+"! Hold tight while we wait for your opponent... (Your Room #:"+game.join+")";
-      else text = "You are "+team+", and it's "+team+"'s turn!";
-    }
-    if(game.multiplayer == MULTIPLAYER_NET_JOIN) text = "You are Blue Team. It's "+team+"'s turn! (Waiting on your opponent...)";
-    summary = [textToLines(dc, "12px Open Sans", announce_w-10, text)];
 
     switch(game.multiplayer)
     {
@@ -316,6 +304,19 @@ var GamePlayScene = function(game, stage)
     }
 
     input_state = INPUT_RESUME;
+
+    summary = [];
+    var text;
+    var team = g.players[0].title;
+    if(game.multiplayer == MULTIPLAYER_AI || game.multiplayer == MULTIPLAYER_TUT) text = "You are "+team+", and it's "+team+"'s turn!";
+    if(game.multiplayer == MULTIPLAYER_LOCAL) text = "It's "+team+"'s turn!";
+    if(game.multiplayer == MULTIPLAYER_NET_CREATE)
+    {
+      if(turn_stage == TURN_WAIT_FOR_JOIN) text = "You are "+team+"! Hold tight while we wait for your opponent... (You are room #"+game.join+")";
+      else text = "You are "+team+", and it's "+team+"'s turn!";
+    }
+    if(game.multiplayer == MULTIPLAYER_NET_JOIN) text = "You are Blue Team. It's "+team+"'s turn! (Waiting on your opponent...)";
+    summary = [textToLines(dc, "12px Open Sans", announce_w-10, text)];
 
     chosen_card_i = -1;
     chosen_target_p = 0;

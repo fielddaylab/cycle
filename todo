@@ -1,6 +1,6 @@
 immediate todo as of Tues night
-- Tokens on borders
-/- Announcer more expressive
+X- Tokens on borders
+X- Announcer more expressive
 X- Tutorial
 - New Assets (?)
 X- End Game
@@ -9,21 +9,21 @@ X- keep spinning? (random pos- not convinced blatant enough)
 
 mockup notes
 
-- What does intro screen look like (choose gametype, etc...)
-- Who's turn is it? - in game conversation
+X- What does intro screen look like (choose gametype, etc...)
+X- Who's turn is it? - in game conversation
 - What happens when player 2 plays (fill in details between "I've played my card" to "It is again my turn")? (whether it be internet player, AI, or local) - in game conversation
-- What happens when the game is over?
-- Does it show how many turns left before goal shifts? 
+X- What happens when the game is over?
+- Does it show how many turns left before goal shifts?
 - The "(TokenImg) X3" things might look like it's counting # tokens you have on the board (which is actually constant)
-- Is there to be any indicator of how many tokens owned by each player exist on each space? (Can get crowded)
-- Given that the cards have less info as the game goes on- what does that look like? (Question marks in place of icons?)
+X- Is there to be any indicator of how many tokens owned by each player exist on each space? (Can get crowded)
+X- Given that the cards have less info as the game goes on- what does that look like? (Question marks in place of icons?)
 - What does it look like when waiting for other player's turn? - in game conversation
 - What turn # is it? 
-- How long until "layer of information" removed (ie "lose icons in 2 turns" or "at turn #3")?
+X(Ignore)- How long until "layer of information" removed (ie "lose icons in 2 turns" or "at turn #3")?
 - How long until "end of game"?
-- What should I be doing right now? (previously, a prompt at top of screen saying ie- "Choose an Event Card") - in game conversation
-- What is the top black bar for? (What happens when you click the triple-bar menu icon thing?) - nav bar. should be outside of canvas element
-- Where do the cards hover in relation to the non-hovering card (difference btwn selecting top card and bottom card... goes offscreen?)
+X- What should I be doing right now? (previously, a prompt at top of screen saying ie- "Choose an Event Card") - in game conversation
+X- What is the top black bar for? (What happens when you click the triple-bar menu icon thing?) - nav bar. should be outside of canvas element
+X- Where do the cards hover in relation to the non-hovering card (difference btwn selecting top card and bottom card... goes offscreen?)
 - Who am I? (in the case of networked) - in game conversation
 
 needs
