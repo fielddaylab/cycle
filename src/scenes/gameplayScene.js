@@ -237,7 +237,7 @@ var GamePlayScene = function(game, stage)
                 hover_card.dy = card.y-card.h;
                 hover_card.t = 0;
 
-                genSummary();
+                genPreSummary();
                 turn_stage = TURN_SUMMARY;
               },3000);
             }
@@ -446,7 +446,7 @@ var GamePlayScene = function(game, stage)
     tutorial_tests.push(function(){ return g.player_turn == 2; });
     tutorial_draws.push(false);
     tutorial_chars.push(0);
-    tutorial_lines.push(function() { var last_event = g.events[g.last_event-1]; return "Cool, so you played \""+last_event.title+"\" to move carbon to \""+g.nodes[last_event.to_id-1].title+"\"."; });
+    tutorial_lines.push(function() { var delta = g.deltas[g.turn*2+(g.player_turn-1)-1]; var last_event = g.events[delta.event_id-1]; return "Cool, so you played \""+last_event.title+"\" to move carbon to \""+g.nodes[last_event.to_id-1].title+"\"."; });
     tutorial_tests.push(false);
     tutorial_draws.push(false);
     tutorial_chars.push(0);
@@ -454,7 +454,7 @@ var GamePlayScene = function(game, stage)
     tutorial_tests.push(function(){ return g.player_turn == 1; });
     tutorial_draws.push(false);
     tutorial_chars.push(0);
-    tutorial_lines.push(function() { var last_event = g.events[g.last_event-1]; return "Ok, I played \""+last_event.title+"\" to move carbon to \""+g.nodes[last_event.to_id-1].title+"\"."; });
+    tutorial_lines.push(function() { var delta = g.deltas[g.turn*2+(g.player_turn-1)-1]; var last_event = g.events[delta.event_id-1]; return "Ok, I played \""+last_event.title+"\" to move carbon to \""+g.nodes[last_event.to_id-1].title+"\"."; });
     tutorial_tests.push(false);
     tutorial_draws.push(false);
     tutorial_chars.push(0);
@@ -528,7 +528,7 @@ var GamePlayScene = function(game, stage)
               hover_card.dy = card.y-card.h;
               hover_card.t = 0;
 
-              genSummary();
+              genPreSummary();
               turn_stage = TURN_SUMMARY;
             }
           }
@@ -1094,7 +1094,7 @@ var GamePlayScene = function(game, stage)
     tutorial_canvdom.popDismissableMessage(textToLines(dc, "12px Open Sans", blurb_w-20, line),blurb_x+5,blurb_y,blurb_w-10,200,tutorialDoneDisplay);
   }
 
-  var genSummary = function()
+  var genPreSummary = function()
   {
     var player = g.players[g.player_turn-1];
     var target = g.players[chosen_target_p-1];
@@ -1105,6 +1105,29 @@ var GamePlayScene = function(game, stage)
       text = player.title+" played \""+g.events[player.hand[chosen_card_i]-1].title+"\" on their opponent's carbon!";
 
     summary = [textToLines(dc, "12px Open Sans", announce_w-10, text)];
+  }
+
+  var genPostSummary = function()
+  {
+    var delta = g.deltas[g.turn*2+(g.player_turn-1)-1];
+
+    var player = g.players[delta.player_turn-1];
+    var target = g.players[delta.player_target-1];
+    var event = g.events[delta.event_id-1];
+
+    var text;
+    if(player == target)
+      text = player.title+" played \""+event.title+"\" on their own carbon!";
+    else
+      text = player.title+" played \""+event.title+"\" on their opponent's carbon!";
+
+    summary = [textToLines(dc, "12px Open Sans", announce_w-10, text)];
+    if(delta.pts_red_delta_n > 0 && delta.pts_blue_delta_n == 0)
+      summary.push(textToLines(dc, "12px Open Sans", announce_w-10, "RED TEAM gained "+delta.pts_red_delta_n+" pts!"));
+    else if(delta.pts_red_delta_n == 0 && delta.pts_blue_delta_n > 0)
+      summary.push(textToLines(dc, "12px Open Sans", announce_w-10, "BLUE TEAM gained "+delta.pts_blue_delta_n+" pts!"));
+    else if(delta.pts_red_delta_n > 0 && delta.pts_blue_delta_n > 0)
+      summary.push(textToLines(dc, "12px Open Sans", announce_w-10, "RED TEAM gained "+delta.pts_red_delta_n+" pts, and BLUE TEAM gained "+delta.pts_blue_delta_n+" pts!"));
     summary.push(textToLines(dc, "12px Open Sans", announce_w-10, "It's now "+g.players[g.player_turn%2].title+"'s turn!"));
   }
 
@@ -1502,7 +1525,7 @@ var GamePlayScene = function(game, stage)
         {
           if(game.multiplayer == MULTIPLAYER_NET_CREATE || game.multiplayer == MULTIPLAYER_NET_JOIN)
             cli.add(cli.id+" MOVE "+chosen_card_i+" "+chosen_target_p);
-          genSummary();
+          genPreSummary();
           turn_stage = TURN_SUMMARY;
           hit_ui = false;
           ready_btn.hit({});
