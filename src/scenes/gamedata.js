@@ -126,3 +126,26 @@ var CycleGame = function()
   self.last_target = 0;
 }
 
+var GameState = function()
+{
+  var self = this;
+  self.node_red_n = [];
+  self.node_blue_n = [];
+
+  self.turn = 0;
+  self.player_turn = 0;
+  self.goal_node = 0;
+}
+
+var StateDelta = function()
+{
+  var self = this;
+
+  self.player_turn = 0;
+  self.event_id = 0;
+  self.player_target = 0;
+
+  self.node_red_delta_n = [];
+  self.node_blue_delta_n = [];
+}
+

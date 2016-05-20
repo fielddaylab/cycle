@@ -67,7 +67,7 @@ var tokenWorldTargetNode = function(t,n,tokens)
   var found = true;
   var x;
   var y;
-  for(var i = 0; i < tokens.length && found; i++)
+  for(var i = 0; i < 100 && found; i++)
   {
     x = sx + i*dx/2*t.ww;
     y = sy + i*dy/2*t.wh;
