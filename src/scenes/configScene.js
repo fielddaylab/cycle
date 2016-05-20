@@ -240,12 +240,12 @@ var ConfigScene = function(game, stage)
         dc.context.drawImage(arrow_img,-30,-15,60,30);
         dc.context.restore();
         if(!joins.length)    {                  dc.context.fillStyle = "#000000"; dc.context.fillText("Waiting For Room...", jbtn_a.x+10, jbtn_a.y+20); };
-        if(joins.length > 0) { rectBtn(jbtn_a); dc.context.fillText("Join "+joins[0], jbtn_a.x+10, jbtn_a.y+20); }
-        if(joins.length > 1) { rectBtn(jbtn_b); dc.context.fillText("Join "+joins[1], jbtn_b.x+10, jbtn_b.y+20); }
-        if(joins.length > 2) { rectBtn(jbtn_c); dc.context.fillText("Join "+joins[2], jbtn_c.x+10, jbtn_c.y+20); }
-        if(joins.length > 3) { rectBtn(jbtn_d); dc.context.fillText("Join "+joins[3], jbtn_d.x+10, jbtn_d.y+20); }
-        if(joins.length > 4) { rectBtn(jbtn_e); dc.context.fillText("Join "+joins[4], jbtn_e.x+10, jbtn_e.y+20); }
-        if(joins.length > 5) { rectBtn(jbtn_f); dc.context.fillText("Join "+joins[5], jbtn_f.x+10, jbtn_f.y+20); }
+        if(joins.length > 0) { rectBtn(jbtn_a); dc.context.fillText("Join #"+joins[0], jbtn_a.x+10, jbtn_a.y+20); }
+        if(joins.length > 1) { rectBtn(jbtn_b); dc.context.fillText("Join #"+joins[1], jbtn_b.x+10, jbtn_b.y+20); }
+        if(joins.length > 2) { rectBtn(jbtn_c); dc.context.fillText("Join #"+joins[2], jbtn_c.x+10, jbtn_c.y+20); }
+        if(joins.length > 3) { rectBtn(jbtn_d); dc.context.fillText("Join #"+joins[3], jbtn_d.x+10, jbtn_d.y+20); }
+        if(joins.length > 4) { rectBtn(jbtn_e); dc.context.fillText("Join #"+joins[4], jbtn_e.x+10, jbtn_e.y+20); }
+        if(joins.length > 5) { rectBtn(jbtn_f); dc.context.fillText("Join #"+joins[5], jbtn_f.x+10, jbtn_f.y+20); }
         dc.context.textAlign = "center";
         dc.context.font = "40px Open Sans";
         dc.context.fillText("Waiting for Web Game...",dc.width/2,title_y);
