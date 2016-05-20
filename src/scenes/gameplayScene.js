@@ -208,6 +208,7 @@ var GamePlayScene = function(game, stage)
         setTimeout(function() //oh god...
         {
           playCard(g,chosen_card_i,chosen_target_p,sr);
+          genPostSummary();
           chosen_card_i = -1;
           chosen_target_p = 0;
           transition_t = 1;
@@ -1128,7 +1129,7 @@ var GamePlayScene = function(game, stage)
       summary.push(textToLines(dc, "12px Open Sans", announce_w-10, "BLUE TEAM gained "+delta.pts_blue_delta_n+" pts!"));
     else if(delta.pts_red_delta_n > 0 && delta.pts_blue_delta_n > 0)
       summary.push(textToLines(dc, "12px Open Sans", announce_w-10, "RED TEAM gained "+delta.pts_red_delta_n+" pts, and BLUE TEAM gained "+delta.pts_blue_delta_n+" pts!"));
-    summary.push(textToLines(dc, "12px Open Sans", announce_w-10, "It's now "+g.players[g.player_turn%2].title+"'s turn!"));
+    summary.push(textToLines(dc, "12px Open Sans", announce_w-10, "It's now "+g.players[g.player_turn-1].title+"'s turn!"));
   }
 
   //no data- just used for interface
