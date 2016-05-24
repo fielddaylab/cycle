@@ -2,6 +2,8 @@ var w;
 var h;
 var lw;
 
+var null_icon = GenIcon(1,1);
+
 w = 100;
 h = 100;
 lw = 10;
@@ -60,7 +62,6 @@ circle_icon.context.strokeStyle = "#BBBBBB";
 circle_icon.context.lineWidth = 5;
 circle_icon.context.beginPath();
 circle_icon.context.arc(w/2,h/2,w/2-circle_icon.context.lineWidth,0,2*Math.PI);
-circle_icon.context.fill();
 circle_icon.context.stroke();
 
 w = 100;
@@ -176,4 +177,13 @@ blue_win_img.src = "assets/blue_win.png";
 
 var tie_win_img = new Image();
 tie_win_img.src = "assets/tie_win.png";
+
+var carbon_bg_img = new Image();
+carbon_bg_img.src = "assets/carbon_bg.png";
+
+var water_bg_img = new Image();
+water_bg_img.src = "assets/water_bg.png";
+
+var nitrogen_bg_img = new Image();
+nitrogen_bg_img.src = "assets/nitrogen_bg.png";
 

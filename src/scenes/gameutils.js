@@ -31,7 +31,6 @@ var tokenWorldTargetEvent = function(t,e,progress)
 }
 var tokenWorldTargetNode = function(t,n,tokens)
 {
-  /*
   var tries = 100;
   var ok = false;
   while(!ok && tries > 0)
@@ -47,8 +46,8 @@ var tokenWorldTargetNode = function(t,n,tokens)
     tries--;
   }
   if(tries <= 0) console.log("gave up!");
-  */
 
+  /*
   var sx;
   var sy;
   var dx = 1;
@@ -81,6 +80,7 @@ var tokenWorldTargetNode = function(t,n,tokens)
 
   t.target_wx = x;
   t.target_wy = y;
+  */
 }
 
 var transformGame = function(canv,nodes,events,tokens)

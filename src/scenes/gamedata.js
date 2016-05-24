@@ -124,6 +124,8 @@ var CycleGame = function()
 
   self.history = [];
   self.deltas = [];
+
+  self.bg_img = new Image();
 }
 
 var GameState = function()

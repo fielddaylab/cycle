@@ -8,6 +8,8 @@ var constructGame = function(game_data,sr)
   var token;
   var total_commonality; //used in populating deck
 
+  g.bg_img.src = "assets/"+game_data.bg_img+".png";
+
   for(var i = 0; i < game_data.players.length && i < 2; i++)
   {
     player = new Player();
@@ -34,6 +36,7 @@ var constructGame = function(game_data,sr)
     node.wh = game_data.nodes[i].h;
 
     node.img = new Image(); node.img.src = "assets/"+game_data.nodes[i].img+".png";
+    node.img = null_icon;
 
     //inject id into event data
     for(var j = 0; j < game_data.events.length; j++)

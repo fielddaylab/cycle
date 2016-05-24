@@ -615,6 +615,7 @@ var GamePlayScene = function(game, stage)
     //ctx.fillRect(0,0,dc.width,topmost_bar_y);
     ctx.fillStyle = white;
     dc.roundRectOptions(0,topmost_bar_y,dc.width,dc.height-topmost_bar_y,5,1,1,1,1,0,1);
+    ctx.drawImage(g.bg_img,sidebar_w,topmost_bar_y+20,dc.width-sidebar_w*2,dc.height-topmost_bar_y-120);
 
     ctx.textAlign = "left";
 
@@ -699,6 +700,7 @@ var GamePlayScene = function(game, stage)
     for(var i = 0; i < g.nodes.length; i++)
     {
       var n = g.nodes[i];
+      /*
       if(e && (e.from_id == n.id || e.to_id == n.id))
       {
         if(n == goal_node) ctx.drawImage(hex_g_img,n.x,n.y,n.w,n.h);
@@ -709,6 +711,7 @@ var GamePlayScene = function(game, stage)
         if(n == goal_node) ctx.drawImage(hex_b_img,n.x,n.y,n.w,n.h);
         else               ctx.drawImage(hex_img,n.x,n.y,n.w,n.h);
       }
+      */
       ctx.drawImage(n.img,n.x,n.y,n.w,n.h);
     }
 
