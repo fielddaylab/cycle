@@ -35,7 +35,8 @@ var constructGame = function(game_data,sr)
     node.ww = game_data.nodes[i].w;
     node.wh = game_data.nodes[i].h;
 
-    node.img = new Image(); node.img.src = "assets/"+game_data.nodes[i].img+".png";
+    node.img.src = "assets/"+game_data.nodes[i].img+".png";
+    node.icon_img.src = "assets/"+game_data.nodes[i].icon_img+".png";
     node.img = null_icon;
 
     //inject id into event data

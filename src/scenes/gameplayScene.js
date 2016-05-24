@@ -700,7 +700,6 @@ var GamePlayScene = function(game, stage)
     for(var i = 0; i < g.nodes.length; i++)
     {
       var n = g.nodes[i];
-      /*
       if(e && (e.from_id == n.id || e.to_id == n.id))
       {
         if(n == goal_node) ctx.drawImage(hex_g_img,n.x,n.y,n.w,n.h);
@@ -709,9 +708,7 @@ var GamePlayScene = function(game, stage)
       else
       {
         if(n == goal_node) ctx.drawImage(hex_b_img,n.x,n.y,n.w,n.h);
-        else               ctx.drawImage(hex_img,n.x,n.y,n.w,n.h);
       }
-      */
       ctx.drawImage(n.img,n.x,n.y,n.w,n.h);
     }
 
@@ -1187,8 +1184,8 @@ var GamePlayScene = function(game, stage)
       var to_node = g.nodes[event.to_id-1];
       if(g.turn < 3 || (g.turn == 3 && input_state == INPUT_INTERRUPT))
       {
-        ctx.drawImage(from_node.img,self.x+20,self.y+20,icon_s,icon_s);
-        ctx.drawImage(to_node.img,self.x+self.w-20-icon_s,self.y+20,icon_s,icon_s);
+        ctx.drawImage(from_node.icon_img,self.x+20,self.y+20,icon_s,icon_s);
+        ctx.drawImage(to_node.icon_img,self.x+self.w-20-icon_s,self.y+20,icon_s,icon_s);
         ctx.drawImage(arrow_icon,self.x+self.w/2-(icon_s/4),self.y+20+icon_s/4,icon_s/2,icon_s/2);
       }
       else
@@ -1199,20 +1196,20 @@ var GamePlayScene = function(game, stage)
         var x; var y;
         x = self.x+self.w/2-icon_s/2+Math.cos(t+Math.PI)*icon_s/2;
         y = self.y+20+Math.sin(t+Math.PI)*icon_s/2;
-        ctx.drawImage(from_node.img,x,y,icon_s,icon_s);
+        ctx.drawImage(from_node.icon_img,x,y,icon_s,icon_s);
         x = self.x+self.w/2-icon_s/2+Math.cos(t)        *icon_s/2;
         y = self.y+20+Math.sin(t)        *icon_s/2;
-        ctx.drawImage(to_node.img,x,y,icon_s,icon_s);
+        ctx.drawImage(to_node.icon_img,x,y,icon_s,icon_s);
 */
         if(self.index%2)
         {
-          ctx.drawImage(from_node.img,self.x+20,self.y+20,icon_s,icon_s);
-          ctx.drawImage(to_node.img,self.x+self.w-20-icon_s,self.y+20,icon_s,icon_s);
+          ctx.drawImage(from_node.icon_img,self.x+20,self.y+20,icon_s,icon_s);
+          ctx.drawImage(to_node.icon_img,self.x+self.w-20-icon_s,self.y+20,icon_s,icon_s);
         }
         else
         {
-          ctx.drawImage(to_node.img,self.x+20,self.y+20,icon_s,icon_s);
-          ctx.drawImage(from_node.img,self.x+self.w-20-icon_s,self.y+20,icon_s,icon_s);
+          ctx.drawImage(to_node.icon_img,self.x+20,self.y+20,icon_s,icon_s);
+          ctx.drawImage(from_node.icon_img,self.x+self.w-20-icon_s,self.y+20,icon_s,icon_s);
         }
       }
 
@@ -1343,8 +1340,8 @@ var GamePlayScene = function(game, stage)
       var to_node = g.nodes[event.to_id-1];
       if(g.turn < 3 || (g.turn == 3 && input_state == INPUT_INTERRUPT))
       {
-        ctx.drawImage(from_node.img,self.x+20,self.y+20,icon_s,icon_s);
-        ctx.drawImage(to_node.img,self.x+self.w-20-icon_s,self.y+20,icon_s,icon_s);
+        ctx.drawImage(from_node.icon_img,self.x+20,self.y+20,icon_s,icon_s);
+        ctx.drawImage(to_node.icon_img,self.x+self.w-20-icon_s,self.y+20,icon_s,icon_s);
         ctx.drawImage(arrow_icon,self.x+self.w/2-(icon_s/4),self.y+20+icon_s/4,icon_s/2,icon_s/2);
       }
       else
@@ -1355,20 +1352,20 @@ var GamePlayScene = function(game, stage)
         var x; var y;
         x = self.x+self.w/2-icon_s/2+Math.cos(t+Math.PI)*icon_s/2;
         y = self.y+20+Math.sin(t+Math.PI)*icon_s/2;
-        ctx.drawImage(from_node.img,x,y,icon_s,icon_s);
+        ctx.drawImage(from_node.icon_img,x,y,icon_s,icon_s);
         x = self.x+self.w/2-icon_s/2+Math.cos(t)        *icon_s/2;
         y = self.y+20+Math.sin(t)        *icon_s/2;
-        ctx.drawImage(to_node.img,x,y,icon_s,icon_s);
+        ctx.drawImage(to_node.icon_img,x,y,icon_s,icon_s);
 */
         if(chosen_card_i%2)
         {
-          ctx.drawImage(from_node.img,self.x+20,self.y+20,icon_s,icon_s);
-          ctx.drawImage(to_node.img,self.x+self.w-20-icon_s,self.y+20,icon_s,icon_s);
+          ctx.drawImage(from_node.icon_img,self.x+20,self.y+20,icon_s,icon_s);
+          ctx.drawImage(to_node.icon_img,self.x+self.w-20-icon_s,self.y+20,icon_s,icon_s);
         }
         else
         {
-          ctx.drawImage(to_node.img,self.x+20,self.y+20,icon_s,icon_s);
-          ctx.drawImage(from_node.img,self.x+self.w-20-icon_s,self.y+20,icon_s,icon_s);
+          ctx.drawImage(to_node.icon_img,self.x+20,self.y+20,icon_s,icon_s);
+          ctx.drawImage(from_node.icon_img,self.x+self.w-20-icon_s,self.y+20,icon_s,icon_s);
         }
       }
 

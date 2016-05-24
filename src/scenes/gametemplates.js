@@ -310,6 +310,7 @@ var CarbonCycleGameTemplate =
       {
         title:"Atmosphere",
         img:"atmosphere",
+        icon_img:"atmosphere",
         x:0.5,//0.5,
         y:0.6952,
         w:0.17,
@@ -318,6 +319,7 @@ var CarbonCycleGameTemplate =
       {
         title:"Animals",
         img:"animal",
+        icon_img:"animal",
         x:0.365,
         y:0.625,
         w:0.18,
@@ -326,6 +328,7 @@ var CarbonCycleGameTemplate =
       {
         title:"Plants",
         img:"plants",
+        icon_img:"plants",
         x:0.5,
         y:0.555,
         w:0.17,
@@ -334,6 +337,7 @@ var CarbonCycleGameTemplate =
       {
         title:"Earth (Surface)",
         img:"earth_surface",
+        icon_img:"earth_surface",
         x:0.365,
         y:0.485,
         w:0.18,
@@ -342,6 +346,7 @@ var CarbonCycleGameTemplate =
       {
         title:"Earth (Deep)",
         img:"earth_deep",
+        icon_img:"earth_deep",
         x:0.5,
         y:0.415,
         w:0.17,
@@ -350,6 +355,7 @@ var CarbonCycleGameTemplate =
       {
         title:"Fuel",
         img:"fuel",
+        icon_img:"fuel",
         x:0.63,
         y:0.625,
         w:0.18,
@@ -358,6 +364,7 @@ var CarbonCycleGameTemplate =
       {
         title:"Ocean",
         img:"ocean",
+        icon_img:"ocean",
         x:0.63,
         y:0.485,
         w:0.18,

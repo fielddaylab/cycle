@@ -12,7 +12,8 @@ var Node = function()
   self.ww = 0;
   self.wh = 0;
 
-  self.img = "";
+  self.img = new Image();
+  self.icon_img = new Image();
 
   self.id = 0;
   self.title = "Node";
