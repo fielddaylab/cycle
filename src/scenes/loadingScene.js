@@ -53,6 +53,7 @@ var LoadingScene = function(game, stage)
     img_srcs.push("assets/blue_win.png");
     img_srcs.push("assets/tie_win.png");
     img_srcs.push("assets/carbon_bg.png");
+    img_srcs.push("assets/carbon_fg.png");
     img_srcs.push("assets/nitrogen_bg.png");
     img_srcs.push("assets/water_bg.png");
     img_srcs.push("assets/bg.jpg");
