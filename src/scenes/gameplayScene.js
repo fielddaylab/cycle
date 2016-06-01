@@ -749,8 +749,12 @@ var GamePlayScene = function(game, stage)
       var dir = Math.atan2(d.y,d.x);
       var s = Math.sin(n_ticks/10);
 
-      ctx.strokeStyle = "#000000";
+      ctx.strokeStyle = "#639B15";
+      ctx.fillStyle = "#639B15";
       drawArrow(dc,a.x,a.y,b.x,b.y,10,15)
+      ctx.strokeStyle = "#FFFFFF";
+      ctx.fillStyle = "#FFFFFF";
+      drawArrow(dc,a.x,a.y,b.x,b.y,6,15)
     }
 
     //transition

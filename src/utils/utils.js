@@ -356,7 +356,7 @@ function drawArrow(canv,sx,sy,ex,ey,lw,aw)
   canv.context.lineTo(ex,ey);
   canv.context.lineTo(sx+(dx/dd*(dd-aw))-ox,sy+(dy/dd*(dd-aw))-oy);
   canv.context.stroke();
-  canv.context.fillStyle = "#000000";
+
   canv.context.beginPath();
   canv.context.arc(sx+(dx/dd*(dd-aw))+ox,sy+(dy/dd*(dd-aw))+oy,lw/2,0,2*Math.PI);
   canv.context.fill();
