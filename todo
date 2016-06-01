@@ -28,10 +28,10 @@ X- Where do the cards hover in relation to the non-hovering card (difference btw
 
 needs
 
-- icons to go on cards - waiting on illustrations from artist.
-- main map/node assets
-- corresponding 'node selected' assets to go with new assets
-- blue arrow asset (arrow@2x in zip) has drop shadow; assets that will be rotated can't have drop shadow baked in. (also, if an asset is going to be rotated, it's easiest for me if the asset is pointing to the right (cos(0),sin(0)) )
+X- icons to go on cards - waiting on illustrations from artist.
+X- main map/node assets
+X- corresponding 'node selected' assets to go with new assets
+X- blue arrow asset (arrow@2x in zip) has drop shadow; assets that will be rotated can't have drop shadow baked in. (also, if an asset is going to be rotated, it's easiest for me if the asset is pointing to the right (cos(0),sin(0)) )
 - any gradients used (can be 1px wide if gradient is vertical, 1px tall if horizontal, etc...)
-- fonts
+X- fonts (all fonts are open sans)
 
