@@ -697,17 +697,24 @@ var GamePlayScene = function(game, stage)
 
     //nodes
     var goal_node = g.nodes[g.goal_node-1];
+    var pulse = ((n_ticks/5)%10)/10;
+    pulse = 1-pulse;
+    pulse *= pulse;
+    pulse *= pulse;
+    pulse = 1-pulse;
     for(var i = 0; i < g.nodes.length; i++)
     {
       var n = g.nodes[i];
       if(e && (e.from_id == n.id || e.to_id == n.id))
+        ctx.drawImage(hex_icon,n.x,n.y,n.w,n.h);
+      if(n == goal_node)
       {
-        if(n == goal_node) ctx.drawImage(hex_g_img,n.x,n.y,n.w,n.h);
-        else               ctx.drawImage(hex_y_img,n.x,n.y,n.w,n.h);
-      }
-      else
-      {
-        if(n == goal_node) ctx.drawImage(hex_b_img,n.x,n.y,n.w,n.h);
+        ctx.globalAlpha = pulse;
+        ctx.globalAlpha *= ctx.globalAlpha;
+        ctx.globalAlpha *= ctx.globalAlpha;
+        ctx.globalAlpha = 1-ctx.globalAlpha;
+        ctx.drawImage(hex_icon,n.x+n.w/2-n.w/2*pulse,n.y+n.h/2-n.h/2*pulse,n.w*pulse,n.h*pulse);
+        ctx.globalAlpha = 1;
       }
       ctx.drawImage(n.img,n.x,n.y,n.w,n.h);
     }
