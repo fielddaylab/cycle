@@ -285,6 +285,12 @@ var WaterCycleGameTemplate =
     ],
 };
 
+var rx = .16;
+var ry = .12;
+var w = .19;
+var h = .145;
+var x = 0.5;
+var y = 0.57;
 var CarbonCycleGameTemplate =
 {
   tokens:14,
@@ -308,67 +314,67 @@ var CarbonCycleGameTemplate =
   nodes:
     [
       {
+        title:"Plants",
+        img:"plants",
+        icon_img:"plants",
+        x:x,
+        y:y,
+        w:w,
+        h:h,
+      },
+      {
         title:"Atmosphere",
         img:"atmosphere",
         icon_img:"atmosphere",
-        x:0.5,//0.5,
-        y:0.6952,
-        w:0.17,
-        h:0.14,
+        x:x+Math.cos(Math.PI/2+((0/6)*Math.PI*2))*rx,
+        y:y+Math.sin(Math.PI/2+((0/6)*Math.PI*2))*ry,
+        w:w,
+        h:h,
       },
       {
         title:"Animals",
         img:"animal",
         icon_img:"animal",
-        x:0.365,
-        y:0.625,
-        w:0.18,
-        h:0.14,
-      },
-      {
-        title:"Plants",
-        img:"plants",
-        icon_img:"plants",
-        x:0.5,
-        y:0.555,
-        w:0.17,
-        h:0.14,
+        x:x+Math.cos(Math.PI/2+((1/6)*Math.PI*2))*rx,
+        y:y+Math.sin(Math.PI/2+((1/6)*Math.PI*2))*ry,
+        w:w,
+        h:h,
       },
       {
         title:"Earth (Surface)",
         img:"earth_surface",
         icon_img:"earth_surface",
-        x:0.365,
-        y:0.485,
-        w:0.18,
-        h:0.145,
+        x:x+Math.cos(Math.PI/2+((2/6)*Math.PI*2))*rx,
+        y:y+Math.sin(Math.PI/2+((2/6)*Math.PI*2))*ry,
+        w:w,
+        h:h,
       },
       {
         title:"Earth (Deep)",
         img:"earth_deep",
         icon_img:"earth_deep",
-        x:0.5,
-        y:0.415,
-        w:0.17,
-        h:0.14,
-      },
-      {
-        title:"Fuel",
-        img:"fuel",
-        icon_img:"fuel",
-        x:0.63,
-        y:0.625,
-        w:0.18,
-        h:0.14,
+        x:x+Math.cos(Math.PI/2+((3/6)*Math.PI*2))*rx,
+        y:y+Math.sin(Math.PI/2+((3/6)*Math.PI*2))*ry,
+        w:w,
+        h:h,
       },
       {
         title:"Ocean",
         img:"ocean",
         icon_img:"ocean",
-        x:0.63,
-        y:0.485,
-        w:0.18,
-        h:0.14,
+        x:x+Math.cos(Math.PI/2+((4/6)*Math.PI*2))*rx,
+        y:y+Math.sin(Math.PI/2+((4/6)*Math.PI*2))*ry,
+        w:w,
+        h:h,
+      },
+      {
+        title:"Fuel",
+        img:"fuel",
+        icon_img:"fuel",
+        x:x+Math.cos(Math.PI/2+((5/6)*Math.PI*2))*rx,
+        y:y+Math.sin(Math.PI/2+((5/6)*Math.PI*2))*ry,
+        w:w,
+        h:h,
       },
     ],
   events:

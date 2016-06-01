@@ -91,6 +91,7 @@ var GamePlayScene = function(game, stage)
 
   self.ready = function()
   {
+
     ctx.font = "12px Open Sans";
     clicker = new Clicker({source:stage.dispCanv.canvas});
     hoverer = new PersistentHoverer({source:stage.dispCanv.canvas});
@@ -615,7 +616,8 @@ var GamePlayScene = function(game, stage)
     //ctx.fillRect(0,0,dc.width,topmost_bar_y);
     ctx.fillStyle = white;
     dc.roundRectOptions(0,topmost_bar_y,dc.width,dc.height-topmost_bar_y,5,1,1,1,1,0,1);
-    ctx.drawImage(g.bg_img,sidebar_w,topmost_bar_y+20,dc.width-sidebar_w*2,dc.height-topmost_bar_y-120);
+    //ctx.drawImage(g.bg_img,sidebar_w,topmost_bar_y+20,dc.width-sidebar_w*2,dc.height-topmost_bar_y-120);
+    ctx.drawImage(carbon_bg_img,sidebar_w,topmost_bar_y+60,dc.width-sidebar_w*2,dc.height-topmost_bar_y-250);
 
     ctx.textAlign = "left";
 
@@ -706,7 +708,7 @@ var GamePlayScene = function(game, stage)
     {
       var n = g.nodes[i];
       if(e && (e.from_id == n.id || e.to_id == n.id))
-        ctx.drawImage(hex_icon,n.x,n.y,n.w,n.h);
+        ctx.drawImage(hl_hex_icon,n.x,n.y,n.w,n.h);
       if(n == goal_node)
       {
         ctx.globalAlpha = pulse;
@@ -718,6 +720,8 @@ var GamePlayScene = function(game, stage)
       }
       ctx.drawImage(n.img,n.x,n.y,n.w,n.h);
     }
+
+    ctx.drawImage(carbon_fg_img,sidebar_w,topmost_bar_y+60,dc.width-sidebar_w*2,dc.height-topmost_bar_y-250);
 
     //draw hover arrow
     if(

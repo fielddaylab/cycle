@@ -20,14 +20,13 @@ var Placer = function(asset, x,y,w,h, canv)
   {
     canv.context.fillStyle = "#000000";
     canv.context.strokeRect(self.x,self.y,self.w,self.h);
-    canv.context.fillText(self.text,self.x,self.y+self.h);
-    /*
+    ///canv.context.fillText(self.text,self.x,self.y+self.h);
+
     canv.context.save();
     canv.context.globalAlpha = 0.8;
     canv.context.drawImage(self.asset, self.x,self.y,self.w,self.h);
     if(self.stroke) canv.context.strokeRect(self.x,self.y,self.w,self.h);
     canv.context.restore();
-    */
   }
 
   function len(x,y)

@@ -8,6 +8,14 @@ var gray = "#3A3A3A";
 var white = "#FFFFFF";
 var black = "#000000";
 
+var transformFromScreen = function(canv,x,y,w,h)
+{
+  var ww = w/canv.width;
+  var wh = h/canv.height;
+  var wx = (x+w/2)/canv.width;
+  var wy = (y+h/2)/canv.height;
+  console.log(wx+","+wy+","+ww+","+wh);
+}
 var transformToScreen = function(canv,o)
 {
   o.w = canv.width*o.ww;
