@@ -242,3 +242,6 @@ water_bg_img.src = "assets/water_bg.png";
 var nitrogen_bg_img = new Image();
 nitrogen_bg_img.src = "assets/nitrogen_bg.png";
 
+var tutorial_img = new Image();
+tutorial_img.src = "assets/tutorial_qs.png";
+

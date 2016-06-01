@@ -57,7 +57,7 @@ var ConfigScene = function(game, stage)
   var single_img;
   var multi_img;
   var crystal_img;
-  var tassle_img;
+  var tutorial_img;
   var net_add_img;
   var net_check_img;
   self.ready = function()
@@ -126,14 +126,15 @@ var ConfigScene = function(game, stage)
     multi_img.src = "assets/multi_play.png";
     crystal_img = new Image();
     crystal_img.src = "assets/crystal.png";
-    tassle_img = new Image();
-    tassle_img.src = "assets/tassle.png";
+    tutorial_img = new Image();
+    tutorial_img.src = "assets/tutorial_qs.png";
     net_add_img = new Image();
     net_add_img.src = "assets/net_add.png";
     net_check_img = new Image();
     net_check_img.src = "assets/net_check.png";
   };
 
+  var space = String.fromCharCode(8202)+String.fromCharCode(8202);
   self.tick = function()
   {
     clicker.flush();
@@ -202,14 +203,17 @@ var ConfigScene = function(game, stage)
     dc.context.fillStyle = blue;
     dc.roundRectOptions(btn_tutorial.x,btn_tutorial.y,btn_tutorial.w,btn_tutorial.h,5,1,1,0,0,0,1)
     dc.context.drawImage(crystal_img,dc.width-section_line_0_y,0,section_line_0_y,section_line_0_y);
-    dc.context.drawImage(tassle_img,dc.width/3-120,50,section_line_0_y-80,section_line_0_y-100);
+    dc.context.drawImage(tutorial_img,50,50,220,section_line_0_y-50);
 
-    dc.context.fillStyle = "#000000";
-    dc.context.font = "Bold 12px Open Sans";
-    dc.context.fillText("First Time Playing?",dc.width/2-100,100);
-    dc.context.font = "Bold 18px Open Sans";
-    dc.context.fillText("Play the Carbon Cycle Tutorial",dc.width/2-100,120);
-    dc.context.drawImage(arrow_img,dc.width/2+155,105,30,15);
+    dc.context.fillStyle = "#333333";
+    dc.context.font = "25px Open Sans";
+    dc.context.fillText("First Time Playing?".split("").join(space),dc.width/2-100,100);
+    dc.context.font = "Bold 16px Open Sans";
+    dc.context.fillStyle = "#FFFFFF";
+    dc.fillRoundRect(dc.width/2-110,120,175,30,20);
+    dc.context.fillStyle = "#333333";
+    dc.context.fillText("Play the Tutorial",dc.width/2-100,140);
+    dc.context.drawImage(arrow_img,dc.width/2+25,127,30,15);
     dc.context.font = "12px Open Sans";
 
     dc.context.lineWidth = 0.5;
@@ -226,7 +230,7 @@ var ConfigScene = function(game, stage)
         imgBtn(mbtn_net_join,multi_img);   dc.context.drawImage(net_check_img,mbtn_net_join.x+mbtn_net_join.w-30,mbtn_net_join.y-10,40,40); dc.context.fillText("Web: Join Room",          mbtn_net_join.x+mbtn_net_join.w/2,   mbtn_net_join.y+mbtn_net_join.h+20);
         dc.drawLine(btn_1_x+btn_s/2,section_line_1_y,btn_1_x+btn_s/2,dc.height);
         dc.context.font = "40px Open Sans";
-        dc.context.fillText("CREATE A GAME!",dc.width/2,title_y);
+        dc.context.fillText("CARBON CYCLE".split("").join(space+space),dc.width/2,title_y);
         dc.context.font = "Bold 12px Open Sans";
         dc.context.textAlign = "left";
         dc.context.fillText("Single Player",btn_0_x, subtitle_y);
@@ -266,7 +270,7 @@ var ConfigScene = function(game, stage)
         dc.context.fillStyle = "#000000";
         dc.context.textAlign = "center";
         dc.context.font = "40px Open Sans";
-        dc.context.fillText("CREATE A GAME!",dc.width/2,title_y);
+        dc.context.fillText("CARBON CYCLE".split("").join(space+space),dc.width/2,title_y);
         dc.context.textAlign = "left";
         dc.context.font = "Bold 12px Open Sans";
         dc.context.fillText("How many turns?",btn_1_x, subtitle_y);
