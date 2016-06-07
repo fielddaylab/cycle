@@ -100,9 +100,9 @@ var GamePlayScene = function(game, stage)
     else          sr = new SeededRand(Math.floor(Math.random()*100000));
 
     //g = constructGame(GameTemplate,sr);
-    //g = constructGame(CarbonCycleGameTemplate,sr);
+    g = constructGame(CarbonCycleGameTemplate,sr);
     //g = constructGame(WaterCycleGameTemplate,sr);
-    g = constructGame(NitrogenCycleGameTemplate,sr);
+    //g = constructGame(NitrogenCycleGameTemplate,sr);
     transition_t = 0;
     transformGame(dc,g.nodes,g.events,g.tokens)
 
