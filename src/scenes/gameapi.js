@@ -10,6 +10,10 @@ var constructGame = function(game_data,sr)
 
   g.bg_img.src = "assets/"+game_data.bg_img+".png";
 
+  g.noun = game_data.noun;
+  g.Noun = game_data.noun.charAt(0).toUpperCase() + game_data.noun.slice(1);
+  g.NOUN = game_data.noun.toUpperCase();
+
   for(var i = 0; i < game_data.players.length && i < 2; i++)
   {
     player = new Player();

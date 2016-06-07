@@ -114,6 +114,10 @@ var CycleGame = function()
   self.tokens = [];
   self.deck = new Deck();
 
+  self.noun = "";
+  self.Noun = "";
+  self.NOUN = "";
+
   self.turns_per_goal_shift;
 
   self.turn = 0;

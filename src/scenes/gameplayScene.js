@@ -100,8 +100,8 @@ var GamePlayScene = function(game, stage)
     else          sr = new SeededRand(Math.floor(Math.random()*100000));
 
     //g = constructGame(GameTemplate,sr);
-    g = constructGame(CarbonCycleGameTemplate,sr);
-    //g = constructGame(WaterCycleGameTemplate,sr);
+    //g = constructGame(CarbonCycleGameTemplate,sr);
+    g = constructGame(WaterCycleGameTemplate,sr);
     //g = constructGame(NitrogenCycleGameTemplate,sr);
     transition_t = 0;
     transformGame(dc,g.nodes,g.events,g.tokens)
@@ -488,7 +488,7 @@ var GamePlayScene = function(game, stage)
     {
       displayed_turn_3_warning = true;
 
-      text = "Hey! To make things interesting, we're going to stop showing you in which direction each event affects the carbon... good luck!";
+      text = "Hey! To make things interesting, we're going to stop showing you in which direction each event affects the "+g.noun+"... good luck!";
       interruptDisplayMessage(textToLines(dc, "12px Open Sans", blurb_w-20, text));
     }
 
@@ -1162,9 +1162,9 @@ var GamePlayScene = function(game, stage)
     var target = g.players[chosen_target_p-1];
     var text;
     if(g.player_turn == chosen_target_p)
-      text = player.title+" played \""+g.events[player.hand[chosen_card_i]-1].title+"\" on their own carbon!";
+      text = player.title+" played \""+g.events[player.hand[chosen_card_i]-1].title+"\" on their own "+g.noun+"!";
     else
-      text = player.title+" played \""+g.events[player.hand[chosen_card_i]-1].title+"\" on their opponent's carbon!";
+      text = player.title+" played \""+g.events[player.hand[chosen_card_i]-1].title+"\" on their opponent's "+g.noun+"!";
 
     summary = [textToLines(dc, "12px Open Sans", announce_w-10, text)];
   }
@@ -1179,9 +1179,9 @@ var GamePlayScene = function(game, stage)
 
     var text;
     if(player == target)
-      text = player.title+" played \""+event.title+"\" on their own carbon!";
+      text = player.title+" played \""+event.title+"\" on their own "+g.noun+"!";
     else
-      text = player.title+" played \""+event.title+"\" on their opponent's carbon!";
+      text = player.title+" played \""+event.title+"\" on their opponent's "+g.noun+"!";
 
     summary = [textToLines(dc, "12px Open Sans", announce_w-10, text)];
     if(delta.pts_red_delta_n > 0 && delta.pts_blue_delta_n == 0)
@@ -1540,7 +1540,7 @@ var GamePlayScene = function(game, stage)
         ctx.fill();
 
         ctx.fillStyle = white;
-        ctx.fillText("SELECT CARBON",self.x+self.w/2,self.y+self.h/2+5);
+        ctx.fillText("SELECT "+g.NOUN,self.x+self.w/2,self.y+self.h/2+5);
       }
 
       var thick = 5;
