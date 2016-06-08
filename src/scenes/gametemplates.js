@@ -57,6 +57,7 @@ var GameTemplate =
       {
         title:"EvA",
         description:"EvA Is a THING",
+        flavor:"",
         from:"A",
         to:"B",
         time:0,
@@ -66,6 +67,7 @@ var GameTemplate =
       {
         title:"EvB",
         description:"EvB Is a THING",
+        flavor:"",
         from:"B",
         to:"C",
         time:0,
@@ -75,6 +77,7 @@ var GameTemplate =
       {
         title:"EvC",
         description:"EvC Is a THING",
+        flavor:"",
         from:"C",
         to:"D",
         time:0,
@@ -84,6 +87,7 @@ var GameTemplate =
       {
         title:"EvD",
         description:"EvD Is a THING",
+        flavor:"",
         from:"D",
         to:"B",
         time:0,
@@ -93,6 +97,7 @@ var GameTemplate =
       {
         title:"EvE",
         description:"EvE Is a THING",
+        flavor:"",
         from:"A",
         to:"C",
         time:0,
@@ -427,6 +432,7 @@ var WaterCycleGameTemplate =
       {
         title:"Evaporation",
         description:"The air is thirsty",
+        flavor:"",
         from:"Surface",
         to:"Atmosphere",
         time:0,
@@ -436,6 +442,7 @@ var WaterCycleGameTemplate =
       {
         title:"Evaporation",
         description:"The air is thirsty",
+        flavor:"",
         from:"Ocean",
         to:"Atmosphere",
         time:0,
@@ -445,6 +452,7 @@ var WaterCycleGameTemplate =
       {
         title:"Evaporation",
         description:"The air is thirsty",
+        flavor:"",
         from:"River",
         to:"Atmosphere",
         time:0,
@@ -454,6 +462,7 @@ var WaterCycleGameTemplate =
       {
         title:"Runoff",
         description:"The water's gotta go somewhere...",
+        flavor:"",
         from:"Surface",
         to:"River",
         time:0,
@@ -463,6 +472,7 @@ var WaterCycleGameTemplate =
       {
         title:"Runoff",
         description:"The water's gotta go somewhere...",
+        flavor:"",
         from:"Surface",
         to:"Ocean",
         time:0,
@@ -472,6 +482,7 @@ var WaterCycleGameTemplate =
       {
         title:"Condensation",
         description:"Makes the air visible",
+        flavor:"",
         from:"Atmosphere",
         to:"Clouds",
         time:0,
@@ -481,6 +492,7 @@ var WaterCycleGameTemplate =
       {
         title:"Precipitation",
         description:"Rain Sleet Snow or Hail",
+        flavor:"",
         from:"Clouds",
         to:"Ocean",
         time:0,
@@ -490,6 +502,7 @@ var WaterCycleGameTemplate =
       {
         title:"Precipitation",
         description:"Rain Sleet Snow or Hail",
+        flavor:"",
         from:"Clouds",
         to:"River",
         time:0,
@@ -499,6 +512,7 @@ var WaterCycleGameTemplate =
       {
         title:"Precipitation",
         description:"Rain Sleet Snow or Hail",
+        flavor:"",
         from:"Clouds",
         to:"Surface",
         time:0,
@@ -508,6 +522,7 @@ var WaterCycleGameTemplate =
       {
         title:"Soil Absorption",
         description:"A sinking puddle",
+        flavor:"",
         from:"Surface",
         to:"Earth",
         time:0,
@@ -517,6 +532,7 @@ var WaterCycleGameTemplate =
       {
         title:"Ground Water Route to River",
         description:"I have nothing interesting to add",
+        flavor:"",
         from:"Earth",
         to:"River",
         time:0,
@@ -526,6 +542,7 @@ var WaterCycleGameTemplate =
       {
         title:"Ground Water Route to Ocean",
         description:"I have nothing interesting to add",
+        flavor:"",
         from:"Earth",
         to:"Ocean",
         time:0,
@@ -601,6 +618,7 @@ var NitrogenCycleGameTemplate =
       {
         title:"Lightning",
         description:"Thunder Boomers",
+        flavor:"",
         from:"Atmosphere",
         to:"Soil",
         time:0,
@@ -610,6 +628,7 @@ var NitrogenCycleGameTemplate =
       {
         title:"Bacteria Digestion",
         description:"Toot",
+        flavor:"",
         from:"Soil",
         to:"Atmosphere",
         time:0,
@@ -619,6 +638,7 @@ var NitrogenCycleGameTemplate =
       {
         title:"Plant Assimilation",
         description:"Through the roots!",
+        flavor:"",
         from:"Soil",
         to:"Plants",
         time:0,
@@ -628,6 +648,7 @@ var NitrogenCycleGameTemplate =
       {
         title:"Plant Death",
         description:"Sorry, plants. :(",
+        flavor:"",
         from:"Plants",
         to:"Soil",
         time:0,
@@ -637,6 +658,7 @@ var NitrogenCycleGameTemplate =
       {
         title:"Animal Death",
         description:"Sad day.",
+        flavor:"",
         from:"Animals",
         to:"Soil",
         time:0,
@@ -646,6 +668,7 @@ var NitrogenCycleGameTemplate =
       {
         title:"Herbivorism",
         description:"High in fiber.",
+        flavor:"",
         from:"Plants",
         to:"Animals",
         time:0,
@@ -655,6 +678,7 @@ var NitrogenCycleGameTemplate =
       {
         title:"Nitrigen-Fixing Plant Bacteria",
         description:"Actually doesn't pass through the plant",
+        flavor:"",
         from:"Atmosphere",
         to:"Soil",
         time:0,
