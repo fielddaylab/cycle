@@ -1141,11 +1141,28 @@ var GamePlayScene = function(game, stage)
     var player = g.players[g.player_turn-1];
     var target = g.players[chosen_target_p-1];
     var text;
-    if(g.player_turn == chosen_target_p)
-      text = player.title+" played \""+g.events[player.hand[chosen_card_i]-1].title+"\" on their own "+g.noun+"!";
+    var actor = player.title;
+    var actee = "their own";
+    if(
+      ((game.multiplayer == MULTIPLAYER_NET_CREATE || game.multiplayer == MULTIPLAYER_AI) && g.player_turn == 1) ||
+      ((game.multiplayer == MULTIPLAYER_NET_JOIN)                                         && g.player_turn == 2)
+    )
+    {
+      actor = "You";
+      if(g.player_turn == chosen_target_p)
+        actee = "your own";
+      else
+        actee = target.title+"'s";
+    }
     else
-      text = player.title+" played \""+g.events[player.hand[chosen_card_i]-1].title+"\" on their opponent's "+g.noun+"!";
+    {
+      if(g.player_turn == chosen_target_p)
+        actee = "their own";
+      else
+        actee = "your";
+    }
 
+    text = actor+" played \""+g.events[player.hand[chosen_card_i]-1].title+"\" on "+actee+" "+g.noun+"!";
     summary = [textToLines(dc, "12px Open Sans", announce_w-10, text)];
   }
 
@@ -1158,10 +1175,28 @@ var GamePlayScene = function(game, stage)
     var event = g.events[delta.event_id-1];
 
     var text;
-    if(player == target)
-      text = player.title+" played \""+event.title+"\" on their own "+g.noun+"!";
+    var actor = player.title;
+    var actee = "their own";
+    if(
+      ((game.multiplayer == MULTIPLAYER_NET_CREATE || game.multiplayer == MULTIPLAYER_AI) && g.player_turn == 2) || //note reversal
+      ((game.multiplayer == MULTIPLAYER_NET_JOIN)                                         && g.player_turn == 1)
+    )
+    {
+      actor = "You";
+      if(g.player_turn != chosen_target_p) //note reversal
+        actee = "your own";
+      else
+        actee = target.title+"'s";
+    }
     else
-      text = player.title+" played \""+event.title+"\" on their opponent's "+g.noun+"!";
+    {
+      if(g.player_turn != chosen_target_p) //note reversal
+        actee = "their own";
+      else
+        actee = "your";
+    }
+
+    text = actor+" played \""+event.title+"\" on "+actee+" "+g.noun+"!";
 
     summary = [textToLines(dc, "12px Open Sans", announce_w-10, text)];
     if(delta.pts_red_delta_n > 0 && delta.pts_blue_delta_n == 0)
