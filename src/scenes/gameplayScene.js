@@ -1166,6 +1166,11 @@ var GamePlayScene = function(game, stage)
     {
       if(g.player_turn == chosen_target_p)
         actee = "their own";
+      else if(
+        ((game.multiplayer == MULTIPLAYER_NET_CREATE || game.multiplayer == MULTIPLAYER_AI) && g.player_turn == 2) || //note reversal reversal
+        ((game.multiplayer == MULTIPLAYER_NET_JOIN)                                         && g.player_turn == 1)
+      )
+        actee = "your";
       else
         actee = target.title+"'s";
     }
@@ -1200,6 +1205,11 @@ var GamePlayScene = function(game, stage)
     {
       if(g.player_turn != chosen_target_p) //note reversal
         actee = "their own";
+      else if(
+        ((game.multiplayer == MULTIPLAYER_NET_CREATE || game.multiplayer == MULTIPLAYER_AI) && g.player_turn == 1) || //note reversal reversal
+        ((game.multiplayer == MULTIPLAYER_NET_JOIN)                                         && g.player_turn == 2)
+      )
+        actee = "your";
       else
         actee = target.title+"'s";
     }
