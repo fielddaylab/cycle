@@ -613,7 +613,7 @@ var GamePlayScene = function(game, stage)
     ctx.fillStyle = dred;
     ctx.font = "18px Open Sans";
     ctx.fillText("RED TEAM",10,score_header_y-6);
-    ctx.drawImage(red_token_icon,sidebar_w-40,score_header_y-18,20,15);
+    ctx.drawImage(red_token_icon,sidebar_w-50,score_header_y-18,20,15);
     ctx.fillStyle = gray;
     ctx.fillRect(0,score_header_y,sidebar_w,turn_header_y-score_header_y);
     ctx.fillStyle = white;
@@ -643,7 +643,7 @@ var GamePlayScene = function(game, stage)
     ctx.fillStyle = dblue;
     ctx.font = "18px Open Sans";
     ctx.fillText("BLUE TEAM",dc.width-sidebar_w+10,score_header_y-6);
-    ctx.drawImage(blue_token_icon,dc.width-40,score_header_y-18,20,15);
+    ctx.drawImage(blue_token_icon,dc.width-50,score_header_y-18,20,15);
     ctx.fillStyle = gray;
     ctx.fillRect(dc.width-sidebar_w,score_header_y,sidebar_w,turn_header_y-score_header_y);
     ctx.fillStyle = white;
@@ -820,8 +820,8 @@ var GamePlayScene = function(game, stage)
     player = g.players[0];
     ctx.fillStyle = dred;
     ctx.textAlign = "left";
-    ctx.font = "10px Open Sans";
-    ctx.fillText("X"+player.disp_pts,sidebar_w-20,score_header_y-7);
+    ctx.font = "14px Open Sans";
+    ctx.fillText("X"+player.disp_pts,sidebar_w-30,score_header_y-7);
     ctx.fillStyle = "#000000";
     for(var i = 0; i < player.hand.length; i++)
     {
@@ -833,8 +833,8 @@ var GamePlayScene = function(game, stage)
     player = g.players[1];
     ctx.fillStyle = dblue;
     ctx.textAlign = "left";
-    ctx.font = "10px Open Sans";
-    ctx.fillText("X"+player.disp_pts,dc.width-20,score_header_y-7);
+    ctx.font = "14px Open Sans";
+    ctx.fillText("X"+player.disp_pts,dc.width-30,score_header_y-7);
     ctx.fillStyle = "#000000";
     for(var i = 0; i < player.hand.length; i++)
     {
@@ -878,7 +878,7 @@ var GamePlayScene = function(game, stage)
 
     if(input_state == INPUT_INTERRUPT)
     {
-      ctx.fillStyle = "rgba(10,10,10,0.5)";
+      ctx.fillStyle = "#C5F0F8";
       ctx.fillRect(sidebar_w,blurb_y-20,dc.width-(2*sidebar_w),dc.height-(blurb_y-20));
 
       ctx.fillStyle = white;
