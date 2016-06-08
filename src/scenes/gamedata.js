@@ -133,6 +133,7 @@ var CycleGame = function()
   self.deltas = [];
 
   self.bg_img = new Image();
+  self.fg_img = new Image();
 }
 
 var GameState = function()

@@ -117,6 +117,7 @@ var CarbonCycleGameTemplate =
   goal_shift_turns:3,
   noun:"carbon",
   bg_img:"carbon_bg",
+  fg_img:"carbon_fg",
   players:
     [
       {
@@ -349,7 +350,8 @@ var WaterCycleGameTemplate =
   hand:5,
   goal_shift_turns:3,
   noun:"water",
-  bg_img:"carbon_bg",
+  bg_img:"water_bg",
+  fg_img:"water_fg",
   players:
     [
       {
@@ -540,7 +542,8 @@ var NitrogenCycleGameTemplate =
   hand:5,
   goal_shift_turns:3,
   noun:"nitrogen",
-  bg_img:"carbon_bg",
+  bg_img:"nitrogen_bg",
+  fg_img:"nitrogen_fg",
   players:
     [
       {

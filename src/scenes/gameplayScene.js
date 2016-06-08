@@ -617,8 +617,7 @@ var GamePlayScene = function(game, stage)
     //ctx.fillRect(0,0,dc.width,topmost_bar_y);
     ctx.fillStyle = white;
     dc.roundRectOptions(0,topmost_bar_y,dc.width,dc.height-topmost_bar_y,5,1,1,1,1,0,1);
-    //ctx.drawImage(g.bg_img,sidebar_w,topmost_bar_y+20,dc.width-sidebar_w*2,dc.height-topmost_bar_y-120);
-    ctx.drawImage(carbon_bg_img,sidebar_w,topmost_bar_y+60,dc.width-sidebar_w*2,dc.height-topmost_bar_y-250);
+    ctx.drawImage(g.bg_img,sidebar_w,topmost_bar_y+60,dc.width-sidebar_w*2,dc.height-topmost_bar_y-250);
 
 
     ctx.textAlign = "left";
@@ -726,7 +725,7 @@ var GamePlayScene = function(game, stage)
       ctx.drawImage(n.img,n.x,n.y,n.w,n.h);
     }
 
-    ctx.drawImage(carbon_fg_img,sidebar_w,topmost_bar_y+60,dc.width-sidebar_w*2,dc.height-topmost_bar_y-250);
+    ctx.drawImage(g.fg_img,sidebar_w,topmost_bar_y+60,dc.width-sidebar_w*2,dc.height-topmost_bar_y-250);
 
     //draw hover arrow
     if(

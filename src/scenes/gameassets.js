@@ -239,8 +239,14 @@ carbon_fg_img.src = "assets/carbon_fg.png";
 var water_bg_img = new Image();
 water_bg_img.src = "assets/water_bg.png";
 
+var water_fg_img = new Image();
+water_fg_img.src = "assets/water_fg.png";
+
 var nitrogen_bg_img = new Image();
 nitrogen_bg_img.src = "assets/nitrogen_bg.png";
+
+var nitrogen_fg_img = new Image();
+nitrogen_fg_img.src = "assets/nitrogen_fg.png";
 
 var tutorial_img = new Image();
 tutorial_img.src = "assets/tutorial_qs.png";

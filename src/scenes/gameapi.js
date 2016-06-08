@@ -9,6 +9,7 @@ var constructGame = function(game_data,sr,canv)
   var total_commonality; //used in populating deck
 
   g.bg_img.src = "assets/"+game_data.bg_img+".png";
+  g.fg_img.src = "assets/"+game_data.fg_img+".png";
 
   g.noun = game_data.noun;
   g.Noun = game_data.noun.charAt(0).toUpperCase() + game_data.noun.slice(1);
