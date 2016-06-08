@@ -99,10 +99,10 @@ var GamePlayScene = function(game, stage)
     if(game.join) sr = new SeededRand(game.join);
     else          sr = new SeededRand(Math.floor(Math.random()*100000));
 
-    //g = constructGame(GameTemplate,sr);
-    g = constructGame(CarbonCycleGameTemplate,sr);
-    //g = constructGame(WaterCycleGameTemplate,sr);
-    //g = constructGame(NitrogenCycleGameTemplate,sr);
+    //g = constructGame(GameTemplate,sr,dc);
+    g = constructGame(CarbonCycleGameTemplate,sr,dc);
+    //g = constructGame(WaterCycleGameTemplate,sr,dc);
+    //g = constructGame(NitrogenCycleGameTemplate,sr,dc);
     transition_t = 0;
     transformGame(dc,g.nodes,g.events,g.tokens)
 
@@ -1491,11 +1491,17 @@ var GamePlayScene = function(game, stage)
       if(turn_stage == TURN_CONFIRM_CARD)
       {
         //play button (confirm)
+        ctx.font = "italic 10px Open Sans";
+        for(var i = 0; i < event.flavor_lines.length; i++)
+        {
+          ctx.fillText(event.flavor_lines[i],self.x+self.w/2,self.y+self.h/2+10*(i+2));
+        }
+        ctx.font = "10px Open Sans";
         if(g.player_turn == 1) ctx.fillStyle = red;
         if(g.player_turn == 2) ctx.fillStyle = blue;
         dc.fillRoundRect(self.x+self.play_x,self.y+self.play_y,self.play_w,self.play_h,10);
         ctx.fillStyle = white;
-        ctx.fillText("PLAY CARD",self.x+self.play_x+self.play_w/2,self.y+self.play_y+self.play_h/2+4);
+        ctx.fillText("SELECT CARD",self.x+self.play_x+self.play_w/2,self.y+self.play_y+self.play_h/2+4);
       }
 
       if(turn_stage == TURN_CHOOSE_TARGET || turn_stage == TURN_SUMMARY || turn_stage == TURN_ANIM_CARD)

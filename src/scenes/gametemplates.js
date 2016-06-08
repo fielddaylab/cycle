@@ -201,6 +201,7 @@ var CarbonCycleGameTemplate =
       {
         title:"Animal Respiration",
         description:"Breathe in, breathe out",
+        flavor:"When animals breathe, they take Oxygen from and release Carbon Dioxide into the air!",
         from:"Animals",
         to:"Atmosphere",
         time:0,
@@ -210,6 +211,7 @@ var CarbonCycleGameTemplate =
       {
         title:"Plant Respiration",
         description:"Plants breathe too!",
+        flavor:"Like animals, plants take Oxygen from and release Carbon Dioxide into the air! (Though they also take Carbon Dioxide back in- but that's a different process!)",
         from:"Plants",
         to:"Atmosphere",
         time:0,
@@ -219,6 +221,7 @@ var CarbonCycleGameTemplate =
       {
         title:"Photosynthesis",
         description:"Turn sunshine to energy",
+        flavor:"Plants take in Carbon Dioxide along with Sunlight to create energy and grow!",
         from:"Atmosphere",
         to:"Plants",
         time:0,
@@ -228,6 +231,7 @@ var CarbonCycleGameTemplate =
       {
         title:"Herbivorism",
         description:"Eat your veggies",
+        flavor:"Since plants (and animals) are Carbon-Based, simply eating a plant is one of the simplest ways carbon is moved!",
         from:"Plants",
         to:"Animals",
         time:0,
@@ -237,6 +241,7 @@ var CarbonCycleGameTemplate =
       {
         title:"Animal Death",
         description:"Poor things",
+        flavor:"Animals die and quickly decompose, leaving all of their carbon (and other matter!) behind on the Earth's surface",
         from:"Animals",
         to:"Earth (Surface)",
         time:0,
@@ -246,6 +251,7 @@ var CarbonCycleGameTemplate =
       {
         title:"Plant Death",
         description:"Wither away",
+        flavor:"Plants die and quickly decompose, leaving all of their carbon (and other matter!) behind on the Earth's surface",
         from:"Plants",
         to:"Earth (Surface)",
         time:0,
@@ -255,6 +261,7 @@ var CarbonCycleGameTemplate =
       {
         title:"Soil Respiration",
         description:"Constant flow",
+        flavor:"All the living organisms within the soil (bacteria, bugs, etc...) respire their Carbon Dioxide into the soil. This results in a constant leak of CO2 from the soil to the atmosphere!",
         from:"Earth (Surface)",
         to:"Atmosphere",
         time:0,
@@ -264,6 +271,7 @@ var CarbonCycleGameTemplate =
       {
         title:"Million-Year Decay",
         description:"From Coal to Petroleum",
+        flavor:"Plant and Animal matter sink deep into the earth where they are left to decay and decompose for millions of years.",
         from:"Earth (Surface)",
         to:"Earth (Deep)",
         time:0,
@@ -273,6 +281,7 @@ var CarbonCycleGameTemplate =
       {
         title:"Harvest/Process Petroleum",
         description:"Drill, baby, drill!",
+        flavor:"Million year old Animal matter (in the form of Petroleum) must be harvested from deep within the earth. It then must be refined before it can be used for fuel.",
         from:"Earth (Deep)",
         to:"Fuel",
         time:0,
@@ -282,6 +291,7 @@ var CarbonCycleGameTemplate =
       {
         title:"Combustion",
         description:"BOOM",
+        flavor:"To convert fuel into energy, we light it on fire! This releases large amounts of Carbon Dioxide into the atmosphere.",
         from:"Fuel",
         to:"Atmosphere",
         time:0,
@@ -291,6 +301,7 @@ var CarbonCycleGameTemplate =
       {
         title:"Erosion",
         description:"One Big Resevoir to another",
+        flavor:"Deposits of carbon constantly get scraped off of the land by rushing currents over millions of years.",
         from:"Earth (Surface)",
         to:"Ocean",
         time:0,
@@ -300,6 +311,7 @@ var CarbonCycleGameTemplate =
       {
         title:"Ocean Deposit",
         description:"Slowly reintegrate to land",
+        flavor:"Deposits of carbon in the ocean (and other bodies of water) slosh up on and leak into land.",
         from:"Ocean",
         to:"Earth (Deep)",
         time:0,
@@ -309,6 +321,7 @@ var CarbonCycleGameTemplate =
       {
         title:"Ocean Diffusion",
         description:"Exchanges in both directions!",
+        flavor:"The ocean and the atmosphere are constantly exchanging stores of carbon at the ocean's surface. This will move carbon from the Ocean to the Atmosphere.",
         from:"Ocean",
         to:"Atmosphere",
         time:0,
@@ -318,6 +331,7 @@ var CarbonCycleGameTemplate =
       {
         title:"Ocean Diffusion",
         description:"Exchanges in both directions!",
+        flavor:"The ocean and the atmosphere are constantly exchanging stores of carbon at the ocean's surface. This will move carbon from the Atmosphere to the Ocean.",
         from:"Atmosphere",
         to:"Ocean",
         time:0,

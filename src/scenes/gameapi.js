@@ -1,4 +1,4 @@
-var constructGame = function(game_data,sr)
+var constructGame = function(game_data,sr,canv)
 {
   var g = new CycleGame();
 
@@ -60,6 +60,9 @@ var constructGame = function(game_data,sr)
     event.id = i+1;
     event.title = game_data.events[i].title;
     event.description = game_data.events[i].description;
+    event.flavor  = game_data.events[i].flavor;
+    //NEED TO MANUALLY TWEAK font/width
+    event.flavor_lines = textToLines(canv, "italic 10px Open Sans", 120, event.flavor);
     event.from_id = game_data.events[i].from_id;
     event.to_id   = game_data.events[i].to_id;
     event.time    = game_data.events[i].time;
