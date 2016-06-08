@@ -102,8 +102,8 @@ var GamePlayScene = function(game, stage)
 
     //g = constructGame(GameTemplate,sr,dc);
     //g = constructGame(CarbonCycleGameTemplate,sr,dc);
-    //g = constructGame(WaterCycleGameTemplate,sr,dc);
-    g = constructGame(NitrogenCycleGameTemplate,sr,dc);
+    g = constructGame(WaterCycleGameTemplate,sr,dc);
+    //g = constructGame(NitrogenCycleGameTemplate,sr,dc);
     transition_t = 0;
     transformGame(dc,g.nodes,g.events,g.tokens)
 
