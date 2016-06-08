@@ -62,6 +62,7 @@ var GamePlayScene = function(game, stage)
 
   var ready_btn;
   var done_btn;
+  var menu_btn;
   var interrupt_canvdom;
   var tutorial_canvdom;
   var disp_0; var dest_0; var w_0 = 100; var h_0 = 260;
@@ -268,9 +269,18 @@ var GamePlayScene = function(game, stage)
         hit_ui = true;
       }
     );
+    menu_btn = new ButtonBox(0,0,100,topmost_bar_y,
+      function(evt)
+      {
+        cli.stop();
+        game.setScene(2);
+        hit_ui = true;
+      }
+    );
 
     clicker.register(ready_btn);
     clicker.register(done_btn);
+    clicker.register(menu_btn);
 
     interrupt_canvdom = new CanvDom(dc);
     clicker.register(interrupt_canvdom);
@@ -610,7 +620,11 @@ var GamePlayScene = function(game, stage)
     //ctx.drawImage(g.bg_img,sidebar_w,topmost_bar_y+20,dc.width-sidebar_w*2,dc.height-topmost_bar_y-120);
     ctx.drawImage(carbon_bg_img,sidebar_w,topmost_bar_y+60,dc.width-sidebar_w*2,dc.height-topmost_bar_y-250);
 
+
     ctx.textAlign = "left";
+    ctx.fillStyle = "#FFFFFF";
+    ctx.font = "12px Open Sans";
+    ctx.fillText("Return to Menu?",10,topmost_bar_y-5);
 
     //red section body
     ctx.fillStyle = red;
@@ -855,7 +869,7 @@ var GamePlayScene = function(game, stage)
     //info
     ctx.fillStyle = "#000000";
     ctx.textAlign = "center";
-    ctx.fillText("Turn: "+g.turn,dc.width/2,20);
+    ctx.fillText("Turn: "+g.turn,dc.width/2,topmost_bar_y+20);
     player = g.players[g.player_turn-1];
 
     ctx.fillStyle = lblue;
