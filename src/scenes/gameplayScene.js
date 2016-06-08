@@ -392,16 +392,7 @@ var GamePlayScene = function(game, stage)
     {
       var y = 140 + Math.sin(n_ticks/10)*10;
       var w = 105;
-      dc.fillRoundRect(sidebar_w+5,y-10,w,20,5);
-      ctx.beginPath();
-      ctx.moveTo(sidebar_w+5+1,y-10+5);
-      ctx.lineTo(sidebar_w+5-5,y);
-      ctx.lineTo(sidebar_w+5+1,y+10-5);
-      ctx.closePath();
-      ctx.fill();
-      ctx.textAlign = "left";
-      ctx.font = "20px Open Sans";
-      dc.outlineText("RED TEAM",sidebar_w+10,y+7);
+      drawTip(sidebar_w+5,y,w,true,"RED TEAM");
     });
     tutorial_chars.push(0);
     tutorial_lines.push("And here's blue");
@@ -410,15 +401,7 @@ var GamePlayScene = function(game, stage)
     {
       var y = 140 + Math.sin(n_ticks/10)*10;
       var w = 115;
-      dc.fillRoundRect(dc.width-sidebar_w-w-5,y-10,w,20,5);
-      ctx.moveTo(dc.width-sidebar_w-w-5+w-1,y-10+5);
-      ctx.lineTo(dc.width-sidebar_w-w-5+w+5,y);
-      ctx.lineTo(dc.width-sidebar_w-w-5+w-1,y+10-5);
-      ctx.closePath();
-      ctx.fill();
-      ctx.textAlign = "right";
-      ctx.font = "20px Open Sans";
-      dc.outlineText("BLUE TEAM",dc.width-sidebar_w-10,y+7);
+      drawTip(dc.width-sidebar_w-w-5,y,w,false,"BLUE TEAM");
     });
     tutorial_chars.push(0);
     tutorial_lines.push("There are carbons on the different parts of our environment, represented by the red and blue jewels. You play cards to move the carbons around the gameboard (environment)");
@@ -1006,75 +989,9 @@ var GamePlayScene = function(game, stage)
           var y = dc.height-140 + Math.sin(n_ticks/10)*10;
           var w = 150;
           if(g.player_turn == 1)
-          {
-            var h = 25;
-            var x = sidebar_w+5;
-            var y = y;
-            y += Math.sin(n_ticks/10)*4;
-            ctx.fillStyle = "rgba(255,255,255,0.9)";
-            ctx.strokeStyle = "#888888";
-            ctx.beginPath();
-            ctx.moveTo(x+1,y-h/2+5+2);
-            ctx.lineTo(x-5,y+2);
-            ctx.lineTo(x+1,y+h/2-5+2);
-            ctx.stroke();
-            ctx.strokeStyle = "#FFFFFF";
-            ctx.beginPath();
-            ctx.moveTo(x+1,y-h/2+5);
-            ctx.lineTo(x-5,y);
-            ctx.lineTo(x+1,y+h/2-5);
-            ctx.stroke();
-            ctx.beginPath();
-            ctx.moveTo(x+1,y-h/2+5);
-            ctx.lineTo(x-5,y);
-            ctx.lineTo(x+1,y+h/2-5);
-            ctx.fill();
-            ctx.strokeStyle = "#888888";
-            dc.strokeRoundRect(x,y-h/2+2,w,h,5);
-            dc.fillRoundRect(x,y-h/2,w,h,5);
-            ctx.lineWidth = 2;
-            ctx.strokeStyle = "#FFFFFF";
-            dc.strokeRoundRect(x,y-h/2,w,h,5);
-            ctx.textAlign = "left";
-            ctx.fillStyle = "#444444";
-            ctx.font = "20px Open Sans";
-            ctx.fillText("Choose a card!",x+4,y+9);
-          }
+            drawTip(sidebar_w+5,y,w,true,"Choose a card!");
           if(g.player_turn == 2 && (game.multiplayer == MULTIPLAYER_LOCAL || game.multiplayer == MULTIPLAYER_NET_JOIN))
-          {
-            var h = 25;
-            var x = dc.width-sidebar_w-w-5;
-            var y = y;
-            y += Math.sin(n_ticks/10)*4;
-            ctx.fillStyle = "rgba(255,255,255,0.9)";
-            ctx.strokeStyle = "#888888";
-            ctx.beginPath();
-            ctx.moveTo(x+w-1,y-h/2+5+2);
-            ctx.lineTo(x+w+5,y+2);
-            ctx.lineTo(x+w-1,y+h/2-5+2);
-            ctx.stroke();
-            ctx.strokeStyle = "#FFFFFF";
-            ctx.beginPath();
-            ctx.moveTo(x+w-1,y-h/2+5);
-            ctx.lineTo(x+w+5,y);
-            ctx.lineTo(x+w-1,y+h/2-5);
-            ctx.stroke();
-            ctx.beginPath();
-            ctx.moveTo(x+w-1,y-h/2+5);
-            ctx.lineTo(x+w+5,y);
-            ctx.lineTo(x+w-1,y+h/2-5);
-            ctx.fill();
-            ctx.strokeStyle = "#888888";
-            dc.strokeRoundRect(x,y-h/2+2,w,h,5);
-            dc.fillRoundRect(x,y-h/2,w,h,5);
-            ctx.lineWidth = 2;
-            ctx.strokeStyle = "#FFFFFF";
-            dc.strokeRoundRect(x,y-h/2,w,h,5);
-            ctx.textAlign = "right";
-            ctx.fillStyle = "#444444";
-            ctx.font = "20px Open Sans";
-            ctx.fillText("Choose a card!",x+w-4,y+9);
-          }
+            drawTip(dc.width-sidebar_w-w-5,y,w,false,"Choose a card!");
         }
         break;
       case TURN_CONFIRM_CARD: break;
@@ -1124,6 +1041,69 @@ var GamePlayScene = function(game, stage)
     hoverer.detach();
     hoverer = undefined;
   };
+
+  var drawTip = function(x,y,w,left,text)
+  {
+    var h = 25;
+    y += Math.sin(n_ticks/10)*4;
+    ctx.fillStyle = "rgba(255,255,255,0.9)";
+    ctx.strokeStyle = "#888888";
+    ctx.beginPath();
+    if(left)
+    {
+      ctx.moveTo(x+1,y-h/2+5+2);
+      ctx.lineTo(x-5,y+2);
+      ctx.lineTo(x+1,y+h/2-5+2);
+    }
+    else
+    {
+      ctx.moveTo(x+w-1,y-h/2+5+2);
+      ctx.lineTo(x+w+5,y+2);
+      ctx.lineTo(x+w-1,y+h/2-5+2);
+    }
+    ctx.stroke();
+    ctx.strokeStyle = "#FFFFFF";
+    ctx.beginPath();
+    if(left)
+    {
+      ctx.moveTo(x+1,y-h/2+5);
+      ctx.lineTo(x-5,y);
+      ctx.lineTo(x+1,y+h/2-5);
+    }
+    else
+    {
+      ctx.moveTo(x+w-1,y-h/2+5);
+      ctx.lineTo(x+w+5,y);
+      ctx.lineTo(x+w-1,y+h/2-5);
+    }
+    ctx.stroke();
+    ctx.beginPath();
+    if(left)
+    {
+      ctx.moveTo(x+1,y-h/2+5);
+      ctx.lineTo(x-5,y);
+      ctx.lineTo(x+1,y+h/2-5);
+    }
+    else
+    {
+      ctx.moveTo(x+w-1,y-h/2+5);
+      ctx.lineTo(x+w+5,y);
+      ctx.lineTo(x+w-1,y+h/2-5);
+    }
+    ctx.fill();
+    ctx.strokeStyle = "#888888";
+    dc.strokeRoundRect(x,y-h/2+2,w,h,5);
+    dc.fillRoundRect(x,y-h/2,w,h,5);
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = "#FFFFFF";
+    dc.strokeRoundRect(x,y-h/2,w,h,5);
+    if(left) ctx.textAlign = "left";
+    else     ctx.textAlign = "right";
+    ctx.fillStyle = "#444444";
+    ctx.font = "20px Open Sans";
+    if(left) ctx.fillText(text,x+4,y+9);
+    else     ctx.fillText(text,x+w-4,y+9);
+  }
 
   var interruptDoneDisplay = function ()
   {
