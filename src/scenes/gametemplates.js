@@ -201,7 +201,7 @@ var CarbonCycleGameTemplate =
       {
         title:"Animal Respiration",
         description:"Breathe in, breathe out",
-        flavor:"When animals breathe, they take Oxygen from and release Carbon Dioxide into the air!",
+        flavor:"When animals breathe, they take O₂ from and release CO₂ into the air!",
         from:"Animals",
         to:"Atmosphere",
         time:0,
@@ -211,7 +211,7 @@ var CarbonCycleGameTemplate =
       {
         title:"Plant Respiration",
         description:"Plants breathe too!",
-        flavor:"Like animals, plants take Oxygen from and release Carbon Dioxide into the air! (Though they also take Carbon Dioxide back in- but that's a different process!)",
+        flavor:"Like animals, plants take O₂ from and release CO₂ into the air! (Though they also take CO₂ back in- but that's a different process!)",
         from:"Plants",
         to:"Atmosphere",
         time:0,
@@ -221,7 +221,7 @@ var CarbonCycleGameTemplate =
       {
         title:"Photosynthesis",
         description:"Turn sunshine to energy",
-        flavor:"Plants take in Carbon Dioxide along with Sunlight to create energy and grow!",
+        flavor:"Plants take in CO₂ along with Sunlight to create energy and grow!",
         from:"Atmosphere",
         to:"Plants",
         time:0,
@@ -261,7 +261,7 @@ var CarbonCycleGameTemplate =
       {
         title:"Soil Respiration",
         description:"Constant flow",
-        flavor:"All the living organisms within the soil (bacteria, bugs, etc...) respire their Carbon Dioxide into the soil. This results in a constant leak of CO2 from the soil to the atmosphere!",
+        flavor:"The living organisms within the soil respire their CO₂ into the soil. This results in a constant leak of CO₂ from the soil to the atmosphere!",
         from:"Earth (Surface)",
         to:"Atmosphere",
         time:0,
@@ -281,7 +281,7 @@ var CarbonCycleGameTemplate =
       {
         title:"Harvest/Process Petroleum",
         description:"Drill, baby, drill!",
-        flavor:"Million year old Animal matter (in the form of Petroleum) must be harvested from deep within the earth. It then must be refined before it can be used for fuel.",
+        flavor:"Petroleum must be harvested from deep within the earth. It then must be refined before it can be used for fuel.",
         from:"Earth (Deep)",
         to:"Fuel",
         time:0,
@@ -291,7 +291,7 @@ var CarbonCycleGameTemplate =
       {
         title:"Combustion",
         description:"BOOM",
-        flavor:"To convert fuel into energy, we light it on fire! This releases large amounts of Carbon Dioxide into the atmosphere.",
+        flavor:"To convert fuel into energy, we light it on fire! This releases large amounts of CO₂ into the atmosphere.",
         from:"Fuel",
         to:"Atmosphere",
         time:0,
@@ -321,7 +321,7 @@ var CarbonCycleGameTemplate =
       {
         title:"Ocean Diffusion",
         description:"Exchanges in both directions!",
-        flavor:"The ocean and the atmosphere are constantly exchanging stores of carbon at the ocean's surface. This will move carbon from the Ocean to the Atmosphere.",
+        flavor:"When there is more carbon in the Ocean than in the Atmosphere, it will leak into the atmosphere to even it out!",
         from:"Ocean",
         to:"Atmosphere",
         time:0,
@@ -331,7 +331,7 @@ var CarbonCycleGameTemplate =
       {
         title:"Ocean Diffusion",
         description:"Exchanges in both directions!",
-        flavor:"The ocean and the atmosphere are constantly exchanging stores of carbon at the ocean's surface. This will move carbon from the Atmosphere to the Ocean.",
+        flavor:"When there is more carbon in the Atmosphere than in the Ocean, it will leak into the ocean to even it out!",
         from:"Atmosphere",
         to:"Ocean",
         time:0,
