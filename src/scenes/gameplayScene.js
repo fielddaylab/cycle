@@ -902,7 +902,7 @@ var GamePlayScene = function(game, stage)
 
     if(input_state == INPUT_TUTORIAL)
     {
-      ctx.fillStyle = "rgba(10,10,10,0.5)";
+      ctx.fillStyle = "#C5F0F8";
       ctx.fillRect(sidebar_w,blurb_y-20,dc.width-(2*sidebar_w),dc.height-(blurb_y-20));
 
       ctx.fillStyle = white;
