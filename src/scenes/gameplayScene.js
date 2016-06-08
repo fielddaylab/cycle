@@ -309,14 +309,22 @@ var GamePlayScene = function(game, stage)
     summary = [];
     var text;
     var team = g.players[0].title;
-    if(game.multiplayer == MULTIPLAYER_AI || game.multiplayer == MULTIPLAYER_TUT) text = "You are "+team+", and it's "+team+"'s turn!";
-    if(game.multiplayer == MULTIPLAYER_LOCAL) text = "It's "+team+"'s turn!";
+    var who = team+"'s";
+
+    if(
+      ((game.multiplayer == MULTIPLAYER_NET_CREATE || game.multiplayer == MULTIPLAYER_AI) && g.player_turn == 1) ||
+      ((game.multiplayer == MULTIPLAYER_NET_JOIN)                                         && g.player_turn == 2)
+    )
+      who = "your";
+
+    if(game.multiplayer == MULTIPLAYER_AI || game.multiplayer == MULTIPLAYER_TUT) text = "You are "+team+", and it's "+who+" turn!";
+    if(game.multiplayer == MULTIPLAYER_LOCAL) text = "It's "+who+" turn!";
     if(game.multiplayer == MULTIPLAYER_NET_CREATE)
     {
       if(turn_stage == TURN_WAIT_FOR_JOIN) text = "You are "+team+"! Hold tight while we wait for your opponent... (You are room #"+game.join+")";
-      else text = "You are "+team+", and it's "+team+"'s turn!";
+      else text = "You are "+team+", and it's "+who+" turn!";
     }
-    if(game.multiplayer == MULTIPLAYER_NET_JOIN) text = "You are Blue Team. It's "+team+"'s turn! (Waiting on your opponent...)";
+    if(game.multiplayer == MULTIPLAYER_NET_JOIN) text = "You are Blue Team. It's "+who+" turn! (Waiting on your opponent...)";
     summary = [textToLines(dc, "12px Open Sans", announce_w-10, text)];
 
     chosen_card_i = -1;
@@ -1159,7 +1167,7 @@ var GamePlayScene = function(game, stage)
       if(g.player_turn == chosen_target_p)
         actee = "their own";
       else
-        actee = "your";
+        actee = target.title+"'s";
     }
 
     text = actor+" played \""+g.events[player.hand[chosen_card_i]-1].title+"\" on "+actee+" "+g.noun+"!";
@@ -1193,7 +1201,7 @@ var GamePlayScene = function(game, stage)
       if(g.player_turn != chosen_target_p) //note reversal
         actee = "their own";
       else
-        actee = "your";
+        actee = target.title+"'s";
     }
 
     text = actor+" played \""+event.title+"\" on "+actee+" "+g.noun+"!";
@@ -1205,7 +1213,14 @@ var GamePlayScene = function(game, stage)
       summary.push(textToLines(dc, "12px Open Sans", announce_w-10, "BLUE TEAM gained "+delta.pts_blue_delta_n+" pts!"));
     else if(delta.pts_red_delta_n > 0 && delta.pts_blue_delta_n > 0)
       summary.push(textToLines(dc, "12px Open Sans", announce_w-10, "RED TEAM gained "+delta.pts_red_delta_n+" pts, and BLUE TEAM gained "+delta.pts_blue_delta_n+" pts!"));
-    summary.push(textToLines(dc, "12px Open Sans", announce_w-10, "It's now "+g.players[g.player_turn-1].title+"'s turn!"));
+
+    var who = g.players[g.player_turn-1].title+"'s";
+    if(
+      ((game.multiplayer == MULTIPLAYER_NET_CREATE || game.multiplayer == MULTIPLAYER_AI) && g.player_turn == 1) ||
+      ((game.multiplayer == MULTIPLAYER_NET_JOIN)                                         && g.player_turn == 2)
+    )
+      who = "your";
+    summary.push(textToLines(dc, "12px Open Sans", announce_w-10, "It's now "+who+" turn!"));
   }
 
   //no data- just used for interface
