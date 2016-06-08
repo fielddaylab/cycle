@@ -324,7 +324,7 @@ var GamePlayScene = function(game, stage)
       if(turn_stage == TURN_WAIT_FOR_JOIN) text = "You are "+team+"! Hold tight while we wait for your opponent... (You are room #"+game.join+")";
       else text = "You are "+team+", and it's "+who+" turn!";
     }
-    if(game.multiplayer == MULTIPLAYER_NET_JOIN) text = "You are Blue Team. It's "+who+" turn! (Waiting on your opponent...)";
+    if(game.multiplayer == MULTIPLAYER_NET_JOIN) text = "You are "+g.players[1].title+". It's "+who+" turn! (Waiting on your opponent...)";
     summary = [textToLines(dc, "12px Open Sans", announce_w-10, text)];
 
     chosen_card_i = -1;
@@ -493,7 +493,7 @@ var GamePlayScene = function(game, stage)
             if(cli.database[i].event == "JOIN" && cli.database[i].args[0] == cli.id)
             {
               game.opponent = cli.database[i].user;
-              summary = [textToLines(dc, "12px Open Sans", announce_w-10, "You are Red Team, and it's Red Team's turn!")];
+              summary = [textToLines(dc, "12px Open Sans", announce_w-10, "You are "+g.players[0].title+", and it's your turn!")];
               turn_stage = TURN_CHOOSE_CARD;
             }
           }
