@@ -683,8 +683,8 @@ var GamePlayScene = function(game, stage)
     var e;
     if(hovering_valid || chosen_valid)
     {
-      if(hovering_valid)    e_id = g.players[hovering_card_p-1].hand[hovering_card_i];
-      else if(chosen_valid) e_id = g.players[g.player_turn-1].hand[chosen_card_i];
+      if(chosen_valid)        e_id = g.players[g.player_turn-1].hand[chosen_card_i];
+      else if(hovering_valid) e_id = g.players[hovering_card_p-1].hand[hovering_card_i];
       e = g.events[e_id-1];
     }
 
