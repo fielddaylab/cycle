@@ -81,6 +81,7 @@ var GamePlayScene = function(game, stage)
 
   var tutorial_lines;
   var tutorial_tests;
+  var tutorial_acts;
   var tutorial_draws;
   var tutorial_chars;
   var tutorial_n;
@@ -101,8 +102,8 @@ var GamePlayScene = function(game, stage)
     else          sr = new SeededRand(Math.floor(Math.random()*100000));
 
     //g = constructGame(GameTemplate,sr,dc);
-    //g = constructGame(CarbonCycleGameTemplate,sr,dc);
-    g = constructGame(WaterCycleGameTemplate,sr,dc);
+    g = constructGame(CarbonCycleGameTemplate,sr,dc);
+    //g = constructGame(WaterCycleGameTemplate,sr,dc);
     //g = constructGame(NitrogenCycleGameTemplate,sr,dc);
     transition_t = 0;
     transformGame(dc,g.nodes,g.events,g.tokens)
@@ -242,7 +243,11 @@ var GamePlayScene = function(game, stage)
 
                 genPreSummary();
                 turn_stage = TURN_SUMMARY;
-              },3000);
+                setTimeout(function() //oh god oh god oh god...
+                {
+                  ready_btn.click({});
+                },1000);
+              },2000);
             }
           }
           else if(game.multiplayer == MULTIPLAYER_NET_CREATE)
@@ -376,36 +381,44 @@ var GamePlayScene = function(game, stage)
 
     tutorial_lines = [];
     tutorial_tests = [];
+    tutorial_acts  = [];
     tutorial_draws = [];
     tutorial_chars = [];
     tutorial_n = 0;
 
     tutorial_lines.push("The carbon cycle is all about how carbon moves through our environment. It's also a cool card game we found underneath a rusty old boat.");
     tutorial_tests.push(false);
+    tutorial_acts.push(false);
     tutorial_draws.push(false);
     tutorial_chars.push(0);
     tutorial_lines.push("What's a carbon?");
     tutorial_tests.push(false);
+    tutorial_acts.push(false);
     tutorial_draws.push(false);
     tutorial_chars.push(3);
     tutorial_lines.push("It's an atom, and sometimes part of a molecule, and it's pretty much everywhere. It changes forms as it moves through our environment.");
     tutorial_tests.push(false);
+    tutorial_acts.push(false);
     tutorial_draws.push(false);
     tutorial_chars.push(0);
     tutorial_lines.push("It's in everything?");
     tutorial_tests.push(false);
+    tutorial_acts.push(false);
     tutorial_draws.push(false);
     tutorial_chars.push(3);
     tutorial_lines.push("Well, not everything, but a lot of things, in the air we breathe, in our oceans, plants, animals, the atmosphere! It's all over! And we're going to learn about how it moves through our environment by playing a card game!");
     tutorial_tests.push(false);
+    tutorial_acts.push(false);
     tutorial_draws.push(false);
     tutorial_chars.push(0);
     tutorial_lines.push("It's a two person game, between the red team, and the blue team");
     tutorial_tests.push(false);
+    tutorial_acts.push(false);
     tutorial_draws.push(false);
     tutorial_chars.push(0);
     tutorial_lines.push("Here's Red");
     tutorial_tests.push(false);
+    tutorial_acts.push(false);
     tutorial_draws.push(function()
     {
       var y = 140 + Math.sin(n_ticks/10)*10;
@@ -415,6 +428,7 @@ var GamePlayScene = function(game, stage)
     tutorial_chars.push(0);
     tutorial_lines.push("And here's blue");
     tutorial_tests.push(false);
+    tutorial_acts.push(false);
     tutorial_draws.push(function()
     {
       var y = 140 + Math.sin(n_ticks/10)*10;
@@ -424,54 +438,67 @@ var GamePlayScene = function(game, stage)
     tutorial_chars.push(0);
     tutorial_lines.push("There are carbons on the different parts of our environment, represented by the red and blue jewels. You play cards to move the carbons around the gameboard (environment)");
     tutorial_tests.push(false);
+    tutorial_acts.push(false);
     tutorial_draws.push(false);
     tutorial_chars.push(0);
     tutorial_lines.push("Ooh, so the cards represent how carbon moves through our environment,");
     tutorial_tests.push(false);
+    tutorial_acts.push(false);
     tutorial_draws.push(false);
     tutorial_chars.push(3);
     tutorial_lines.push("Exactly.");
     tutorial_tests.push(false);
+    tutorial_acts.push(false);
     tutorial_draws.push(false);
     tutorial_chars.push(0);
     tutorial_lines.push("The goal is to get your carbons into the goal zone (the blue tile), after both players have played their cards, each player is awarded points corresponding the amount of carbons in the goal zone.");
     tutorial_tests.push(false);
+    tutorial_acts.push(false);
     tutorial_draws.push(false);
     tutorial_chars.push(0);
     tutorial_lines.push("When you play a card, you can choose to effect either team's carbon, maybe you would like to move your carbon into the goal zone, or move your opponent's out of it.");
     tutorial_tests.push(false);
+    tutorial_acts.push(false);
     tutorial_draws.push(false);
     tutorial_chars.push(0);
     tutorial_lines.push("cool! Lets try it out!");
     tutorial_tests.push(false);
+    tutorial_acts.push(false);
     tutorial_draws.push(false);
     tutorial_chars.push(3);
     tutorial_lines.push("Ok, I'll be blue and you can be red, why don't you try selecting a card and see what happens?");
     tutorial_tests.push(function(){ return g.player_turn == 2; });
+    tutorial_acts.push(false);
     tutorial_draws.push(false);
     tutorial_chars.push(0);
     tutorial_lines.push(function() { var delta = g.deltas[g.turn*2+(g.player_turn-1)-1]; var last_event = g.events[delta.event_id-1]; return "Cool, so you played \""+last_event.title+"\" to move carbon to \""+g.nodes[last_event.to_id-1].title+"\"."; });
     tutorial_tests.push(false);
+    tutorial_acts.push(false);
     tutorial_draws.push(false);
     tutorial_chars.push(0);
     tutorial_lines.push("Now I'll go");
     tutorial_tests.push(function(){ return g.player_turn == 1; });
+    tutorial_acts.push(function(){ ready_btn.click({});});
     tutorial_draws.push(false);
     tutorial_chars.push(0);
     tutorial_lines.push(function() { var delta = g.deltas[g.turn*2+(g.player_turn-1)-1]; var last_event = g.events[delta.event_id-1]; return "Ok, I played \""+last_event.title+"\" to move carbon to \""+g.nodes[last_event.to_id-1].title+"\"."; });
     tutorial_tests.push(false);
+    tutorial_acts.push(false);
     tutorial_draws.push(false);
     tutorial_chars.push(0);
     tutorial_lines.push("See how different actions make carbon move throughout our environment? Carbon affects just about every part of our planet!");
     tutorial_tests.push(false);
+    tutorial_acts.push(false);
     tutorial_draws.push(false);
     tutorial_chars.push(0);
     tutorial_lines.push("Wow! Cool!");
     tutorial_tests.push(false);
+    tutorial_acts.push(false);
     tutorial_draws.push(false);
     tutorial_chars.push(3);
     tutorial_lines.push("Yeah! In this game, the goal zone moves every three turns, so plan ahead! If you want to keep playing, It's your turn!");
     tutorial_tests.push(false);
+    tutorial_acts.push(false);
     tutorial_draws.push(false);
     tutorial_chars.push(0);
 
@@ -602,6 +629,7 @@ var GamePlayScene = function(game, stage)
 
     if(game.multiplayer == MULTIPLAYER_TUT)
     {
+      if(tutorial_acts.length > tutorial_n && tutorial_acts[tutorial_n]) tutorial_acts[tutorial_n]();
       if(tutorial_tests.length > tutorial_n && (tutorial_tests[tutorial_n] && tutorial_tests[tutorial_n]()))
       {
         tutorial_n++;
