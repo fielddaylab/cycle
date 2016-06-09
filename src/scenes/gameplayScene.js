@@ -521,7 +521,7 @@ var GamePlayScene = function(game, stage)
       drawTip(g.nodes[g.goal_node-1].x+g.nodes[g.goal_node-1].w,y,w,true,"GOAL ZONE");
     });
     tutorial_chars.push(0);
-    tutorial_lines.push("After both players have played their cards, each player is awarded points corresponding the amount of "+g.noun+" in the goal zone.");
+    tutorial_lines.push("After both players have played their cards, each player is awarded points corresponding to the amount of "+g.noun+" in the goal zone.");
     tutorial_tests.push(false);
     tutorial_acts.push(false);
     tutorial_draws.push(function()
