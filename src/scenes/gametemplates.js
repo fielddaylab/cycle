@@ -431,8 +431,8 @@ var WaterCycleGameTemplate =
     [
       {
         title:"Evaporation",
-        description:"The air is thirsty",
-        flavor:"",
+        description:"Disappearing into thin air",
+        flavor:"Water on Earth's surface will quickly dissapate into the atmosphere, so long as it isn't very humid.",
         from:"Surface",
         to:"Atmosphere",
         time:0,
@@ -441,8 +441,8 @@ var WaterCycleGameTemplate =
       },
       {
         title:"Evaporation",
-        description:"The air is thirsty",
-        flavor:"",
+        description:"Disappearing into thin air",
+        flavor:"The Ocean is constantly contributing to the humidity of the atmosphere surrounding it.",
         from:"Ocean",
         to:"Atmosphere",
         time:0,
@@ -452,7 +452,7 @@ var WaterCycleGameTemplate =
       {
         title:"Evaporation",
         description:"The air is thirsty",
-        flavor:"",
+        flavor:"Rivers and Lakes constantly contribute to the humidity of the atmosphere surrounding them.",
         from:"River",
         to:"Atmosphere",
         time:0,
@@ -462,7 +462,7 @@ var WaterCycleGameTemplate =
       {
         title:"Runoff",
         description:"The water's gotta go somewhere...",
-        flavor:"",
+        flavor:"Water from rain, agriculture, or anything else on the surface will eventually make its way lower- in this case, a nearby river.",
         from:"Surface",
         to:"River",
         time:0,
@@ -472,7 +472,7 @@ var WaterCycleGameTemplate =
       {
         title:"Runoff",
         description:"The water's gotta go somewhere...",
-        flavor:"",
+        flavor:"Water from rain, agriculture, or anything else on the surface will eventually make its way lower- in this case, the nearby ocean.",
         from:"Surface",
         to:"Ocean",
         time:0,
@@ -482,7 +482,7 @@ var WaterCycleGameTemplate =
       {
         title:"Condensation",
         description:"Makes the air visible",
-        flavor:"",
+        flavor:"When the air gets humid and cold enough (like high in the atmosphere), it will condense into a visible mist (seen as fog or clouds).",
         from:"Atmosphere",
         to:"Clouds",
         time:0,
@@ -492,7 +492,7 @@ var WaterCycleGameTemplate =
       {
         title:"Precipitation",
         description:"Rain Sleet Snow or Hail",
-        flavor:"",
+        flavor:"Enough condensed water will become heavy enough to fall down to the earth- or in this case, the ocean.",
         from:"Clouds",
         to:"Ocean",
         time:0,
@@ -502,7 +502,7 @@ var WaterCycleGameTemplate =
       {
         title:"Precipitation",
         description:"Rain Sleet Snow or Hail",
-        flavor:"",
+        flavor:"Enough condensed water will become heavy enough to fall down to the earth- or in this case, a river.",
         from:"Clouds",
         to:"River",
         time:0,
@@ -512,7 +512,7 @@ var WaterCycleGameTemplate =
       {
         title:"Precipitation",
         description:"Rain Sleet Snow or Hail",
-        flavor:"",
+        flavor:"Enough condensed water will become heavy enough to fall down to the earth.",
         from:"Clouds",
         to:"Surface",
         time:0,
@@ -522,7 +522,7 @@ var WaterCycleGameTemplate =
       {
         title:"Soil Absorption",
         description:"A sinking puddle",
-        flavor:"",
+        flavor:"Water left alone on soft earth will sink deep into the ground if it doesn't evaporate quickly enough.",
         from:"Surface",
         to:"Earth",
         time:0,
@@ -530,9 +530,9 @@ var WaterCycleGameTemplate =
         common:1,
       },
       {
-        title:"Ground Water Route to River",
-        description:"I have nothing interesting to add",
-        flavor:"",
+        title:"Ground Water Expansion",
+        description:"Big reservoirs in motion",
+        flavor:"Even large stores of water deep within the earth can find their ways to other bodies of water- in this case, a river.",
         from:"Earth",
         to:"River",
         time:0,
@@ -540,9 +540,9 @@ var WaterCycleGameTemplate =
         common:1,
       },
       {
-        title:"Ground Water Route to Ocean",
-        description:"I have nothing interesting to add",
-        flavor:"",
+        title:"Ground Water Expansion",
+        description:"Big reservoirs in motion",
+        flavor:"Even large stores of water deep within the earth can find their ways to other bodies of water- in this case, the ocean.",
         from:"Earth",
         to:"Ocean",
         time:0,
