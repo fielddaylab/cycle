@@ -25,6 +25,12 @@ var GamePlayScene = function(game, stage)
   var INPUT_TUTORIAL  = ENUM; ENUM++;
   var input_state;
 
+  ENUM = 0;
+  var CARBON_GAME   = ENUM; ENUM++;
+  var NITROGEN_GAME = ENUM; ENUM++;
+  var WATER_GAME    = ENUM; ENUM++;
+  var game_type;
+
   //seeded rand!
   var sr;
 
@@ -101,10 +107,19 @@ var GamePlayScene = function(game, stage)
     if(game.join) sr = new SeededRand(game.join);
     else          sr = new SeededRand(Math.floor(Math.random()*100000));
 
-    //g = constructGame(GameTemplate,sr,dc);
-    g = constructGame(CarbonCycleGameTemplate,sr,dc);
-    //g = constructGame(WaterCycleGameTemplate,sr,dc);
-    //g = constructGame(NitrogenCycleGameTemplate,sr,dc);
+    game_type = CARBON_GAME;
+    //game_type = NITROGEN_GAME;
+    //game_type = WATER_GAME;
+
+    if(game_type == CARBON_GAME)
+      g = constructGame(CarbonCycleGameTemplate,sr,dc);
+    else if(game_type == NITROGEN_GAME)
+      g = constructGame(NitrogenCycleGameTemplate,sr,dc);
+    else if(game_type == WATER_GAME)
+      g = constructGame(WaterCycleGameTemplate,sr,dc);
+    else
+      g = constructGame(GameTemplate,sr,dc);
+
     transition_t = 0;
     transformGame(dc,g.nodes,g.events,g.tokens)
 
@@ -386,7 +401,7 @@ var GamePlayScene = function(game, stage)
     tutorial_chars = [];
     tutorial_n = 0;
 
-    tutorial_lines.push("The carbon cycle is all about how carbon moves and changes throughout the world!");
+    tutorial_lines.push("The "+g.noun+" cycle is all about how "+g.noun+" moves and changes throughout the world!");
     tutorial_tests.push(false);
     tutorial_acts.push(false);
     tutorial_draws.push(false);
@@ -396,26 +411,50 @@ var GamePlayScene = function(game, stage)
     tutorial_acts.push(false);
     tutorial_draws.push(false);
     tutorial_chars.push(3);
-    tutorial_lines.push("But, er.. What's a carbon?");
+    if(game_type != WATER_GAME)
+    {
+    tutorial_lines.push("But, er.. What's a "+g.noun+"?");
     tutorial_tests.push(false);
     tutorial_acts.push(false);
     tutorial_draws.push(false);
     tutorial_chars.push(3);
-    tutorial_lines.push("It's an atom (often part of a molecule!), and it's pretty much everywhere.");
-    tutorial_tests.push(false);
-    tutorial_acts.push(false);
-    tutorial_draws.push(false);
-    tutorial_chars.push(0);
-    tutorial_lines.push("It's in everything?");
-    tutorial_tests.push(false);
-    tutorial_acts.push(false);
-    tutorial_draws.push(false);
-    tutorial_chars.push(3);
-    tutorial_lines.push("Well, not everything, but a lot of things! It's in the air we breathe, in our oceans, plants, animals, the atmosphere! It's all over!");
-    tutorial_tests.push(false);
-    tutorial_acts.push(false);
-    tutorial_draws.push(false);
-    tutorial_chars.push(0);
+    }
+    if(game_type == CARBON_GAME)
+    {
+      tutorial_lines.push("It's an atom (often part of a molecule!), and it's pretty much everywhere.");
+      tutorial_tests.push(false);
+      tutorial_acts.push(false);
+      tutorial_draws.push(false);
+      tutorial_chars.push(0);
+      tutorial_lines.push("It's in everything?");
+      tutorial_tests.push(false);
+      tutorial_acts.push(false);
+      tutorial_draws.push(false);
+      tutorial_chars.push(3);
+      tutorial_lines.push("Well, not everything, but a lot of things! It's in the air we breathe, in our oceans, plants, animals, the atmosphere! It's all over!");
+      tutorial_tests.push(false);
+      tutorial_acts.push(false);
+      tutorial_draws.push(false);
+      tutorial_chars.push(0);
+    }
+    if(game_type == NITROGEN_GAME)
+    {
+      tutorial_lines.push("It's an atom (often part of a molecule!), and it's really important in helping plants grow!");
+      tutorial_tests.push(false);
+      tutorial_acts.push(false);
+      tutorial_draws.push(false);
+      tutorial_chars.push(0);
+      tutorial_lines.push("That's it?");
+      tutorial_tests.push(false);
+      tutorial_acts.push(false);
+      tutorial_draws.push(false);
+      tutorial_chars.push(3);
+      tutorial_lines.push("Getting Nitrogen into plants is the first steps in getting it into animals (like you and me)! It's an absolute necessity for life.");
+      tutorial_tests.push(false);
+      tutorial_acts.push(false);
+      tutorial_draws.push(false);
+      tutorial_chars.push(0);
+    }
     tutorial_lines.push("But back to the game-");
     tutorial_tests.push(false);
     tutorial_acts.push(false);
@@ -426,7 +465,7 @@ var GamePlayScene = function(game, stage)
     tutorial_acts.push(false);
     tutorial_draws.push(false);
     tutorial_chars.push(0);
-    tutorial_lines.push("One on the RED TEAM,");
+    tutorial_lines.push("Here's the RED TEAM,");
     tutorial_tests.push(false);
     tutorial_acts.push(false);
     tutorial_draws.push(function()
@@ -436,7 +475,7 @@ var GamePlayScene = function(game, stage)
       drawTip(sidebar_w+5,y,w,true,"RED TEAM");
     });
     tutorial_chars.push(0);
-    tutorial_lines.push("and one on the BLUE TEAM.");
+    tutorial_lines.push("and here's the BLUE TEAM.");
     tutorial_tests.push(false);
     tutorial_acts.push(false);
     tutorial_draws.push(function()
@@ -446,17 +485,17 @@ var GamePlayScene = function(game, stage)
       drawTip(dc.width-sidebar_w-w-5,y,w,false,"BLUE TEAM");
     });
     tutorial_chars.push(0);
-    tutorial_lines.push("Each team has carbon scattered around the environment.");
+    tutorial_lines.push("Each team has "+g.noun+" scattered around the environment.");
     tutorial_tests.push(false);
     tutorial_acts.push(false);
     tutorial_draws.push(function()
     {
       var y = 320 + Math.sin(n_ticks/10)*10;
       var w = 115;
-      drawTip(dc.width/2-280,y,w,false,"CARBON");
+      drawTip(dc.width/2-280,y,w,false,g.NOUN);
       var y = 240 + Math.sin(n_ticks/10)*10;
       var w = 115;
-      drawTip(dc.width/2+150,y,w,true,"CARBON");
+      drawTip(dc.width/2+150,y,w,true,g.NOUN);
     });
     tutorial_chars.push(0);
     tutorial_lines.push("And we take turns playing cards that move them around!");
@@ -472,7 +511,7 @@ var GamePlayScene = function(game, stage)
       drawTip(dc.width-sidebar_w-w-5,y,w,false,"CARDS");
     });
     tutorial_chars.push(0);
-    tutorial_lines.push("Ooh, so the cards represent how carbon moves through our environment,");
+    tutorial_lines.push("Ooh, so the cards represent how "+g.noun+" moves through our environment,");
     tutorial_tests.push(false);
     tutorial_acts.push(false);
     tutorial_draws.push(false);
@@ -482,7 +521,7 @@ var GamePlayScene = function(game, stage)
     tutorial_acts.push(false);
     tutorial_draws.push(false);
     tutorial_chars.push(0);
-    tutorial_lines.push("The goal is to get your carbons into the flashing zone.");
+    tutorial_lines.push("The goal is to get your "+g.noun+" into the flashing zone.");
     tutorial_tests.push(false);
     tutorial_acts.push(false);
     tutorial_draws.push(function()
@@ -492,7 +531,7 @@ var GamePlayScene = function(game, stage)
       drawTip(g.nodes[g.goal_node-1].x+g.nodes[g.goal_node-1].w,y,w,true,"GOAL ZONE");
     });
     tutorial_chars.push(0);
-    tutorial_lines.push("After both players have played their cards, each player is awarded points corresponding the amount of carbons in the goal zone.");
+    tutorial_lines.push("After both players have played their cards, each player is awarded points corresponding the amount of "+g.noun+" in the goal zone.");
     tutorial_tests.push(false);
     tutorial_acts.push(false);
     tutorial_draws.push(function()
@@ -505,7 +544,7 @@ var GamePlayScene = function(game, stage)
       drawTip(dc.width-sidebar_w-w-5,y,w,false,"POINTS");
     });
     tutorial_chars.push(0);
-    tutorial_lines.push("When you play a card, you can choose to affect either team's carbon. Maybe you would like to move your carbon into the goal zone, or move your opponent's out of it.");
+    tutorial_lines.push("When you play a card, you can choose to affect either team's "+g.noun+". Maybe you would like to move your "+g.noun+" into the goal zone, or move your opponent's out of it.");
     tutorial_tests.push(false);
     tutorial_acts.push(false);
     tutorial_draws.push(false);
@@ -520,7 +559,7 @@ var GamePlayScene = function(game, stage)
     tutorial_acts.push(false);
     tutorial_draws.push(false);
     tutorial_chars.push(0);
-    tutorial_lines.push(function() { var delta = g.deltas[g.turn*2+(g.player_turn-1)-1]; var last_event = g.events[delta.event_id-1]; return "Cool, so you played \""+last_event.title+"\" to move carbon to \""+g.nodes[last_event.to_id-1].title+"\"."; });
+    tutorial_lines.push(function() { var delta = g.deltas[g.turn*2+(g.player_turn-1)-1]; var last_event = g.events[delta.event_id-1]; return "Cool, so you played \""+last_event.title+"\" to move "+g.noun+" to \""+g.nodes[last_event.to_id-1].title+"\"."; });
     tutorial_tests.push(false);
     tutorial_acts.push(false);
     tutorial_draws.push(false);
@@ -530,16 +569,35 @@ var GamePlayScene = function(game, stage)
     tutorial_acts.push(function(){ ready_btn.click({});});
     tutorial_draws.push(false);
     tutorial_chars.push(0);
-    tutorial_lines.push(function() { var delta = g.deltas[g.turn*2+(g.player_turn-1)-1]; var last_event = g.events[delta.event_id-1]; return "Ok, I played \""+last_event.title+"\" to move carbon to \""+g.nodes[last_event.to_id-1].title+"\"."; });
+    tutorial_lines.push(function() { var delta = g.deltas[g.turn*2+(g.player_turn-1)-1]; var last_event = g.events[delta.event_id-1]; return "Ok, I played \""+last_event.title+"\" to move "+g.noun+" to \""+g.nodes[last_event.to_id-1].title+"\"."; });
     tutorial_tests.push(false);
     tutorial_acts.push(false);
     tutorial_draws.push(false);
     tutorial_chars.push(0);
-    tutorial_lines.push("See how different actions make carbon move throughout our environment? Carbon affects just about every part of our planet!");
-    tutorial_tests.push(false);
-    tutorial_acts.push(false);
-    tutorial_draws.push(false);
-    tutorial_chars.push(0);
+    if(game_type == CARBON_GAME)
+    {
+      tutorial_lines.push("See how different actions make "+g.noun+" move throughout our environment? "+g.Noun+" affects just about every part of our planet!");
+      tutorial_tests.push(false);
+      tutorial_acts.push(false);
+      tutorial_draws.push(false);
+      tutorial_chars.push(0);
+    }
+    if(game_type == NITROGEN_GAME)
+    {
+      tutorial_lines.push("See how different actions make "+g.noun+" move throughout our environment? "+g.Noun+" affects just about every stage of agriculture (and more)!");
+      tutorial_tests.push(false);
+      tutorial_acts.push(false);
+      tutorial_draws.push(false);
+      tutorial_chars.push(0);
+    }
+    if(game_type == WATER_GAME)
+    {
+      tutorial_lines.push("See how different actions make "+g.noun+" move throughout our environment? "+g.Noun+" is constantly cycling through the air, the land, and the sea!");
+      tutorial_tests.push(false);
+      tutorial_acts.push(false);
+      tutorial_draws.push(false);
+      tutorial_chars.push(0);
+    }
     tutorial_lines.push("Wow! Cool!");
     tutorial_tests.push(false);
     tutorial_acts.push(false);
