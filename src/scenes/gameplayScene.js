@@ -386,17 +386,22 @@ var GamePlayScene = function(game, stage)
     tutorial_chars = [];
     tutorial_n = 0;
 
-    tutorial_lines.push("The carbon cycle is all about how carbon moves through our environment. It's also a cool card game we found underneath a rusty old boat.");
+    tutorial_lines.push("The carbon cycle is all about how carbon moves and changes throughout the world!");
     tutorial_tests.push(false);
     tutorial_acts.push(false);
     tutorial_draws.push(false);
     tutorial_chars.push(0);
-    tutorial_lines.push("What's a carbon?");
+    tutorial_lines.push("It's also a cool card game we found underneath a rusty old boat!");
     tutorial_tests.push(false);
     tutorial_acts.push(false);
     tutorial_draws.push(false);
     tutorial_chars.push(3);
-    tutorial_lines.push("It's an atom, and sometimes part of a molecule, and it's pretty much everywhere. It changes forms as it moves through our environment.");
+    tutorial_lines.push("But, er.. What's a carbon?");
+    tutorial_tests.push(false);
+    tutorial_acts.push(false);
+    tutorial_draws.push(false);
+    tutorial_chars.push(3);
+    tutorial_lines.push("It's an atom (often part of a molecule!), and it's pretty much everywhere.");
     tutorial_tests.push(false);
     tutorial_acts.push(false);
     tutorial_draws.push(false);
@@ -406,17 +411,22 @@ var GamePlayScene = function(game, stage)
     tutorial_acts.push(false);
     tutorial_draws.push(false);
     tutorial_chars.push(3);
-    tutorial_lines.push("Well, not everything, but a lot of things, in the air we breathe, in our oceans, plants, animals, the atmosphere! It's all over! And we're going to learn about how it moves through our environment by playing a card game!");
+    tutorial_lines.push("Well, not everything, but a lot of things! It's in the air we breathe, in our oceans, plants, animals, the atmosphere! It's all over!");
     tutorial_tests.push(false);
     tutorial_acts.push(false);
     tutorial_draws.push(false);
     tutorial_chars.push(0);
-    tutorial_lines.push("It's a two person game, between the red team, and the blue team");
+    tutorial_lines.push("But back to the game-");
     tutorial_tests.push(false);
     tutorial_acts.push(false);
     tutorial_draws.push(false);
     tutorial_chars.push(0);
-    tutorial_lines.push("Here's Red");
+    tutorial_lines.push("It takes two people to play:");
+    tutorial_tests.push(false);
+    tutorial_acts.push(false);
+    tutorial_draws.push(false);
+    tutorial_chars.push(0);
+    tutorial_lines.push("One on the RED TEAM,");
     tutorial_tests.push(false);
     tutorial_acts.push(false);
     tutorial_draws.push(function()
@@ -426,7 +436,7 @@ var GamePlayScene = function(game, stage)
       drawTip(sidebar_w+5,y,w,true,"RED TEAM");
     });
     tutorial_chars.push(0);
-    tutorial_lines.push("And here's blue");
+    tutorial_lines.push("and one on the BLUE TEAM.");
     tutorial_tests.push(false);
     tutorial_acts.push(false);
     tutorial_draws.push(function()
@@ -436,32 +446,71 @@ var GamePlayScene = function(game, stage)
       drawTip(dc.width-sidebar_w-w-5,y,w,false,"BLUE TEAM");
     });
     tutorial_chars.push(0);
-    tutorial_lines.push("There are carbons on the different parts of our environment, represented by the red and blue jewels. You play cards to move the carbons around the gameboard (environment)");
+    tutorial_lines.push("Each team has carbon scattered around the environment.");
     tutorial_tests.push(false);
     tutorial_acts.push(false);
-    tutorial_draws.push(false);
+    tutorial_draws.push(function()
+    {
+      var y = 320 + Math.sin(n_ticks/10)*10;
+      var w = 115;
+      drawTip(dc.width/2-280,y,w,false,"CARBON");
+      var y = 240 + Math.sin(n_ticks/10)*10;
+      var w = 115;
+      drawTip(dc.width/2+150,y,w,true,"CARBON");
+    });
+    tutorial_chars.push(0);
+    tutorial_lines.push("And we take turns playing cards that move them around!");
+    tutorial_tests.push(false);
+    tutorial_acts.push(false);
+    tutorial_draws.push(function()
+    {
+      var y = 240 + Math.sin(n_ticks/10)*10;
+      var w = 115;
+      drawTip(sidebar_w+5,y,w,true,"CARDS");
+      var y = 240 + Math.sin(n_ticks/10)*10;
+      var w = 115;
+      drawTip(dc.width-sidebar_w-w-5,y,w,false,"CARDS");
+    });
     tutorial_chars.push(0);
     tutorial_lines.push("Ooh, so the cards represent how carbon moves through our environment,");
     tutorial_tests.push(false);
     tutorial_acts.push(false);
     tutorial_draws.push(false);
     tutorial_chars.push(3);
-    tutorial_lines.push("Exactly.");
+    tutorial_lines.push("Yep!");
     tutorial_tests.push(false);
     tutorial_acts.push(false);
     tutorial_draws.push(false);
     tutorial_chars.push(0);
-    tutorial_lines.push("The goal is to get your carbons into the goal zone (the blue tile), after both players have played their cards, each player is awarded points corresponding the amount of carbons in the goal zone.");
+    tutorial_lines.push("The goal is to get your carbons into the flashing zone.");
+    tutorial_tests.push(false);
+    tutorial_acts.push(false);
+    tutorial_draws.push(function()
+    {
+      var y = g.nodes[g.goal_node-1].y+g.nodes[g.goal_node-1].h/2 + Math.sin(n_ticks/10)*10;
+      var w = 115;
+      drawTip(g.nodes[g.goal_node-1].x+g.nodes[g.goal_node-1].w,y,w,true,"GOAL ZONE");
+    });
+    tutorial_chars.push(0);
+    tutorial_lines.push("After both players have played their cards, each player is awarded points corresponding the amount of carbons in the goal zone.");
+    tutorial_tests.push(false);
+    tutorial_acts.push(false);
+    tutorial_draws.push(function()
+    {
+      var y = 70 + Math.sin(n_ticks/10)*10;
+      var w = 115;
+      drawTip(sidebar_w+5,y,w,true,"POINTS");
+      var y = 70 + Math.sin(n_ticks/10)*10;
+      var w = 115;
+      drawTip(dc.width-sidebar_w-w-5,y,w,false,"POINTS");
+    });
+    tutorial_chars.push(0);
+    tutorial_lines.push("When you play a card, you can choose to affect either team's carbon. Maybe you would like to move your carbon into the goal zone, or move your opponent's out of it.");
     tutorial_tests.push(false);
     tutorial_acts.push(false);
     tutorial_draws.push(false);
     tutorial_chars.push(0);
-    tutorial_lines.push("When you play a card, you can choose to effect either team's carbon, maybe you would like to move your carbon into the goal zone, or move your opponent's out of it.");
-    tutorial_tests.push(false);
-    tutorial_acts.push(false);
-    tutorial_draws.push(false);
-    tutorial_chars.push(0);
-    tutorial_lines.push("cool! Lets try it out!");
+    tutorial_lines.push("Cool! Lets try it out!");
     tutorial_tests.push(false);
     tutorial_acts.push(false);
     tutorial_draws.push(false);
