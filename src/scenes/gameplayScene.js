@@ -25,12 +25,6 @@ var GamePlayScene = function(game, stage)
   var INPUT_TUTORIAL  = ENUM; ENUM++;
   var input_state;
 
-  ENUM = 0;
-  var CARBON_GAME   = ENUM; ENUM++;
-  var NITROGEN_GAME = ENUM; ENUM++;
-  var WATER_GAME    = ENUM; ENUM++;
-  var game_type;
-
   //seeded rand!
   var sr;
 
@@ -106,10 +100,6 @@ var GamePlayScene = function(game, stage)
 
     if(game.join) sr = new SeededRand(game.join);
     else          sr = new SeededRand(Math.floor(Math.random()*100000));
-
-    game_type = CARBON_GAME;
-    //game_type = NITROGEN_GAME;
-    //game_type = WATER_GAME;
 
     if(game_type == CARBON_GAME)
       g = constructGame(CarbonCycleGameTemplate,sr,dc);

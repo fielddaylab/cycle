@@ -230,7 +230,12 @@ var ConfigScene = function(game, stage)
         imgBtn(mbtn_net_join,multi_img);   dc.context.drawImage(net_check_img,mbtn_net_join.x+mbtn_net_join.w-30,mbtn_net_join.y-10,40,40); dc.context.fillText("Web: Join Room",          mbtn_net_join.x+mbtn_net_join.w/2,   mbtn_net_join.y+mbtn_net_join.h+20);
         dc.drawLine(btn_1_x+btn_s/2,section_line_1_y,btn_1_x+btn_s/2,dc.height);
         dc.context.font = "40px Open Sans";
-        dc.context.fillText("CARBON CYCLE".split("").join(space+space),dc.width/2,title_y);
+        if(game_type == CARBON_GAME)
+          dc.context.fillText("CARBON CYCLE".split("").join(space+space),dc.width/2,title_y);
+        else if(game_type == NITROGEN_GAME)
+          dc.context.fillText("NITROGEN CYCLE".split("").join(space+space),dc.width/2,title_y);
+        else if(game_type == WATER_GAME)
+          dc.context.fillText("WATER CYCLE".split("").join(space+space),dc.width/2,title_y);
         dc.context.font = "Bold 12px Open Sans";
         dc.context.textAlign = "left";
         dc.context.fillText("Single Player",btn_0_x, subtitle_y);
@@ -270,7 +275,12 @@ var ConfigScene = function(game, stage)
         dc.context.fillStyle = "#000000";
         dc.context.textAlign = "center";
         dc.context.font = "40px Open Sans";
-        dc.context.fillText("CARBON CYCLE".split("").join(space+space),dc.width/2,title_y);
+        if(game_type == CARBON_GAME)
+          dc.context.fillText("CARBON CYCLE".split("").join(space+space),dc.width/2,title_y);
+        else if(game_type == NITROGEN_GAME)
+          dc.context.fillText("NITROGEN CYCLE".split("").join(space+space),dc.width/2,title_y);
+        else if(game_type == WATER_GAME)
+          dc.context.fillText("WATER CYCLE".split("").join(space+space),dc.width/2,title_y);
         dc.context.textAlign = "left";
         dc.context.font = "Bold 12px Open Sans";
         dc.context.fillText("How many turns?",btn_1_x, subtitle_y);
