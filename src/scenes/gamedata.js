@@ -42,9 +42,9 @@ var Event = function()
 
   self.id = 0;
   self.title = "Event";
-  self.description = "Wow An Event";
-  self.flavor = "This Event is Super Great";
-  self.flavor_lines = [];
+  self.flavor = "Wow An Event";
+  self.description = "This Event is Super Great";
+  self.description_lines = [];
   self.info = "";
   self.from_id = 0;
   self.to_id = 0;

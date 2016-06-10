@@ -1456,7 +1456,7 @@ var GamePlayScene = function(game, stage)
       ctx.fillText(event.title,self.x+self.w/2,self.y+70);
       ctx.fillText(event.info,self.x+self.w/2,self.y+95);
       ctx.font = "italic 10px Open Sans";
-      ctx.fillText(event.description,self.x+self.w/2,self.y+85);
+      ctx.fillText(event.flavor,self.x+self.w/2,self.y+85);
     }
 
     self.click = function(evt)
@@ -1608,13 +1608,13 @@ var GamePlayScene = function(game, stage)
       }
 
 
-      //text (title/info/description)
+      //text (title/info/flavor)
       ctx.fillStyle = "#000000";
       ctx.font = "10px Open Sans";
       ctx.fillText(event.title,self.x+self.w/2,self.y+70);
       ctx.fillText(event.info,self.x+self.w/2,self.y+95);
       ctx.font = "italic 10px Open Sans";
-      ctx.fillText(event.description,self.x+self.w/2,self.y+85);
+      ctx.fillText(event.flavor,self.x+self.w/2,self.y+85);
       ctx.font = "10px Open Sans";
 
       if(turn_stage == TURN_CONFIRM_CARD || turn_stage == TURN_SUMMARY || turn_stage == TURN_ANIM_CARD)
@@ -1630,9 +1630,9 @@ var GamePlayScene = function(game, stage)
       {
         //play button (confirm)
         ctx.font = "italic 10px Open Sans";
-        for(var i = 0; i < event.flavor_lines.length; i++)
+        for(var i = 0; i < event.description_lines.length; i++)
         {
-          ctx.fillText(event.flavor_lines[i],self.x+self.w/2,self.y+self.h/2+10*(i+2));
+          ctx.fillText(event.description_lines[i],self.x+self.w/2,self.y+self.h/2+10*(i+2));
         }
         ctx.font = "10px Open Sans";
         if(g.player_turn == 1) ctx.fillStyle = red;
