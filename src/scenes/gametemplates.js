@@ -618,7 +618,7 @@ var NitrogenCycleGameTemplate =
       {
         title:"Lightning",
         description:"Thunder Boomers",
-        flavor:"",
+        flavor:"The energy from a lightning strike converts Nitrogen and Oxygen in the air to Nitrates (which can be used by plants!). The rain then washes the nitrates into the soil.",
         from:"Atmosphere",
         to:"Soil",
         time:0,
@@ -628,7 +628,7 @@ var NitrogenCycleGameTemplate =
       {
         title:"Bacteria Digestion",
         description:"Toot",
-        flavor:"",
+        flavor:"Different bacteria consume and release nitrogen in different forms: From Ammonia to Nitrate, and Nitrate to N₂ (also known as Nitrogen gas).",
         from:"Soil",
         to:"Atmosphere",
         time:0,
@@ -638,7 +638,7 @@ var NitrogenCycleGameTemplate =
       {
         title:"Plant Assimilation",
         description:"Through the roots!",
-        flavor:"",
+        flavor:"Plants take up the Nitrogen in the soil through their roots, providing the nutrition they need to live.",
         from:"Soil",
         to:"Plants",
         time:0,
@@ -647,8 +647,8 @@ var NitrogenCycleGameTemplate =
       },
       {
         title:"Plant Death",
-        description:"Sorry, plants. :(",
-        flavor:"",
+        description:"Wither away",
+        flavor:"Any Nitrogen left in a plant when it dies simply returns to the soil as the plant decays.",
         from:"Plants",
         to:"Soil",
         time:0,
@@ -657,8 +657,8 @@ var NitrogenCycleGameTemplate =
       },
       {
         title:"Animal Death",
-        description:"Sad day.",
-        flavor:"",
+        description:"Poor things",
+        flavor:"Plants get Nitrogen from the soil, Animals get Nitrogen from eating plants, and when animals die, their Nitrogen returns to the soil.",
         from:"Animals",
         to:"Soil",
         time:0,
@@ -667,8 +667,8 @@ var NitrogenCycleGameTemplate =
       },
       {
         title:"Herbivorism",
-        description:"High in fiber.",
-        flavor:"",
+        description:"Eat your veggies",
+        flavor:"Eating Nitrogen-rich plants is a simple way for an animal to get its Nitrogen!",
         from:"Plants",
         to:"Animals",
         time:0,
@@ -677,8 +677,8 @@ var NitrogenCycleGameTemplate =
       },
       {
         title:"Nitrigen-Fixing Plant Bacteria",
-        description:"Actually doesn't pass through the plant",
-        flavor:"",
+        description:"Bacteria doing work",
+        flavor:"Some bacteria live symbiotically with plants, converting Nitrogen gas in the atmosphere into the soil in forms usable by plants.",
         from:"Atmosphere",
         to:"Soil",
         time:0,
