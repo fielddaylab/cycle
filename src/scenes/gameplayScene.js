@@ -554,6 +554,11 @@ var GamePlayScene = function(game, stage)
     tutorial_acts.push(false);
     tutorial_draws.push(false);
     tutorial_chars.push(0);
+    tutorial_lines.push("That card is now discarded, and you'll draw a new card at the beginning of your next turn.");
+    tutorial_tests.push(false);
+    tutorial_acts.push(false);
+    tutorial_draws.push(false);
+    tutorial_chars.push(0);
     tutorial_lines.push("Now I'll go");
     tutorial_tests.push(function(){ return g.player_turn == 1; });
     tutorial_acts.push(function(){ ready_btn.click({});});
@@ -1606,7 +1611,6 @@ var GamePlayScene = function(game, stage)
           ctx.drawImage(from_node.icon_img,self.x+self.w-20-icon_s,self.y+20,icon_s,icon_s);
         }
       }
-
 
       //text (title/info/flavor)
       ctx.fillStyle = "#000000";
