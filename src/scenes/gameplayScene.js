@@ -742,13 +742,17 @@ var GamePlayScene = function(game, stage)
 
   self.draw = function()
   {
+    var bg_img_x = sidebar_w;
+    var bg_img_y = topmost_bar_y+45;
+    var bg_img_w = dc.width-sidebar_w*2;
+    var bg_img_h = dc.height-topmost_bar_y-250;
+
     //free space to allow card height
     //ctx.fillStyle = gray;
     //ctx.fillRect(0,0,dc.width,topmost_bar_y);
     ctx.fillStyle = white;
     dc.roundRectOptions(0,topmost_bar_y,dc.width,dc.height-topmost_bar_y,5,1,1,1,1,0,1);
-    ctx.drawImage(g.bg_img,sidebar_w,topmost_bar_y+60,dc.width-sidebar_w*2,dc.height-topmost_bar_y-250);
-
+    ctx.drawImage(g.bg_img,bg_img_x,bg_img_y,bg_img_w,bg_img_h);
 
     ctx.textAlign = "left";
     ctx.fillStyle = "#FFFFFF";
@@ -855,7 +859,7 @@ var GamePlayScene = function(game, stage)
       ctx.drawImage(n.img,n.x,n.y,n.w,n.h);
     }
 
-    ctx.drawImage(g.fg_img,sidebar_w,topmost_bar_y+60,dc.width-sidebar_w*2,dc.height-topmost_bar_y-250);
+    ctx.drawImage(g.fg_img,bg_img_x,bg_img_y,bg_img_w,bg_img_h);
 
     //draw hover arrow
     if(

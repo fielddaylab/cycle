@@ -149,8 +149,8 @@ var CarbonCycleGameTemplate =
       },
       {
         title:"Atmosphere",
-        img:"atmosphere",
-        icon_img:"atmosphere",
+        img:"cloud",
+        icon_img:"cloud",
         x:x+Math.cos(Math.PI/2+((0/6)*Math.PI*2))*rx,
         y:y+Math.sin(Math.PI/2+((0/6)*Math.PI*2))*ry,
         w:w,
@@ -383,8 +383,8 @@ var WaterCycleGameTemplate =
       },
       {
         title:"Clouds",
-        img:"atmosphere",
-        icon_img:"atmosphere",
+        img:"cloud",
+        icon_img:"cloud",
         x:x+Math.cos(Math.PI/2+((0/6)*Math.PI*2))*rx,
         y:y+Math.sin(Math.PI/2+((0/6)*Math.PI*2))*ry,
         w:w,
@@ -578,8 +578,8 @@ var NitrogenCycleGameTemplate =
     [
       {
         title:"Atmosphere",
-        img:"atmosphere",
-        icon_img:"atmosphere",
+        img:"cloud",
+        icon_img:"cloud",
         x:x+Math.cos(Math.PI/2+((0/6)*Math.PI*2))*rx,
         y:y+Math.sin(Math.PI/2+((0/6)*Math.PI*2))*ry,
         w:w,
