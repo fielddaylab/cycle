@@ -373,9 +373,9 @@ var WaterCycleGameTemplate =
   nodes:
     [
       {
-        title:"Surface",
-        img:"earth_surface",
-        icon_img:"earth_surface",
+        title:"River",
+        img:"river",
+        icon_img:"river",
         x:x,
         y:y,
         w:w,
@@ -391,9 +391,9 @@ var WaterCycleGameTemplate =
         h:h,
       },
       {
-        title:"River",
-        img:"river",
-        icon_img:"river",
+        title:"Surface",
+        img:"earth_surface",
+        icon_img:"earth_surface",
         x:x+Math.cos(Math.PI/2+((2/6)*Math.PI*2))*rx,
         y:y+Math.sin(Math.PI/2+((2/6)*Math.PI*2))*ry,
         w:w,
