@@ -348,7 +348,7 @@ var CarbonCycleGameTemplate =
     ],
 };
 
-
+y = 0.54;
 var WaterCycleGameTemplate =
 {
   tokens:10,
@@ -553,6 +553,7 @@ var WaterCycleGameTemplate =
     ],
 };
 
+y = 0.55;
 var NitrogenCycleGameTemplate =
 {
   tokens:10,
