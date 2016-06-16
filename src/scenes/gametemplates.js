@@ -107,10 +107,11 @@ var GameTemplate =
     ],
 };
 
-var rx = .16;
-var ry = .12;
-var w = .19;
-var h = .145;
+var m = 1.1;
+var rx = .16*m;
+var ry = .12*m;
+var w = .19*m;
+var h = .145*m;
 var x = 0.5;
 var y = 0.57;
 

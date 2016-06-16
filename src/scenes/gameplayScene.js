@@ -743,7 +743,7 @@ var GamePlayScene = function(game, stage)
   self.draw = function()
   {
     var bg_img_x = sidebar_w;
-    var bg_img_y = topmost_bar_y+45;
+    var bg_img_y = topmost_bar_y+60;
     var bg_img_w = dc.width-sidebar_w*2;
     var bg_img_h = dc.height-topmost_bar_y-250;
 
