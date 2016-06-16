@@ -206,6 +206,12 @@ fuel_img.src = "assets/fuel.png";
 var ocean_img = new Image();
 ocean_img.src = "assets/ocean.png";
 
+var river_img = new Image();
+river_img.src = "assets/river.png";
+
+var groundwater_img = new Image();
+groundwater_img.src = "assets/groundwater.png";
+
 var plants_img = new Image();
 plants_img.src = "assets/plants.png";
 

@@ -1,30 +1,41 @@
-"Hi!"
-"Cycle Game is a 2 Player Game"
-"Here's Player 1 (Red)"
-"And Here's Player 2 (Blue)"
-"Both Players begin with 0 points..."
-"and carbon spread around the board."
-"The game takes place over 10 turns."
-"Each turn has a few steps:"
-"First, player 1 plays an event card."
-"Then, player 2 plays an event card."
-"Playing an event card moves carbon from one reservoir to another."
-"After both cards have been played,"
-"all the carbon at the \"
-"as points to each player."
-"The player with the most points at the end of 10 turns, wins."
-"Ok. Let's go through a turn."
-"Player 1 selects an event card to play by clicking on it."
-"Then, they choose who to target with this card."
-"After a quick confirmation..."
-"Player 2 goes through the same motions."
-"Choose an event card..."
-"Choose a target..."
-"Quick confirmation..."
-"(Watch the goal reservoir after we click confirm...)"
-"Some other things to look out for:"
-"1. Every 3 turns, the goal reservoir will make a move through the cycle."
-"2. Some cards move more than one carbon."
-"3. Some cards take more than one turn to move carbon."
-"Ok. You should be able to figure it out from here."
-"Good luck!"
+"The "+g.noun+" cycle is all about how "+g.noun+" moves and changes throughout the world!"
+"It's also a cool card game we found underneath a rusty old boat!"
+if(game_type != WATER_GAME)
+{
+  "But, er.. What's a "+g.noun+"?"
+}
+if(game_type == CARBON_GAME)
+{
+  "It's an atom (often part of a molecule!), and it's pretty much everywhere."
+  "It's in everything?"
+  "Well, not everything, but a lot of things! It's in the air we breathe, in our oceans, plants, animals, the atmosphere! It's all over!"
+}
+if(game_type == NITROGEN_GAME)
+{
+  "It's an atom (often part of a molecule!), and it's really important in helping plants grow!"
+  "That's it?"
+  "Getting Nitrogen into plants is the first steps in getting it into animals (like you and me)! It's an absolute necessity for life."
+}
+"But back to the game-"
+"It takes two people to play:"
+"Here's the RED TEAM,"
+"and here's the BLUE TEAM."
+"Each team has "+g.noun+" scattered around the environment."
+"And we take turns playing cards that move them around!"
+"Ooh, so the cards represent how "+g.noun+" moves through our environment,"
+"Yep!"
+"The goal is to get your "+g.noun+" into the flashing zone."
+"After both players have played their cards, each player is awarded points corresponding to the amount of "+g.noun+" in the goal zone."
+"When you play a card, you can choose to affect either team's "+g.noun+". Maybe you would like to move your "+g.noun+" into the goal zone, or move your opponent's out of it."
+"Cool! Lets try it out!"
+"Ok, I'll be blue and you can be red, why don't you try selecting a card and see what happens?"
+"Cool, so you played \""+last_event.title+"\" to move "+g.noun+" to \""+g.nodes[last_event.to_id-1].title+"\"."
+"That card is now discarded, and you'll draw a new card at the beginning of your next turn."
+"Now I'll go"
+"Ok, I played \""+last_event.title+"\" to move "+g.noun+" to \""+g.nodes[last_event.to_id-1].title+"\".";
+if(game_type == CARBON_GAME)
+  "See how different actions make "+g.noun+" move throughout our environment? "+g.Noun+" affects just about every part of our planet!"
+if(game_type == NITROGEN_GAME)
+  "See how different actions make "+g.noun+" move throughout our environment? "+g.Noun+" affects just about every stage of agriculture (and more)!"
+if(game_type == WATER_GAME)
+  "See how different actions make "+g.noun+" move throughout our environment? "+g.Noun+" is constantly cycling through the air, the land, and the sea!"

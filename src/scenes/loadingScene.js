@@ -44,6 +44,8 @@ var LoadingScene = function(game, stage)
     img_srcs.push("assets/earth_surface.png");
     img_srcs.push("assets/fuel.png");
     img_srcs.push("assets/ocean.png");
+    img_srcs.push("assets/river.png");
+    img_srcs.push("assets/groundwater.png");
     img_srcs.push("assets/plants.png");
     img_srcs.push("assets/hex.png");
     img_srcs.push("assets/hex_b.png");

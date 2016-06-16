@@ -392,8 +392,8 @@ var WaterCycleGameTemplate =
       },
       {
         title:"River",
-        img:"ocean",
-        icon_img:"ocean",
+        img:"river",
+        icon_img:"river",
         x:x+Math.cos(Math.PI/2+((2/6)*Math.PI*2))*rx,
         y:y+Math.sin(Math.PI/2+((2/6)*Math.PI*2))*ry,
         w:w,
@@ -401,8 +401,8 @@ var WaterCycleGameTemplate =
       },
       {
         title:"Earth",
-        img:"earth_deep",
-        icon_img:"earth_deep",
+        img:"groundwater",
+        icon_img:"groundwater",
         x:x+Math.cos(Math.PI/2+((3/6)*Math.PI*2))*rx,
         y:y+Math.sin(Math.PI/2+((3/6)*Math.PI*2))*ry,
         w:w,
@@ -676,7 +676,7 @@ var NitrogenCycleGameTemplate =
         common:1,
       },
       {
-        title:"Nitrigen-Fixing Plant Bacteria",
+        title:"Nitrogen-Fixing Plant Bacteria",
         flavor:"Bacteria doing work",
         description:"Some bacteria live symbiotically with plants, converting Nitrogen gas in the atmosphere into the soil in forms usable by plants.",
         from:"Atmosphere",
