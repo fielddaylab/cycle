@@ -856,7 +856,22 @@ var GamePlayScene = function(game, stage)
         ctx.drawImage(hex_icon,n.x+n.w/2-n.w/2*pulse,n.y+n.h/2-n.h/2*pulse,n.w*pulse,n.h*pulse);
         ctx.globalAlpha = 1;
       }
-      ctx.drawImage(n.img,n.x,n.y,n.w,n.h);
+
+      // draw hex manually
+      ctx.strokeStyle = "white";
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      ctx.moveTo(n.x+n.w*0.015,n.y+n.h*0.5 );
+      ctx.lineTo(n.x+n.w*0.26,n.y+n.h*0.0875);
+      ctx.lineTo(n.x+n.w*0.74,n.y+n.h*0.0875);
+      ctx.lineTo(n.x+n.w*0.985,n.y+n.h*0.5 );
+      ctx.lineTo(n.x+n.w*0.74,n.y+n.h*0.9125);
+      ctx.lineTo(n.x+n.w*0.26,n.y+n.h*0.9125);
+      ctx.closePath();
+      ctx.stroke();
+
+      // draw hex from image
+      //ctx.drawImage(n.img,n.x,n.y,n.w,n.h);
     }
 
     ctx.drawImage(g.fg_img,bg_img_x,bg_img_y,bg_img_w,bg_img_h);
@@ -1029,7 +1044,7 @@ var GamePlayScene = function(game, stage)
     ctx.fillText("Current Zone: "+g.nodes[g.goal_node-1].title,sidebar_w+20,topmost_bar_y+15);
     ctx.textAlign = "right";
     var turns_left = 3-(g.turn%g.turns_per_goal_shift);
-    ctx.fillText("Up Next ("+turns_left+" turns): "+g.nodes[g.next_goal_node-1].title,dc.width-sidebar_w-20,topmost_bar_y+15);
+    ctx.fillText("In "+turns_left+" turns: "+g.nodes[g.next_goal_node-1].title,dc.width-sidebar_w-20,topmost_bar_y+15);
 
     if(input_state == INPUT_INTERRUPT)
     {
