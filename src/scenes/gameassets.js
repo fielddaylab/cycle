@@ -257,3 +257,6 @@ nitrogen_fg_img.src = "assets/nitrogen_fg.png";
 var tutorial_img = new Image();
 tutorial_img.src = "assets/tutorial_qs.png";
 
+var next_button_img = new Image();
+next_button_img.src = "assets/nextbtn-white.png";
+

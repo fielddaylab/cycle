@@ -781,7 +781,7 @@ var GamePlayScene = function(game, stage)
       case MULTIPLAYER_AI:
       case MULTIPLAYER_TUT:
       case MULTIPLAYER_NET_CREATE:
-        if(g.player_turn == 1) ctx.fillText("RED'S TURN (YOU)",10,turn_header_y-4);
+        if(g.player_turn == 1) ctx.fillText("YOUR TURN",10,turn_header_y-4);
         else                   ctx.fillText("YOU",10,turn_header_y-4);
         break;
       case MULTIPLAYER_NET_JOIN:
@@ -814,7 +814,7 @@ var GamePlayScene = function(game, stage)
         if(g.player_turn == 2) ctx.fillText("BLUE'S TURN",dc.width-sidebar_w+10,turn_header_y-4);
         break;
       case MULTIPLAYER_NET_JOIN:
-        if(g.player_turn == 2) ctx.fillText("BLUE'S TURN (YOU)",dc.width-sidebar_w+10,turn_header_y-4);
+        if(g.player_turn == 2) ctx.fillText("YOUR TURN",dc.width-sidebar_w+10,turn_header_y-4);
         else                   ctx.fillText("YOU",dc.width-sidebar_w+10,turn_header_y-4);
         break;
     }
@@ -1042,14 +1042,7 @@ var GamePlayScene = function(game, stage)
       ctx.lineWidth = 2;
       dc.strokeRoundRect(blurb_x,blurb_y,blurb_w,blurb_h,5);
 
-      ctx.fillStyle = gray;
-      ctx.fillRect(dc.width/2+90,dc.height-70,100,40);
-      ctx.fillStyle = white;
-      ctx.fillRect(dc.width/2+90,dc.height-80,100,40);
-      ctx.fillStyle = "#000000";
-      ctx.textAlign = "left";
-      ctx.font = "30px Open Sans";
-      ctx.fillText("Next",dc.width/2+100,dc.height-50);
+      ctx.drawImage(next_button_img,dc.width/2+90,dc.height-80,127,45);
 
       ctx.font = "12px Open Sans";
       interrupt_canvdom.draw(12,dc);
@@ -1066,14 +1059,7 @@ var GamePlayScene = function(game, stage)
       ctx.lineWidth = 2;
       dc.strokeRoundRect(blurb_x,blurb_y,blurb_w,blurb_h,5);
 
-      ctx.fillStyle = gray;
-      ctx.fillRect(dc.width/2+90,dc.height-70,100,40);
-      ctx.fillStyle = white;
-      ctx.fillRect(dc.width/2+90,dc.height-80,100,40);
-      ctx.fillStyle = "#000000";
-      ctx.textAlign = "left";
-      ctx.font = "30px Open Sans";
-      ctx.fillText("Next",dc.width/2+100,dc.height-50);
+      ctx.drawImage(next_button_img,dc.width/2+90,dc.height-80,127,45);
 
       ctx.font = "12px Open Sans";
       tutorial_canvdom.draw(12,dc);
