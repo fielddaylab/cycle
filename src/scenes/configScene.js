@@ -202,7 +202,6 @@ var ConfigScene = function(game, stage)
 
     dc.context.fillStyle = blue;
     dc.roundRectOptions(btn_tutorial.x,btn_tutorial.y,btn_tutorial.w,btn_tutorial.h,5,1,1,0,0,0,1)
-    dc.context.drawImage(crystal_img,dc.width-section_line_0_y,0,section_line_0_y,section_line_0_y);
     dc.context.drawImage(tutorial_img,50,50,220,section_line_0_y-50);
 
     dc.context.fillStyle = "#333333";
