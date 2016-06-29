@@ -40,6 +40,7 @@ var LoadingScene = function(game, stage)
     img_srcs.push("assets/honey.png");
     img_srcs.push("assets/atmosphere.png");
     img_srcs.push("assets/animal.png");
+    img_srcs.push("assets/animal2.png");
     img_srcs.push("assets/earth_deep.png");
     img_srcs.push("assets/earth_surface.png");
     img_srcs.push("assets/fuel.png");

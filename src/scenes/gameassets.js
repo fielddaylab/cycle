@@ -195,6 +195,9 @@ atmosphere_img.src = "assets/atmosphere.png";
 var animal_img = new Image();
 animal_img.src = "assets/animal.png";
 
+var animal2_img = new Image();
+animal2_img.src = "assets/animal2.png";
+
 var earth_deep_img = new Image();
 earth_deep_img.src = "assets/earth_deep.png";
 

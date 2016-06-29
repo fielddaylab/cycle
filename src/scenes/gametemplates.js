@@ -607,8 +607,8 @@ var NitrogenCycleGameTemplate =
       },
       {
         title:"Animals",
-        img:"animal",
-        icon_img:"animal",
+        img:"animal2",
+        icon_img:"animal2",
         x:x+Math.cos(Math.PI/2+((5/6)*Math.PI*2))*rx,
         y:y+Math.sin(Math.PI/2+((5/6)*Math.PI*2))*ry,
         w:w,
