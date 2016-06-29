@@ -1547,7 +1547,7 @@ var GamePlayScene = function(game, stage)
       {
         ctx.drawImage(from_node.icon_img,self.x+20,self.y+20,icon_s,icon_s);
         ctx.drawImage(to_node.icon_img,self.x+self.w-20-icon_s,self.y+20,icon_s,icon_s);
-        ctx.drawImage(arrow_icon,self.x+self.w/2-(icon_s/4),self.y+20+icon_s/4,icon_s/2,icon_s/2);
+        ctx.drawImage(arrow_icon,self.x+self.w/2-(icon_s/4),self.y+20+icon_s/3,icon_s/2,icon_s/3);
       }
       else
       {
