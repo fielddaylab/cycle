@@ -208,7 +208,7 @@ var CarbonCycleGameTemplate =
       {
         title:"Animal Respiration",
         flavor:"Breathe in, breathe out",
-        description:"When animals breathe, they take O₂ from and release CO₂ into the air!",
+        description:"When animals breathe, they take in O₂ and release CO₂ into the air!",
         from:"Animals",
         to:"Atmosphere",
         time:0,
@@ -218,7 +218,7 @@ var CarbonCycleGameTemplate =
       {
         title:"Plant Respiration",
         flavor:"Plants breathe too!",
-        description:"Like animals, plants take O₂ from and release CO₂ into the air! (Though they also take CO₂ back in- but that's a different process!)",
+        description:"Like animals, plants take in O₂ and release CO₂ into the air! (They also take CO₂ back in- but that's a whole different story!)",
         from:"Plants",
         to:"Atmosphere",
         time:0,
@@ -238,7 +238,7 @@ var CarbonCycleGameTemplate =
       {
         title:"Herbivorism",
         flavor:"Eat your veggies",
-        description:"Since plants (and animals) are Carbon-Based, simply eating a plant is one of the simplest ways carbon is moved!",
+        description:"Since plants (and animals) are carbon-based, simply eating a plant is one of the simplest ways to move carbon!",
         from:"Plants",
         to:"Animals",
         time:0,
@@ -268,7 +268,7 @@ var CarbonCycleGameTemplate =
       {
         title:"Soil Respiration",
         flavor:"Constant flow",
-        description:"The living organisms within the soil respire their CO₂ into the soil. This results in a constant leak of CO₂ from the soil to the atmosphere!",
+        description:"Living organisms within the soil respire their CO₂ into the soil. This results in a constant leak of CO₂ from the soil to the atmosphere!",
         from:"Earth (Surface)",
         to:"Atmosphere",
         time:0,
@@ -277,8 +277,8 @@ var CarbonCycleGameTemplate =
       },
       {
         title:"Million-Year Decay",
-        flavor:"From Coal to Petroleum",
-        description:"Plant and Animal matter sink deep into the earth where they are left to decay and decompose for millions of years.",
+        flavor:"You're grounded",
+        description:"Plant and Animal matter sinks deep into the earth, where it's left to decay and decompose for millions of years.",
         from:"Earth (Surface)",
         to:"Earth (Deep)",
         time:0,
@@ -288,7 +288,7 @@ var CarbonCycleGameTemplate =
       {
         title:"Harvest/Process Petroleum",
         flavor:"Drill, baby, drill!",
-        description:"Petroleum must be harvested from deep within the earth. It then must be refined before it can be used for fuel.",
+        description:"Petroleum gets harvested from deep within the earth, and then refined so we can use it for fuel!",
         from:"Earth (Deep)",
         to:"Fuel",
         time:0,
@@ -308,7 +308,7 @@ var CarbonCycleGameTemplate =
       {
         title:"Erosion",
         flavor:"One Big Resevoir to another",
-        description:"Deposits of carbon constantly get scraped off of the land by rushing currents over millions of years.",
+        description:"Over millions of years, Deposits of carbon constantly get scraped off of the land by rushing water.",
         from:"Earth (Surface)",
         to:"Ocean",
         time:0,
@@ -317,8 +317,8 @@ var CarbonCycleGameTemplate =
       },
       {
         title:"Ocean Deposit",
-        flavor:"Slowly reintegrate to land",
-        description:"Deposits of carbon in the ocean (and other bodies of water) slosh up on and leak into land.",
+        flavor:"All washed up",
+        description:"Deposits of carbon in the ocean (and other bodies of water) slosh up onshore and leak into the land.",
         from:"Ocean",
         to:"Earth (Deep)",
         time:0,
@@ -327,8 +327,8 @@ var CarbonCycleGameTemplate =
       },
       {
         title:"Ocean Diffusion",
-        flavor:"Exchanges in both directions!",
-        description:"When there is more carbon in the Ocean than in the Atmosphere, it will leak into the atmosphere to even it out!",
+        flavor:"Give a little, take a little",
+        description:"When there is more carbon in the Ocean than in the Atmosphere, carbon leaks into the atmosphere to even it out!",
         from:"Ocean",
         to:"Atmosphere",
         time:0,
@@ -337,8 +337,8 @@ var CarbonCycleGameTemplate =
       },
       {
         title:"Ocean Diffusion",
-        flavor:"Exchanges in both directions!",
-        description:"When there is more carbon in the Atmosphere than in the Ocean, it will leak into the ocean to even it out!",
+        flavor:"Give a little, take a little",
+        description:"When there is more carbon in the Atmosphere than in the Ocean, carbon leaks into the ocean to even it out!",
         from:"Atmosphere",
         to:"Ocean",
         time:0,
@@ -462,7 +462,7 @@ var WaterCycleGameTemplate =
       },
       {
         title:"Runoff",
-        flavor:"The water's gotta go somewhere...",
+        flavor:"Gotta go somewhere...",
         description:"Water from rain, agriculture, or anything else on the surface will eventually make its way lower- in this case, a nearby river.",
         from:"Surface",
         to:"River",
@@ -472,7 +472,7 @@ var WaterCycleGameTemplate =
       },
       {
         title:"Runoff",
-        flavor:"The water's gotta go somewhere...",
+        flavor:"Gotta go somewhere...",
         description:"Water from rain, agriculture, or anything else on the surface will eventually make its way lower- in this case, the nearby ocean.",
         from:"Surface",
         to:"Ocean",
