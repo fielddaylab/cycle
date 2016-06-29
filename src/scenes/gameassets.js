@@ -22,8 +22,8 @@ oct_icon.context.lineTo(lw/2,h/3);
 oct_icon.context.closePath();
 oct_icon.context.stroke();
 
-w = 200;
-h = 150;
+w = 183.92;
+h = 105.27;
 lw = 10;
 var hex_icon = GenIcon(w,h);
 var xr = w/2-lw/2;
@@ -54,13 +54,25 @@ hex_icon.context.lineTo(w/2+Math.cos(i/6*twopi)*xr,h/2+Math.sin(i/6*twopi)*yr); 
 hex_icon.context.closePath();
 hex_icon.context.stroke();
 
-w = 200;
-h = 150;
+w = 183.92*2;
+h = 105.27*2;
 lw = 5;
 var thin_hex_icon = GenIcon(w,h);
 xr = w/2-lw/2;
 yr = h/2-lw/2;
 i = 0;
+thin_hex_icon.context.strokeStyle = "white";
+thin_hex_icon.context.lineWidth = 2.5*2;
+thin_hex_icon.context.beginPath();
+thin_hex_icon.context.moveTo(w*0.015,h*0.5 );
+thin_hex_icon.context.lineTo(w*0.26,h*0.0875);
+thin_hex_icon.context.lineTo(w*0.74,h*0.0875);
+thin_hex_icon.context.lineTo(w*0.985,h*0.5 );
+thin_hex_icon.context.lineTo(w*0.74,h*0.9125);
+thin_hex_icon.context.lineTo(w*0.26,h*0.9125);
+thin_hex_icon.context.closePath();
+thin_hex_icon.context.stroke();
+/*
 thin_hex_icon.context.strokeStyle = "#FFFFFF";
 thin_hex_icon.context.globalAlpha = 0.5;
 thin_hex_icon.context.lineWidth = lw;
@@ -84,9 +96,10 @@ thin_hex_icon.context.lineTo(w/2+Math.cos(i/6*twopi)*xr,h/2+Math.sin(i/6*twopi)*
 thin_hex_icon.context.lineTo(w/2+Math.cos(i/6*twopi)*xr,h/2+Math.sin(i/6*twopi)*yr); i++;
 thin_hex_icon.context.closePath();
 thin_hex_icon.context.stroke();
+*/
 
-w = 200;
-h = 150;
+w = 183.92;
+h = 105.27;
 lw = 10;
 var hl_hex_icon = GenIcon(w,h);
 xr = w/2-lw/2;
@@ -176,18 +189,6 @@ arrow_icon.src = "assets/arrow.png";
 var biarrow_icon = new Image();
 biarrow_icon.src = "assets/biarrow.png";
 
-var p_0_img = new Image();
-p_0_img.src = "assets/scout.png";
-
-var p_1_img = new Image();
-p_1_img.src = "assets/francis.png";
-
-var p_2_img = new Image();
-p_2_img.src = "assets/honey.png";
-
-var p_3_img = new Image();
-p_3_img.src = "assets/jack.png";
-
 var atmosphere_img = new Image();
 atmosphere_img.src = "assets/atmosphere.png";
 
@@ -259,4 +260,11 @@ tutorial_img.src = "assets/tutorial_qs.png";
 
 var next_button_img = new Image();
 next_button_img.src = "assets/nextbtn-white.png";
+
+var char_imgs = [];
+for(var i = 0; i < 7; i++)
+{
+  char_imgs[i] = new Image();
+  char_imgs[i].src = "assets/chars/face/char_"+i+".png";
+}
 

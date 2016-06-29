@@ -25,6 +25,15 @@ var GamePlayScene = function(game, stage)
   var INPUT_TUTORIAL  = ENUM; ENUM++;
   var input_state;
 
+  ENUM = 0;
+  var CHAR_BABY  = ENUM; ENUM++;
+  var CHAR_ANNOY = ENUM; ENUM++;
+  var CHAR_AXE   = ENUM; ENUM++;
+  var CHAR_GIRL  = ENUM; ENUM++;
+  var CHAR_TALL  = ENUM; ENUM++;
+  var CHAR_BOY   = ENUM; ENUM++;
+  var CHAR_DAD   = ENUM; ENUM++;
+
   //seeded rand!
   var sr;
 
@@ -65,10 +74,7 @@ var GamePlayScene = function(game, stage)
   var menu_btn;
   var interrupt_canvdom;
   var tutorial_canvdom;
-  var disp_0; var dest_0; var w_0 = 100; var h_0 = 260;
-  var disp_1; var dest_1; var w_1 = 140; var h_1 = 200;
-  var disp_2; var dest_2; var w_2 = 300; var h_2 = 400;
-  var disp_3; var dest_3; var w_3 = 150; var h_3 = 200;
+  var char_disp;
   var blurb_x;
   var blurb_y;
   var blurb_w;
@@ -296,13 +302,12 @@ var GamePlayScene = function(game, stage)
     clicker.register(interrupt_canvdom);
     tutorial_canvdom = new CanvDom(dc);
     clicker.register(tutorial_canvdom);
-    disp_0 = 0; dest_0 = 0;
-    disp_1 = 0; dest_1 = 0;
-    disp_2 = 0; dest_2 = 0;
-    disp_3 = 0; dest_3 = 0;
-    blurb_x = sidebar_w+100;
+    char_disp = [];
+    for(var i = 0; i < char_imgs.length; i++)
+      char_disp[i] = 0;
+    blurb_x = sidebar_w+200;
     blurb_y = dc.height-200;
-    blurb_w = dc.width-(sidebar_w*2)-110;
+    blurb_w = dc.width-blurb_x-sidebar_w-10;
     blurb_h = 100;
     announce_x = sidebar_w+110;
     announce_y = dc.height-110;
@@ -391,71 +396,157 @@ var GamePlayScene = function(game, stage)
     tutorial_chars = [];
     tutorial_n = 0;
 
-    tutorial_lines.push("The "+g.noun+" cycle is all about how "+g.noun+" moves and changes throughout the world!");
+    tutorial_lines.push("Can I play??");
     tutorial_tests.push(false);
     tutorial_acts.push(false);
     tutorial_draws.push(false);
-    tutorial_chars.push(0);
-    tutorial_lines.push("It's also a cool card game we found underneath a rusty old boat!");
+    tutorial_chars.push(CHAR_ANNOY);
+    tutorial_lines.push("Sure! Right now we're playing the "+g.noun+" cycle game.");
     tutorial_tests.push(false);
     tutorial_acts.push(false);
     tutorial_draws.push(false);
-    tutorial_chars.push(3);
+    tutorial_chars.push(CHAR_GIRL);
+    tutorial_lines.push(g.Noun+" cycle? What's that?");
+    tutorial_tests.push(false);
+    tutorial_acts.push(false);
+    tutorial_draws.push(false);
+    tutorial_chars.push(CHAR_ANNOY);
     if(game_type != WATER_GAME)
     {
-    tutorial_lines.push("But, er.. What's a "+g.noun+"?");
+      tutorial_lines.push("The "+g.noun+" cycle is all about how "+g.noun+" changes form and moves through the world!");
+      tutorial_tests.push(false);
+      tutorial_acts.push(false);
+      tutorial_draws.push(false);
+      tutorial_chars.push(CHAR_GIRL);
+      tutorial_lines.push("What's a "+g.Noun+"?");
+      tutorial_tests.push(false);
+      tutorial_acts.push(false);
+      tutorial_draws.push(false);
+      tutorial_chars.push(CHAR_ANNOY);
+      tutorial_lines.push("The "+g.noun+"s are the little blue and red tokens. Francis is kicking my butt right now with her blue ones.");
+      tutorial_tests.push(false);
+      tutorial_acts.push(false);
+      tutorial_draws.push(false);
+      tutorial_chars.push(CHAR_BOY);
+    }
+    else //water
+    {
+      tutorial_lines.push("The "+g.noun+" cycle is all about how "+g.noun+" molecules change form and move through the world!");
+      tutorial_tests.push(false);
+      tutorial_acts.push(false);
+      tutorial_draws.push(false);
+      tutorial_chars.push(CHAR_GIRL);
+      tutorial_lines.push("What's a "+g.noun+" molecule?");
+      tutorial_tests.push(false);
+      tutorial_acts.push(false);
+      tutorial_draws.push(false);
+      tutorial_chars.push(CHAR_ANNOY);
+      tutorial_lines.push("The "+g.noun+" molecules are the little blue and red tokens. Francis is kicking my butt right now with her blue ones.");
+      tutorial_tests.push(false);
+      tutorial_acts.push(false);
+      tutorial_draws.push(false);
+      tutorial_chars.push(CHAR_BOY);
+    }
+    tutorial_lines.push("Um...");
     tutorial_tests.push(false);
     tutorial_acts.push(false);
     tutorial_draws.push(false);
-    tutorial_chars.push(3);
-    }
+    tutorial_chars.push(CHAR_ANNOY);
+    tutorial_lines.push("Oh, you mean in real life?");
+    tutorial_tests.push(false);
+    tutorial_acts.push(false);
+    tutorial_draws.push(false);
+    tutorial_chars.push(CHAR_BOY);
+    tutorial_lines.push("Yep.");
+    tutorial_tests.push(false);
+    tutorial_acts.push(false);
+    tutorial_draws.push(false);
+    tutorial_chars.push(CHAR_ANNOY);
     if(game_type == CARBON_GAME)
     {
-      tutorial_lines.push("It's an atom (often part of a molecule!), and it's pretty much everywhere.");
+      tutorial_lines.push(g.Noun+" is an atom, and sometimes part of a molecule. It's pretty much everywhere!");
       tutorial_tests.push(false);
       tutorial_acts.push(false);
       tutorial_draws.push(false);
-      tutorial_chars.push(0);
-      tutorial_lines.push("It's in everything?");
+      tutorial_chars.push(CHAR_GIRL);
+      tutorial_lines.push(g.Noun+" might seem like it's burning up or getting washed away, but it never actually disappears... it just changes from one form to another.");
       tutorial_tests.push(false);
       tutorial_acts.push(false);
       tutorial_draws.push(false);
-      tutorial_chars.push(3);
-      tutorial_lines.push("Well, not everything, but a lot of things! It's in the air we breathe, in our oceans, plants, animals, the atmosphere! It's all over!");
+      tutorial_chars.push(CHAR_GIRL);
+      tutorial_lines.push("Wow... so "+g.noun+" is in everything??");
       tutorial_tests.push(false);
       tutorial_acts.push(false);
       tutorial_draws.push(false);
-      tutorial_chars.push(0);
+      tutorial_chars.push(CHAR_ANNOY);
+      tutorial_lines.push("Well, not everything, but a lot of things- in the air we breathe, in our oceans, plants, animals, the atmosphere- even in us! It's all over!");
+      tutorial_tests.push(false);
+      tutorial_acts.push(false);
+      tutorial_draws.push(false);
+      tutorial_chars.push(CHAR_GIRL);
+    }
+    if(game_type == WATER_GAME)
+    {
+      tutorial_lines.push(g.Noun+" molecules are essential to life on earth! They can take on three different forms: a solid, liquid, or gas!");
+      tutorial_tests.push(false);
+      tutorial_acts.push(false);
+      tutorial_draws.push(false);
+      tutorial_chars.push(CHAR_GIRL);
+      tutorial_lines.push("Wait... so "+g.noun+" doesn't always look like "+g.noun+"?");
+      tutorial_tests.push(false);
+      tutorial_acts.push(false);
+      tutorial_draws.push(false);
+      tutorial_chars.push(CHAR_ANNOY);
+      tutorial_lines.push("Well, it's not always LIQUID water. Sometimes water freezes into ice, and sometimes it turns to vapor in the atmosphere. You can find it prety much everywhere!");
+      tutorial_tests.push(false);
+      tutorial_acts.push(false);
+      tutorial_draws.push(false);
+      tutorial_chars.push(CHAR_GIRL);
     }
     if(game_type == NITROGEN_GAME)
     {
-      tutorial_lines.push("It's an atom (often part of a molecule!), and it's really important in helping plants grow!");
+      tutorial_lines.push(g.Noun+" is an atom, and sometimes part of a molecule. It's pretty much everywhere!");
       tutorial_tests.push(false);
       tutorial_acts.push(false);
       tutorial_draws.push(false);
-      tutorial_chars.push(0);
-      tutorial_lines.push("That's it?");
+      tutorial_chars.push(CHAR_GIRL);
+      tutorial_lines.push(g.Noun+" might seem like it's getting used up, but it never actually disappears... it just changes from one form to another.");
       tutorial_tests.push(false);
       tutorial_acts.push(false);
       tutorial_draws.push(false);
-      tutorial_chars.push(3);
-      tutorial_lines.push("Getting Nitrogen into plants is the first steps in getting it into animals (like you and me)! It's an absolute necessity for life.");
+      tutorial_chars.push(CHAR_GIRL);
+      tutorial_lines.push("Wow... so "+g.noun+" is in everything??");
       tutorial_tests.push(false);
       tutorial_acts.push(false);
       tutorial_draws.push(false);
-      tutorial_chars.push(0);
+      tutorial_chars.push(CHAR_ANNOY);
+      tutorial_lines.push("Well, not everything, but a lot of things- in the air we breathe, in our oceans, plants, animals, the atmosphere- even in us! It's all over!");
+      tutorial_tests.push(false);
+      tutorial_acts.push(false);
+      tutorial_draws.push(false);
+      tutorial_chars.push(CHAR_GIRL);
     }
-    tutorial_lines.push("But back to the game-");
+    tutorial_lines.push("Yep, everywhere except my goal square...");
     tutorial_tests.push(false);
     tutorial_acts.push(false);
     tutorial_draws.push(false);
-    tutorial_chars.push(0);
-    tutorial_lines.push("It takes two people to play:");
+    tutorial_chars.push(CHAR_BOY);
+    tutorial_lines.push("What's a goal square?");
     tutorial_tests.push(false);
     tutorial_acts.push(false);
     tutorial_draws.push(false);
-    tutorial_chars.push(0);
-    tutorial_lines.push("Here's the RED TEAM,");
+    tutorial_chars.push(CHAR_ANNOY);
+    tutorial_lines.push("Oh, that's part of the game. I'll show you!");
+    tutorial_tests.push(false);
+    tutorial_acts.push(false);
+    tutorial_draws.push(false);
+    tutorial_chars.push(CHAR_BOY);
+    tutorial_lines.push("It's a two person game, between the red and the blue team.");
+    tutorial_tests.push(false);
+    tutorial_acts.push(false);
+    tutorial_draws.push(false);
+    tutorial_chars.push(CHAR_BOY);
+    tutorial_lines.push("Here's red");
     tutorial_tests.push(false);
     tutorial_acts.push(false);
     tutorial_draws.push(function()
@@ -464,8 +555,8 @@ var GamePlayScene = function(game, stage)
       var w = 105;
       drawTip(sidebar_w+5,y,w,true,"RED TEAM");
     });
-    tutorial_chars.push(0);
-    tutorial_lines.push("and here's the BLUE TEAM.");
+    tutorial_chars.push(CHAR_BOY);
+    tutorial_lines.push("and here's blue.");
     tutorial_tests.push(false);
     tutorial_acts.push(false);
     tutorial_draws.push(function()
@@ -474,8 +565,8 @@ var GamePlayScene = function(game, stage)
       var w = 115;
       drawTip(dc.width-sidebar_w-w-5,y,w,false,"BLUE TEAM");
     });
-    tutorial_chars.push(0);
-    tutorial_lines.push("Each team has "+g.noun+" scattered around the environment.");
+    tutorial_chars.push(CHAR_BOY);
+    tutorial_lines.push("The zones on the game board represent different parts of our environment. There is "+g.noun+" scattered all over the board- see those red and blue tokens?");
     tutorial_tests.push(false);
     tutorial_acts.push(false);
     tutorial_draws.push(function()
@@ -487,8 +578,8 @@ var GamePlayScene = function(game, stage)
       var w = 115;
       drawTip(dc.width/2+150,y,w,true,g.NOUN);
     });
-    tutorial_chars.push(0);
-    tutorial_lines.push("And we take turns playing cards that move them around!");
+    tutorial_chars.push(CHAR_BOY);
+    tutorial_lines.push("You play cards to move tokens -which represent "+g.noun+"- from one part of the environment to another. As this happens, the "+g.noun+" changes form, but it never actually goes away.");
     tutorial_tests.push(false);
     tutorial_acts.push(false);
     tutorial_draws.push(function()
@@ -500,18 +591,47 @@ var GamePlayScene = function(game, stage)
       var w = 115;
       drawTip(dc.width-sidebar_w-w-5,y,w,false,"CARDS");
     });
-    tutorial_chars.push(0);
-    tutorial_lines.push("Ooh, so the cards represent how "+g.noun+" moves through our environment,");
+    tutorial_chars.push(CHAR_BOY);
+    if(game_type == CARBON_GAME)
+    {
+      tutorial_lines.push("Like when we burn "+g.noun+" as fossil fuel, the carbon doesn't disappear... it just gets released up into the atmosphere!");
+      tutorial_tests.push(false);
+      tutorial_acts.push(false);
+      tutorial_draws.push(false);
+      tutorial_chars.push(CHAR_BOY);
+    }
+    if(game_type == NITROGEN_GAME)
+    {
+      tutorial_lines.push("Like when plants die, the "+g.noun+" doesn't disappear... it just returns to the soil as the plant decays.");
+      tutorial_tests.push(false);
+      tutorial_acts.push(false);
+      tutorial_draws.push(false);
+      tutorial_chars.push(CHAR_BOY);
+    }
+    if(game_type == WATER_GAME)
+    {
+      tutorial_lines.push("Like when "+g.noun+" evaporates, it doesn't disappear... it just becomes vapor in the air.");
+      tutorial_tests.push(false);
+      tutorial_acts.push(false);
+      tutorial_draws.push(false);
+      tutorial_chars.push(CHAR_BOY);
+    }
+    tutorial_lines.push("Ooh... so the cards show how "+g.noun+" moves through the world!");
     tutorial_tests.push(false);
     tutorial_acts.push(false);
     tutorial_draws.push(false);
-    tutorial_chars.push(3);
-    tutorial_lines.push("Yep!");
+    tutorial_chars.push(CHAR_ANNOY);
+    tutorial_lines.push("Exactly!");
     tutorial_tests.push(false);
     tutorial_acts.push(false);
     tutorial_draws.push(false);
-    tutorial_chars.push(0);
-    tutorial_lines.push("The goal is to get your "+g.noun+" into the flashing zone.");
+    tutorial_chars.push(CHAR_GIRL);
+    tutorial_lines.push("So how do I win??!!");
+    tutorial_tests.push(false);
+    tutorial_acts.push(false);
+    tutorial_draws.push(false);
+    tutorial_chars.push(CHAR_ANNOY);
+    tutorial_lines.push("The goal is to get your "+g.noun+" into the goal zone- the flashing tile.");
     tutorial_tests.push(false);
     tutorial_acts.push(false);
     tutorial_draws.push(function()
@@ -520,8 +640,8 @@ var GamePlayScene = function(game, stage)
       var w = 115;
       drawTip(g.nodes[g.goal_node-1].x+g.nodes[g.goal_node-1].w,y,w,true,"GOAL ZONE");
     });
-    tutorial_chars.push(0);
-    tutorial_lines.push("After both players have played their cards, each player is awarded points corresponding to the amount of "+g.noun+" in the goal zone.");
+    tutorial_chars.push(CHAR_GIRL);
+    tutorial_lines.push("After both players have taken a turn, each player gets points for each of their "+g.noun+"s in the goal zone.");
     tutorial_tests.push(false);
     tutorial_acts.push(false);
     tutorial_draws.push(function()
@@ -533,49 +653,69 @@ var GamePlayScene = function(game, stage)
       var w = 115;
       drawTip(dc.width-sidebar_w-w-5,y,w,false,"POINTS");
     });
-    tutorial_chars.push(0);
-    tutorial_lines.push("When you play a card, you can choose to affect either team's "+g.noun+". Maybe you would like to move your "+g.noun+" into the goal zone, or move your opponent's out of it.");
+    tutorial_chars.push(CHAR_GIRL);
+    tutorial_lines.push("Yeah, that's the part I'm having trouble with.");
     tutorial_tests.push(false);
     tutorial_acts.push(false);
     tutorial_draws.push(false);
-    tutorial_chars.push(0);
-    tutorial_lines.push("Cool! Lets try it out!");
+    tutorial_chars.push(CHAR_BOY);
+    tutorial_lines.push("You can apply your card to either team's "+g.noun+". Maybe you'll want to move your "+g.noun+" into the goal zone, or maybe you'll want to move your opponent's "+g.noun+" out of it.");
     tutorial_tests.push(false);
     tutorial_acts.push(false);
     tutorial_draws.push(false);
-    tutorial_chars.push(3);
-    tutorial_lines.push("Ok, I'll be blue and you can be red, why don't you try selecting a card and see what happens?");
+    tutorial_chars.push(CHAR_GIRL);
+    tutorial_lines.push("Whoever's got the most points at the end wins!");
+    tutorial_tests.push(false);
+    tutorial_acts.push(false);
+    tutorial_draws.push(false);
+    tutorial_chars.push(CHAR_BOY);
+    tutorial_lines.push("Oh, and look out... Francis is sneakier than she looks.");
+    tutorial_tests.push(false);
+    tutorial_acts.push(false);
+    tutorial_draws.push(false);
+    tutorial_chars.push(CHAR_BOY);
+    tutorial_lines.push("Got it! Let's play!");
+    tutorial_tests.push(false);
+    tutorial_acts.push(false);
+    tutorial_draws.push(false);
+    tutorial_chars.push(CHAR_ANNOY);
+    tutorial_lines.push("Ok, I'll be blue and you can be red. Why don't you pick a card and see what happens?");
+    tutorial_tests.push(false);
+    tutorial_acts.push(false);
+    tutorial_draws.push(false);
+    tutorial_chars.push(CHAR_GIRL);
+    tutorial_lines.push("Go for it, red! Pick a card!");
     tutorial_tests.push(function(){ return g.player_turn == 2; });
     tutorial_acts.push(false);
     tutorial_draws.push(false);
-    tutorial_chars.push(0);
+    tutorial_chars.push(CHAR_BOY);
     tutorial_lines.push(function() { var delta = g.deltas[g.turn*2+(g.player_turn-1)-1]; var last_event = g.events[delta.event_id-1]; return "Cool, so you played \""+last_event.title+"\" to move "+g.noun+" to \""+g.nodes[last_event.to_id-1].title+"\"."; });
     tutorial_tests.push(false);
     tutorial_acts.push(false);
     tutorial_draws.push(false);
-    tutorial_chars.push(0);
+    tutorial_chars.push(CHAR_GIRL);
     tutorial_lines.push("That card is now discarded, and you'll draw a new card at the beginning of your next turn.");
     tutorial_tests.push(false);
     tutorial_acts.push(false);
     tutorial_draws.push(false);
-    tutorial_chars.push(0);
+    tutorial_chars.push(CHAR_BOY);
     tutorial_lines.push("Now I'll go");
     tutorial_tests.push(function(){ return g.player_turn == 1; });
     tutorial_acts.push(function(){ ready_btn.click({});});
     tutorial_draws.push(false);
-    tutorial_chars.push(0);
+    tutorial_chars.push(CHAR_GIRL);
     tutorial_lines.push(function() { var delta = g.deltas[g.turn*2+(g.player_turn-1)-1]; var last_event = g.events[delta.event_id-1]; return "Ok, I played \""+last_event.title+"\" to move "+g.noun+" to \""+g.nodes[last_event.to_id-1].title+"\"."; });
     tutorial_tests.push(false);
     tutorial_acts.push(false);
     tutorial_draws.push(false);
-    tutorial_chars.push(0);
+    tutorial_chars.push(CHAR_GIRL);
     if(game_type == CARBON_GAME)
     {
       tutorial_lines.push("See how different actions make "+g.noun+" move throughout our environment? "+g.Noun+" affects just about every part of our planet!");
       tutorial_tests.push(false);
       tutorial_acts.push(false);
       tutorial_draws.push(false);
-      tutorial_chars.push(0);
+      tutorial_chars.push(CHAR_GIRL);
     }
     if(game_type == NITROGEN_GAME)
     {
@@ -583,7 +723,7 @@ var GamePlayScene = function(game, stage)
       tutorial_tests.push(false);
       tutorial_acts.push(false);
       tutorial_draws.push(false);
-      tutorial_chars.push(0);
+      tutorial_chars.push(CHAR_GIRL);
     }
     if(game_type == WATER_GAME)
     {
@@ -591,18 +731,18 @@ var GamePlayScene = function(game, stage)
       tutorial_tests.push(false);
       tutorial_acts.push(false);
       tutorial_draws.push(false);
-      tutorial_chars.push(0);
+      tutorial_chars.push(CHAR_GIRL);
     }
     tutorial_lines.push("Wow! Cool!");
     tutorial_tests.push(false);
     tutorial_acts.push(false);
     tutorial_draws.push(false);
-    tutorial_chars.push(3);
-    tutorial_lines.push("Yeah! In this game, the goal zone moves every three turns, so plan ahead! If you want to keep playing, It's your turn!");
+    tutorial_chars.push(CHAR_ANNOY);
+    tutorial_lines.push("In this game, the goal zone moves every three turns, so plan ahead! It's your turn!");
     tutorial_tests.push(false);
     tutorial_acts.push(false);
     tutorial_draws.push(false);
-    tutorial_chars.push(0);
+    tutorial_chars.push(CHAR_GIRL);
 
     if(game.multiplayer == MULTIPLAYER_TUT)
       tutorialDisplayMessage();
@@ -1022,7 +1162,7 @@ var GamePlayScene = function(game, stage)
 
     ctx.fillStyle = lblue;
     ctx.fillRect(sidebar_w,announce_y-30,dc.width-(sidebar_w*2),dc.height-(announce_y-30));
-    ctx.drawImage(p_0_img,sidebar_w+20,dc.height-100,75,200);
+    ctx.drawImage(char_imgs[CHAR_TALL],sidebar_w,dc.height-150,100,200);
     ctx.fillStyle = white;
     dc.fillRoundRect(announce_x,announce_y,announce_w,announce_h,5);
     ctx.fillStyle = "#000000";
@@ -1080,60 +1220,33 @@ var GamePlayScene = function(game, stage)
       tutorial_canvdom.draw(12,dc);
     }
 
-    disp_0 = lerp(disp_0,dest_0,0.1);
-    disp_1 = lerp(disp_1,dest_1,0.1);
-    disp_2 = lerp(disp_2,dest_2,0.1);
-    disp_3 = lerp(disp_3,dest_3,0.1);
     if(input_state == INPUT_INTERRUPT)
     {
-      dest_0 = 1;
-      dest_1 = -.1;
-      dest_2 = -.1;
-      dest_3 = -.1;
+      for(var i = 0; i < char_disp.length; i++)
+      {
+        if(i == CHAR_TALL) char_disp[i] = lerp(char_disp[i],1,0.1);
+        else               char_disp[i] = lerp(char_disp[i],-.1,0.1);
+      }
     }
     else if(input_state == INPUT_TUTORIAL)
     {
       var c = tutorial_chars[tutorial_n];
-      if(c == 0)
+      for(var i = 0; i < char_disp.length; i++)
       {
-        dest_0 = 1;
-        dest_1 = -.1;
-        dest_2 = -.1;
-        dest_3 = -.1;
-      }
-      if(c == 1)
-      {
-        dest_0 = -.1;
-        dest_1 = 1;
-        dest_2 = -.1;
-        dest_3 = -.1;
-      }
-      if(c == 2)
-      {
-        dest_0 = -.1;
-        dest_1 = -.1;
-        dest_2 = 1;
-        dest_3 = -.1;
-      }
-      if(c == 3)
-      {
-        dest_0 = -.1;
-        dest_1 = -.1;
-        dest_2 = -.1;
-        dest_3 = 1;
+        if(i == c) char_disp[i] = lerp(char_disp[i],1,0.1);
+        else       char_disp[i] = lerp(char_disp[i],-.1,0.1);
       }
     }
     else
     {
-      dest_0 = -.1;
-      dest_1 = -.1;
-      dest_2 = -.1;
-      dest_3 = -.1;
+      for(var i = 0; i < char_disp.length; i++)
+        char_disp[i] = lerp(char_disp[i],-.1,0.1);
     }
-    ctx.drawImage(p_0_img,sidebar_w+10,dc.height-h_0/2+(1-disp_0)*h_0/2,w_0,h_0);
-    ctx.drawImage(p_1_img,sidebar_w+10,dc.height-h_1/2+(1-disp_1)*h_1/2,w_1,h_1);
-    ctx.drawImage(p_2_img,sidebar_w+10,dc.height-h_2/2+(1-disp_2)*h_2/2,w_2,h_2);
-    ctx.drawImage(p_3_img,sidebar_w+10,dc.height-h_3/2+(1-disp_3)*h_3/2,w_3,h_3);
+
+    var w = 200;
+    var h = 400;
+    for(var i = 0; i < char_imgs.length; i++)
+      ctx.drawImage(char_imgs[i], sidebar_w, dc.height-h/2+(1-char_disp[i])*h/2, w, h);
 
     switch(turn_stage)
     {
