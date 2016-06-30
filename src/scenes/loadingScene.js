@@ -111,9 +111,20 @@ var LoadingScene = function(game, stage)
     img_srcs.push("assets/water_fg.png");
     img_srcs.push("assets/bg.jpg");
     img_srcs.push("assets/tutorial_qs.png");
+    img_srcs.push("assets/10turns.png");
+    img_srcs.push("assets/20turns.png");
+    img_srcs.push("assets/30turns.png");
+    img_srcs.push("assets/back_arrow.png");
+    img_srcs.push("assets/btn_multi.png");
+    img_srcs.push("assets/btn_single.png");
+    img_srcs.push("assets/comic_carbon.png");
+    img_srcs.push("assets/comic_nitrogen.png");
+    img_srcs.push("assets/comic_water.png");
+    img_srcs.push("assets/menu/menu_gradient.png");
+    img_srcs.push("assets/menu/menu_logo.png");
     for(var i = 0; i < 7; i++)
       img_srcs.push("assets/chars/face/char_"+i+".png");
-    for(var i = 0; i < 0; i++)
+    for(var i = 0; i < 9; i++)
       img_srcs.push("assets/comic/comic_"+i+".png");
     for(var i = 0; i < img_srcs.length; i++)
     {
