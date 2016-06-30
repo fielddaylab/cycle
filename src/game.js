@@ -25,6 +25,7 @@ var Game = function(init)
   var scenes = [
     new NullScene(self, stage),
     new LoadingScene(self, stage),
+    new ComicScene(self, stage),
     //new TestScene(self, stage),
     new ConfigScene(self,stage),
     new GamePlayScene(self, stage),

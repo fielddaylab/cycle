@@ -189,7 +189,7 @@ var ConfigScene = function(game, stage)
           game.opponent = game.join;
           game.me = cli.id;
         }
-        game.setScene(3);
+        game.setScene(4);
         break;
     }
   };

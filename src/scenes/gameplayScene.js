@@ -281,7 +281,7 @@ var GamePlayScene = function(game, stage)
         if(input_state != INPUT_RESUME) return;
         if(hit_ui || turn_stage != TURN_DONE) return;
         cli.stop();
-        game.setScene(2);
+        game.setScene(3);
         hit_ui = true;
       }
     );
@@ -289,7 +289,7 @@ var GamePlayScene = function(game, stage)
       function(evt)
       {
         cli.stop();
-        game.setScene(2);
+        game.setScene(3);
         hit_ui = true;
       }
     );
