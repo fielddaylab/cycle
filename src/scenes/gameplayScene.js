@@ -65,6 +65,8 @@ var GamePlayScene = function(game, stage)
   var p1_cards;
   var p2_cards;
   var hover_card;
+  var hover_node;
+  var click_node;
   var abyss;
   var hover_pulse_t;
   var hover_pulse;
@@ -118,6 +120,18 @@ var GamePlayScene = function(game, stage)
 
     transition_t = 0;
     transformGame(dc,g.nodes,g.events,g.tokens)
+
+    for(var i = 0; i < g.nodes.length; i++)
+    {
+      var n = g.nodes[i];
+      (function(i){
+        g.nodes[i].hover = function(evt) { hover_node = g.nodes[i]; click_node = undefined; };
+        g.nodes[i].unhover = function(evt) { if(hover_node == g.nodes[i]) hover_node = undefined; };
+        g.nodes[i].click = function(evt) { if(click_node == g.nodes[i]) click_node = undefined; else click_node = g.nodes[i]; };
+      })(i);
+      clicker.register(g.nodes[i]);
+      hoverer.register(g.nodes[i]);
+    }
 
     var w = sidebar_w-20;
     var gap = score_header_y+25;
@@ -1123,6 +1137,16 @@ var GamePlayScene = function(game, stage)
           ctx.drawImage(highlit_token_icon,t.x-2,t.y-2,t.w+4,t.h+4);
       }
       ctx.drawImage(g.players[t.player_id-1].token_img,t.x,t.y,t.w,t.h);
+    }
+
+    for(var i = 0; i < g.nodes.length; i++)
+    {
+      var n = g.nodes[i];
+      ctx.textAlign = "center";
+      if(n == click_node || n == hover_node)
+      {
+        dc.outlineText(n.title,n.x+n.w/2,n.y+n.h/2+10+Math.sin(n_ticks/9)*5);
+      }
     }
 
     //hand
