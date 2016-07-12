@@ -895,7 +895,7 @@ var GamePlayScene = function(game, stage)
     ctx.drawImage(g.bg_img,bg_img_x,bg_img_y,bg_img_w,bg_img_h);
 
     ctx.textAlign = "left";
-    ctx.fillStyle = "#FFFFFF";
+    ctx.fillStyle = "#000000";
     ctx.font = "12px Open Sans";
     ctx.fillText("Return to Menu?",10,topmost_bar_y-5);
 
