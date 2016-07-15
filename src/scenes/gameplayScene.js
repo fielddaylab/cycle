@@ -926,15 +926,16 @@ var GamePlayScene = function(game, stage)
     ctx.fillStyle = white;
     ctx.font = "10px Open Sans";
     var s = 70;
+    var yoff = 30;
     ctx.textAlign = "center";
     switch(game.multiplayer)
     {
       case MULTIPLAYER_LOCAL:
         ctx.fillStyle = red;
-        dc.fillRoundRect(dc.width/2-s/2,topmost_bar_y/2-10,s,20,5);
-        ctx.beginPath();ctx.moveTo(dc.width/2-s/2-10,topmost_bar_y/2);ctx.lineTo(dc.width/2-s/2+5,10);ctx.lineTo(dc.width/2-s/2+5,topmost_bar_y-10);ctx.fill();
+        dc.fillRoundRect(dc.width/2-s/2,topmost_bar_y/2-10+yoff,s,20,5);
+        ctx.beginPath();ctx.moveTo(dc.width/2-s/2-10,topmost_bar_y/2+yoff);ctx.lineTo(dc.width/2-s/2+5,10+yoff);ctx.lineTo(dc.width/2-s/2+5,topmost_bar_y-10+yoff);ctx.fill();
         ctx.fillStyle = white;
-        ctx.fillText("RED'S TURN",dc.width/2,topmost_bar_y/2+6);
+        ctx.fillText("RED'S TURN",dc.width/2,topmost_bar_y/2+6+yoff);
         break;
       case MULTIPLAYER_AI:
       case MULTIPLAYER_TUT:
@@ -942,20 +943,20 @@ var GamePlayScene = function(game, stage)
         if(g.player_turn == 1)
         {
           ctx.fillStyle = red;
-          dc.fillRoundRect(dc.width/2-s/2,topmost_bar_y/2-10,s,20,5);
-          ctx.beginPath();ctx.moveTo(dc.width/2-s/2-10,topmost_bar_y/2);ctx.lineTo(dc.width/2-s/2+5,10);ctx.lineTo(dc.width/2-s/2+5,topmost_bar_y-10);ctx.fill();
+          dc.fillRoundRect(dc.width/2-s/2,topmost_bar_y/2-10+yoff,s,20,5);
+          ctx.beginPath();ctx.moveTo(dc.width/2-s/2-10,topmost_bar_y/2+yoff);ctx.lineTo(dc.width/2-s/2+5,10+yoff);ctx.lineTo(dc.width/2-s/2+5,topmost_bar_y-10+yoff);ctx.fill();
           ctx.fillStyle = white;
-          ctx.fillText("YOUR TURN",dc.width/2,topmost_bar_y/2+6);
+          ctx.fillText("YOUR TURN",dc.width/2,topmost_bar_y/2+6+yoff);
         }
         break;
       case MULTIPLAYER_NET_JOIN:
         if(g.player_turn == 1)
         {
           ctx.fillStyle = red;
-          dc.fillRoundRect(dc.width/2-s/2,topmost_bar_y/2-10,s,20,5);
-        ctx.beginPath();ctx.moveTo(dc.width/2-s/2-10,topmost_bar_y/2);ctx.lineTo(dc.width/2-s/2+5,10);ctx.lineTo(dc.width/2-s/2+5,topmost_bar_y-10);ctx.fill();
+          dc.fillRoundRect(dc.width/2-s/2,topmost_bar_y/2-10+yoff,s,20,5);
+          ctx.beginPath();ctx.moveTo(dc.width/2-s/2-10,topmost_bar_y/2+yoff);ctx.lineTo(dc.width/2-s/2+5,10+yoff);ctx.lineTo(dc.width/2-s/2+5,topmost_bar_y-10+yoff);ctx.fill();
           ctx.fillStyle = white;
-          ctx.fillText("RED'S TURN",dc.width/2,topmost_bar_y/2+6);
+          ctx.fillText("RED'S TURN",dc.width/2,topmost_bar_y/2+6+yoff);
         }
         break;
     }
@@ -977,10 +978,10 @@ var GamePlayScene = function(game, stage)
     {
       case MULTIPLAYER_LOCAL:
         ctx.fillStyle = blue;
-        dc.fillRoundRect(dc.width/2-s/2,topmost_bar_y/2-10,s,20,5);
-        ctx.beginPath();ctx.moveTo(dc.width/2+s/2+10,topmost_bar_y/2);ctx.lineTo(dc.width/2+s/2-5,10);ctx.lineTo(dc.width/2+s/2-5,topmost_bar_y-10);ctx.fill();
+        dc.fillRoundRect(dc.width/2-s/2,topmost_bar_y/2-10+yoff,s,20,5);
+        ctx.beginPath();ctx.moveTo(dc.width/2+s/2+10,topmost_bar_y/2+yoff);ctx.lineTo(dc.width/2+s/2-5,10+yoff);ctx.lineTo(dc.width/2+s/2-5,topmost_bar_y-10+yoff);ctx.fill();
         ctx.fillStyle = white;
-        ctx.fillText("BLUE'S TURN",dc.width/2,topmost_bar_y/2+6);
+        ctx.fillText("BLUE'S TURN",dc.width/2,topmost_bar_y/2+6+yoff);
         break;
       case MULTIPLAYER_AI:
       case MULTIPLAYER_TUT:
@@ -988,20 +989,20 @@ var GamePlayScene = function(game, stage)
         if(g.player_turn == 2)
         {
           ctx.fillStyle = blue;
-          dc.fillRoundRect(dc.width/2-s/2,topmost_bar_y/2-10,s,20,5);
-          ctx.beginPath();ctx.moveTo(dc.width/2+s/2+10,topmost_bar_y/2);ctx.lineTo(dc.width/2+s/2-5,10);ctx.lineTo(dc.width/2+s/2-5,topmost_bar_y-10);ctx.fill();
+          dc.fillRoundRect(dc.width/2-s/2,topmost_bar_y/2-10+yoff,s,20,5);
+          ctx.beginPath();ctx.moveTo(dc.width/2+s/2+10,topmost_bar_y/2+yoff);ctx.lineTo(dc.width/2+s/2-5,10+yoff);ctx.lineTo(dc.width/2+s/2-5,topmost_bar_y-10+yoff);ctx.fill();
           ctx.fillStyle = white;
-          ctx.fillText("BLUE'S TURN",dc.width/2,topmost_bar_y/2+6);
+          ctx.fillText("BLUE'S TURN",dc.width/2,topmost_bar_y/2+6+yoff);
         }
         break;
       case MULTIPLAYER_NET_JOIN:
         if(g.player_turn == 2)
         {
           ctx.fillStyle = blue;
-          dc.fillRoundRect(dc.width/2-s/2,topmost_bar_y/2-10,s,20,5);
-          ctx.beginPath();ctx.moveTo(dc.width/2+s/2+10,topmost_bar_y/2);ctx.lineTo(dc.width/2+s/2-5,10);ctx.lineTo(dc.width/2+s/2-5,topmost_bar_y-10);ctx.fill();
+          dc.fillRoundRect(dc.width/2-s/2,topmost_bar_y/2-10+yoff,s,20,5);
+          ctx.beginPath();ctx.moveTo(dc.width/2+s/2+10,topmost_bar_y/2+yoff);ctx.lineTo(dc.width/2+s/2-5,10+yoff);ctx.lineTo(dc.width/2+s/2-5,topmost_bar_y-10+yoff);ctx.fill();
           ctx.fillStyle = white;
-          ctx.fillText("YOUR TURN",dc.width/2,topmost_bar_y/2+6);
+          ctx.fillText("YOUR TURN",dc.width/2,topmost_bar_y/2+6+yoff);
         }
         break;
     }
@@ -1214,7 +1215,7 @@ var GamePlayScene = function(game, stage)
     //info
     ctx.fillStyle = "#000000";
     ctx.textAlign = "center";
-    ctx.fillText("Turn: "+g.turn,dc.width/2,topmost_bar_y+14);
+    ctx.fillText("Turn: "+g.turn,dc.width/2,topmost_bar_y+24);
     player = g.players[g.player_turn-1];
 
     ctx.drawImage(grad_img,sidebar_w,announce_y-30,dc.width-(sidebar_w*2),dc.height-(announce_y-30));
