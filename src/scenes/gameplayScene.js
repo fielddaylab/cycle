@@ -1180,8 +1180,7 @@ var GamePlayScene = function(game, stage)
     ctx.fillText("Turn: "+g.turn,dc.width/2,topmost_bar_y+14);
     player = g.players[g.player_turn-1];
 
-    ctx.fillStyle = lblue;
-    ctx.fillRect(sidebar_w,announce_y-30,dc.width-(sidebar_w*2),dc.height-(announce_y-30));
+    ctx.drawImage(grad_img,sidebar_w,announce_y-30,dc.width-(sidebar_w*2),dc.height-(announce_y-30));
     ctx.drawImage(char_imgs[CHAR_TALL],sidebar_w,dc.height-150,100,200);
     ctx.fillStyle = white;
     dc.fillRoundRect(announce_x,announce_y,announce_w,announce_h,5);
@@ -1208,14 +1207,9 @@ var GamePlayScene = function(game, stage)
 
     if(input_state == INPUT_INTERRUPT)
     {
-      ctx.fillStyle = "#C5F0F8";
-      ctx.fillRect(sidebar_w,blurb_y-20,dc.width-(2*sidebar_w),dc.height-(blurb_y-20));
-
+      ctx.drawImage(grad_img,sidebar_w,blurb_y-20,dc.width-(2*sidebar_w),dc.height-(blurb_y-20));
       ctx.fillStyle = white;
       dc.fillRoundRect(blurb_x,blurb_y,blurb_w,blurb_h,5);
-      ctx.strokeSytle = lblue;
-      ctx.lineWidth = 2;
-      dc.strokeRoundRect(blurb_x,blurb_y,blurb_w,blurb_h,5);
 
       ctx.drawImage(next_button_img,dc.width/2+90,dc.height-80,127,45);
 
@@ -1225,14 +1219,9 @@ var GamePlayScene = function(game, stage)
 
     if(input_state == INPUT_TUTORIAL)
     {
-      ctx.fillStyle = "#C5F0F8";
-      ctx.fillRect(sidebar_w,blurb_y-20,dc.width-(2*sidebar_w),dc.height-(blurb_y-20));
-
+      ctx.drawImage(grad_img,sidebar_w,blurb_y-20,dc.width-(2*sidebar_w),dc.height-(blurb_y-20));
       ctx.fillStyle = white;
       dc.fillRoundRect(blurb_x,blurb_y,blurb_w,blurb_h,5);
-      ctx.strokeSytle = lblue;
-      ctx.lineWidth = 2;
-      dc.strokeRoundRect(blurb_x,blurb_y,blurb_w,blurb_h,5);
 
       ctx.drawImage(next_button_img,dc.width/2+90,dc.height-80,127,45);
 
