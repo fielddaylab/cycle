@@ -925,19 +925,38 @@ var GamePlayScene = function(game, stage)
     ctx.drawImage(red_token_icon,sidebar_w-20+10,score_header_y-22,20,15);
     ctx.fillStyle = white;
     ctx.font = "10px Open Sans";
+    var s = 70;
+    ctx.textAlign = "center";
     switch(game.multiplayer)
     {
       case MULTIPLAYER_LOCAL:
-        //if(g.player_turn == 1) ctx.fillText("RED'S TURN",10,turn_header_y-4);
+        ctx.fillStyle = red;
+        dc.fillRoundRect(dc.width/2-s/2,topmost_bar_y/2-10,s,20,5);
+        ctx.beginPath();ctx.moveTo(dc.width/2-s/2-10,topmost_bar_y/2);ctx.lineTo(dc.width/2-s/2+5,10);ctx.lineTo(dc.width/2-s/2+5,topmost_bar_y-10);ctx.fill();
+        ctx.fillStyle = white;
+        ctx.fillText("RED'S TURN",dc.width/2,topmost_bar_y/2+6);
         break;
       case MULTIPLAYER_AI:
       case MULTIPLAYER_TUT:
       case MULTIPLAYER_NET_CREATE:
-        //if(g.player_turn == 1) ctx.fillText("YOUR TURN",10,turn_header_y-4);
-        //else                   ctx.fillText("YOU",10,turn_header_y-4);
+        if(g.player_turn == 1)
+        {
+          ctx.fillStyle = red;
+          dc.fillRoundRect(dc.width/2-s/2,topmost_bar_y/2-10,s,20,5);
+          ctx.beginPath();ctx.moveTo(dc.width/2-s/2-10,topmost_bar_y/2);ctx.lineTo(dc.width/2-s/2+5,10);ctx.lineTo(dc.width/2-s/2+5,topmost_bar_y-10);ctx.fill();
+          ctx.fillStyle = white;
+          ctx.fillText("YOUR TURN",dc.width/2,topmost_bar_y/2+6);
+        }
         break;
       case MULTIPLAYER_NET_JOIN:
-        //if(g.player_turn == 1) ctx.fillText("RED'S TURN",10,turn_header_y-4);
+        if(g.player_turn == 1)
+        {
+          ctx.fillStyle = red;
+          dc.fillRoundRect(dc.width/2-s/2,topmost_bar_y/2-10,s,20,5);
+        ctx.beginPath();ctx.moveTo(dc.width/2-s/2-10,topmost_bar_y/2);ctx.lineTo(dc.width/2-s/2+5,10);ctx.lineTo(dc.width/2-s/2+5,topmost_bar_y-10);ctx.fill();
+          ctx.fillStyle = white;
+          ctx.fillText("RED'S TURN",dc.width/2,topmost_bar_y/2+6);
+        }
         break;
     }
 
@@ -953,19 +972,37 @@ var GamePlayScene = function(game, stage)
     ctx.drawImage(blue_token_icon,dc.width-sidebar_w-10,score_header_y-22,20,15);
     ctx.fillStyle = white;
     ctx.font = "10px Open Sans";
+    ctx.textAlign = "center";
     switch(game.multiplayer)
     {
       case MULTIPLAYER_LOCAL:
-        //if(g.player_turn == 2) ctx.fillText("BLUE'S TURN",dc.width-sidebar_w+10,turn_header_y-4);
+        ctx.fillStyle = blue;
+        dc.fillRoundRect(dc.width/2-s/2,topmost_bar_y/2-10,s,20,5);
+        ctx.beginPath();ctx.moveTo(dc.width/2+s/2+10,topmost_bar_y/2);ctx.lineTo(dc.width/2+s/2-5,10);ctx.lineTo(dc.width/2+s/2-5,topmost_bar_y-10);ctx.fill();
+        ctx.fillStyle = white;
+        ctx.fillText("BLUE'S TURN",dc.width/2,topmost_bar_y/2+6);
         break;
       case MULTIPLAYER_AI:
       case MULTIPLAYER_TUT:
       case MULTIPLAYER_NET_CREATE:
-        //if(g.player_turn == 2) ctx.fillText("BLUE'S TURN",dc.width-sidebar_w+10,turn_header_y-4);
+        if(g.player_turn == 2)
+        {
+          ctx.fillStyle = blue;
+          dc.fillRoundRect(dc.width/2-s/2,topmost_bar_y/2-10,s,20,5);
+          ctx.beginPath();ctx.moveTo(dc.width/2+s/2+10,topmost_bar_y/2);ctx.lineTo(dc.width/2+s/2-5,10);ctx.lineTo(dc.width/2+s/2-5,topmost_bar_y-10);ctx.fill();
+          ctx.fillStyle = white;
+          ctx.fillText("BLUE'S TURN",dc.width/2,topmost_bar_y/2+6);
+        }
         break;
       case MULTIPLAYER_NET_JOIN:
-        //if(g.player_turn == 2) ctx.fillText("YOUR TURN",dc.width-sidebar_w+10,turn_header_y-4);
-        //else                   ctx.fillText("YOU",dc.width-sidebar_w+10,turn_header_y-4);
+        if(g.player_turn == 2)
+        {
+          ctx.fillStyle = blue;
+          dc.fillRoundRect(dc.width/2-s/2,topmost_bar_y/2-10,s,20,5);
+          ctx.beginPath();ctx.moveTo(dc.width/2+s/2+10,topmost_bar_y/2);ctx.lineTo(dc.width/2+s/2-5,10);ctx.lineTo(dc.width/2+s/2-5,topmost_bar_y-10);ctx.fill();
+          ctx.fillStyle = white;
+          ctx.fillText("YOUR TURN",dc.width/2,topmost_bar_y/2+6);
+        }
         break;
     }
 
