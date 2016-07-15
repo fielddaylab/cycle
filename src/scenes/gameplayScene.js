@@ -319,10 +319,10 @@ var GamePlayScene = function(game, stage)
     char_disp = [];
     for(var i = 0; i < char_imgs.length; i++)
       char_disp[i] = 0;
-    blurb_x = sidebar_w+200;
-    blurb_y = dc.height-200;
-    blurb_w = dc.width-blurb_x-sidebar_w-10;
+    blurb_w = dc.width-2*sidebar_w-20-200;
     blurb_h = 100;
+    blurb_x = dc.width-sidebar_w-10-blurb_w;
+    blurb_y = dc.height-22-20-blurb_h;
     announce_x = sidebar_w+110;
     announce_y = dc.height-110;
     announce_w = dc.width-(sidebar_w*2)-120;
@@ -1249,7 +1249,9 @@ var GamePlayScene = function(game, stage)
       ctx.fillStyle = white;
       dc.fillRoundRect(blurb_x,blurb_y,blurb_w,blurb_h,5);
 
-      ctx.drawImage(next_button_img,dc.width/2+90,dc.height-80,127,45);
+      var w = 127/2;
+      var h = 45/2;
+      ctx.drawImage(next_button_img,dc.width-sidebar_w-w-10,dc.height-h-10,w,h);
 
       ctx.font = "12px Open Sans";
       interrupt_canvdom.draw(12,dc);
@@ -1261,7 +1263,9 @@ var GamePlayScene = function(game, stage)
       ctx.fillStyle = white;
       dc.fillRoundRect(blurb_x,blurb_y,blurb_w,blurb_h,5);
 
-      ctx.drawImage(next_button_img,dc.width/2+90,dc.height-80,127,45);
+      var w = 127/2;
+      var h = 45/2;
+      ctx.drawImage(next_button_img,dc.width-sidebar_w-w-10,dc.height-h-10,w,h);
 
       ctx.font = "12px Open Sans";
       tutorial_canvdom.draw(12,dc);
