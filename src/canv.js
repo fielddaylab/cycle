@@ -125,6 +125,20 @@ Canv.prototype.outlineText = function(text,x,y,color_in,color_out,max_w)
     self.context.fillText(text,x  ,y  );
   }
 }
+Canv.prototype.fillCircle = function(x,y,r)
+{
+  var self = this;
+  self.context.beginPath();
+  self.context.arc(x,y,r,0,2*Math.PI);
+  self.context.fill();
+}
+Canv.prototype.strokeCircle = function(x,y,r)
+{
+  var self = this;
+  self.context.beginPath();
+  self.context.arc(x,y,r,0,2*Math.PI);
+  self.context.stroke();
+}
 Canv.prototype.strokeRoundRect = function(x,y,w,h,r)
 {
   var self = this;
