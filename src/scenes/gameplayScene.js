@@ -928,37 +928,28 @@ var GamePlayScene = function(game, stage)
     var s = 70;
     var yoff = 30;
     ctx.textAlign = "center";
-    switch(game.multiplayer)
+    if(g.player_turn == 1)
     {
-      case MULTIPLAYER_LOCAL:
-        ctx.fillStyle = red;
-        dc.fillRoundRect(dc.width/2-s/2,topmost_bar_y/2-10+yoff,s,20,5);
-        ctx.beginPath();ctx.moveTo(dc.width/2-s/2-10,topmost_bar_y/2+yoff);ctx.lineTo(dc.width/2-s/2+5,10+yoff);ctx.lineTo(dc.width/2-s/2+5,topmost_bar_y-10+yoff);ctx.fill();
-        ctx.fillStyle = white;
-        ctx.fillText("RED'S TURN",dc.width/2,topmost_bar_y/2+6+yoff);
-        break;
-      case MULTIPLAYER_AI:
-      case MULTIPLAYER_TUT:
-      case MULTIPLAYER_NET_CREATE:
-        if(g.player_turn == 1)
-        {
+      switch(game.multiplayer)
+      {
+        case MULTIPLAYER_AI:
+        case MULTIPLAYER_TUT:
+        case MULTIPLAYER_NET_CREATE:
           ctx.fillStyle = red;
           dc.fillRoundRect(dc.width/2-s/2,topmost_bar_y/2-10+yoff,s,20,5);
           ctx.beginPath();ctx.moveTo(dc.width/2-s/2-10,topmost_bar_y/2+yoff);ctx.lineTo(dc.width/2-s/2+5,10+yoff);ctx.lineTo(dc.width/2-s/2+5,topmost_bar_y-10+yoff);ctx.fill();
           ctx.fillStyle = white;
           ctx.fillText("YOUR TURN",dc.width/2,topmost_bar_y/2+6+yoff);
-        }
-        break;
-      case MULTIPLAYER_NET_JOIN:
-        if(g.player_turn == 1)
-        {
+          break;
+        case MULTIPLAYER_LOCAL:
+        case MULTIPLAYER_NET_JOIN:
           ctx.fillStyle = red;
           dc.fillRoundRect(dc.width/2-s/2,topmost_bar_y/2-10+yoff,s,20,5);
           ctx.beginPath();ctx.moveTo(dc.width/2-s/2-10,topmost_bar_y/2+yoff);ctx.lineTo(dc.width/2-s/2+5,10+yoff);ctx.lineTo(dc.width/2-s/2+5,topmost_bar_y-10+yoff);ctx.fill();
           ctx.fillStyle = white;
           ctx.fillText("RED'S TURN",dc.width/2,topmost_bar_y/2+6+yoff);
-        }
-        break;
+          break;
+      }
     }
 
     //blue section body
@@ -974,37 +965,28 @@ var GamePlayScene = function(game, stage)
     ctx.fillStyle = white;
     ctx.font = "10px Open Sans";
     ctx.textAlign = "center";
-    switch(game.multiplayer)
+    if(g.player_turn == 2)
     {
-      case MULTIPLAYER_LOCAL:
-        ctx.fillStyle = blue;
-        dc.fillRoundRect(dc.width/2-s/2,topmost_bar_y/2-10+yoff,s,20,5);
-        ctx.beginPath();ctx.moveTo(dc.width/2+s/2+10,topmost_bar_y/2+yoff);ctx.lineTo(dc.width/2+s/2-5,10+yoff);ctx.lineTo(dc.width/2+s/2-5,topmost_bar_y-10+yoff);ctx.fill();
-        ctx.fillStyle = white;
-        ctx.fillText("BLUE'S TURN",dc.width/2,topmost_bar_y/2+6+yoff);
-        break;
-      case MULTIPLAYER_AI:
-      case MULTIPLAYER_TUT:
-      case MULTIPLAYER_NET_CREATE:
-        if(g.player_turn == 2)
-        {
+      switch(game.multiplayer)
+      {
+        case MULTIPLAYER_LOCAL:
+        case MULTIPLAYER_AI:
+        case MULTIPLAYER_TUT:
+        case MULTIPLAYER_NET_CREATE:
           ctx.fillStyle = blue;
           dc.fillRoundRect(dc.width/2-s/2,topmost_bar_y/2-10+yoff,s,20,5);
           ctx.beginPath();ctx.moveTo(dc.width/2+s/2+10,topmost_bar_y/2+yoff);ctx.lineTo(dc.width/2+s/2-5,10+yoff);ctx.lineTo(dc.width/2+s/2-5,topmost_bar_y-10+yoff);ctx.fill();
           ctx.fillStyle = white;
           ctx.fillText("BLUE'S TURN",dc.width/2,topmost_bar_y/2+6+yoff);
-        }
-        break;
-      case MULTIPLAYER_NET_JOIN:
-        if(g.player_turn == 2)
-        {
+          break;
+        case MULTIPLAYER_NET_JOIN:
           ctx.fillStyle = blue;
           dc.fillRoundRect(dc.width/2-s/2,topmost_bar_y/2-10+yoff,s,20,5);
           ctx.beginPath();ctx.moveTo(dc.width/2+s/2+10,topmost_bar_y/2+yoff);ctx.lineTo(dc.width/2+s/2-5,10+yoff);ctx.lineTo(dc.width/2+s/2-5,topmost_bar_y-10+yoff);ctx.fill();
           ctx.fillStyle = white;
           ctx.fillText("YOUR TURN",dc.width/2,topmost_bar_y/2+6+yoff);
-        }
-        break;
+          break;
+      }
     }
 
     ctx.font = "12px Open Sans";
