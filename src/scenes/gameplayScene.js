@@ -1291,11 +1291,11 @@ var GamePlayScene = function(game, stage)
         if(g.turn == 0 && (game.multiplayer != MULTIPLAYER_TUT || input_state == INPUT_RESUME))
         {
           var y = dc.height-140 + Math.sin(n_ticks/10)*10;
-          var w = 150;
+          var w = 170;
           if(g.player_turn == 1)
-            drawTip(sidebar_w+5,y,w,true,"Choose a card!");
+            drawTip(sidebar_w+5,y,w,true,"CHOOSE A CARD!");
           if(g.player_turn == 2 && (game.multiplayer == MULTIPLAYER_LOCAL || game.multiplayer == MULTIPLAYER_NET_JOIN))
-            drawTip(dc.width-sidebar_w-w-5,y,w,false,"Choose a card!");
+            drawTip(dc.width-sidebar_w-w-5,y,w,false,"CHOOSE A CARD!");
         }
         break;
       case TURN_CONFIRM_CARD: break;
