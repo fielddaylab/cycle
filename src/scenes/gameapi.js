@@ -20,6 +20,7 @@ var constructGame = function(game_data,sr,canv)
     player = new Player();
     player.id = i+1;
     player.title = game_data.players[i].title;
+    player.TITLE = player.title.toUpperCase();
 
     if(i == 0) player.token_img = red_token_icon;
     if(i == 1) player.token_img = blue_token_icon;
@@ -34,6 +35,7 @@ var constructGame = function(game_data,sr,canv)
     node = new Node();
     node.id = i+1;
     node.title = game_data.nodes[i].title;
+    node.TITLE = node.title.toUpperCase();
 
     node.wx = game_data.nodes[i].x;
     node.wy = 1-game_data.nodes[i].y;
@@ -60,6 +62,7 @@ var constructGame = function(game_data,sr,canv)
     event = new Event();
     event.id = i+1;
     event.title = game_data.events[i].title;
+    event.TITLE = event.title.toUpperCase();
     event.flavor = game_data.events[i].flavor;
     event.description  = game_data.events[i].description;
     //NEED TO MANUALLY TWEAK font/width

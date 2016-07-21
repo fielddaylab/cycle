@@ -17,6 +17,7 @@ var Node = function()
 
   self.id = 0;
   self.title = "Node";
+  self.TITLE = self.title.toUpperCase();
 
   self.p1_tokens = 0;
   self.p2_tokens = 0;
@@ -42,6 +43,7 @@ var Event = function()
 
   self.id = 0;
   self.title = "Event";
+  self.TITLE = self.title.toUpperCase();
   self.flavor = "Wow An Event";
   self.description = "This Event is Super Great";
   self.description_lines = [];
@@ -91,6 +93,7 @@ var Player = function()
 
   self.id = 0;
   self.title = "Player";
+  self.TITLE = self.title.toUpperCase();
 
   self.hand = [];
   self.pts = 0;

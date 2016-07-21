@@ -86,6 +86,7 @@ var GamePlayScene = function(game, stage)
   var announce_w;
   var announce_h;
   var summary;
+  var summary_font;
 
   var tutorial_lines;
   var tutorial_tests;
@@ -346,6 +347,7 @@ var GamePlayScene = function(game, stage)
     input_state = INPUT_RESUME;
 
     summary = [];
+    summary_font = "16px Open Sans";
     var text;
     var team = g.players[0].title;
     var who = team+"'s";
@@ -364,7 +366,7 @@ var GamePlayScene = function(game, stage)
       else text = "You are "+team+", and it's "+who+" turn!";
     }
     if(game.multiplayer == MULTIPLAYER_NET_JOIN) text = "You are "+g.players[1].title+". It's "+who+" turn! (Waiting on your opponent...)";
-    summary = [textToLines(dc, "12px Open Sans", announce_w-10, text)];
+    summary = [textToLines(dc, summary_font, announce_w-10, text)];
 
     chosen_card_i = -1;
     chosen_target_p = 0;
@@ -786,7 +788,7 @@ var GamePlayScene = function(game, stage)
             if(cli.database[i].event == "JOIN" && cli.database[i].args[0] == cli.id)
             {
               game.opponent = cli.database[i].user;
-              summary = [textToLines(dc, "12px Open Sans", announce_w-10, "You are "+g.players[0].title+", and it's your turn!")];
+              summary = [textToLines(dc, summary_font, announce_w-10, "You are "+g.players[0].title+", and it's your turn!")];
               turn_stage = TURN_CHOOSE_CARD;
             }
           }
@@ -1161,7 +1163,7 @@ var GamePlayScene = function(game, stage)
       ctx.textAlign = "center";
       if(n == click_node || n == hover_node)
       {
-        dc.outlineText(n.title,n.x+n.w/2,n.y+n.h/2+10+Math.sin(n_ticks/9)*5);
+        dc.outlineText(n.TITLE,n.x+n.w/2,n.y+n.h/2+10+Math.sin(n_ticks/9)*5);
       }
     }
 
@@ -1171,7 +1173,7 @@ var GamePlayScene = function(game, stage)
     ctx.fillStyle = white;
     ctx.textAlign = "right";
     ctx.font = "14px Open Sans";
-    ctx.fillText("X"+player.disp_pts,sidebar_w-12,score_header_y-10);
+    ctx.fillText(player.disp_pts,sidebar_w-12,score_header_y-10);
     ctx.fillStyle = "#000000";
     for(var i = 0; i < player.hand.length; i++)
     {
@@ -1184,7 +1186,7 @@ var GamePlayScene = function(game, stage)
     ctx.fillStyle = white;
     ctx.textAlign = "left";
     ctx.font = "14px Open Sans";
-    ctx.fillText("X"+player.disp_pts,dc.width-sidebar_w+12,score_header_y-10);
+    ctx.fillText(player.disp_pts,dc.width-sidebar_w+12,score_header_y-10);
     ctx.fillStyle = "#000000";
     for(var i = 0; i < player.hand.length; i++)
     {
@@ -1197,7 +1199,7 @@ var GamePlayScene = function(game, stage)
     //info
     ctx.fillStyle = "#000000";
     ctx.textAlign = "center";
-    ctx.fillText("Turn: "+g.turn,dc.width/2,topmost_bar_y+24);
+    ctx.fillText("TURN: "+g.turn,dc.width/2,topmost_bar_y+24);
     player = g.players[g.player_turn-1];
 
     ctx.drawImage(grad_img,sidebar_w,announce_y-30,dc.width-(sidebar_w*2),dc.height-(announce_y-30));
@@ -1206,7 +1208,7 @@ var GamePlayScene = function(game, stage)
     dc.fillRoundRect(announce_x,announce_y,announce_w,announce_h,5);
     ctx.fillStyle = "#000000";
     ctx.textAlign = "left";
-    ctx.font = "12px Open Sans";
+    ctx.font = summary_font;
     var yoff = 0;
     for(var i = 0; i < summary.length; i++)
     {
@@ -1220,10 +1222,10 @@ var GamePlayScene = function(game, stage)
     ctx.textAlign = "left";
     ctx.font = "12px Open Sans";
     ctx.fillStyle = gray;
-    ctx.fillText("Current Zone: "+g.nodes[g.goal_node-1].title,sidebar_w+24,topmost_bar_y+15);
+    ctx.fillText("CURRENT ZONE: "+g.nodes[g.goal_node-1].TITLE,sidebar_w+24,topmost_bar_y+15);
     ctx.textAlign = "right";
     var turns_left = 3-(g.turn%g.turns_per_goal_shift);
-    ctx.fillText("In "+turns_left+" turns: "+g.nodes[g.next_goal_node-1].title,dc.width-sidebar_w-24,topmost_bar_y+15);
+    ctx.fillText("IN "+turns_left+" TURNS: "+g.nodes[g.next_goal_node-1].TITLE,dc.width-sidebar_w-24,topmost_bar_y+15);
 
     if(input_state == INPUT_INTERRUPT)
     {
@@ -1470,7 +1472,7 @@ var GamePlayScene = function(game, stage)
     }
 
     text = actor+" played \""+g.events[player.hand[chosen_card_i]-1].title+"\" on "+actee+" "+g.noun+"!";
-    summary = [textToLines(dc, "12px Open Sans", announce_w-10, text)];
+    summary = [textToLines(dc, summary_font, announce_w-10, text)];
   }
 
   var genPostSummary = function()
@@ -1510,13 +1512,13 @@ var GamePlayScene = function(game, stage)
 
     text = actor+" played \""+event.title+"\" on "+actee+" "+g.noun+"!";
 
-    summary = [textToLines(dc, "12px Open Sans", announce_w-10, text)];
+    summary = [textToLines(dc, summary_font, announce_w-10, text)];
     if(delta.pts_red_delta_n > 0 && delta.pts_blue_delta_n == 0)
-      summary.push(textToLines(dc, "12px Open Sans", announce_w-10, "RED TEAM gained "+delta.pts_red_delta_n+" pts!"));
+      summary.push(textToLines(dc, summary_font, announce_w-10, "RED TEAM gained "+delta.pts_red_delta_n+" pts!"));
     else if(delta.pts_red_delta_n == 0 && delta.pts_blue_delta_n > 0)
-      summary.push(textToLines(dc, "12px Open Sans", announce_w-10, "BLUE TEAM gained "+delta.pts_blue_delta_n+" pts!"));
+      summary.push(textToLines(dc, summary_font, announce_w-10, "BLUE TEAM gained "+delta.pts_blue_delta_n+" pts!"));
     else if(delta.pts_red_delta_n > 0 && delta.pts_blue_delta_n > 0)
-      summary.push(textToLines(dc, "12px Open Sans", announce_w-10, "RED TEAM gained "+delta.pts_red_delta_n+" pts, and BLUE TEAM gained "+delta.pts_blue_delta_n+" pts!"));
+      summary.push(textToLines(dc, summary_font, announce_w-10, "RED TEAM gained "+delta.pts_red_delta_n+" pts, and BLUE TEAM gained "+delta.pts_blue_delta_n+" pts!"));
 
     var who = g.players[g.player_turn-1].title+"'s";
     if(
@@ -1524,7 +1526,7 @@ var GamePlayScene = function(game, stage)
       ((game.multiplayer == MULTIPLAYER_NET_JOIN)                                         && g.player_turn == 2)
     )
       who = "your";
-    summary.push(textToLines(dc, "12px Open Sans", announce_w-10, "It's now "+who+" turn!"));
+    summary.push(textToLines(dc, summary_font, announce_w-10, "It's now "+who+" turn!"));
   }
 
   //no data- just used for interface
