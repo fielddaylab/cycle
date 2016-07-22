@@ -1206,7 +1206,7 @@ var GamePlayScene = function(game, stage)
 
     if (input_state != INPUT_TUTORIAL) {
       ctx.drawImage(grad_img,sidebar_w,announce_y-30,dc.width-(sidebar_w*2),dc.height-(announce_y-30));
-      ctx.drawImage(char_imgs[CHAR_TALL],sidebar_w,dc.height-150,100,200);
+      ctx.drawImage(char_imgs[CHAR_TALL],sidebar_w-50,dc.height-150-50,200,400);
       ctx.fillStyle = white;
       dc.fillRoundRect(announce_x,announce_y,announce_w,announce_h,5);
       ctx.fillStyle = "#000000";
