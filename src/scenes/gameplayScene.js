@@ -1204,20 +1204,22 @@ var GamePlayScene = function(game, stage)
     ctx.fillText("TURN: "+g.turn,dc.width/2,topmost_bar_y+24);
     player = g.players[g.player_turn-1];
 
-    ctx.drawImage(grad_img,sidebar_w,announce_y-30,dc.width-(sidebar_w*2),dc.height-(announce_y-30));
-    ctx.drawImage(char_imgs[CHAR_TALL],sidebar_w,dc.height-150,100,200);
-    ctx.fillStyle = white;
-    dc.fillRoundRect(announce_x,announce_y,announce_w,announce_h,5);
-    ctx.fillStyle = "#000000";
-    ctx.textAlign = "left";
-    ctx.font = summary_font;
-    var yoff = 0;
-    for(var i = 0; i < summary.length; i++)
-    {
-      for(var j = 0; j < summary[i].length; j++)
+    if (input_state != INPUT_TUTORIAL) {
+      ctx.drawImage(grad_img,sidebar_w,announce_y-30,dc.width-(sidebar_w*2),dc.height-(announce_y-30));
+      ctx.drawImage(char_imgs[CHAR_TALL],sidebar_w,dc.height-150,100,200);
+      ctx.fillStyle = white;
+      dc.fillRoundRect(announce_x,announce_y,announce_w,announce_h,5);
+      ctx.fillStyle = "#000000";
+      ctx.textAlign = "left";
+      ctx.font = summary_font;
+      var yoff = 0;
+      for(var i = 0; i < summary.length; i++)
       {
-        yoff += 20;
-        ctx.fillText(summary[i][j],announce_x+10,announce_y+yoff);
+        for(var j = 0; j < summary[i].length; j++)
+        {
+          yoff += 20;
+          ctx.fillText(summary[i][j],announce_x+10,announce_y+yoff);
+        }
       }
     }
 
