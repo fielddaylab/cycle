@@ -3,6 +3,7 @@ var ConfigScene = function(game, stage)
   var self = this;
 
   var dc = stage.drawCanv;
+  var ctx = dc.context;
 
   var clicker;
 
@@ -62,7 +63,7 @@ var ConfigScene = function(game, stage)
   var net_check_img;
   self.ready = function()
   {
-    dc.context.font = "12px Open Sans";
+    ctx.font = "12px Open Sans";
     clicker = new Clicker({source:stage.dispCanv.canvas});
 
     mode = CONFIG_MULTIPLAYER;
@@ -196,94 +197,95 @@ var ConfigScene = function(game, stage)
 
   self.draw = function()
   {
-    dc.context.fillStyle = "#FFFFFF";
+    ctx.textAlign = "left";
+    ctx.fillStyle = "#FFFFFF";
     dc.fillRoundRect(0,0,dc.width,dc.height,5);
-    dc.context.fillStyle = "#000000";
+    ctx.fillStyle = "#000000";
 
-    dc.context.fillStyle = blue;
+    ctx.fillStyle = blue;
     dc.roundRectOptions(btn_tutorial.x,btn_tutorial.y,btn_tutorial.w,btn_tutorial.h,5,1,1,0,0,0,1)
-    dc.context.drawImage(tutorial_img,50,50,220,section_line_0_y-50);
+    ctx.drawImage(tutorial_img,50,50,220,section_line_0_y-50);
 
-    dc.context.fillStyle = "#333333";
-    dc.context.font = "25px Open Sans";
-    dc.context.fillText("First Time Playing?".split("").join(space),dc.width/2-100,100);
-    dc.context.font = "Bold 16px Open Sans";
-    dc.context.fillStyle = "#FFFFFF";
+    ctx.fillStyle = "#333333";
+    ctx.font = "25px Open Sans";
+    ctx.fillText("First Time Playing?".split("").join(space),dc.width/2-100,100);
+    ctx.font = "Bold 16px Open Sans";
+    ctx.fillStyle = "#FFFFFF";
     dc.fillRoundRect(dc.width/2-110,120,175,30,20);
-    dc.context.fillStyle = "#333333";
-    dc.context.fillText("Play the Tutorial",dc.width/2-100,140);
-    dc.context.drawImage(arrow_img,dc.width/2+25,127,30,15);
-    dc.context.font = "12px Open Sans";
+    ctx.fillStyle = "#333333";
+    ctx.fillText("Play the Tutorial",dc.width/2-100,140);
+    ctx.drawImage(arrow_img,dc.width/2+25,127,30,15);
+    ctx.font = "12px Open Sans";
 
-    dc.context.lineWidth = 0.5;
-    dc.context.strokeStyle = "#666666";
+    ctx.lineWidth = 0.5;
+    ctx.strokeStyle = "#666666";
     dc.drawLine(0,section_line_0_y,dc.width,section_line_0_y);
     dc.drawLine(0,section_line_1_y,dc.width,section_line_1_y);
     switch(mode)
     {
       case CONFIG_MULTIPLAYER:
-        dc.context.textAlign = "center";
+        ctx.textAlign = "center";
         imgBtn(mbtn_ai,single_img);
-        imgBtn(mbtn_local,multi_img);      dc.context.fillText("Same Screen",             mbtn_local.x+mbtn_local.w/2,      mbtn_local.y+mbtn_local.h+20);
-        imgBtn(mbtn_net_create,multi_img); dc.context.drawImage(net_add_img,mbtn_net_create.x+mbtn_net_create.w-30,mbtn_net_create.y-10,40,40); dc.context.fillText("Web: Create Room",        mbtn_net_create.x+mbtn_net_create.w/2, mbtn_net_create.y+mbtn_net_create.h+20);
-        imgBtn(mbtn_net_join,multi_img);   dc.context.drawImage(net_check_img,mbtn_net_join.x+mbtn_net_join.w-30,mbtn_net_join.y-10,40,40); dc.context.fillText("Web: Join Room",          mbtn_net_join.x+mbtn_net_join.w/2,   mbtn_net_join.y+mbtn_net_join.h+20);
+        imgBtn(mbtn_local,multi_img);      ctx.fillText("Same Screen",             mbtn_local.x+mbtn_local.w/2,      mbtn_local.y+mbtn_local.h+20);
+        imgBtn(mbtn_net_create,multi_img); ctx.drawImage(net_add_img,mbtn_net_create.x+mbtn_net_create.w-30,mbtn_net_create.y-10,40,40); ctx.fillText("Web: Create Room",        mbtn_net_create.x+mbtn_net_create.w/2, mbtn_net_create.y+mbtn_net_create.h+20);
+        imgBtn(mbtn_net_join,multi_img);   ctx.drawImage(net_check_img,mbtn_net_join.x+mbtn_net_join.w-30,mbtn_net_join.y-10,40,40); ctx.fillText("Web: Join Room",          mbtn_net_join.x+mbtn_net_join.w/2,   mbtn_net_join.y+mbtn_net_join.h+20);
         dc.drawLine(btn_1_x+btn_s/2,section_line_1_y,btn_1_x+btn_s/2,dc.height);
-        dc.context.font = "40px Open Sans";
+        ctx.font = "40px Open Sans";
         if(game_type == CARBON_GAME)
-          dc.context.fillText("CARBON CYCLE".split("").join(space+space),dc.width/2,title_y);
+          ctx.fillText("CARBON CYCLE".split("").join(space+space),dc.width/2,title_y);
         else if(game_type == NITROGEN_GAME)
-          dc.context.fillText("NITROGEN CYCLE".split("").join(space+space),dc.width/2,title_y);
+          ctx.fillText("NITROGEN CYCLE".split("").join(space+space),dc.width/2,title_y);
         else if(game_type == WATER_GAME)
-          dc.context.fillText("WATER CYCLE".split("").join(space+space),dc.width/2,title_y);
-        dc.context.font = "Bold 12px Open Sans";
-        dc.context.textAlign = "left";
-        dc.context.fillText("Single Player",btn_0_x, subtitle_y);
-        dc.context.fillText("Multiplayer",btn_2_x, subtitle_y);
-        dc.context.font = "12px Open Sans";
+          ctx.fillText("WATER CYCLE".split("").join(space+space),dc.width/2,title_y);
+        ctx.font = "Bold 12px Open Sans";
+        ctx.textAlign = "left";
+        ctx.fillText("Single Player",btn_0_x, subtitle_y);
+        ctx.fillText("Multiplayer",btn_2_x, subtitle_y);
+        ctx.font = "12px Open Sans";
         break;
       case CONFIG_JOIN:
-        dc.context.save();
-        dc.context.translate(btn_back.x+btn_back.w/2,btn_back.y+btn_back.h/2);
-        dc.context.rotate(Math.PI);
-        dc.context.drawImage(arrow_img,-30,-15,60,30);
-        dc.context.restore();
-        if(!joins.length)    {                  dc.context.fillStyle = "#000000"; dc.context.fillText("Waiting For Room...", jbtn_a.x+10, jbtn_a.y+20); };
-        if(joins.length > 0) { rectBtn(jbtn_a); dc.context.fillText("Join #"+joins[0], jbtn_a.x+10, jbtn_a.y+20); }
-        if(joins.length > 1) { rectBtn(jbtn_b); dc.context.fillText("Join #"+joins[1], jbtn_b.x+10, jbtn_b.y+20); }
-        if(joins.length > 2) { rectBtn(jbtn_c); dc.context.fillText("Join #"+joins[2], jbtn_c.x+10, jbtn_c.y+20); }
-        if(joins.length > 3) { rectBtn(jbtn_d); dc.context.fillText("Join #"+joins[3], jbtn_d.x+10, jbtn_d.y+20); }
-        if(joins.length > 4) { rectBtn(jbtn_e); dc.context.fillText("Join #"+joins[4], jbtn_e.x+10, jbtn_e.y+20); }
-        if(joins.length > 5) { rectBtn(jbtn_f); dc.context.fillText("Join #"+joins[5], jbtn_f.x+10, jbtn_f.y+20); }
-        dc.context.textAlign = "center";
-        dc.context.font = "40px Open Sans";
-        dc.context.fillText("Waiting for Web Game...",dc.width/2,title_y);
-        dc.context.font = "12px Open Sans";
-        dc.context.textAlign = "left";
+        ctx.save();
+        ctx.translate(btn_back.x+btn_back.w/2,btn_back.y+btn_back.h/2);
+        ctx.rotate(Math.PI);
+        ctx.drawImage(arrow_img,-30,-15,60,30);
+        ctx.restore();
+        if(!joins.length)    {                  ctx.fillStyle = "#000000"; ctx.fillText("Waiting For Room...", jbtn_a.x+10, jbtn_a.y+20); };
+        if(joins.length > 0) { rectBtn(jbtn_a); ctx.fillText("Join #"+joins[0], jbtn_a.x+10, jbtn_a.y+20); }
+        if(joins.length > 1) { rectBtn(jbtn_b); ctx.fillText("Join #"+joins[1], jbtn_b.x+10, jbtn_b.y+20); }
+        if(joins.length > 2) { rectBtn(jbtn_c); ctx.fillText("Join #"+joins[2], jbtn_c.x+10, jbtn_c.y+20); }
+        if(joins.length > 3) { rectBtn(jbtn_d); ctx.fillText("Join #"+joins[3], jbtn_d.x+10, jbtn_d.y+20); }
+        if(joins.length > 4) { rectBtn(jbtn_e); ctx.fillText("Join #"+joins[4], jbtn_e.x+10, jbtn_e.y+20); }
+        if(joins.length > 5) { rectBtn(jbtn_f); ctx.fillText("Join #"+joins[5], jbtn_f.x+10, jbtn_f.y+20); }
+        ctx.textAlign = "center";
+        ctx.font = "40px Open Sans";
+        ctx.fillText("Waiting for Web Game...",dc.width/2,title_y);
+        ctx.font = "12px Open Sans";
+        ctx.textAlign = "left";
         break;
       case CONFIG_TURN:
-        dc.context.save();
-        dc.context.translate(btn_back.x+btn_back.w/2,btn_back.y+btn_back.h/2);
-        dc.context.rotate(Math.PI);
-        dc.context.drawImage(arrow_img,-30,-15,60,30);
-        dc.context.restore();
-        dc.context.textAlign = "center";
-        dc.context.font = "40px Open Sans";
-        fillRectBtn(tbtn_10); dc.context.fillStyle = "#FFFFFF"; dc.context.fillText("10", tbtn_10.x+btn_s/2, tbtn_10.y+btn_s/2);
-        fillRectBtn(tbtn_20); dc.context.fillStyle = "#FFFFFF"; dc.context.fillText("20", tbtn_20.x+btn_s/2, tbtn_20.y+btn_s/2);
-        fillRectBtn(tbtn_30); dc.context.fillStyle = "#FFFFFF"; dc.context.fillText("30", tbtn_30.x+btn_s/2, tbtn_30.y+btn_s/2);
-        dc.context.fillStyle = "#000000";
-        dc.context.textAlign = "center";
-        dc.context.font = "40px Open Sans";
+        ctx.save();
+        ctx.translate(btn_back.x+btn_back.w/2,btn_back.y+btn_back.h/2);
+        ctx.rotate(Math.PI);
+        ctx.drawImage(arrow_img,-30,-15,60,30);
+        ctx.restore();
+        ctx.textAlign = "center";
+        ctx.font = "40px Open Sans";
+        fillRectBtn(tbtn_10); ctx.fillStyle = "#FFFFFF"; ctx.fillText("10", tbtn_10.x+btn_s/2, tbtn_10.y+btn_s/2);
+        fillRectBtn(tbtn_20); ctx.fillStyle = "#FFFFFF"; ctx.fillText("20", tbtn_20.x+btn_s/2, tbtn_20.y+btn_s/2);
+        fillRectBtn(tbtn_30); ctx.fillStyle = "#FFFFFF"; ctx.fillText("30", tbtn_30.x+btn_s/2, tbtn_30.y+btn_s/2);
+        ctx.fillStyle = "#000000";
+        ctx.textAlign = "center";
+        ctx.font = "40px Open Sans";
         if(game_type == CARBON_GAME)
-          dc.context.fillText("CARBON CYCLE".split("").join(space+space),dc.width/2,title_y);
+          ctx.fillText("CARBON CYCLE".split("").join(space+space),dc.width/2,title_y);
         else if(game_type == NITROGEN_GAME)
-          dc.context.fillText("NITROGEN CYCLE".split("").join(space+space),dc.width/2,title_y);
+          ctx.fillText("NITROGEN CYCLE".split("").join(space+space),dc.width/2,title_y);
         else if(game_type == WATER_GAME)
-          dc.context.fillText("WATER CYCLE".split("").join(space+space),dc.width/2,title_y);
-        dc.context.textAlign = "left";
-        dc.context.font = "Bold 12px Open Sans";
-        dc.context.fillText("How many turns?",btn_1_x, subtitle_y);
-        dc.context.font = "12px Open Sans";
+          ctx.fillText("WATER CYCLE".split("").join(space+space),dc.width/2,title_y);
+        ctx.textAlign = "left";
+        ctx.font = "Bold 12px Open Sans";
+        ctx.fillText("How many turns?",btn_1_x, subtitle_y);
+        ctx.font = "12px Open Sans";
         break;
       case CONFIG_COMMIT:
         break;
@@ -292,21 +294,21 @@ var ConfigScene = function(game, stage)
 
   var imgBtn = function(btn,img)
   {
-    dc.context.drawImage(img,btn.x,btn.y,btn.w,btn.h);
+    ctx.drawImage(img,btn.x,btn.y,btn.w,btn.h);
   }
   var rectBtn = function(btn)
   {
-    dc.context.fillStyle = "#FFFFFF";
+    ctx.fillStyle = "#FFFFFF";
     dc.fillRoundRect(btn.x,btn.y,btn.w,btn.h,5);
-    dc.context.strokeStyle = "#000000";
+    ctx.strokeStyle = "#000000";
     dc.strokeRoundRect(btn.x,btn.y,btn.w,btn.h,5);
-    dc.context.fillStyle = "#000000";
+    ctx.fillStyle = "#000000";
   }
   var fillRectBtn = function(btn)
   {
-    dc.context.fillStyle = blue;
+    ctx.fillStyle = blue;
     dc.fillRoundRect(btn.x,btn.y,btn.w,btn.h,5);
-    dc.context.fillStyle = "#000000";
+    ctx.fillStyle = "#000000";
   }
 
   self.cleanup = function()

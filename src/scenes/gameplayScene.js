@@ -300,7 +300,7 @@ var GamePlayScene = function(game, stage)
         hit_ui = true;
       }
     );
-    menu_btn = new ButtonBox(0,0,100,topmost_bar_y,
+    menu_btn = new ButtonBox(10,topmost_bar_y-40,60,30,
       function(evt)
       {
         cli.stop();
@@ -910,10 +910,12 @@ var GamePlayScene = function(game, stage)
     dc.roundRectOptions(0,topmost_bar_y,dc.width,dc.height-topmost_bar_y,5,1,1,1,1,0,1);
     ctx.drawImage(g.bg_img,bg_img_x,bg_img_y,bg_img_w,bg_img_h);
 
-    ctx.textAlign = "left";
+    ctx.fillStyle = "#FFFFFF";;
+    dc.fillRoundRect(menu_btn.x,menu_btn.y,menu_btn.w,menu_btn.h,5);
     ctx.fillStyle = "#000000";
+    ctx.textAlign = "left";
     ctx.font = "12px Open Sans";
-    ctx.fillText("Return to Menu?",10,topmost_bar_y-5);
+    ctx.fillText("MENU",menu_btn.x+10,menu_btn.y+menu_btn.h-10);
 
     //red section body
     ctx.fillStyle = red;
