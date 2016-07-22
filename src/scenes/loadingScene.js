@@ -91,6 +91,7 @@ var LoadingScene = function(game, stage)
     img_srcs.push("assets/animal2.png");
     img_srcs.push("assets/earth_deep.png");
     img_srcs.push("assets/earth_surface.png");
+    img_srcs.push("assets/dark_earth_surface.png");
     img_srcs.push("assets/fuel.png");
     img_srcs.push("assets/ocean.png");
     img_srcs.push("assets/river.png");

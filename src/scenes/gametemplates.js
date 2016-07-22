@@ -393,8 +393,8 @@ var WaterCycleGameTemplate =
       },
       {
         title:"Surface",
-        img:"earth_surface",
-        icon_img:"earth_surface",
+        img:"dark_earth_surface",
+        icon_img:"dark_earth_surface",
         x:x+Math.cos(Math.PI/2+((2/6)*Math.PI*2))*rx,
         y:y+Math.sin(Math.PI/2+((2/6)*Math.PI*2))*ry,
         w:w,

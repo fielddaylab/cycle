@@ -204,6 +204,9 @@ earth_deep_img.src = "assets/earth_deep.png";
 var earth_surface_img = new Image();
 earth_surface_img.src = "assets/earth_surface.png";
 
+var dark_earth_surface_img = new Image();
+dark_earth_surface_img.src = "assets/dark_earth_surface.png";
+
 var fuel_img = new Image();
 fuel_img.src = "assets/fuel.png";
 
