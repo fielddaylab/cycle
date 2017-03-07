@@ -148,6 +148,7 @@ var ConfigScene = function(game, stage)
         if(cli.updated)
         {
           joins = [];
+          var reverse_joins = [];
           turns = [];
           for(var i = 0; i < cli.database.length; i++)
           {
@@ -155,23 +156,25 @@ var ConfigScene = function(game, stage)
             {
               if(cli.database[i].event == "CREATE") //add to list of known joinables
               {
-                joins[joins.length] = cli.database[i].user;
+                reverse_joins[reverse_joins.length] = cli.database[i].user;
                 turns[turns.length] = parseInt(cli.database[i].args[0]);
               }
               else if(cli.database[i].event == "JOIN") //game already joined- remove from list
               {
                 var joined = parseInt(cli.database[i].args[0]);
-                for(var j = 0; j < joins.length; j++)
+                for(var j = 0; j < reverse_joins.length; j++)
                 {
-                  if(joins[j] == joined)
+                  if(reverse_joins[j] == joined)
                   {
-                    joins.splice(j,1);
+                    reverse_joins.splice(j,1);
                     turns.splice(j,1);
                   }
                 }
               }
             }
           }
+          for(var i = 0; i < reverse_joins.length; i++)
+            joins[i] = reverse_joins[reverse_joins.length-1-i];
           cli.updated = false;
         }
         break;
