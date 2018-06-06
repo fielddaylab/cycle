@@ -69,9 +69,15 @@ var Game = function(init)
 
   self.setScene = function(i)
   {
+    if (i == 4) scenes[4].numGamesPlayed++;
     scenes[cur_scene].cleanup();
     cur_scene = i;
     scenes[cur_scene].ready();
+  }
+
+  self.log_level_begin = function(log_data) {
+    log_data.event_data_complex = JSON.stringify(log_data.event_data_complex);
+    scenes[4].mySlog.log(log_data);
   }
 
 };

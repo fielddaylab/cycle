@@ -61,6 +61,21 @@ var ConfigScene = function(game, stage)
   var tutorial_img;
   var net_add_img;
   var net_check_img;
+
+  self.sendLog = function (turns, type, mode) {
+    var log_data =
+    {
+      event:"BEGIN",
+      event_data_complex:{
+        numTurns:turns,
+        gameType:type,
+        multiplayerMode:mode
+      }
+    };
+    game.log_level_begin(log_data);
+    //console.log(log_data);
+  }
+
   self.ready = function()
   {
     ctx.font = "12px Open Sans";
@@ -99,9 +114,9 @@ var ConfigScene = function(game, stage)
     jbtn_e = new ButtonBox(btn_2_x,btn_y+btn_s/2,btn_s,btn_s/2-10,function(evt){ if(hit_ui || mode != CONFIG_JOIN || joins.length < 5) return; hit_ui = true; join = joins[4]; turn = turns[4]; cli.add(cli.id+" JOIN "+join); mode = CONFIG_COMMIT; });
     jbtn_f = new ButtonBox(btn_3_x,btn_y+btn_s/2,btn_s,btn_s/2-10,function(evt){ if(hit_ui || mode != CONFIG_JOIN || joins.length < 6) return; hit_ui = true; join = joins[5]; turn = turns[5]; cli.add(cli.id+" JOIN "+join); mode = CONFIG_COMMIT; });
 
-    tbtn_10 = new ButtonBox(btn_1_x,btn_y,btn_s,btn_s-20,function(evt){ if(hit_ui || mode != CONFIG_TURN) return; hit_ui = true; turn = 10; mode = CONFIG_COMMIT; });
-    tbtn_20 = new ButtonBox(btn_2_x,btn_y,btn_s,btn_s-20,function(evt){ if(hit_ui || mode != CONFIG_TURN) return; hit_ui = true; turn = 20; mode = CONFIG_COMMIT; });
-    tbtn_30 = new ButtonBox(btn_3_x,btn_y,btn_s,btn_s-20,function(evt){ if(hit_ui || mode != CONFIG_TURN) return; hit_ui = true; turn = 30; mode = CONFIG_COMMIT; });
+    tbtn_10 = new ButtonBox(btn_1_x,btn_y,btn_s,btn_s-20,function(evt){ if(hit_ui || mode != CONFIG_TURN) return; hit_ui = true; turn = 10; self.sendLog(turn, game_type, multiplayer); mode = CONFIG_COMMIT;});
+    tbtn_20 = new ButtonBox(btn_2_x,btn_y,btn_s,btn_s-20,function(evt){ if(hit_ui || mode != CONFIG_TURN) return; hit_ui = true; turn = 20; self.sendLog(turn, game_type, multiplayer); mode = CONFIG_COMMIT; });
+    tbtn_30 = new ButtonBox(btn_3_x,btn_y,btn_s,btn_s-20,function(evt){ if(hit_ui || mode != CONFIG_TURN) return; hit_ui = true; turn = 30; self.sendLog(turn, game_type, multiplayer); mode = CONFIG_COMMIT; });
 
     clicker.register(btn_back);
     clicker.register(btn_tutorial);

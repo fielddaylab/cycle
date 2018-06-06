@@ -100,6 +100,51 @@ var GamePlayScene = function(game, stage)
   var score_header_y = 85;
   var turn_header_y = 105;
 
+  self.mySlog = new slog(game_type, 1);
+
+  self.numGamesPlayed = 0;
+
+  //logging functions
+  self.log_card_play = function(player, human, from, to, goal, nextGoal, color, p1change, p2change, arrows) {
+    var log_data =
+    {
+      event:"CARD_PLAY",
+      event_data_complex:{
+        playerNum:player,
+        isHuman:human,
+        fromTile:from,
+        toTile:to,
+        goalTile:goal,
+        nextGoalTile:nextGoal,
+        colorMoved:color,
+        p1_scoreChange:p1change,
+        p2_scoreChange:p2change,
+        arrowsShown:arrows
+      }
+    };
+    
+    log_data.event_data_complex = JSON.stringify(log_data.event_data_complex);
+    self.mySlog.log(log_data);
+    //console.log(log_data);
+  }
+
+  self.log_game_complete = function(mode, scores, winner, numGames) {
+    var log_data =
+    {
+      event:"COMPLETE",
+      event_data_complex:{
+        gamemode:mode,
+        endScores:scores,
+        gameWinner:winner,
+        numGamesPlayed:numGames
+      }
+    };
+    
+    log_data.event_data_complex = JSON.stringify(log_data.event_data_complex);
+    self.mySlog.log(log_data);
+    //console.log(log_data);
+  }
+
   self.ready = function()
   {
 
@@ -234,6 +279,13 @@ var GamePlayScene = function(game, stage)
         hover_card.dx = dc.width/2-hover_card.w/2;
         hover_card.dy = dc.height-50;
 
+        //self.log_card_play(player, human, from, to, goal, nextGoal, color, p1change, p2change, arrows);
+        var playedCard = g.events[g.players[g.player_turn-1].hand[chosen_card_i]-1];
+        var isHumanPlayer = ((game.multiplayer != MULTIPLAYER_AI && game.multiplayer != MULTIPLAYER_TUT) || g.player_turn == 1);
+        var pieceColor = (chosen_target_p == 1) ? "RED" : "BLUE";
+        var startScoreRed = g.nodes[g.goal_node-1].p1_tokens;
+        var startScoreBlue = g.nodes[g.goal_node-1].p2_tokens;
+
         setTimeout(function() //oh god...
         {
           playCard(g,chosen_card_i,chosen_target_p,sr);
@@ -242,7 +294,26 @@ var GamePlayScene = function(game, stage)
           chosen_target_p = 0;
           transition_t = 1;
 
-          if(g.turn == game.turns) turn_stage = TURN_DONE;
+          var deltaRed = g.nodes[g.goal_node-1].p1_tokens - startScoreRed;
+          var deltaBlue = g.nodes[g.goal_node-1].p2_tokens - startScoreBlue;
+          var player = g.player_turn == 1 ? 2 : 1;
+          self.log_card_play(player, isHumanPlayer, playedCard.from_id, playedCard.to_id, g.nodes[g.goal_node-1].id,
+            g.nodes[g.next_goal_node-1].id, pieceColor, deltaRed, deltaBlue, direction_viz_enabled);
+
+          if(g.turn == game.turns) {
+            var winner;
+            var redPts = g.players[0].pts;
+            var bluePts = g.players[1].pts;
+            if (redPts > bluePts) {
+              winner = "RED";
+            } else if (bluePts > redPts) {
+              winner = "BLUE";
+            } else {
+              winner = "TIE";
+            }
+            self.log_game_complete(game.multiplayer, {red:redPts, blue:bluePts}, winner, self.numGamesPlayed);
+            turn_stage = TURN_DONE;
+          }
           else if(game.multiplayer == MULTIPLAYER_LOCAL)
             turn_stage = TURN_CHOOSE_CARD;
           else if(game.multiplayer == MULTIPLAYER_AI || game.multiplayer == MULTIPLAYER_TUT)
