@@ -105,7 +105,7 @@ var GamePlayScene = function(game, stage)
   self.numGamesPlayed = 0;
 
   //logging functions
-  self.log_card_play = function(player, human, from, to, goal, nextGoal, color, p1change, p2change, arrows) {
+  self.log_card_play = function(player, human, from, to, goal, nextGoal, color, numMoved, p1change, p2change, arrows) {
     var log_data =
     {
       event:"CARD_PLAY",
@@ -117,6 +117,7 @@ var GamePlayScene = function(game, stage)
         goalTile:goal,
         nextGoalTile:nextGoal,
         colorMoved:color,
+        numPiecesMoved:numMoved,
         p1_scoreChange:p1change,
         p2_scoreChange:p2change,
         arrowsShown:arrows
@@ -285,6 +286,17 @@ var GamePlayScene = function(game, stage)
         var pieceColor = (chosen_target_p == 1) ? "RED" : "BLUE";
         var startScoreRed = g.nodes[g.goal_node-1].p1_tokens;
         var startScoreBlue = g.nodes[g.goal_node-1].p2_tokens;
+        var nodeStartRedTokens = g.nodes[playedCard.from_id-1].p1_tokens;
+        var nodeStartBlueTokens = g.nodes[playedCard.from_id-1].p2_tokens;
+        var numPiecesMoved;
+
+        if (pieceColor == "RED" && nodeStartRedTokens > 0) {
+          numPiecesMoved = 1;
+        } else if (pieceColor == "BLUE" && nodeStartBlueTokens > 0) {
+          numPiecesMoved = 1;
+        } else {
+          numPiecesMoved = 0;
+        }
 
         setTimeout(function() //oh god...
         {
@@ -297,8 +309,9 @@ var GamePlayScene = function(game, stage)
           var deltaRed = g.nodes[g.goal_node-1].p1_tokens - startScoreRed;
           var deltaBlue = g.nodes[g.goal_node-1].p2_tokens - startScoreBlue;
           var player = g.player_turn == 1 ? 2 : 1;
+
           self.log_card_play(player, isHumanPlayer, playedCard.from_id, playedCard.to_id, g.nodes[g.goal_node-1].id,
-            g.nodes[g.next_goal_node-1].id, pieceColor, deltaRed, deltaBlue, direction_viz_enabled);
+            g.nodes[g.next_goal_node-1].id, pieceColor, numPiecesMoved, deltaRed, deltaBlue, direction_viz_enabled);
 
           if(g.turn == game.turns) {
             var winner;
