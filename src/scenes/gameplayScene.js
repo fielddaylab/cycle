@@ -100,6 +100,94 @@ var GamePlayScene = function(game, stage)
   var score_header_y = 85;
   var turn_header_y = 105;
 
+  self.mySlog = new slog(game_type, 1);
+
+  self.numGamesPlayed = 0;
+  var numPreviews = 0;
+  var numPreviewClicks = 0;
+  var previewStartTime;
+  var previewEndTime;
+  var clickPreviewStartTime;
+  var clickPreviewEndTime;
+  var clickCard;
+  var cardIsClicked = false;
+
+  //logging functions
+  self.log_card_play = function(player, human, from, to, goal, nextGoal, color, numMoved, p1change, p2change, arrows) {
+    var log_data =
+    {
+      event:"CARD_PLAY",
+      event_data_complex:{
+        playerNum:player,
+        isHuman:human,
+        fromTile:from,
+        toTile:to,
+        goalTile:goal,
+        nextGoalTile:nextGoal,
+        colorMoved:color,
+        numPiecesMoved:numMoved,
+        p1_scoreChange:p1change,
+        p2_scoreChange:p2change,
+        arrowsShown:arrows
+      }
+    };
+    
+    log_data.event_data_complex = JSON.stringify(log_data.event_data_complex);
+    self.mySlog.log(log_data);
+    //console.log(log_data);
+  }
+
+  self.log_game_complete = function(mode, scores, winner, numGames) {
+    var log_data =
+    {
+      event:"COMPLETE",
+      event_data_complex:{
+        gamemode:mode,
+        endScores:scores,
+        gameWinner:winner,
+        numGamesPlayed:numGames
+      }
+    };
+    
+    log_data.event_data_complex = JSON.stringify(log_data.event_data_complex);
+    self.mySlog.log(log_data);
+    //console.log(log_data);
+  }
+
+  var log_card_preview_hover = function(card, num, time, arrows) {
+    var log_data =
+    {
+      event:"PREVIEW_HOVER",
+      event_data_complex:{
+        cardPreviewed:card,
+        numCardsPreviewed:num,
+        timePreviewed:time,
+        arrowsShown:arrows
+      }
+    };
+    
+    log_data.event_data_complex = JSON.stringify(log_data.event_data_complex);
+    self.mySlog.log(log_data);
+    //console.log(log_data);
+  }
+
+  var log_card_preview_click = function(card, num, time, arrows) {
+    var log_data =
+    {
+      event:"PREVIEW_CLICK",
+      event_data_complex:{
+        cardPreviewed:card,
+        numCardsClickPreviewed:num,
+        timePreviewed:time,
+        arrowsShown:arrows
+      }
+    };
+    
+    log_data.event_data_complex = JSON.stringify(log_data.event_data_complex);
+    self.mySlog.log(log_data);
+    //console.log(log_data);
+  }
+
   self.ready = function()
   {
 
@@ -234,6 +322,24 @@ var GamePlayScene = function(game, stage)
         hover_card.dx = dc.width/2-hover_card.w/2;
         hover_card.dy = dc.height-50;
 
+        //self.log_card_play(player, human, from, to, goal, nextGoal, color, p1change, p2change, arrows);
+        var playedCard = g.events[g.players[g.player_turn-1].hand[chosen_card_i]-1];
+        var isHumanPlayer = ((game.multiplayer != MULTIPLAYER_AI && game.multiplayer != MULTIPLAYER_TUT) || g.player_turn == 1);
+        var pieceColor = (chosen_target_p == 1) ? "RED" : "BLUE";
+        var startScoreRed = g.nodes[g.goal_node-1].p1_tokens;
+        var startScoreBlue = g.nodes[g.goal_node-1].p2_tokens;
+        var nodeStartRedTokens = g.nodes[playedCard.from_id-1].p1_tokens;
+        var nodeStartBlueTokens = g.nodes[playedCard.from_id-1].p2_tokens;
+        var numPiecesMoved;
+
+        if (pieceColor == "RED" && nodeStartRedTokens > 0) {
+          numPiecesMoved = 1;
+        } else if (pieceColor == "BLUE" && nodeStartBlueTokens > 0) {
+          numPiecesMoved = 1;
+        } else {
+          numPiecesMoved = 0;
+        }
+
         setTimeout(function() //oh god...
         {
           playCard(g,chosen_card_i,chosen_target_p,sr);
@@ -242,7 +348,29 @@ var GamePlayScene = function(game, stage)
           chosen_target_p = 0;
           transition_t = 1;
 
-          if(g.turn == game.turns) turn_stage = TURN_DONE;
+          var deltaRed = g.nodes[g.goal_node-1].p1_tokens - startScoreRed;
+          var deltaBlue = g.nodes[g.goal_node-1].p2_tokens - startScoreBlue;
+          var player = g.player_turn == 1 ? 2 : 1;
+
+          self.log_card_play(player, isHumanPlayer, playedCard.from_id, playedCard.to_id, g.nodes[g.goal_node-1].id,
+            g.nodes[g.next_goal_node-1].id, pieceColor, numPiecesMoved, deltaRed, deltaBlue, direction_viz_enabled);
+          numPreviews = 0;
+          numPreviewClicks = 0;
+
+          if(g.turn == game.turns) {
+            var winner;
+            var redPts = g.players[0].pts;
+            var bluePts = g.players[1].pts;
+            if (redPts > bluePts) {
+              winner = "RED";
+            } else if (bluePts > redPts) {
+              winner = "BLUE";
+            } else {
+              winner = "TIE";
+            }
+            self.log_game_complete(game.multiplayer, {red:redPts, blue:bluePts}, winner, self.numGamesPlayed);
+            turn_stage = TURN_DONE;
+          }
           else if(game.multiplayer == MULTIPLAYER_LOCAL)
             turn_stage = TURN_CHOOSE_CARD;
           else if(game.multiplayer == MULTIPLAYER_AI || game.multiplayer == MULTIPLAYER_TUT)
@@ -1551,6 +1679,8 @@ var GamePlayScene = function(game, stage)
     self.dw;
     self.dh;
 
+    self.isHovering = false;
+
     self.tick = function()
     {
       if(!self.dw || !self.dh)
@@ -1644,19 +1774,38 @@ var GamePlayScene = function(game, stage)
         hover_card.t = 0;
         turn_stage = TURN_CONFIRM_CARD;
         hit_ui = true;
+
+        clickPreviewStartTime = new Date().getTime();
+        numPreviewClicks++;
+        cardIsClicked = true;
+        cardClick = g.events[g.players[self.player-1].hand[self.index]-1];
       }
     }
 
     self.hover = function(evt)
     {
       if(hovhit_ui) return;
+      if (!self.isHovering && !cardIsClicked) {
+        previewStartTime = new Date().getTime();
+        self.isHovering = true;
+      }
+
       hovering_card_i = self.index;
       hovering_card_p = self.player;
     }
     self.unhover = function()
     {
+      var cardHovered = g.events[g.players[self.player-1].hand[self.index]-1];
+      if (cardHovered && !cardIsClicked) {
+        previewEndTime = new Date().getTime();
+        numPreviews++;
+        log_card_preview_hover({cardID:cardHovered.id, cardTitle:cardHovered.title}, numPreviews, (previewEndTime - previewStartTime) / 1000, direction_viz_enabled);
+      }
+
       hovering_card_i = -1;
       hovering_card_p = 0;
+      self.isHovering = false;
+
     }
   }
 
@@ -1912,8 +2061,12 @@ var GamePlayScene = function(game, stage)
 
       if(turn_stage == TURN_CONFIRM_CARD)
       {
-        if(ptWithin(evt.doX,evt.doY,self.x+self.play_x,self.y+self.play_y,self.play_w,self.play_h))
+        clickPreviewEndTime = new Date().getTime();
+        cardIsClicked = false;
+        log_card_preview_click({cardID:cardClick.id, cardTitle:cardClick.title}, numPreviewClicks, (clickPreviewEndTime - clickPreviewStartTime) / 1000, direction_viz_enabled);
+        if(ptWithin(evt.doX,evt.doY,self.x+self.play_x,self.y+self.play_y,self.play_w,self.play_h)) {
           turn_stage = TURN_CHOOSE_TARGET;
+        }
         else
         {
           hit_ui = false;
