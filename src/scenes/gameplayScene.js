@@ -100,7 +100,14 @@ var GamePlayScene = function(game, stage)
   var score_header_y = 85;
   var turn_header_y = 105;
 
-  self.mySlog = new slog(game_type, 1);
+  var gameTypeString = "";
+  if (game_type == CARBON_GAME)
+    gameTypeString = "CYCLE_CARBON";
+  else if (game_type == NITROGEN_GAME)
+    gameTypeString = "CYCLE_NITROGEN";
+  else if (game_type == WATER_GAME)
+    gameTypeString = "CYCLE_WATER";
+  self.mySlog = new slog(gameTypeString, 1);
 
   self.numGamesPlayed = 0;
   var numPreviews = 0;
@@ -116,8 +123,10 @@ var GamePlayScene = function(game, stage)
   self.log_card_play = function(player, human, from, to, goal, nextGoal, color, numMoved, p1change, p2change, arrows) {
     var log_data =
     {
-      event:"CARD_PLAY",
+      event:"CUSTOM",
+      event_custom:1,
       event_data_complex:{
+        event_custom:"CARD_PLAY",
         playerNum:player,
         isHuman:human,
         fromTile:from,
@@ -157,8 +166,10 @@ var GamePlayScene = function(game, stage)
   var log_card_preview_hover = function(card, num, time, arrows) {
     var log_data =
     {
-      event:"PREVIEW_HOVER",
+      event:"CUSTOM",
+      event_custom:2,
       event_data_complex:{
+        event_custom:"PREVIEW_HOVER",
         cardPreviewed:card,
         numCardsPreviewed:num,
         timePreviewed:time,
@@ -174,8 +185,10 @@ var GamePlayScene = function(game, stage)
   var log_card_preview_click = function(card, num, time, arrows) {
     var log_data =
     {
-      event:"PREVIEW_CLICK",
+      event:"CUSTOM",
+      event_custom:3,
       event_data_complex:{
+        event_custom:"PREVIEW_CLICK",
         cardPreviewed:card,
         numCardsClickPreviewed:num,
         timePreviewed:time,
