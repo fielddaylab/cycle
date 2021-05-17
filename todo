@@ -35,3 +35,21 @@ X- blue arrow asset (arrow@2x in zip) has drop shadow; assets that will be rotat
 - any gradients used (can be 1px wide if gradient is vertical, 1px tall if horizontal, etc...)
 X- fonts (all fonts are open sans)
 
+
+Legends of Learning API
+[X] Singleplayer only
+    [ ] Clean up unused multiplayer code?
+[X] API elements:
+    [X] Send/receive framework
+    [X] Progress
+    [X] TTS
+        [X] Dialogue
+            [X] Tutorial dialogue
+            [X] Singleplayer dialogue
+        [X] Cards
+            [X] Own clicked cards (title & desc)
+            [?] CPU-clicked cards (title & desc)
+        [?] UI elements?
+Not bothering for now
+    [ ] Language
+    [ ] Resolution, aspect ratio, font size

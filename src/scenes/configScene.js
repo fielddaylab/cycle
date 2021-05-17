@@ -19,9 +19,9 @@ var ConfigScene = function(game, stage)
   var btn_tutorial;
 
   var mbtn_ai;
-  var mbtn_local;
-  var mbtn_net_create;
-  var mbtn_net_join;
+  // var mbtn_local;
+  // var mbtn_net_create;
+  // var mbtn_net_join;
   var multiplayer;
 
   var btn_back;
@@ -76,6 +76,12 @@ var ConfigScene = function(game, stage)
     //console.log(log_data);
   }
 
+  
+  LolApi('gameIsReady', { 
+    aspectRatio: "4:3",
+    resolution: "880x660",
+  });
+
   self.ready = function()
   {
     ctx.font = "12px Open Sans";
@@ -99,10 +105,10 @@ var ConfigScene = function(game, stage)
 
     btn_tutorial   = new ButtonBox(0,0,dc.width,section_line_0_y,function(evt){ if(hit_ui) return; hit_ui = true; multiplayer = MULTIPLAYER_TUT; turn = 10; mode = CONFIG_COMMIT; });
 
-    mbtn_ai         = new ButtonBox(btn_0_x,btn_y,btn_s,btn_s-20,function(evt){ if(hit_ui || mode != CONFIG_MULTIPLAYER) return; hit_ui = true; multiplayer = MULTIPLAYER_AI;         mode = CONFIG_TURN; });
-    mbtn_local      = new ButtonBox(btn_2_x,btn_y,btn_s,btn_s-20,function(evt){ if(hit_ui || mode != CONFIG_MULTIPLAYER) return; hit_ui = true; multiplayer = MULTIPLAYER_LOCAL;      mode = CONFIG_TURN; });
-    mbtn_net_create = new ButtonBox(btn_3_x,btn_y,btn_s,btn_s-20,function(evt){ if(hit_ui || mode != CONFIG_MULTIPLAYER) return; hit_ui = true; multiplayer = MULTIPLAYER_NET_CREATE; mode = CONFIG_TURN; cli.begin(); });
-    mbtn_net_join   = new ButtonBox(btn_4_x,btn_y,btn_s,btn_s-20,function(evt){ if(hit_ui || mode != CONFIG_MULTIPLAYER) return; hit_ui = true; multiplayer = MULTIPLAYER_NET_JOIN;   mode = CONFIG_JOIN; cli.begin(); });
+    mbtn_ai         = new ButtonBox(btn_2_x,btn_y,btn_s,btn_s-20,function(evt){ if(hit_ui || mode != CONFIG_MULTIPLAYER) return; hit_ui = true; multiplayer = MULTIPLAYER_AI;         mode = CONFIG_TURN; });
+    // mbtn_local      = new ButtonBox(btn_2_x,btn_y,btn_s,btn_s-20,function(evt){ if(hit_ui || mode != CONFIG_MULTIPLAYER) return; hit_ui = true; multiplayer = MULTIPLAYER_LOCAL;      mode = CONFIG_TURN; });
+    // mbtn_net_create = new ButtonBox(btn_3_x,btn_y,btn_s,btn_s-20,function(evt){ if(hit_ui || mode != CONFIG_MULTIPLAYER) return; hit_ui = true; multiplayer = MULTIPLAYER_NET_CREATE; mode = CONFIG_TURN; cli.begin(); });
+    // mbtn_net_join   = new ButtonBox(btn_4_x,btn_y,btn_s,btn_s-20,function(evt){ if(hit_ui || mode != CONFIG_MULTIPLAYER) return; hit_ui = true; multiplayer = MULTIPLAYER_NET_JOIN;   mode = CONFIG_JOIN; cli.begin(); });
 
     btn_back = new ButtonBox(20,section_line_0_y,btn_s,section_line_1_y-section_line_0_y,function(evt){ if(hit_ui || mode == CONFIG_MULTIPLAYER) return; cli.stop(); mode = CONFIG_MULTIPLAYER; multiplayer = undefined; });
 
@@ -121,9 +127,9 @@ var ConfigScene = function(game, stage)
     clicker.register(btn_back);
     clicker.register(btn_tutorial);
     clicker.register(mbtn_ai);
-    clicker.register(mbtn_local);
-    clicker.register(mbtn_net_create);
-    clicker.register(mbtn_net_join);
+    // clicker.register(mbtn_local);
+    // clicker.register(mbtn_net_create);
+    // clicker.register(mbtn_net_join);
     clicker.register(jbtn_a);
     clicker.register(jbtn_b);
     clicker.register(jbtn_c);
@@ -244,10 +250,10 @@ var ConfigScene = function(game, stage)
       case CONFIG_MULTIPLAYER:
         ctx.textAlign = "center";
         imgBtn(mbtn_ai,single_img);
-        imgBtn(mbtn_local,multi_img);      ctx.fillText("Same Screen",             mbtn_local.x+mbtn_local.w/2,      mbtn_local.y+mbtn_local.h+20);
-        imgBtn(mbtn_net_create,multi_img); ctx.drawImage(net_add_img,mbtn_net_create.x+mbtn_net_create.w-30,mbtn_net_create.y-10,40,40); ctx.fillText("Web: Create Room",        mbtn_net_create.x+mbtn_net_create.w/2, mbtn_net_create.y+mbtn_net_create.h+20);
-        imgBtn(mbtn_net_join,multi_img);   ctx.drawImage(net_check_img,mbtn_net_join.x+mbtn_net_join.w-30,mbtn_net_join.y-10,40,40); ctx.fillText("Web: Join Room",          mbtn_net_join.x+mbtn_net_join.w/2,   mbtn_net_join.y+mbtn_net_join.h+20);
-        dc.drawLine(btn_1_x+btn_s/2,section_line_1_y,btn_1_x+btn_s/2,dc.height);
+        // imgBtn(mbtn_local,multi_img);      ctx.fillText("Same Screen",             mbtn_local.x+mbtn_local.w/2,      mbtn_local.y+mbtn_local.h+20);
+        // imgBtn(mbtn_net_create,multi_img); ctx.drawImage(net_add_img,mbtn_net_create.x+mbtn_net_create.w-30,mbtn_net_create.y-10,40,40); ctx.fillText("Web: Create Room",        mbtn_net_create.x+mbtn_net_create.w/2, mbtn_net_create.y+mbtn_net_create.h+20);
+        // imgBtn(mbtn_net_join,multi_img);   ctx.drawImage(net_check_img,mbtn_net_join.x+mbtn_net_join.w-30,mbtn_net_join.y-10,40,40); ctx.fillText("Web: Join Room",          mbtn_net_join.x+mbtn_net_join.w/2,   mbtn_net_join.y+mbtn_net_join.h+20);
+        // dc.drawLine(btn_1_x+btn_s/2,section_line_1_y,btn_1_x+btn_s/2,dc.height);
         ctx.font = "40px Open Sans";
         if(game_type == CARBON_GAME)
           ctx.fillText("CARBON CYCLE".split("").join(space+space),dc.width/2,title_y);
@@ -256,9 +262,9 @@ var ConfigScene = function(game, stage)
         else if(game_type == WATER_GAME)
           ctx.fillText("WATER CYCLE".split("").join(space+space),dc.width/2,title_y);
         ctx.font = "Bold 12px Open Sans";
-        ctx.textAlign = "left";
-        ctx.fillText("Single Player",btn_0_x, subtitle_y);
-        ctx.fillText("Multiplayer",btn_2_x, subtitle_y);
+        ctx.textAlign = "center";
+        ctx.fillText("Single Player Game",btn_2_x+btn_s/2, subtitle_y);
+        // ctx.fillText("Multiplayer",btn_2_x, subtitle_y);
         ctx.font = "12px Open Sans";
         break;
       case CONFIG_JOIN:

@@ -17,6 +17,12 @@ var Game = function(init)
     height:320,
     container:"stage_container"
   }
+  // //Initialize
+  LolApi('init', { 
+    aspectRatio: "4:3",
+    resolution: "880x660",
+    sdkVersion: "5.2",
+  });
 
   var self = this;
   doMapInitDefaults(init,init,default_init);

@@ -119,6 +119,8 @@ var GamePlayScene = function(game, stage)
   var clickCard;
   var cardIsClicked = false;
 
+  var redPts;
+  var bluePts;
   //logging functions
   self.log_card_play = function(player, human, from, to, goal, nextGoal, color, numMoved, p1change, p2change, arrows) {
     var log_data =
@@ -161,6 +163,9 @@ var GamePlayScene = function(game, stage)
     log_data.event_data_complex = JSON.stringify(log_data.event_data_complex);
     self.mySlog.log(log_data);
     //console.log(log_data);
+
+    console.log("Complete: " + numGames*game.turns);
+    reportProgress(numGames * game.turns, redPts - bluePts);
   }
 
   var log_card_preview_hover = function(card, num, time, arrows) {
@@ -372,8 +377,8 @@ var GamePlayScene = function(game, stage)
 
           if(g.turn == game.turns) {
             var winner;
-            var redPts = g.players[0].pts;
-            var bluePts = g.players[1].pts;
+            redPts = g.players[0].pts;
+            bluePts = g.players[1].pts;
             if (redPts > bluePts) {
               winner = "RED";
             } else if (bluePts > redPts) {
@@ -1291,7 +1296,7 @@ var GamePlayScene = function(game, stage)
       var t = g.tokens[i];
       if(turn_stage == TURN_ANIM_CARD ||
          turn_stage == TURN_SUMMARY   ||
-        (turn_stage == TURN_CHOOSE_TARGET && direction_viz_enabled)
+        (turn_stage == TURN_CHOOSE_TARGET && direction_viz_enabled && event != undefined)
         )
       {
         if(t.disp_node_id == event.from_id && t.player_id == chosen_target_p)
@@ -1583,6 +1588,8 @@ var GamePlayScene = function(game, stage)
     var line = tutorial_lines[tutorial_n];
     if(typeof line == "function") line = line();
     tutorial_canvdom.popDismissableMessage(textToLines(dc, "12px Open Sans", blurb_w-20, line),blurb_x+5,blurb_y,blurb_w-10,200,tutorialDoneDisplay);
+    
+    //LolApi('speakText', {key: tutorial_lines[tutorial_n]});
   }
 
   var genPreSummary = function()
@@ -1658,12 +1665,20 @@ var GamePlayScene = function(game, stage)
     text = actor+" played \""+event.title+"\" on "+actee+" "+g.noun+"!";
 
     summary = [textToLines(dc, summary_font, announce_w-10, text)];
-    if(delta.pts_red_delta_n > 0 && delta.pts_blue_delta_n == 0)
+
+
+    if(delta.pts_red_delta_n > 0 && delta.pts_blue_delta_n == 0){
       summary.push(textToLines(dc, summary_font, announce_w-10, "RED TEAM gained "+delta.pts_red_delta_n+" pts!"));
-    else if(delta.pts_red_delta_n == 0 && delta.pts_blue_delta_n > 0)
+      //LolApi('speakText', { key: "RED TEAM gained "+delta.pts_red_delta_n+" pts!" });
+    }
+    else if(delta.pts_red_delta_n == 0 && delta.pts_blue_delta_n > 0){
       summary.push(textToLines(dc, summary_font, announce_w-10, "BLUE TEAM gained "+delta.pts_blue_delta_n+" pts!"));
-    else if(delta.pts_red_delta_n > 0 && delta.pts_blue_delta_n > 0)
+     // LolApi('speakText', { key: "BLUE TEAM gained "+delta.pts_blue_delta_n+" pts!" });
+    }
+    else if(delta.pts_red_delta_n > 0 && delta.pts_blue_delta_n > 0){
       summary.push(textToLines(dc, summary_font, announce_w-10, "RED TEAM gained "+delta.pts_red_delta_n+" pts, and BLUE TEAM gained "+delta.pts_blue_delta_n+" pts!"));
+      //LolApi('speakText', { key: "RED TEAM gained "+delta.pts_red_delta_n+" pts, and BLUE TEAM gained "+delta.pts_blue_delta_n+" pts!" });
+    }
 
     var who = g.players[g.player_turn-1].title+"'s";
     if(
@@ -1672,6 +1687,9 @@ var GamePlayScene = function(game, stage)
     )
       who = "your";
     summary.push(textToLines(dc, summary_font, announce_w-10, "It's now "+who+" turn!"));
+
+   // LolApi('speakText', { key:"It's now "+who+" turn!"});
+      
   }
 
   //no data- just used for interface
@@ -1792,6 +1810,12 @@ var GamePlayScene = function(game, stage)
         numPreviewClicks++;
         cardIsClicked = true;
         cardClick = g.events[g.players[self.player-1].hand[self.index]-1];
+        
+        var player = g.players[self.player-1];
+        var currentCard = g.events[player.hand[self.index]-1];
+
+       // LolApi('speakText', { key: currentCard.title });
+       // LolApi('speakText', { key: currentCard.description });
       }
     }
 
