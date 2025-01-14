@@ -11,3 +11,6 @@ deploy-water:
 	rsync -vrc * tyg@theyardgames.org:/httpdocs/game/water --exclude-from rsync-exclude
 deploy-carbon:
 	rsync -vrc * tyg@theyardgames.org:/httpdocs/game/carbon --exclude-from rsync-exclude
+
+deploy-nitrogen-test:
+	rsync -vrc * tyg@theyardgames.org:/httpdocs/game/nitrogen/test --exclude-from rsync-exclude
